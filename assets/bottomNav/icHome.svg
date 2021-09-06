@@ -1,0 +1,16 @@
+<svg id="Ic_Home_Selected" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" width="32" height="32" viewBox="0 0 32 32">
+  <defs>
+    <clipPath id="clip-path">
+      <rect id="사각형_241" data-name="사각형 241" width="22" height="19.722" fill="#999"/>
+    </clipPath>
+  </defs>
+  <g id="Ic_Home" transform="translate(-279.114 -403.39)">
+    <g id="그룹_457" data-name="그룹 457" transform="translate(284.114 409.39)">
+      <g id="그룹_456" data-name="그룹 456" clip-path="url(#clip-path)">
+        <path id="패스_267" data-name="패스 267" d="M305.109,418.171a.917.917,0,0,1-.538-.173l-8.949-6.516a.911.911,0,0,0-1.076,0L285.6,418a.913.913,0,0,1-1.076-1.477l8.959-6.553a2.734,2.734,0,0,1,3.217,0l8.949,6.516a.911.911,0,0,1-.537,1.685Zm0,0" transform="translate(-284.119 -409.4)" fill="#999"/>
+      </g>
+    </g>
+    <path id="패스_268" data-name="패스 268" d="M301.146,431h-2.734a.911.911,0,0,1-.911-.911v-3.645a1.823,1.823,0,1,0-3.646,0v3.645a.911.911,0,0,1-.91.911h-2.735a2.734,2.734,0,0,1-2.733-2.735v-7.29a.911.911,0,1,1,1.822,0v7.29a.912.912,0,0,0,.911.912h1.823v-2.734a3.645,3.645,0,0,1,7.29,0v2.734h1.823a.912.912,0,0,0,.911-.912v-7.29a.911.911,0,1,1,1.823,0v7.29A2.735,2.735,0,0,1,301.146,431Zm0,0" transform="translate(-0.599 -1.903)" fill="#999"/>
+  </g>
+  <rect id="사각형_247" data-name="사각형 247" width="32" height="32" fill="none"/>
+</svg>
