@@ -3,6 +3,7 @@ import 'package:get/get.dart';
 import 'package:save_order/model/model.dart';
 import 'package:http/http.dart' as http;
 import 'package:save_order/page/order_takeout.dart';
+import 'package:save_order/view/pages/login/login_page.dart';
 import 'package:save_order/widget/bottom_nav.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:save_order/widget/bottom_shopnav.dart';
@@ -34,7 +35,9 @@ class Home extends StatelessWidget {
                       ),
                     ),
                     onTap: () =>
-                        Get.to(() => OrderTakeOut(shop: shopList[index]))),
+                   // Get.to(() => LoginPage())
+                        Get.to(() => OrderTakeOut(shop: shopList[index]))
+                        ),
               );
             },
             itemCount: shopList.length,
