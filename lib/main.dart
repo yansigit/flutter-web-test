@@ -42,7 +42,6 @@ class MyApp extends StatelessWidget {
                     theme: ThemeData(
                         brightness: Brightness.light,
                         primaryColor: Colors.white,
-                        primarySwatch: Colors.blue,
                         fontFamily: 'Noto Sans'),
                     home: Home(shopList: shopList),
                   ));

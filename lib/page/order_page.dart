@@ -22,7 +22,7 @@ class OrderPage extends StatelessWidget {
 
               return OrderTabRe(categoryList: categories);
             } else {
-              return Container(child: CircularProgressIndicator());
+              return Center(child: CircularProgressIndicator());
             }
           }),
       bottomNavigationBar: BottomNav(),

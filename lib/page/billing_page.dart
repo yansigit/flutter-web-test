@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:get/get.dart';
+import 'package:save_order/page/orderstatus_page.dart';
 
 class BillingPage extends StatelessWidget {
   const BillingPage({Key? key}) : super(key: key);
@@ -21,45 +23,6 @@ class BillingPage extends StatelessWidget {
             children: [
               PaymentMethodWidget(),
               ExpandableList(),
-              Container(
-                color: Color(0xffffffff),
-                child: Padding(
-                  padding: EdgeInsets.symmetric(
-                    vertical: 20.h,
-                    horizontal: 20.w,
-                  ),
-                  child: Row(
-                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                    crossAxisAlignment: CrossAxisAlignment.center,
-                    children: [
-                      Container(
-                        height: 22.h,
-                        child: FittedBox(
-                          fit: BoxFit.fitHeight,
-                          child: Text(
-                            "최종 결제 금액",
-                            style: TextStyle(
-                              color: Color(0xff707070),
-                            ),
-                          ),
-                        ),
-                      ),
-                      Container(
-                          height: 27.h,
-                          child: FittedBox(
-                            fit: BoxFit.fitHeight,
-                            child: Text(
-                              "23,000원",
-                              style: TextStyle(
-                                color: Color(0xff00276b),
-                                fontWeight: FontWeight.w700,
-                              ),
-                            ),
-                          )),
-                    ],
-                  ),
-                ),
-              ),
             ],
           ),
         ),
@@ -78,7 +41,11 @@ class BillingPage extends StatelessWidget {
           color: Color(0xffffffff),
         ),
         child: InkWell(
-          onTap: (() => print("결제하기")),
+          onTap: (() => Get.bottomSheet(
+                OrderStatusPage(),
+                isDismissible: false,
+                isScrollControlled: true,
+              )),
           child: Container(
               margin: EdgeInsets.symmetric(vertical: 26.h, horizontal: 20.w),
               decoration: BoxDecoration(
