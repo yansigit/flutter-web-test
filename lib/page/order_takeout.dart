@@ -46,7 +46,7 @@ class OrderTakeOut extends StatelessWidget {
           ),
           Positioned(
             top: 462.h,
-            child: OrderTakeOutWidget(shop),
+            child: OrderTakeOutWidget(),
           ),
         ],
       ),

@@ -39,6 +39,7 @@ class OptionDialog extends StatelessWidget {
     OptionDialogController c1 = Get.find();
     AddShotController c2 = Get.find();
     QuantityController c3 = Get.find();
+
     c1.onClose();
     c2.onClose();
     c3.onClose();
@@ -62,7 +63,7 @@ class OptionDialog extends StatelessWidget {
 
     return Container(
       width: double.infinity,
-      height: ScreenUtil().screenHeight * 0.95,
+      height: ScreenUtil().screenHeight * 0.7,
       color: Colors.transparent,
       child: Scaffold(
         backgroundColor: Colors.transparent,
@@ -946,6 +947,44 @@ class SelectTempWidget extends StatelessWidget {
     return Expanded(
         child: InkWell(
             child: Container(
+              child: Padding(
+                padding: EdgeInsets.symmetric(vertical: 16.0.h),
+                child: Row(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  crossAxisAlignment: CrossAxisAlignment.center,
+                  children: [
+                    Container(
+                      width: 22.w,
+                      height: 22.h,
+                      child: SvgPicture.asset(
+                        "assets/icons/ic_hotIcon.svg",
+                        fit: BoxFit.fill,
+                        color: selected == 1
+                            ? Color(0xffffffff)
+                            : Color(0xff666666),
+                      ),
+                    ),
+                    Container(
+                      margin: EdgeInsets.only(left: 6.w),
+                      height: 24.h,
+                      child: FittedBox(
+                        fit: BoxFit.fitHeight,
+                        child: Text(
+                          "따뜻한",
+                          style: selected == 1
+                              ? TextStyle(
+                                  color: Color(0xffffffff),
+                                  fontWeight: FontWeight.w700,
+                                )
+                              : TextStyle(
+                                  color: Color(0xff666666),
+                                ),
+                        ),
+                      ),
+                    ),
+                  ],
+                ),
+              ),
               decoration: BoxDecoration(
                 borderRadius: BorderRadius.only(
                   topLeft: Radius.circular(30),
@@ -969,6 +1008,44 @@ class SelectTempWidget extends StatelessWidget {
     return Expanded(
         child: InkWell(
             child: Container(
+              child: Padding(
+                padding: EdgeInsets.symmetric(vertical: 16.0.h),
+                child: Row(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  crossAxisAlignment: CrossAxisAlignment.center,
+                  children: [
+                    Container(
+                      width: 22.w,
+                      height: 22.h,
+                      child: SvgPicture.asset(
+                        "assets/icons/ic_coldIcon.svg",
+                        fit: BoxFit.fill,
+                        color: selected == 2
+                            ? Color(0xffffffff)
+                            : Color(0xff666666),
+                      ),
+                    ),
+                    Container(
+                      margin: EdgeInsets.only(left: 6.w),
+                      height: 24.h,
+                      child: FittedBox(
+                        fit: BoxFit.fitHeight,
+                        child: Text(
+                          "시원한",
+                          style: selected == 2
+                              ? TextStyle(
+                                  color: Color(0xffffffff),
+                                  fontWeight: FontWeight.w700,
+                                )
+                              : TextStyle(
+                                  color: Color(0xff666666),
+                                ),
+                        ),
+                      ),
+                    ),
+                  ],
+                ),
+              ),
               decoration: BoxDecoration(
                   borderRadius: BorderRadius.only(
                     topRight: Radius.circular(30),

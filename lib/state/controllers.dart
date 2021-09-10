@@ -149,5 +149,12 @@ class QuantityController extends GetxController {
 
 class PriceController extends GetxController {
   final price = 0.obs;
-  
+}
+
+class ShopController extends GetxController {
+  final shopId = 0.obs;
+
+  updateShopId(int id) {
+    this.shopId.value = id;
+  }
 }

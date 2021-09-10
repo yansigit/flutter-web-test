@@ -2,15 +2,19 @@ import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:get/get.dart';
+import 'package:save_order/model/model.dart';
 import 'package:save_order/page/billing_page.dart';
+import 'package:save_order/state/controllers.dart';
 
 class ShoppingCartPage extends StatelessWidget {
-  ShoppingCartPage({Key? key}) : super(key: key);
-
-  final int cartListLength = 5;
+  final ShoppingCartController controller = Get.find();
 
   @override
   Widget build(BuildContext context) {
+    final List<CartItem> cartItemList = controller.shoppingCart.value;
+
+    int cartListLength = cartItemList.length;
+    print(cartListLength.toString());
     return Scaffold(
       appBar: AppBar(
         title: Text(
@@ -30,101 +34,229 @@ class ShoppingCartPage extends StatelessWidget {
         child: Container(
           child: ListView.separated(
               itemBuilder: ((context, idx) {
-                if (idx == 0) {
-                  return Padding(
-                    padding:
-                        EdgeInsets.only(top: 7.h, bottom: 14.h, left: 20.w),
-                    child: Container(
-                      width: double.infinity,
-                      height: 52.h,
-                      color: Colors.white,
-                      child: Row(
-                        mainAxisAlignment: MainAxisAlignment.start,
-                        children: [
-                          Container(),
-                          Container(
-                            height: 31.h,
-                            child: FittedBox(
-                              fit: BoxFit.fitHeight,
-                              child: Text(
-                                "달보드레 잠실점",
-                                style: TextStyle(
-                                  fontWeight: FontWeight.w700,
-                                  color: Color(0xff00276b),
+                if (cartListLength >= 1) {
+                  if (idx == 0) {
+                    return Padding(
+                      padding:
+                          EdgeInsets.only(top: 7.h, bottom: 14.h, left: 20.w),
+                      child: Container(
+                        width: double.infinity,
+                        height: 52.h,
+                        color: Colors.white,
+                        child: Row(
+                          mainAxisAlignment: MainAxisAlignment.start,
+                          children: [
+                            Container(),
+                            Container(
+                              height: 31.h,
+                              child: FittedBox(
+                                fit: BoxFit.fitHeight,
+                                child: Text(
+                                  "달보드레 잠실점",
+                                  style: TextStyle(
+                                    fontWeight: FontWeight.w700,
+                                    color: Color(0xff00276b),
+                                  ),
                                 ),
                               ),
                             ),
-                          ),
-                        ],
+                          ],
+                        ),
                       ),
-                    ),
-                  );
-                } else if (idx == 1) {
-                  return Container(
-                    width: double.infinity,
-                    height: 40.h,
-                    decoration: BoxDecoration(
-                      color: Color(0xfff8f8f8),
-                      border: Border(
-                        top: BorderSide(color: Color(0xffe8e8e8), width: 1),
+                    );
+                  } else if (idx == 1) {
+                    return Container(
+                      width: double.infinity,
+                      height: 40.h,
+                      decoration: BoxDecoration(
+                        color: Color(0xfff8f8f8),
+                        border: Border(
+                          top: BorderSide(color: Color(0xffe8e8e8), width: 1),
+                        ),
                       ),
-                    ),
-                    child: Padding(
-                      padding: EdgeInsets.only(top: 10.5.h, bottom: 10.5.h),
-                      child: Container(
-                        height: 19.h,
-                        child: FittedBox(
-                          fit: BoxFit.fitHeight,
-                          child: Text(
-                            "장바구니에 담으신 물품은 최대 7일간 보관됩니다.",
-                            style: TextStyle(
-                              color: Color(0xff707070),
+                      child: Padding(
+                        padding: EdgeInsets.only(top: 10.5.h, bottom: 10.5.h),
+                        child: Container(
+                          height: 19.h,
+                          child: FittedBox(
+                            fit: BoxFit.fitHeight,
+                            child: Text(
+                              "장바구니에 담으신 물품은 최대 7일간 보관됩니다.",
+                              style: TextStyle(
+                                color: Color(0xff707070),
+                              ),
                             ),
                           ),
                         ),
                       ),
-                    ),
-                  );
-                } else if (idx == cartListLength + 2) {
-                  return InkWell(
-                    onTap: (() => Get.back()),
-                    child: Container(
-                      width: double.infinity,
-                      height: 60.h,
-                      margin: EdgeInsets.only(
-                          left: 20.w, right: 20.w, top: 24.h, bottom: 44.h),
-                      decoration: BoxDecoration(
-                        borderRadius: BorderRadius.all(Radius.circular(5.h)),
-                        color: Color(0xfff8f8f8),
+                    );
+                  } else if (idx == cartListLength + 2) {
+                    return InkWell(
+                      onTap: (() => Get.back()),
+                      child: Container(
+                        width: double.infinity,
+                        height: 60.h,
+                        margin: EdgeInsets.only(
+                            left: 20.w, right: 20.w, top: 24.h, bottom: 44.h),
+                        decoration: BoxDecoration(
+                          borderRadius: BorderRadius.all(Radius.circular(5.h)),
+                          color: Color(0xfff8f8f8),
+                        ),
+                        child: Row(
+                          mainAxisAlignment: MainAxisAlignment.center,
+                          children: [
+                            Container(),
+                            Container(
+                              height: 24.h,
+                              margin: EdgeInsets.only(left: 10.w),
+                              child: FittedBox(
+                                fit: BoxFit.fitHeight,
+                                child: Text(
+                                  "더 담으러 가기",
+                                  style: TextStyle(
+                                    color: Color(0xff00276b),
+                                    fontWeight: FontWeight.w700,
+                                  ),
+                                ),
+                              ),
+                            ),
+                          ],
+                        ),
                       ),
-                      child: Row(
+                    );
+                  } else {
+                    return Padding(
+                      padding: EdgeInsets.symmetric(
+                          vertical: 30.h, horizontal: 20.w),
+                      child: CartMenuWidget(
+                        cartItem: cartItemList[idx - 2],
+                      ),
+                    );
+                  }
+                } else {
+                  if (idx == 0) {
+                    return Padding(
+                      padding:
+                          EdgeInsets.only(top: 7.h, bottom: 14.h, left: 20.w),
+                      child: Container(
+                        width: double.infinity,
+                        height: 52.h,
+                        color: Colors.white,
+                        child: Row(
+                          mainAxisAlignment: MainAxisAlignment.start,
+                          children: [
+                            Container(),
+                            Container(
+                              height: 31.h,
+                              child: FittedBox(
+                                fit: BoxFit.fitHeight,
+                                child: Text(
+                                  "달보드레 잠실점",
+                                  style: TextStyle(
+                                    fontWeight: FontWeight.w700,
+                                    color: Color(0xff00276b),
+                                  ),
+                                ),
+                              ),
+                            ),
+                          ],
+                        ),
+                      ),
+                    );
+                  } else if (idx == 1) {
+                    return Container(
+                      width: double.infinity,
+                      height: 40.h,
+                      decoration: BoxDecoration(
+                        color: Color(0xfff8f8f8),
+                        border: Border(
+                          top: BorderSide(color: Color(0xffe8e8e8), width: 1),
+                        ),
+                      ),
+                      child: Padding(
+                        padding: EdgeInsets.only(top: 10.5.h, bottom: 10.5.h),
+                        child: Container(
+                          height: 19.h,
+                          child: FittedBox(
+                            fit: BoxFit.fitHeight,
+                            child: Text(
+                              "장바구니에 담으신 물품은 최대 7일간 보관됩니다.",
+                              style: TextStyle(
+                                color: Color(0xff707070),
+                              ),
+                            ),
+                          ),
+                        ),
+                      ),
+                    );
+                  } else if (idx == 3) {
+                    return InkWell(
+                      onTap: (() => Get.back()),
+                      child: Container(
+                        width: double.infinity,
+                        height: 60.h,
+                        margin: EdgeInsets.only(
+                            left: 20.w, right: 20.w, top: 24.h, bottom: 44.h),
+                        decoration: BoxDecoration(
+                          borderRadius: BorderRadius.all(Radius.circular(5.h)),
+                          color: Color(0xfff8f8f8),
+                        ),
+                        child: Row(
+                          mainAxisAlignment: MainAxisAlignment.center,
+                          children: [
+                            Container(),
+                            Container(
+                              height: 24.h,
+                              margin: EdgeInsets.only(left: 10.w),
+                              child: FittedBox(
+                                fit: BoxFit.fitHeight,
+                                child: Text(
+                                  "더 담으러 가기",
+                                  style: TextStyle(
+                                    color: Color(0xff00276b),
+                                    fontWeight: FontWeight.w700,
+                                  ),
+                                ),
+                              ),
+                            ),
+                          ],
+                        ),
+                      ),
+                    );
+                  } else {
+                    return Container(
+                      width: double.infinity,
+                      height: 325.h,
+                      child: Column(
                         mainAxisAlignment: MainAxisAlignment.center,
+                        crossAxisAlignment: CrossAxisAlignment.center,
                         children: [
-                          Container(),
                           Container(
+                            width: 52.8.w,
+                            height: 60.h,
+                            child: SvgPicture.asset(
+                              "assets/icons/ic_nonCart.svg",
+                              fit: BoxFit.fill,
+                              color: Color(0xff999999),
+                            ),
+                          ),
+                          Container(
+                            margin: EdgeInsets.only(top: 12.h),
                             height: 24.h,
-                            margin: EdgeInsets.only(left: 10.w),
                             child: FittedBox(
                               fit: BoxFit.fitHeight,
                               child: Text(
-                                "더 담으러 가기",
+                                "장바구니 내역이 없습니다.",
                                 style: TextStyle(
-                                  color: Color(0xff00276b),
-                                  fontWeight: FontWeight.w700,
+                                  color: Color(0xff999999),
                                 ),
                               ),
                             ),
                           ),
                         ],
                       ),
-                    ),
-                  );
-                } else {
-                  return Padding(
-                    padding:
-                        EdgeInsets.symmetric(vertical: 30.h, horizontal: 20.w),
-                    child: CartMenuWidget(),
-                  );
+                    );
+                  }
                 }
               }),
               separatorBuilder: ((context, index) {
@@ -141,17 +273,19 @@ class ShoppingCartPage extends StatelessWidget {
                   );
                 }
               }),
-              itemCount: cartListLength + 3),
+              itemCount: cartListLength != 0 ? cartListLength + 3 : 4),
         ),
       ),
-      bottomNavigationBar: BottomWidget(),
+      bottomNavigationBar: BottomWidget(cartList: cartItemList),
     );
   }
 }
 
 class BottomWidget extends StatelessWidget {
-  const BottomWidget({
+  final cartList;
+  BottomWidget({
     Key? key,
+    required this.cartList,
   }) : super(key: key);
 
   @override
@@ -183,13 +317,13 @@ class BottomWidget extends StatelessWidget {
                     height: 31.h,
                     child: FittedBox(
                         fit: BoxFit.fitHeight,
-                        child: Text("총 6건",
+                        child: Text("총 ${cartList.length}건",
                             style: TextStyle(color: Color(0xff00276b))))),
                 Container(
                     height: 34.h,
                     child: FittedBox(
                         fit: BoxFit.fitHeight,
-                        child: Text("23,600원",
+                        child: Text(cartList.length == 0 ? "0원" : "23,600원",
                             style: TextStyle(
                                 color: Color(0xff00276b),
                                 fontWeight: FontWeight.w700)))),
@@ -240,8 +374,10 @@ class BottomWidget extends StatelessWidget {
 }
 
 class CartMenuWidget extends StatelessWidget {
-  const CartMenuWidget({
+  final CartItem cartItem;
+  CartMenuWidget({
     Key? key,
+    required this.cartItem,
   }) : super(key: key);
 
   @override
@@ -256,7 +392,7 @@ class CartMenuWidget extends StatelessWidget {
             height: 150.h,
             decoration: BoxDecoration(
               borderRadius: BorderRadius.all(Radius.circular(90.h)),
-              color: Color(0xff815135),
+              color: Color(cartItem.bgColor),
             ),
             child: Column(
               children: [
@@ -279,7 +415,7 @@ class CartMenuWidget extends StatelessWidget {
                           child: FittedBox(
                             fit: BoxFit.fitHeight,
                             child: Text(
-                              "아메리카노",
+                              cartItem.name,
                               style: TextStyle(fontWeight: FontWeight.w700),
                             ),
                           )),
@@ -420,7 +556,7 @@ class CartMenuWidget extends StatelessWidget {
                           child: FittedBox(
                             fit: BoxFit.fitHeight,
                             child: Text(
-                              "4,400원",
+                              cartItem.price.toString(),
                               style: TextStyle(
                                   color: Color(0xff00276b),
                                   fontWeight: FontWeight.w700),

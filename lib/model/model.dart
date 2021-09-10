@@ -55,19 +55,22 @@ class Category {
     return Category(
       id: json['id'] as int,
       name: json['name'] as String,
-      // menus: json['menuList'] != null ? json['menuList'] : [],
+      menus: Menu.getList(json['menuList']),
       //menus: (Menu.getList(1, json['id'] as int)) as List<Menu>,
     );
   }
   static List<Category> parseCategory(String responseBody) {
-    final parsed = json.decode(responseBody).cast<Map<String, dynamic>>();
+    print(responseBody.toString());
+    final parsed = json.decode(responseBody);
+    final categories = parsed["categories"].cast<Map<String, dynamic>>();
+    //final parsed = json.decode(responseBody).cast<Map<String, dynamic>>();
 
-    return parsed.map<Category>((json) => Category.fromJson(json)).toList();
+    return categories.map<Category>((json) => Category.fromJson(json)).toList();
   }
 
   static Future<List<Category>> fetchCategories(int shopId) async {
     var url = Uri.parse(
-        'http://${devMode()}.dalbodre.me/api/Shop/${shopId}/Category');
+        'http://${devMode()}.dalbodre.me/api/Shop/${shopId}/getAllMenus');
     var response = await http.get(url);
     final decodedData = utf8.decode(response.bodyBytes);
     return parseCategory(decodedData);
@@ -102,65 +105,23 @@ class Menu {
       this.updatedDateTime = "",
       this.priority = 0});
 
-  // factory Menu.fromJson(Map<String, dynamic> json) {
-  //   return Menu(
-  //     id: json['id'] as int,
-  //     name: json['name'] as String,
-  //     thumbnail: (json['imagePath'] as String).isEmpty
-  //         ? ""
-  //         : json['imagePath'] as String,
-  //     bgColor: (json['backgroundColor'] as int).isNaN
-  //         ? 0xffff0000
-  //         : json['backgroundColor'] as int,
-  //     price: json['price'] as int,
-  //     isHot: json['isHot'] as bool,
-  //     isCold: json['isCold'] as bool,
-  //     ingredients: Ingredient.getList(1, 1, 1) as List<Ingredient>,
-  //     options: Option.getList(1, 1, 1) as List<Option>,
-  //     createdDateTime: json['createdDateTime'] as String,
-  //     updatedDateTime: json['updatedDateTime'] as String,
-  //     priority: json['priority'] as int,
-  //   );
-  // }
-  // static List<Menu> parseMenu(String responseBody) {
-  //   final parsed = json.decode(responseBody).cast<Map<String, dynamic>>();
-
-  //   return parsed.map<Menu>((json) => Menu.fromJson(json)).toList();
-  // }
-
-  // static Future<List<Menu>> getList(int shopId, int categoryId) async {
-  //   var url = Uri.parse(
-  //       'http://${devMode()}.dalbodre.me/api/Shop/${shopId}/Category/${categoryId}/Menu');
-  //   var response = await http.get(url);
-  //   final decodedData = utf8.decode(response.bodyBytes);
-  //   return parseMenu(decodedData);
-  // }
-
-  static Future<List<Menu>> getList(int shopId, int categoryId) async {
-    var url = Uri.parse(
-        "http://${devMode()}.dalbodre.me/api/Shop/$shopId/Category/$categoryId/Menu/");
-    var response = await http.get(url);
-    final decodedData = utf8.decode(response.bodyBytes);
-    print(decodedData);
-    final Map<String, dynamic> data = json.decode(decodedData);
-
+  static List<Menu> getList(data) {
     List<Menu> list = [];
 
-    for (var menu in data.values.first) {
+    for (var menu in data) {
       final _menu = menu as Map;
       list.add(new Menu(
           id: _menu["id"] as int,
           name: _menu["name"] as String,
-          thumbnail: _menu["image_path"] as String,
-          bgColor: (_menu["bgColor"] as int).isNaN
-              ? _menu["bgColor"] as int
+          thumbnail: _menu["imagePath"] as String,
+          bgColor: _menu["backgroundColor"] == null
+              ? _menu["backgroundColor"] as int
               : 0XFFFF0000,
           price: _menu["price"] as int,
           isHot: _menu["isHot"] as bool,
           isCold: _menu["isCold"] as bool,
-          ingredients:
-              await Ingredient.getList(shopId, categoryId, _menu["id"]),
-          options: await Option.getList(shopId, categoryId, _menu["id"]),
+          ingredients: Ingredient.getList(_menu['ingredientList']),
+          options: Option.getList(_menu['optionList']),
           priority: _menu["priority"] as int));
     }
 
@@ -175,48 +136,20 @@ class Ingredient {
 
   Ingredient({this.id = -1, this.name = "", this.thumbnail = ""});
 
-  factory Ingredient.fromJson(Map<String, dynamic> json) {
-    return Ingredient(
-      id: json['id'] as int,
-      name: json['name'] as String,
-      thumbnail: json['imagePath'] as String,
-      // menus: json['menuList'] != null ? json['menuList'] : [],
-    );
+  static List<Ingredient> getList(data) {
+    List<Ingredient> list = [];
+
+    for (var ingredient in data) {
+      final _ingredient = ingredient as Map;
+      list.add(new Ingredient(
+        id: _ingredient['id'] as int,
+        name: _ingredient['name'] as String,
+        thumbnail: _ingredient['imagePath'] as String,
+      ));
+    }
+
+    return list;
   }
-  static List<Ingredient> parseIngredient(String responseBody) {
-    final parsed = json.decode(responseBody).cast<Map<String, dynamic>>();
-
-    return parsed.map<Ingredient>((json) => Ingredient.fromJson(json)).toList();
-  }
-
-  static Future<List<Ingredient>> getList(
-      int shopId, int categoryId, int menuId) async {
-    var url = Uri.parse(
-        'http://${devMode()}.dalbodre.me/api/Shop/${shopId}/Category/${categoryId}/Menu/${menuId}/Ingredient');
-    var response = await http.get(url);
-    final decodedData = utf8.decode(response.bodyBytes);
-    return parseIngredient(decodedData);
-  }
-  // static Future<List<Ingredient>> getList(
-  //     int shopId, int categoryId, int menuId) async {
-  //   var url = Uri.parse(
-  //       "http://${devMode()}.dalbodre.me/api/Shop/${shopId}/Category/${categoryId}/Menu/${menuId}/Ingredient");
-  //   var response = await http.get(url);
-  //   final decodedData = utf8.decode(response.bodyBytes);
-  //   print(decodedData);
-  //   final Map<String, dynamic> data = json.decode(decodedData);
-
-  //   List<Ingredient> list = [];
-
-  //   for (var ingredient in data.values.first) {
-  //     final _ingredient = ingredient as Map;
-  //     list.add(new Ingredient(
-  //         _ingredient["id"] as int, _ingredient["name"] as String,
-  //         thumbnail: _ingredient["image_path"] as String));
-  //   }
-
-  //   return list;
-  // }
 }
 
 class Option {
@@ -231,50 +164,20 @@ class Option {
     this.price = 0,
     this.check = 0,
   });
+  static List<Option> getList(data) {
+    List<Option> list = [];
 
-  factory Option.fromJson(Map<String, dynamic> json) {
-    return Option(
-      id: json['id'] as int,
-      name: json['name'] as String,
-      price: json['price'] as int,
-      // menus: json['menuList'] != null ? json['menuList'] : [],
-    );
+    for (var option in data) {
+      final _option = option as Map;
+      list.add(new Option(
+        id: _option['id'] as int,
+        name: _option['name'] as String,
+        price: _option['price'] as int,
+      ));
+    }
+
+    return list;
   }
-  static List<Option> parseOption(String responseBody) {
-    final parsed = json.decode(responseBody).cast<Map<String, dynamic>>();
-
-    return parsed.map<Option>((json) => Option.fromJson(json)).toList();
-  }
-
-  static Future<List<Option>> getList(
-      int shopId, int categoryId, int menuId) async {
-    var url = Uri.parse(
-        'http://${devMode()}.dalbodre.me/api/Shop/${shopId}/Category/${categoryId}/Menu/${menuId}/Option');
-    var response = await http.get(url);
-    final decodedData = utf8.decode(response.bodyBytes);
-    return parseOption(decodedData);
-  }
-  // static Future<List<Option>> getList(
-  //     int shopId, int categoryId, int menuId) async {
-  //   var url = Uri.parse(
-  //       "http://${devMode()}.dalbodre.me/api/Shop/$shopId/Category/$categoryId/Menu/$menuId/Option");
-  //   var response = await http.get(url);
-  //   final decodedData = utf8.decode(response.bodyBytes);
-  //   print(decodedData);
-  //   final Map<String, dynamic> data = json.decode(decodedData);
-
-  //   List<Option> list = [];
-  //   for (var option in data.values.first) {
-  //     final _option = option as Map;
-  //     list.add(new Option(
-  //       _option["id"] as int,
-  //       _option["name"] as String,
-  //       _option["price"] as int,
-  //     ));
-  //   }
-
-  //   return list;
-  // }
 }
 
 class CartItem {
