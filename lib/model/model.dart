@@ -20,7 +20,7 @@ class Shop {
   List<String> carouselImages;
   double latitude;
   double longtitude;
-  
+
   Shop(
       {this.id = 0,
       this.name = "",
@@ -63,8 +63,8 @@ class Shop {
         name: json['name'] as String,
         carouselImages:
             json['carouselImages'] != null ? json['carouselImages'] : [],
-        latitude: json['latitude'] as double, 
-        longtitude:  json['longtitude'] as double);
+        latitude: json['latitude'] as double,
+        longtitude: json['longitude'] as double);
   }
 
   static List<Shop> parseShop(String responseBody) {

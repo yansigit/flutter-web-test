@@ -19,32 +19,31 @@ class NearStoresPageState extends State<NearStoresPage> {
   int N = 3;
 
   Future<Position> loadCurLocation() async {
-    Position position = await Geolocator()
-        .getCurrentPosition(desiredAccuracy: LocationAccuracy.high);
+    Position position = await Geolocator.getCurrentPosition(
+        desiredAccuracy: LocationAccuracy.high);
     return position;
   }
 
- Future<List<Shop>>  fetchNearStores() async {
+  Future<List<Shop>> fetchNearStores() async {
     //await Future.delayed(Duration(seconds: 0));
 
     await this.loadCurLocation().then((val) {
       this.curPosition = val;
     });
-    
-      return  await Shop.fetchShopsByLocation(http.Client(),
-          this.curPosition.latitude, this.curPosition.longitude, N);
-      
-      // if (this.nearStores != null) {
-      //   this.nearStoreLength = this.nearStores!.length;
-      // } else {
-      //   this.nearStoreLength = 0;
-      // }
+
+    return await Shop.fetchShopsByLocation(http.Client(),
+        this.curPosition.latitude, this.curPosition.longitude, N);
+
+    // if (this.nearStores != null) {
+    //   this.nearStoreLength = this.nearStores!.length;
+    // } else {
+    //   this.nearStoreLength = 0;
+    // }
   }
 
   @override
   void initState() {
     super.initState();
-    fetchNearStores();
   }
 
   @override
@@ -102,29 +101,35 @@ class NearStoresPageState extends State<NearStoresPage> {
           FutureBuilder(
             future: fetchNearStores(),
             builder: (context, AsyncSnapshot projectSnap) {
-              return ListView.separated(
-                shrinkWrap: true,
-                scrollDirection: Axis.vertical,
-                itemCount: projectSnap.data.length,
-                itemBuilder: (context, index) {
-                  Widget? store;
-                  buildStoreView(context, projectSnap.data[index])
-                      .then((value) {
-                    store = value;
-                  });
-                  return store!;
-                },
-                separatorBuilder: (context, index) {
-                  return Divider();
-                },
-              );
+              if (projectSnap.hasData) {
+                return ListView.separated(
+                  shrinkWrap: true,
+                  scrollDirection: Axis.vertical,
+                  itemCount: projectSnap.data.length,
+                  itemBuilder: (context, index) {
+                    Widget? store;
+                    buildStoreView(context, projectSnap.data[index])
+                        .then((value) {
+                      store = value;
+                    });
+                    return store!;
+                  },
+                  separatorBuilder: (context, index) {
+                    return Divider();
+                  },
+                );
+              } else if (projectSnap.hasError) {
+                return Center(child: Text(projectSnap.error.toString()));
+              } else {
+                return Center(child: CircularProgressIndicator());
+              }
             },
           )
         ])));
   }
 
   Future<Widget> buildStoreView(BuildContext context, Shop store) async {
-    var d = await Geolocator().distanceBetween(this.curPosition.latitude,
+    var d = await Geolocator.distanceBetween(this.curPosition.latitude,
         this.curPosition.longitude, store.latitude, store.longtitude);
     print("sggggg");
     String distance = d.toString();
