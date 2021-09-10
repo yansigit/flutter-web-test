@@ -1,7 +1,9 @@
 import 'dart:convert';
 
+import 'package:flutter/cupertino.dart';
 import 'package:get_storage/get_storage.dart';
 import 'package:http/http.dart' as http;
+import 'package:geolocator/geolocator.dart';
 
 bool isDevMode = true;
 String devMode() {
@@ -16,8 +18,15 @@ class Shop {
   int id;
   String name;
   List<String> carouselImages;
-
-  Shop({this.id = 0, this.name = "", this.carouselImages = const []});
+  double latitude;
+  double longtitude;
+  
+  Shop(
+      {this.id = 0,
+      this.name = "",
+      this.carouselImages = const [],
+      this.latitude = 0,
+      this.longtitude = 0});
 
   static Future<List<Shop>> fetchShops(http.Client client) async {
     final response = await client
@@ -29,12 +38,33 @@ class Shop {
     return parsedShop;
   }
 
+  static Future<List<Shop>> fetchShopsByLocation(
+      http.Client client, double latitude, double longtitude, int N) async {
+    // print("latitude");
+    // print(latitude.toString());
+    // print("longtitued");
+    // print(longtitude.toString());
+    final response = await client.get(Uri.parse(
+        "http://${devMode()}.dalbodre.me/api/Shop/NearBy/$N/$latitude/$longtitude"));
+
+    final decodedData = utf8.decode(response.bodyBytes);
+    print(decodedData);
+    print("Dfdf");
+    final parsedShop = parseShop(decodedData);
+
+    print(parsedShop);
+    print("by location");
+    return parsedShop;
+  }
+
   factory Shop.fromJson(Map<String, dynamic> json) {
     return Shop(
         id: json['id'] as int,
         name: json['name'] as String,
         carouselImages:
-            json['carouselImages'] != null ? json['carouselImages'] : []);
+            json['carouselImages'] != null ? json['carouselImages'] : [],
+        latitude: json['latitude'] as double, 
+        longtitude:  json['longtitude'] as double);
   }
 
   static List<Shop> parseShop(String responseBody) {

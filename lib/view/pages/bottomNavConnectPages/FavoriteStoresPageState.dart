@@ -1,11 +1,10 @@
-import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/rendering.dart';
+import 'package:save_order/model/model.dart';
+import 'package:save_order/widget/order_carousel.dart';
 import '/consts/color.dart';
 import '/consts/size.dart';
-import '/model/Shop.dart';
-import '/model/data/dummiesRepositories.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 
@@ -109,7 +108,10 @@ class FavoriteStoresPageState extends State<FavoriteStoresPage> {
             width: ScreenUtil().setWidth(50),
             height: ScreenUtil().setHeight(50),
             child:
-                SvgPicture.asset("images/store/" + store.thumbnail + ".svg")),
+                  Carousel(thumbnailList: store.carouselImages)
+                //SvgPicture.asset("images/store/" + store.thumbnail + ".svg")
+                
+                ),
         Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
@@ -127,7 +129,10 @@ class FavoriteStoresPageState extends State<FavoriteStoresPage> {
                   height: ScreenUtil().setHeight(10),
                   child: SvgPicture.asset("images/store/위치icon.svg")),
               SizedBox(width: 5, height: 5),
-              Text(store.distance,
+              Text(
+                "3.2km"
+                //store.distance
+              ,
                   style: const TextStyle(
                       color: const Color(0xffed6363),
                       fontWeight: FontWeight.w400,

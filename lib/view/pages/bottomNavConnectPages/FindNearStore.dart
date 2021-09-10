@@ -2,95 +2,141 @@ import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/rendering.dart';
+import 'package:save_order/model/model.dart';
+import 'package:save_order/widget/order_carousel.dart';
 import '/consts/color.dart';
 import '/consts/size.dart';
 import '/model/Shop.dart';
-import '/model/data/dummiesRepositories.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:geolocator/geolocator.dart';
+import "package:http/http.dart" as http;
 
 class NearStoresPageState extends State<NearStoresPage> {
-  List<Shop> nearStores = dummieStores;
+  Future<List<Shop>>? nearStoresFuture;
+  List<Shop>? nearStores;
+  int nearStoreLength = 0;
   late Position curPosition;
+  int N = 3;
 
-  void loadCurLocation() async { 
-    Position position = await Geolocator().getCurrentPosition(desiredAccuracy: LocationAccuracy.high); 
-    this.curPosition = position;
+  Future<Position> loadCurLocation() async {
+    Position position = await Geolocator()
+        .getCurrentPosition(desiredAccuracy: LocationAccuracy.high);
+    return position;
+  }
+
+ Future<List<Shop>>  fetchNearStores() async {
+    //await Future.delayed(Duration(seconds: 0));
+
+    await this.loadCurLocation().then((val) {
+      this.curPosition = val;
+    });
+    
+      return  await Shop.fetchShopsByLocation(http.Client(),
+          this.curPosition.latitude, this.curPosition.longitude, N);
+      
+      // if (this.nearStores != null) {
+      //   this.nearStoreLength = this.nearStores!.length;
+      // } else {
+      //   this.nearStoreLength = 0;
+      // }
+  }
+
+  @override
+  void initState() {
+    super.initState();
+    fetchNearStores();
   }
 
   @override
   Widget build(BuildContext context) {
-    return Container(
-        child: Column(children: [
-      Flexible(
-          child: Row(children: [
-        Text("내 주변 매장",
-            style: const TextStyle(
-                color: const Color(0xff222222),
-                fontWeight: FontWeight.w700,
-                fontFamily: "NotoSans",
-                fontStyle: FontStyle.normal,
-                fontSize: 18.0),
-            textAlign: TextAlign.left),
-        SizedBox(width: 160, height: 5),
-        ElevatedButton(
-          child: Row(
-              mainAxisAlignment: MainAxisAlignment.center,
-              crossAxisAlignment: CrossAxisAlignment.center,
-              children: <Widget>[
-                SvgPicture.asset("images/store/location.svg"),
-                SizedBox(width: 3, height: 3),
-                Text("현재위치",
-                    style: const TextStyle(
-                        color: const Color(0xff00276b),
-                        fontWeight: FontWeight.w400,
-                        fontFamily: "NotoSans",
-                        fontStyle: FontStyle.normal,
-                        fontSize: 10.0))
-              ]),
-          onPressed: () => {
-            this.loadCurLocation()
-          }, // 현재 위치 불러오기
+    return Scaffold(
+        backgroundColor: Colors.white,
+        body: Container(
+            child: Column(children: [
+          Flexible(
+              child: Row(children: [
+            Text("내 주변 매장",
+                style: const TextStyle(
+                    color: const Color(0xff222222),
+                    fontWeight: FontWeight.w700,
+                    fontFamily: "NotoSans",
+                    fontStyle: FontStyle.normal,
+                    fontSize: 18.0),
+                textAlign: TextAlign.left),
+            SizedBox(width: 160, height: 5),
+            ElevatedButton(
+              child: Row(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  crossAxisAlignment: CrossAxisAlignment.center,
+                  children: <Widget>[
+                    SvgPicture.asset("assets/images/location.svg"),
+                    SizedBox(width: 3, height: 3),
+                    Text("현재위치",
+                        style: const TextStyle(
+                            color: const Color(0xff00276b),
+                            fontWeight: FontWeight.w400,
+                            fontFamily: "NotoSans",
+                            fontStyle: FontStyle.normal,
+                            fontSize: 10.0))
+                  ]),
+              onPressed: () => {this.loadCurLocation()}, // 현재 위치 불러오기
 
-          style: ButtonStyle(
-              backgroundColor: MaterialStateProperty.all<Color>(NEAR_WHITE),
-              shape: MaterialStateProperty.all<RoundedRectangleBorder>(
-                  RoundedRectangleBorder(
-                      borderRadius: BorderRadius.circular(4))),
-              fixedSize: MaterialStateProperty.all<Size>(Size(100, 28))),
-        ),
-      ])),
-      Row(children: <Widget>[
-        Expanded(
-          child: new Container(
-              margin: const EdgeInsets.only(left: 20.0, right: 20.0),
-              child: Divider(
-                color: Colors.black,
-                height: 20,
-              )),
-        )
-      ]),
-      ListView.separated(
-        shrinkWrap: true,
-        scrollDirection: Axis.vertical,
-        itemCount: nearStores.length,
-        itemBuilder: (context, index) =>
-            buildStoreView(context, nearStores[index]),
-        separatorBuilder: (context, index) {
-          return Divider();
-        },
-      )
-    ]));
+              style: ButtonStyle(
+                  backgroundColor: MaterialStateProperty.all<Color>(NEAR_WHITE),
+                  shape: MaterialStateProperty.all<RoundedRectangleBorder>(
+                      RoundedRectangleBorder(
+                          borderRadius: BorderRadius.circular(4))),
+                  fixedSize: MaterialStateProperty.all<Size>(Size(100, 28))),
+            ),
+          ])),
+          Row(children: <Widget>[
+            Expanded(
+              child: new Container(
+                  margin: const EdgeInsets.only(left: 20.0, right: 20.0),
+                  child: Divider(
+                    color: Colors.black,
+                    height: 20,
+                  )),
+            )
+          ]),
+          FutureBuilder(
+            future: fetchNearStores(),
+            builder: (context, AsyncSnapshot projectSnap) {
+              return ListView.separated(
+                shrinkWrap: true,
+                scrollDirection: Axis.vertical,
+                itemCount: projectSnap.data.length,
+                itemBuilder: (context, index) {
+                  Widget? store;
+                  buildStoreView(context, projectSnap.data[index])
+                      .then((value) {
+                    store = value;
+                  });
+                  return store!;
+                },
+                separatorBuilder: (context, index) {
+                  return Divider();
+                },
+              );
+            },
+          )
+        ])));
   }
 
-  Widget buildStoreView(BuildContext context, Shop store) {
+  Future<Widget> buildStoreView(BuildContext context, Shop store) async {
+    var d = await Geolocator().distanceBetween(this.curPosition.latitude,
+        this.curPosition.longitude, store.latitude, store.longtitude);
+    print("sggggg");
+    String distance = d.toString();
     return Container(
         child: Row(
       children: [
         Container(
             width: 50,
             height: 50,
-            child: SvgPicture.asset("images/store/" + store.thumbnail + ".svg")),
+            child: Carousel(thumbnailList: store.carouselImages)
+            //SvgPicture.asset("images/store/" + store.thumbnail + ".svg")
+            ),
         Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
@@ -108,7 +154,9 @@ class NearStoresPageState extends State<NearStoresPage> {
                   height: 10,
                   child: SvgPicture.asset("images/store/위치icon.svg")),
               SizedBox(width: 5, height: 5),
-              Text(store.distance,
+              Text(
+                  //store.distance
+                  distance + "m",
                   style: const TextStyle(
                       color: const Color(0xffed6363),
                       fontWeight: FontWeight.w400,
