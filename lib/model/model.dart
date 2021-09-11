@@ -20,40 +20,41 @@ class Shop {
   List<String> carouselImages;
   double latitude;
   double longtitude;
+  double distanceFromCurPosition;
 
   Shop(
       {this.id = 0,
       this.name = "",
       this.carouselImages = const [],
       this.latitude = 0,
-      this.longtitude = 0});
+      this.longtitude = 0,
+      this.distanceFromCurPosition = 0});
 
   static Future<List<Shop>> fetchShops(http.Client client) async {
     final response = await client
         .get(Uri.parse("http://${devMode()}.dalbodre.me/api/Shop/"));
     final decodedData = utf8.decode(response.bodyBytes);
+
     final parsedShop = parseShop(decodedData);
 
-    print(parsedShop);
+    
     return parsedShop;
   }
 
   static Future<List<Shop>> fetchShopsByLocation(
-      http.Client client, double latitude, double longtitude, int N) async {
-    // print("latitude");
-    // print(latitude.toString());
-    // print("longtitued");
-    // print(longtitude.toString());
+      http.Client client, int N, Position curPosition) async {
+    // ("latitude");
+    // (latitude.toString());
+    // ("longtitued");
+    // (longtitude.toString());
     final response = await client.get(Uri.parse(
-        "http://${devMode()}.dalbodre.me/api/Shop/NearBy/$N/$latitude/$longtitude"));
+        "http://${devMode()}.dalbodre.me/api/Shop/NearBy/$N/${curPosition.latitude}/${curPosition.longitude}"));
 
     final decodedData = utf8.decode(response.bodyBytes);
-    print(decodedData);
-    print("Dfdf");
-    final parsedShop = parseShop(decodedData);
-
-    print(parsedShop);
-    print("by location");
+   
+    final parsedShop =
+        await Shop.parseShopIncludeDistance(decodedData, curPosition);
+   
     return parsedShop;
   }
 
@@ -65,6 +66,55 @@ class Shop {
             json['carouselImages'] != null ? json['carouselImages'] : [],
         latitude: json['latitude'] as double,
         longtitude: json['longitude'] as double);
+  }
+
+  static double calculateDistance(latitude, longitude, curPosition) {
+    double d = Geolocator.distanceBetween(
+        curPosition.latitude, curPosition.longitude, latitude, longitude);
+ 
+    return d;
+  }
+
+  factory Shop.fromJsonIncludeDistance(
+      Map<String, dynamic> json, Position curPosition) {
+  
+    double distance = Shop.calculateDistance(
+        json['latitude'], json['longitude'], curPosition);
+
+    return Shop(
+        id: json['id'] as int,
+        name: json['name'] as String,
+        carouselImages:
+            json['carouselImages'] != null ? json['carouselImages'] : [],
+        latitude: json['latitude'] as double,
+        longtitude: json['longitude'] as double,
+        distanceFromCurPosition: distance);
+
+    // (shop);
+    // ("llllllllllllllllllllll");
+    // return shop;
+  }
+
+  static List<Shop> parseShopIncludeDistance(
+      String responseBody, Position curPosition) {
+    
+
+    final parsed = json.decode(responseBody).cast<Map<String, dynamic>>();
+
+    // List<Shop> shops = List.empty();
+    // await for (var elem in parsed) {
+    //   Shop shop = await Shop.fromJsonIncludeDistance(elem, curPosition);
+    //   (shop);
+    //   ("shop");
+    //   shops.add(shop);
+
+    var elem = parsed
+        .map<Shop>((json) => Shop.fromJsonIncludeDistance(json, curPosition));
+    
+    return elem.toList();
+
+    // ("shopssss");
+    // return await Future.wait(shops);
   }
 
   static List<Shop> parseShop(String responseBody) {
@@ -171,7 +221,7 @@ class Menu {
         "http://${devMode()}.dalbodre.me/api/Shop/$shopId/Category/$categoryId/Menu/");
     var response = await http.get(url);
     final decodedData = utf8.decode(response.bodyBytes);
-    print(decodedData);
+   
     final Map<String, dynamic> data = json.decode(decodedData);
 
     List<Menu> list = [];
@@ -233,7 +283,7 @@ class Ingredient {
   //       "http://${devMode()}.dalbodre.me/api/Shop/${shopId}/Category/${categoryId}/Menu/${menuId}/Ingredient");
   //   var response = await http.get(url);
   //   final decodedData = utf8.decode(response.bodyBytes);
-  //   print(decodedData);
+  //   (decodedData);
   //   final Map<String, dynamic> data = json.decode(decodedData);
 
   //   List<Ingredient> list = [];
@@ -284,27 +334,7 @@ class Option {
     final decodedData = utf8.decode(response.bodyBytes);
     return parseOption(decodedData);
   }
-  // static Future<List<Option>> getList(
-  //     int shopId, int categoryId, int menuId) async {
-  //   var url = Uri.parse(
-  //       "http://${devMode()}.dalbodre.me/api/Shop/$shopId/Category/$categoryId/Menu/$menuId/Option");
-  //   var response = await http.get(url);
-  //   final decodedData = utf8.decode(response.bodyBytes);
-  //   print(decodedData);
-  //   final Map<String, dynamic> data = json.decode(decodedData);
-
-  //   List<Option> list = [];
-  //   for (var option in data.values.first) {
-  //     final _option = option as Map;
-  //     list.add(new Option(
-  //       _option["id"] as int,
-  //       _option["name"] as String,
-  //       _option["price"] as int,
-  //     ));
-  //   }
-
-  //   return list;
-  // }
+  
 }
 
 class CartItem {

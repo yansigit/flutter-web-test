@@ -30,9 +30,9 @@ class NearStoresPageState extends State<NearStoresPage> {
     await this.loadCurLocation().then((val) {
       this.curPosition = val;
     });
-
+    print(this.curPosition);
     return await Shop.fetchShopsByLocation(http.Client(),
-        this.curPosition.latitude, this.curPosition.longitude, N);
+         N, this.curPosition);
 
     // if (this.nearStores != null) {
     //   this.nearStoreLength = this.nearStores!.length;
@@ -102,24 +102,28 @@ class NearStoresPageState extends State<NearStoresPage> {
             future: fetchNearStores(),
             builder: (context, AsyncSnapshot projectSnap) {
               if (projectSnap.hasData) {
-                return ListView.separated(
+                return Container(
+                    child: ListView.separated(
                   shrinkWrap: true,
                   scrollDirection: Axis.vertical,
                   itemCount: projectSnap.data.length,
-                  itemBuilder: (context, index) {
-                    Widget store = Container();
-                    buildStoreView(context, projectSnap.data[index])
-                        .then((value) {
-                      store = value;
-                    });
-                    return store;
+                  itemBuilder: (BuildContext context, index) {
+                    // Widget store = Container();
+                    // buildStoreView(context, projectSnap.data[index])
+                    //     .then((value) {
+                    //   store = value;
+                    //   print(value);
+                    //   print(store);
+                    // });
+                    // return store;
+                    return buildStoreView(context, projectSnap.data[index]);
                   },
                   separatorBuilder: (context, index) {
                     return Divider();
                   },
-                );
+                ));
               } else if (projectSnap.hasError) {
-                return Center(child: Text(projectSnap.error.toString()));
+                return Center(child: Text("주변 매장이 없습니다."));
               } else {
                 return Center(child: CircularProgressIndicator());
               }
@@ -128,11 +132,14 @@ class NearStoresPageState extends State<NearStoresPage> {
         ])));
   }
 
-  Future<Widget> buildStoreView(BuildContext context, Shop store) async {
-    var d = await Geolocator.distanceBetween(this.curPosition.latitude,
-        this.curPosition.longitude, store.latitude, store.longtitude);
-    print("sggggg");
-    String distance = d.toString();
+  Widget buildStoreView(BuildContext context, Shop store) {
+    // var d = await Geolocator.distanceBetween(this.curPosition.latitude,
+    //     this.curPosition.longitude, store.latitude, store.longtitude);
+    // print(store.name);
+    // String distance = d.toString();
+    // print("dgggggggggggggggggggg");
+    //print(distance);
+
     return Container(
         child: Row(
       children: [
@@ -157,11 +164,11 @@ class NearStoresPageState extends State<NearStoresPage> {
               Container(
                   width: 10,
                   height: 10,
-                  child: SvgPicture.asset("images/store/위치icon.svg")),
+                  child: SvgPicture.asset("assets/icons/위치icon.svg")),
               SizedBox(width: 5, height: 5),
               Text(
                   //store.distance
-                  distance + "m",
+                  (store.distanceFromCurPosition / 1000).toStringAsFixed(1) + "km",
                   style: const TextStyle(
                       color: const Color(0xffed6363),
                       fontWeight: FontWeight.w400,
