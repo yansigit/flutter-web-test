@@ -3,6 +3,7 @@ import 'package:get/get.dart';
 import 'package:save_order/model/model.dart';
 import 'package:http/http.dart' as http;
 import 'package:save_order/page/order_takeout.dart';
+import 'package:save_order/view/pages/bottomNavConnectPages/FavoriteStoresPageState.dart';
 import 'package:save_order/view/pages/bottomNavConnectPages/FindNearStore.dart';
 import 'package:save_order/view/pages/login/login_page.dart';
 import 'package:save_order/widget/bottom_nav.dart';
@@ -36,9 +37,8 @@ class Home extends StatelessWidget {
                       ),
                     ),
                     onTap: () =>
-                    Get.to(() => NearStoresPage())
-                    //Get.to(() => LoginPage())
-                        //Get.to(() => OrderTakeOut(shop: shopList[index]))
+                  
+                        Get.to(() => OrderTakeOut(shop: shopList[index]))
                         ),
               );
             },

@@ -6,6 +6,7 @@ import 'package:get/get.dart';
 import 'package:save_order/home.dart';
 import 'package:flutter/services.dart';
 import 'package:http/http.dart' as http;
+import 'package:save_order/view/pages/login/login_page.dart';
 import 'package:save_order/view/pages/login/login_result.dart';
 
 import 'model/model.dart';
@@ -46,7 +47,8 @@ class MyApp extends StatelessWidget {
                         primaryColor: Colors.white,
                         primarySwatch: Colors.blue,
                         fontFamily: 'Noto Sans'),
-                    home: Home(shopList: shopList),
+                    home: LoginPage()
+                    //Home(shopList: shopList),
                   ));
         }
       },

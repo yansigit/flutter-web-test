@@ -1,4 +1,6 @@
 import 'package:flutter/material.dart';
+import 'package:save_order/view/pages/UserPage.dart';
+import 'package:save_order/view/pages/bottomNavConnectPages/FavoriteStoresPageState.dart';
 import 'package:save_order/view/pages/login/login_result.dart';
 import '/consts/cafe.dart';
 import '/consts/color.dart';
@@ -36,12 +38,12 @@ class LoginPageState extends State<LoginPage> {
       var token = await AuthApi.instance.issueAccessToken(authCode);
       AccessTokenStore.instance.toStore(token);
       this.token = token;
-      // post api 불러오기
-      //Navigator.pushNamed(context, '/login_result');
-      print(token.accessToken);
-      print("ddd");
       Navigator.of(context)
-          .push(MaterialPageRoute(builder: (context) => LoginResult()));
+          .push(MaterialPageRoute(builder: (context) => 
+          FavoriteStoresPage(token: token.accessToken)
+          //UserPage(token.accessToken)
+          )
+          );
     } catch (e) {
       print("error on issuing access token: $e");
     }
@@ -92,7 +94,7 @@ class LoginPageState extends State<LoginPage> {
                   fontStyle: FontStyle.normal,
                 )),
           ]),
-          SvgPicture.asset("images/ArumDreamLogo.svg"),
+          SvgPicture.asset("assets/icons/arumDreamLogo.svg"),
           ElevatedButton(
             child: Row(
                 mainAxisAlignment: MainAxisAlignment.center,

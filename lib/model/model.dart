@@ -4,6 +4,7 @@ import 'package:flutter/cupertino.dart';
 import 'package:get_storage/get_storage.dart';
 import 'package:http/http.dart' as http;
 import 'package:geolocator/geolocator.dart';
+import 'package:save_order/util/sqlite_local_database/UserFavoriteStoreDb.dart';
 
 bool isDevMode = true;
 String devMode() {
@@ -37,8 +38,16 @@ class Shop {
 
     final parsedShop = parseShop(decodedData);
 
-    
     return parsedShop;
+  }
+
+  Map<String, dynamic> toMap() {
+    return {
+      UserFavoriteStoresDatabase.storeName: this.name,
+      UserFavoriteStoresDatabase.thumbnailPath: this.carouselImages[0],
+      UserFavoriteStoresDatabase.latitude: this.latitude,
+      UserFavoriteStoresDatabase.longitutde: this.longtitude
+    };
   }
 
   static Future<List<Shop>> fetchShopsByLocation(
@@ -51,10 +60,10 @@ class Shop {
         "http://${devMode()}.dalbodre.me/api/Shop/NearBy/$N/${curPosition.latitude}/${curPosition.longitude}"));
 
     final decodedData = utf8.decode(response.bodyBytes);
-   
+
     final parsedShop =
         await Shop.parseShopIncludeDistance(decodedData, curPosition);
-   
+
     return parsedShop;
   }
 
@@ -71,13 +80,12 @@ class Shop {
   static double calculateDistance(latitude, longitude, curPosition) {
     double d = Geolocator.distanceBetween(
         curPosition.latitude, curPosition.longitude, latitude, longitude);
- 
+
     return d;
   }
 
   factory Shop.fromJsonIncludeDistance(
       Map<String, dynamic> json, Position curPosition) {
-  
     double distance = Shop.calculateDistance(
         json['latitude'], json['longitude'], curPosition);
 
@@ -97,8 +105,6 @@ class Shop {
 
   static List<Shop> parseShopIncludeDistance(
       String responseBody, Position curPosition) {
-    
-
     final parsed = json.decode(responseBody).cast<Map<String, dynamic>>();
 
     // List<Shop> shops = List.empty();
@@ -110,7 +116,7 @@ class Shop {
 
     var elem = parsed
         .map<Shop>((json) => Shop.fromJsonIncludeDistance(json, curPosition));
-    
+
     return elem.toList();
 
     // ("shopssss");
@@ -221,7 +227,7 @@ class Menu {
         "http://${devMode()}.dalbodre.me/api/Shop/$shopId/Category/$categoryId/Menu/");
     var response = await http.get(url);
     final decodedData = utf8.decode(response.bodyBytes);
-   
+
     final Map<String, dynamic> data = json.decode(decodedData);
 
     List<Menu> list = [];
@@ -334,7 +340,6 @@ class Option {
     final decodedData = utf8.decode(response.bodyBytes);
     return parseOption(decodedData);
   }
-  
 }
 
 class CartItem {
