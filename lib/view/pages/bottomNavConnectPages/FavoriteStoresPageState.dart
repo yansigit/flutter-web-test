@@ -67,47 +67,50 @@ class FavoriteStoresPageState extends State<FavoriteStoresPage> {
     return Scaffold(
         backgroundColor: Colors.white,
         body: Container(
+          alignment: Alignment.bottomCenter,
+          width: ScreenUtil().screenWidth,
+          height: ScreenUtil().screenHeight,
             child: Column(children: [
           Flexible(
               child: Row(children: [
-            // Text(length.toString() + "개 매장",
-            //     style: const TextStyle(
-            //         color: const Color(0xff222222),
-            //         fontWeight: FontWeight.w700,
-            //         fontFamily: "NotoSans",
-            //         fontStyle: FontStyle.normal,
-            //         fontSize: 18),
-            //     textAlign: TextAlign.left),
-            SizedBox(width: 200, height: 5),
-            ElevatedButton(
-                onPressed: () {
-                  setState(() {
-                    if (this.searchKind == "최신순") {
-                    } else {
-                      // 등록순 정렬
-                    }
-                  });
-                } // 검색해서 view 바꾸는 함수
-                // 등록순 최신순 2가지 경우 있음.
-                ,
-                child: Row(children: <Widget>[
-                  Text("최신순",
-                      style: TextStyle(
-                          color: const Color(0xff666666),
-                          fontWeight: FontWeight.w400,
-                          fontFamily: "NotoSans",
-                          fontStyle: FontStyle.normal,
-                          fontSize: 14.0),
-                      textAlign: TextAlign.left),
-                  SvgPicture.asset("assets/icons/arrowdown.svg")
-                ]),
-                style: ButtonStyle(
-                    backgroundColor: MaterialStateProperty.all(WHITE),
-                    shape: MaterialStateProperty.all<RoundedRectangleBorder>(
-                        RoundedRectangleBorder(
-                      borderRadius: BorderRadius.circular(smallRadiusSize),
-                    )),
-                    fixedSize: MaterialStateProperty.all<Size>(Size(85, 32))))
+            Text(length.toString() + "개 매장",
+                style: const TextStyle(
+                    color: const Color(0xff222222),
+                    fontWeight: FontWeight.w700,
+                    fontFamily: "NotoSans",
+                    fontStyle: FontStyle.normal,
+                    fontSize: 18),
+                textAlign: TextAlign.left),
+            SizedBox(width: 200.w, height: 5.h),
+            // ElevatedButton(
+            //     onPressed: () {
+            //       setState(() {
+            //         if (this.searchKind == "최신순") {
+            //         } else {
+            //           // 등록순 정렬
+            //         }
+            //       });
+            //     } // 검색해서 view 바꾸는 함수
+            //     // 등록순 최신순 2가지 경우 있음.
+            //     ,
+            //     child: Row(children: <Widget>[
+            //       Text("최신순",
+            //           style: TextStyle(
+            //               color: const Color(0xff666666),
+            //               fontWeight: FontWeight.w400,
+            //               fontFamily: "NotoSans",
+            //               fontStyle: FontStyle.normal,
+            //               fontSize: 14.0),
+            //           textAlign: TextAlign.left),
+            //       SvgPicture.asset("assets/icons/arrowdown.svg")
+            //     ]),
+            //     style: ButtonStyle(
+            //         backgroundColor: MaterialStateProperty.all(WHITE),
+            //         shape: MaterialStateProperty.all<RoundedRectangleBorder>(
+            //             RoundedRectangleBorder(
+            //           borderRadius: BorderRadius.circular(smallRadiusSize),
+            //         )),
+            //         fixedSize: MaterialStateProperty.all<Size>(Size(85.w, 32.h))))
           ])),
           Row(children: <Widget>[
             Expanded(
@@ -115,7 +118,7 @@ class FavoriteStoresPageState extends State<FavoriteStoresPage> {
                   margin: const EdgeInsets.only(left: 20.0, right: 20.0),
                   child: Divider(
                     color: Colors.black,
-                    height: 20,
+                    height: 20.h,
                   )),
             )
           ]),
@@ -178,7 +181,7 @@ class FavoriteStoresPageState extends State<FavoriteStoresPage> {
                   width: ScreenUtil().setWidth(10),
                   height: ScreenUtil().setHeight(10),
                   child: SvgPicture.asset("assets/icons/위치icon.svg")),
-              SizedBox(width: 5, height: 5),
+              SizedBox(width: 5.w, height: 5.h),
               // Text(
               //     "3.2km"
               //     //store.distance
@@ -189,7 +192,7 @@ class FavoriteStoresPageState extends State<FavoriteStoresPage> {
               //         fontFamily: "Roboto",
               //         fontStyle: FontStyle.normal,
               //         fontSize: 18.0)),
-              SizedBox(width: 7, height: 7),
+              SizedBox(width: 7.w, height: 7.h),
               ElevatedButton(
                   onPressed: () => {/*매장 에서 직접 사먹는 api */},
                   child: Text("매장",
@@ -204,13 +207,15 @@ class FavoriteStoresPageState extends State<FavoriteStoresPage> {
                       backgroundColor: MaterialStateProperty.all(DARK_BLUE),
                       shape: MaterialStateProperty.all<RoundedRectangleBorder>(
                           RoundedRectangleBorder(
-                        borderRadius: BorderRadius.circular(smallRadiusSize),
+                        borderRadius: BorderRadius.circular(5.h),
                       )),
-                      fixedSize:
-                          MaterialStateProperty.all<Size>(SMALL_BUTTON_SIZE))),
+                      
+                      fixedSize: MaterialStateProperty.all<Size>(Size(40.w, 22.h))
+                         
+                          )),
               SizedBox(
-                height: 5,
-                width: 5,
+                height: 5.h,
+                width: 5.w,
               ),
               ElevatedButton(
                   onPressed: () => {/*매장 에서 포장하는 api */},
@@ -230,6 +235,7 @@ class FavoriteStoresPageState extends State<FavoriteStoresPage> {
                         borderRadius: BorderRadius.circular(smallRadiusSize),
                       )),
                       fixedSize:
+                    
                           MaterialStateProperty.all<Size>(SMALL_BUTTON_SIZE))),
             ])
           ],

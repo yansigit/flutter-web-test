@@ -51,6 +51,8 @@ class NearStoresPageState extends State<NearStoresPage> {
     return Scaffold(
         backgroundColor: Colors.white,
         body: Container(
+            width: ScreenUtil().screenWidth,
+            height: ScreenUtil().screenHeight,
             child: Column(children: [
           Flexible(
               child: Row(children: [
@@ -62,14 +64,14 @@ class NearStoresPageState extends State<NearStoresPage> {
                     fontStyle: FontStyle.normal,
                     fontSize: 18.0),
                 textAlign: TextAlign.left),
-            SizedBox(width: 160, height: 5),
+            SizedBox(width: 160.w, height: 5.h),
             ElevatedButton(
               child: Row(
                   mainAxisAlignment: MainAxisAlignment.center,
                   crossAxisAlignment: CrossAxisAlignment.center,
                   children: <Widget>[
                     SvgPicture.asset("assets/images/location.svg"),
-                    SizedBox(width: 3, height: 3),
+                    SizedBox(width: 3/w, height: 3.h),
                     Text("현재위치",
                         style: const TextStyle(
                             color: const Color(0xff00276b),
@@ -85,7 +87,7 @@ class NearStoresPageState extends State<NearStoresPage> {
                   shape: MaterialStateProperty.all<RoundedRectangleBorder>(
                       RoundedRectangleBorder(
                           borderRadius: BorderRadius.circular(4))),
-                  fixedSize: MaterialStateProperty.all<Size>(Size(100, 28))),
+                  fixedSize: MaterialStateProperty.all<Size>(Size(100.w, 28.h))),
             ),
           ])),
           Row(children: <Widget>[
@@ -94,7 +96,7 @@ class NearStoresPageState extends State<NearStoresPage> {
                   margin: const EdgeInsets.only(left: 20.0, right: 20.0),
                   child: Divider(
                     color: Colors.black,
-                    height: 20,
+                    height: 20.h,
                   )),
             )
           ]),
@@ -137,8 +139,8 @@ class NearStoresPageState extends State<NearStoresPage> {
         child: Row(
       children: [
         Container(
-            width: 50,
-            height: 50,
+            width: 50.w,
+            height: 50.h,
             child: Carousel(thumbnailList: store.carouselImages)
             //SvgPicture.asset("images/store/" + store.thumbnail + ".svg")
             ),
@@ -155,10 +157,10 @@ class NearStoresPageState extends State<NearStoresPage> {
                 textAlign: TextAlign.left),
             Row(children: [
               Container(
-                  width: 10,
-                  height: 10,
+                  width: 10.w,
+                  height: 10.h,
                   child: SvgPicture.asset("assets/icons/위치icon.svg")),
-              SizedBox(width: 5, height: 5),
+              SizedBox(width: 5.w, height: 5.h),
               Text(
                   //store.distance
                   (store.distanceFromCurPosition / 1000).toStringAsFixed(1) + "km",
@@ -168,7 +170,7 @@ class NearStoresPageState extends State<NearStoresPage> {
                       fontFamily: "Roboto",
                       fontStyle: FontStyle.normal,
                       fontSize: 18.0)),
-              SizedBox(width: 7, height: 7),
+              SizedBox(width: 7.w, height: 7.h),
               ElevatedButton(
                   onPressed: () => {/*매장 에서 구매하는 api */},
                   child: Text("매장",
@@ -183,7 +185,7 @@ class NearStoresPageState extends State<NearStoresPage> {
                       backgroundColor: MaterialStateProperty.all(DARK_BLUE),
                       shape: MaterialStateProperty.all<RoundedRectangleBorder>(
                           RoundedRectangleBorder(
-                        borderRadius: BorderRadius.circular(smallRadiusSize),
+                        borderRadius: BorderRadius.circular(5.h),
                       )),
                       fixedSize:
                           MaterialStateProperty.all<Size>(SMALL_BUTTON_SIZE))),
