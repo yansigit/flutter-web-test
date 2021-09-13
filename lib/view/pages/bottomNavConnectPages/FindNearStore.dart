@@ -2,6 +2,7 @@ import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/rendering.dart';
+import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:save_order/model/model.dart';
 import 'package:save_order/widget/order_carousel.dart';
 import '/consts/color.dart';
@@ -71,7 +72,7 @@ class NearStoresPageState extends State<NearStoresPage> {
                   crossAxisAlignment: CrossAxisAlignment.center,
                   children: <Widget>[
                     SvgPicture.asset("assets/images/location.svg"),
-                    SizedBox(width: 3/w, height: 3.h),
+                    SizedBox(width: 3.w, height: 3.h),
                     Text("현재위치",
                         style: const TextStyle(
                             color: const Color(0xff00276b),
@@ -188,7 +189,9 @@ class NearStoresPageState extends State<NearStoresPage> {
                         borderRadius: BorderRadius.circular(5.h),
                       )),
                       fixedSize:
-                          MaterialStateProperty.all<Size>(SMALL_BUTTON_SIZE))),
+                          MaterialStateProperty.all<Size>(
+                            Size(40.w, 22.h)
+                            ))),
               SizedBox(
                 height: 5,
                 width: 5,
@@ -211,7 +214,9 @@ class NearStoresPageState extends State<NearStoresPage> {
                         borderRadius: BorderRadius.circular(smallRadiusSize),
                       )),
                       fixedSize:
-                          MaterialStateProperty.all<Size>(SMALL_BUTTON_SIZE))),
+                          MaterialStateProperty.all<Size>(
+                            Size(40.w, 22.h)
+                            ))),
             ])
           ],
         )

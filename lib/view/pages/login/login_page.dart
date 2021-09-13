@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:save_order/view/pages/UserPage.dart';
 import 'package:save_order/view/pages/bottomNavConnectPages/FavoriteStoresPageState.dart';
+import 'package:save_order/view/pages/bottomNavConnectPages/FindNearStore.dart';
 import 'package:save_order/view/pages/bottomNavConnectPages/MyOrderPage.dart';
 import 'package:save_order/view/pages/login/login_result.dart';
 import '/consts/cafe.dart';
@@ -44,7 +45,8 @@ class LoginPageState extends State<LoginPage> {
       Navigator.of(context)
           .push(MaterialPageRoute(builder: (context) => 
           //MyOrderPage("5857D43CE90E3B412D0A69D564764F0F4388B76A")
-          FavoriteStoresPage(token: "5857D43CE90E3B412D0A69D564764F0F4388B76A")
+          NearStoresPage()
+          //FavoriteStoresPage(token: "5857D43CE90E3B412D0A69D564764F0F4388B76A")
           //UserPage("5857D43CE90E3B412D0A69D564764F0F4388B76A")
           )
           );

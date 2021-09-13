@@ -2,6 +2,7 @@ import 'dart:convert';
 
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:save_order/model/model.dart';
 import '/consts/color.dart';
 import '/consts/size.dart';
@@ -63,12 +64,14 @@ class MyOrderPageState extends State<MyOrderPage> {
     return Scaffold(
         backgroundColor: Colors.white,
         body: Container(
+          width: ScreenUtil().screenWidth, 
+          height: ScreenUtil().screenHeight,
             child: Column(
           children: [
             Row(
               children: [
                 Text(this.orderedStoreLength.toString() + "개"),
-                SizedBox(height: MediaQuery.of(context).size.height * 0.05),
+                SizedBox(height: 10.h),
                 // ElevatedButton(
                 //   onPressed: () => {} // 검색해서 view 바꾸는 함수
                 //   ,
@@ -136,13 +139,13 @@ class MyOrderPageState extends State<MyOrderPage> {
     return Container(
       width: 350,
       decoration: BoxDecoration(
-          borderRadius: BorderRadius.all(Radius.circular(15)),
-          border: Border.all(color: const Color(0xffededed), width: 1),
+          borderRadius: BorderRadius.all(Radius.circular(15.h)),
+          border: Border.all(color: const Color(0xffededed), width: 1.w),
           boxShadow: [
             BoxShadow(
                 color: const Color(0x0d000000),
                 offset: Offset(0, 6),
-                blurRadius: 12,
+                blurRadius: 12.h,
                 spreadRadius: 0)
           ],
           color: const Color(0xffffffff)),
