@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:save_order/view/pages/UserPage.dart';
 import 'package:save_order/view/pages/bottomNavConnectPages/FavoriteStoresPageState.dart';
 import 'package:save_order/view/pages/bottomNavConnectPages/MyOrderPage.dart';
@@ -75,11 +76,16 @@ class LoginPageState extends State<LoginPage> {
     // 	KakaoContext.clientId = "${put your native app key here}"
     // // KaKao javascript key
     //  KakaoContext.javascriptClientId = "${put your javascript key here}"
-    return new Container(
+    return Scaffold(
+      backgroundColor: Colors.transparent,
+      body: new Container(
+      width: ScreenUtil().screenWidth, 
+      height: ScreenUtil().screenHeight * 0.8,
         decoration: new BoxDecoration(color: WHITE),
         child: Column(children: <Widget>[
+          SizedBox(height: 20.h),
           Row(children: <Widget>[
-            Padding(padding: EdgeInsets.only(left: 30)),
+            Padding(padding: EdgeInsets.only(left: 30.h)),
             Text(CAFFE_NAME,
                 style: const TextStyle(
                     fontWeight: FontWeight.bold,
@@ -87,7 +93,7 @@ class LoginPageState extends State<LoginPage> {
                     color: Colors.black))
           ]),
           Row(children: <Widget>[
-            Padding(padding: EdgeInsets.only(left: 30)),
+            Padding(padding: EdgeInsets.only(left: 30.h)),
             Text(CAFFE_PHRASES,
                 style: const TextStyle(
                   fontSize: 20,
@@ -104,7 +110,7 @@ class LoginPageState extends State<LoginPage> {
                 crossAxisAlignment: CrossAxisAlignment.center,
                 children: <Widget>[
                   SvgPicture.asset("assets/icons/kakaoIcon.svg"),
-                  SizedBox(width: 5, height: 5),
+                  SizedBox(width: 5.h, height: 5.h),
                   Text(KAKAO_LOGIN,
                       style: TextStyle(fontSize: 18, color: kAKAO_TEXT_COLOR))
                 ]),
@@ -114,12 +120,12 @@ class LoginPageState extends State<LoginPage> {
                 shape: MaterialStateProperty.all<RoundedRectangleBorder>(
                     RoundedRectangleBorder(
                         borderRadius: BorderRadius.circular(loginRaiusSize))),
-                fixedSize: MaterialStateProperty.all<Size>(Size(316, 30))),
+                fixedSize: MaterialStateProperty.all<Size>(Size(316.w, 30.h))),
           ),
           Row(children: <Widget>[
             Expanded(
               child: new Container(
-                  margin: const EdgeInsets.only(left: 10.0, right: 20.0),
+                  margin: const EdgeInsets.only(left: 10, right: 20),
                   child: Divider(
                     color: Colors.black,
                     height: 20,
@@ -137,7 +143,7 @@ class LoginPageState extends State<LoginPage> {
                   margin: const EdgeInsets.only(left: 20.0, right: 10.0),
                   child: Divider(
                     color: Colors.black,
-                    height: 20,
+                    height: 20.h,
                   )),
             ),
           ]),
@@ -148,7 +154,7 @@ class LoginPageState extends State<LoginPage> {
                 crossAxisAlignment: CrossAxisAlignment.center,
                 children: <Widget>[
                   SvgPicture.asset("assets/icons/appleIcon.svg"),
-                  SizedBox(width: 5, height: 5),
+                  SizedBox(width: 5.w, height: 5..h),
                   Text(APPLE_LOGIN,
                       style: TextStyle(
                           fontSize: 18,
@@ -162,7 +168,7 @@ class LoginPageState extends State<LoginPage> {
                 shape: MaterialStateProperty.all<RoundedRectangleBorder>(
                     RoundedRectangleBorder(
                         borderRadius: BorderRadius.circular(loginRaiusSize))),
-                fixedSize: MaterialStateProperty.all<Size>(Size(315, 20))),
+                fixedSize: MaterialStateProperty.all<Size>(Size(315.w, 20.h))),
           ),
           //이메일로 로그인
           ElevatedButton(
@@ -171,7 +177,7 @@ class LoginPageState extends State<LoginPage> {
                 crossAxisAlignment: CrossAxisAlignment.center,
                 children: <Widget>[
                   SvgPicture.asset("assets/icons/emailIcon.svg"),
-                  SizedBox(width: 5, height: 5),
+                  SizedBox(width: 5.w, height: 5.h),
                   Text(EMAIL_LOGIN,
                       style: TextStyle(
                           fontSize: 18,
@@ -183,12 +189,12 @@ class LoginPageState extends State<LoginPage> {
 
             style: ButtonStyle(
                 side: MaterialStateProperty.all<BorderSide>(
-                    BorderSide(color: const Color(0xff00276b), width: 1)),
+                    BorderSide(color: const Color(0xff00276b), width: 1.w)),
                 backgroundColor: MaterialStateProperty.all(EMAIL_COLOR),
                 shape: MaterialStateProperty.all<RoundedRectangleBorder>(
                     RoundedRectangleBorder(
                         borderRadius: BorderRadius.circular(loginRaiusSize))),
-                fixedSize: MaterialStateProperty.all<Size>(Size(315, 20))),
+                fixedSize: MaterialStateProperty.all<Size>(Size(315.w, 20.h))),
           ),
           TextButton(
               onPressed: () => {},
@@ -206,7 +212,7 @@ class LoginPageState extends State<LoginPage> {
 
           //   )
           // )
-        ]));
+        ])));
   }
 }
 
