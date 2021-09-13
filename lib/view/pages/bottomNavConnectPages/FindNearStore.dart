@@ -108,14 +108,7 @@ class NearStoresPageState extends State<NearStoresPage> {
                   scrollDirection: Axis.vertical,
                   itemCount: projectSnap.data.length,
                   itemBuilder: (BuildContext context, index) {
-                    // Widget store = Container();
-                    // buildStoreView(context, projectSnap.data[index])
-                    //     .then((value) {
-                    //   store = value;
-                    //   print(value);
-                    //   print(store);
-                    // });
-                    // return store;
+                  
                     return buildStoreView(context, projectSnap.data[index]);
                   },
                   separatorBuilder: (context, index) {

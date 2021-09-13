@@ -1,20 +1,60 @@
-class MyMenu {
+import 'dart:convert';
+
+class OrderedMenu {
+  String menuThumnail = "";
+  List<String> options = [];
+  String menuName = "";
+
+  OrderedMenu(this.menuThumnail, this.options, this.menuName);
+}
+
+class MyOrder {
   String storeThumbnail;
   String storeName;
-  String orderDetail;
-  String menuThumbnail;
-  String menuName;
- 
+  String firstMenuName;
+  List<OrderedMenu> orders = [];
+  int totalPrice = 0;
+  int shopId;
 
-  MyMenu(
-      [this.storeThumbnail = "images/store/위치icon.svg",
-      this.storeName = "킬티",
-      this.orderDetail = '''시원한 / 중간 사이즈 
-                            얼음 적게
-                            1샷 추가
-                            물 적게 넣어주세요~''',
-      this.menuThumbnail = "images/store/위치icon.svg",
-      this.menuName = "아메리카노"]);
+  MyOrder(this.storeThumbnail, this.storeName, this.firstMenuName, this.orders,
+      this.totalPrice, this.shopId);
+
+  factory MyOrder.fromJson(Map<String, dynamic> json) {
+    List<OrderedMenu> orders = [];
+    print("mmmmmmmmmmmmmmmmmmmmmmmmmmm");
+    print(json["menuList"][0].runtimeType);
+    print(json["menuList"].length);
+    for (int i = 0; i < json["menuList"].length; i++) {
+      print("for looop");
+      Map<String, dynamic> menu =
+          Map<String, dynamic>.from(json["menuList"][i]);
+      List<String> options = [];
+      print(menu["optionList"].runtimeType);
+      for (var option in menu["optionList"]) {
+        print("option");
+        print(option);
+        options.add(option["name"]);
+      }
+
+      print(options);
+      print("op");
+      print(menu["imagePath"]);
+
+      orders.add(new OrderedMenu(
+          //menu["menuThumbnail"]
+          menu["imagePath"],
+          options,
+          menu["name"]));
+    }
+    return MyOrder("", "", json["menuList"][0]["name"], orders,
+        json["totalPrice"], json["shopId"]);
+  }
+  static List<MyOrder> parseMyMenu(String responseBody) {
+    print("llllllllllllll");
+    final parsed = json.decode(responseBody).cast<Map<String, dynamic>>();
+    print(parsed);
+    return parsed.map<MyOrder>((json) => MyOrder.fromJson(json)).toList();
+  }
 }
 
 class Order {

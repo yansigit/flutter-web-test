@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:save_order/view/pages/UserPage.dart';
 import 'package:save_order/view/pages/bottomNavConnectPages/FavoriteStoresPageState.dart';
+import 'package:save_order/view/pages/bottomNavConnectPages/MyOrderPage.dart';
 import 'package:save_order/view/pages/login/login_result.dart';
 import '/consts/cafe.dart';
 import '/consts/color.dart';
@@ -38,9 +39,11 @@ class LoginPageState extends State<LoginPage> {
       var token = await AuthApi.instance.issueAccessToken(authCode);
       AccessTokenStore.instance.toStore(token);
       this.token = token;
+
       Navigator.of(context)
           .push(MaterialPageRoute(builder: (context) => 
-          FavoriteStoresPage(token: token.accessToken)
+          MyOrderPage("5857D43CE90E3B412D0A69D564764F0F4388B76A")
+          //FavoriteStoresPage(token: token.accessToken)
           //UserPage(token.accessToken)
           )
           );

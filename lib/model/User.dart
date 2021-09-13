@@ -18,7 +18,7 @@ class User {
   String thumbnail;
   int visitedStoreNumber = 0;
   List<StoreAndCoupon> couponsOfStores = <StoreAndCoupon>[];
-  List<MyMenu> myMenus = <MyMenu>[];
+  List<MyOrder> myMenus = <MyOrder>[];
 
   User(
       [this.name = "미입력",

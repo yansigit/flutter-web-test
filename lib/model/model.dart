@@ -107,12 +107,7 @@ class Shop {
       String responseBody, Position curPosition) {
     final parsed = json.decode(responseBody).cast<Map<String, dynamic>>();
 
-    // List<Shop> shops = List.empty();
-    // await for (var elem in parsed) {
-    //   Shop shop = await Shop.fromJsonIncludeDistance(elem, curPosition);
-    //   (shop);
-    //   ("shop");
-    //   shops.add(shop);
+ 
 
     var elem = parsed
         .map<Shop>((json) => Shop.fromJsonIncludeDistance(json, curPosition));
