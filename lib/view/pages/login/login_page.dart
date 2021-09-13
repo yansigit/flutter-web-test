@@ -42,9 +42,9 @@ class LoginPageState extends State<LoginPage> {
 
       Navigator.of(context)
           .push(MaterialPageRoute(builder: (context) => 
-          MyOrderPage("5857D43CE90E3B412D0A69D564764F0F4388B76A")
+          //MyOrderPage("5857D43CE90E3B412D0A69D564764F0F4388B76A")
           //FavoriteStoresPage(token: token.accessToken)
-          //UserPage(token.accessToken)
+          UserPage("5857D43CE90E3B412D0A69D564764F0F4388B76A")
           )
           );
     } catch (e) {

@@ -98,9 +98,7 @@ class Shop {
         longtitude: json['longitude'] as double,
         distanceFromCurPosition: distance);
 
-    // (shop);
-    // ("llllllllllllllllllllll");
-    // return shop;
+   
   }
 
   static List<Shop> parseShopIncludeDistance(

@@ -26,29 +26,18 @@ class FavoriteStoresPageState extends State<FavoriteStoresPage> {
     Map<String, dynamic> newShop = mockShop.toMap();
     newShop[UserFavoriteStoresDatabase.userAccessToken] = this.userAccessToken;
     await dbHelper.insert(newShop);
+    // mock 코드 끝
 
     List<Map<String, dynamic>> stores =
         await dbHelper.queryRowByUserToken(this.userAccessToken);
-    print(stores);
-    print("read data ");
-    Shop mocShop = new Shop(
-        name: "컬티", carouselImages: ["이미지경로"], latitude: 20, longtitude: 20);
-    print(mocShop);
-    print("moccccccccccccccccccccccccccc");
 
     List<Shop> shops = [];
     for (int i = 0; i < stores.length; i++) {
       var store = stores[i];
-      print(store);
-      // for (var store in stores) {
       var storeName = store[UserFavoriteStoresDatabase.storeName];
-      print(storeName);
       var myCarsouelImages = store[UserFavoriteStoresDatabase.thumbnailPath];
-      print(myCarsouelImages);
       var latitude = store[UserFavoriteStoresDatabase.latitude];
-      print(latitude);
       var longitutde = store[UserFavoriteStoresDatabase.longitutde];
-      print(longitutde);
       Shop shop = new Shop(
           name: storeName,
           carouselImages: [myCarsouelImages],
@@ -57,8 +46,8 @@ class FavoriteStoresPageState extends State<FavoriteStoresPage> {
       shops.add(shop);
     }
 
-    // List<Shop> shops = getShopByList(stores).toList();
-
+  
+    
     return shops;
   }
 
@@ -81,14 +70,14 @@ class FavoriteStoresPageState extends State<FavoriteStoresPage> {
             child: Column(children: [
           Flexible(
               child: Row(children: [
-            Text(length.toString() + "개 매장",
-                style: const TextStyle(
-                    color: const Color(0xff222222),
-                    fontWeight: FontWeight.w700,
-                    fontFamily: "NotoSans",
-                    fontStyle: FontStyle.normal,
-                    fontSize: 18),
-                textAlign: TextAlign.left),
+            // Text(length.toString() + "개 매장",
+            //     style: const TextStyle(
+            //         color: const Color(0xff222222),
+            //         fontWeight: FontWeight.w700,
+            //         fontFamily: "NotoSans",
+            //         fontStyle: FontStyle.normal,
+            //         fontSize: 18),
+            //     textAlign: TextAlign.left),
             SizedBox(width: 200, height: 5),
             ElevatedButton(
                 onPressed: () {

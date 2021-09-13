@@ -1,9 +1,39 @@
 import 'dart:convert';
 
+import 'package:save_order/model/User.dart';
+import 'package:save_order/util/sqlite_local_database/UserMenuDatabase.dart';
+
+class SavedMenu {
+  String thumbnail = "";
+  String storeName = "";
+  String options = "";
+  String menuName = "";
+
+  SavedMenu(this.thumbnail, this.storeName, this.options, this.menuName);
+
+  Map<String, dynamic> toMap() {
+    return {
+      UserMenuDatabase.storeName: this.storeName,
+      UserMenuDatabase.menuThumbnailPath: this.thumbnail,
+      UserMenuDatabase.options: this.options,
+      UserMenuDatabase.menuName: this.menuName
+    };
+  }
+
+  factory SavedMenu.fromMap(Map<String, dynamic> map) {
+    return SavedMenu(
+        map[UserMenuDatabase.menuThumbnailPath],
+        map[UserMenuDatabase.storeName],
+        map[UserMenuDatabase.options],
+        map[UserMenuDatabase.menuName]);
+  }
+}
+
 class OrderedMenu {
   String menuThumnail = "";
   List<String> options = [];
   String menuName = "";
+  String storeName = "";
 
   OrderedMenu(this.menuThumnail, this.options, this.menuName);
 }
@@ -21,9 +51,7 @@ class MyOrder {
 
   factory MyOrder.fromJson(Map<String, dynamic> json) {
     List<OrderedMenu> orders = [];
-    print("mmmmmmmmmmmmmmmmmmmmmmmmmmm");
-    print(json["menuList"][0].runtimeType);
-    print(json["menuList"].length);
+
     for (int i = 0; i < json["menuList"].length; i++) {
       print("for looop");
       Map<String, dynamic> menu =
@@ -31,15 +59,8 @@ class MyOrder {
       List<String> options = [];
       print(menu["optionList"].runtimeType);
       for (var option in menu["optionList"]) {
-        print("option");
-        print(option);
         options.add(option["name"]);
       }
-
-      print(options);
-      print("op");
-      print(menu["imagePath"]);
-
       orders.add(new OrderedMenu(
           //menu["menuThumbnail"]
           menu["imagePath"],
@@ -50,7 +71,6 @@ class MyOrder {
         json["totalPrice"], json["shopId"]);
   }
   static List<MyOrder> parseMyMenu(String responseBody) {
-    print("llllllllllllll");
     final parsed = json.decode(responseBody).cast<Map<String, dynamic>>();
     print(parsed);
     return parsed.map<MyOrder>((json) => MyOrder.fromJson(json)).toList();

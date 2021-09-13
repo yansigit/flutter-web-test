@@ -5,7 +5,7 @@ import 'package:sqflite/sqflite.dart';
 import 'package:path_provider/path_provider.dart';
 
 class UserMenuDatabase {
-  static final _databaseName = "MyDatabase.db";
+  static final _databaseName = "My_Database2.db";
   static final _databaseVersion = 1;
 
   static final table = 'users_menus';
@@ -13,7 +13,7 @@ class UserMenuDatabase {
   static final userAccessToken = 'user_id';
   static final storeName = 'store_name';
   static final menuThumbnailPath = 'thumbnail_path';
-  static final option = 'option';
+  static final options = 'options';
   static final menuName = 'menu_name';
 
   // make this a singleton class
@@ -34,18 +34,21 @@ class UserMenuDatabase {
   _initDatabase() async {
     Directory documentsDirectory = await getApplicationDocumentsDirectory();
     String path = join(documentsDirectory.path, _databaseName);
+    print(_databaseName);
     return await openDatabase(path,
         version: _databaseVersion, onCreate: _onCreate);
   }
 
   // SQL code to create the database table
   Future _onCreate(Database db, int version) async {
+    print(table);
+    print("ttt");
     await db.execute('''
           CREATE TABLE $table (
             $userAccessToken STRING PRIMARY KEY,
             $storeName TEXT NOT NULL,
             $menuThumbnailPath STRING NOT NULL,
-            $option STRING NOT NULL,
+            $options STRING NOT NULL,
             $menuName STRING NOT NULL
           )
           ''');
@@ -69,10 +72,10 @@ class UserMenuDatabase {
   }
 
   Future<List<Map<String, dynamic>>> queryRowByUserToken(
-      String accessToken) async {
+      String accessToken, int N) async {
     Database? db = await instance.database;
-    return await db!
-        .rawQuery('SELECT * FROM $table WHERE $userAccessToken="$accessToken"');
+    return await db!.rawQuery(
+        'SELECT * FROM $table WHERE $userAccessToken="$accessToken" LIMIT $N;');
   }
   // All of the methods (insert, query, update, delete) can also be done using
   // raw SQL commands. This method uses a raw query to give the row count.
