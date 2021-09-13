@@ -45,8 +45,6 @@ class UserPageState extends State<UserPage> {
     return this.savedMenus;
   }
 
-  
-
   UserPageState(String accessToken) {
     this.userAccessToken = accessToken;
     // user.myMenus.add(new MyOrder());
@@ -340,8 +338,8 @@ class UserPageState extends State<UserPage> {
                                                                       height:
                                                                           100,
                                                                       child: TextField(
-                                                                          enableInteractiveSelection:
-                                                                              editable,
+                                                                          readOnly:
+                                                                              !editable,
                                                                           decoration: InputDecoration(
                                                                               hintText: profilePairs[0]
                                                                                   .value),
@@ -390,8 +388,8 @@ class UserPageState extends State<UserPage> {
                                                                       height:
                                                                           100,
                                                                       child: TextField(
-                                                                          enableInteractiveSelection:
-                                                                              editable,
+                                                                          readOnly:
+                                                                              !editable,
                                                                           decoration: InputDecoration(
                                                                               hintText: profilePairs[1]
                                                                                   .value),
@@ -436,8 +434,8 @@ class UserPageState extends State<UserPage> {
                                                                       height:
                                                                           100,
                                                                       child: TextField(
-                                                                          enableInteractiveSelection:
-                                                                              editable,
+                                                                          // readOnly:
+                                                                          //     !editable,
                                                                           decoration: InputDecoration(
                                                                               hintText: profilePairs[2]
                                                                                   .value),
@@ -473,6 +471,9 @@ class UserPageState extends State<UserPage> {
                                                                         .topLeft,
                                                               ),
                                                               Align(
+                                                                  alignment:
+                                                                      Alignment
+                                                                          .topLeft,
                                                                   child: Container(
                                                                       width:
                                                                           100,
@@ -482,8 +483,8 @@ class UserPageState extends State<UserPage> {
                                                                           Alignment
                                                                               .topLeft,
                                                                       child: TextField(
-                                                                          enableInteractiveSelection:
-                                                                              editable,
+                                                                          readOnly:
+                                                                              !editable,
                                                                           decoration: InputDecoration(
                                                                               hintText: profilePairs[3]
                                                                                   .value),
@@ -495,19 +496,21 @@ class UserPageState extends State<UserPage> {
                                                                               fontSize: 20.0),
                                                                           textAlign: TextAlign.left))),
                                                               Container(
-                                                                child:
-                                                                    GestureDetector(
+                                                                child: Row(
+                                                                    children: [
+                                                                      GestureDetector(
                                                                         onTap:
                                                                             () {
                                                                           setState(
                                                                               () {
                                                                             editable =
                                                                                 true;
+                                                                            
+                                                                            print(editable);
+                                                                            print("edit");
                                                                           });
                                                                         },
-                                                                        child: 
-                                                                        
-                                                                        Text(
+                                                                        child: Text(
                                                                             "변경하기",
                                                                             style: const TextStyle(
                                                                                 color: const Color(0xffffffff),
@@ -515,11 +518,31 @@ class UserPageState extends State<UserPage> {
                                                                                 fontFamily: "NotoSans",
                                                                                 fontStyle: FontStyle.normal,
                                                                                 fontSize: 20.0),
-                                                                            textAlign: TextAlign.center)
-                                                                            
-                                                                            
-                                                                            
-                                                                            ),
+                                                                            textAlign: TextAlign.center),
+                                                                      ),
+                                                                      SizedBox(
+                                                                          width:
+                                                                              MediaQuery.of(context).size.width * 0.03),
+                                                                      GestureDetector(
+                                                                        onTap:
+                                                                            () {
+                                                                          setState(
+                                                                              () {
+                                                                            editable =
+                                                                                false;
+                                                                          });
+                                                                        },
+                                                                        child: Text(
+                                                                            "수정완료",
+                                                                            style: const TextStyle(
+                                                                                color: const Color(0xffffffff),
+                                                                                fontWeight: FontWeight.w700,
+                                                                                fontFamily: "NotoSans",
+                                                                                fontStyle: FontStyle.normal,
+                                                                                fontSize: 20.0),
+                                                                            textAlign: TextAlign.center),
+                                                                      )
+                                                                    ]),
                                                                 width: MediaQuery.of(
                                                                             context)
                                                                         .size
