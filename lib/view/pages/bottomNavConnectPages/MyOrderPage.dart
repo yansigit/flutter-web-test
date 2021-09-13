@@ -70,8 +70,9 @@ class MyOrderPageState extends State<MyOrderPage> {
           children: [
             Row(
               children: [
+                SizedBox(width: 9.w),
                 Text(this.orderedStoreLength.toString() + "개"),
-                SizedBox(height: 10.h),
+                SizedBox(height: 8.h),
                 // ElevatedButton(
                 //   onPressed: () => {} // 검색해서 view 바꾸는 함수
                 //   ,
@@ -137,14 +138,14 @@ class MyOrderPageState extends State<MyOrderPage> {
 
   Widget buildStoreView(BuildContext context, MyOrder order) {
     return Container(
-      width: 350,
+      width: 350.w,
       decoration: BoxDecoration(
           borderRadius: BorderRadius.all(Radius.circular(15.h)),
           border: Border.all(color: const Color(0xffededed), width: 1.w),
           boxShadow: [
             BoxShadow(
                 color: const Color(0x0d000000),
-                offset: Offset(0, 6),
+                offset: Offset(0.h, 6.h),
                 blurRadius: 12.h,
                 spreadRadius: 0)
           ],
@@ -153,7 +154,7 @@ class MyOrderPageState extends State<MyOrderPage> {
         children: [
           Row(
             children: [
-              SizedBox(height: 19, width: 20),
+              SizedBox(height: 19.h, width: 20.w),
               Text(
                 "주문확인",
                 style: const TextStyle(
@@ -163,7 +164,7 @@ class MyOrderPageState extends State<MyOrderPage> {
                     fontStyle: FontStyle.normal,
                     fontSize: 15.0),
               ),
-              SizedBox(width: 220, height: 7),
+              SizedBox(width: 220.w, height: 7.h),
               ElevatedButton(
                   onPressed: () => {} // 주문 상세 모달
                   ,
@@ -216,12 +217,12 @@ class MyOrderPageState extends State<MyOrderPage> {
                                                       textAlign: TextAlign.left)
                                                 ],
                                               ),
-                                              width: 70,
-                                              height: 32,
+                                              width: 70.w,
+                                              height: 32.h,
                                               decoration: BoxDecoration(
                                                   borderRadius:
                                                       BorderRadius.all(
-                                                          Radius.circular(90)),
+                                                          Radius.circular(90.h)),
                                                   border: Border.all(
                                                       color: const Color(
                                                           0xffe8e8e8),
@@ -230,8 +231,8 @@ class MyOrderPageState extends State<MyOrderPage> {
                                                     BoxShadow(
                                                         color: const Color(
                                                             0x0d000000),
-                                                        offset: Offset(0, 2),
-                                                        blurRadius: 4,
+                                                        offset: Offset(0.h, 2.h),
+                                                        blurRadius: 4.h,
                                                         spreadRadius: 0)
                                                   ],
                                                   color:
@@ -342,7 +343,7 @@ class MyOrderPageState extends State<MyOrderPage> {
                           RoundedRectangleBorder(
                               borderRadius:
                                   BorderRadius.circular(smallRadiusSize))),
-                      fixedSize: MaterialStateProperty.all<Size>(Size(85, 38))))
+                      fixedSize: MaterialStateProperty.all<Size>(Size(70.w, 38.h))))
             ],
           ),
           Row(

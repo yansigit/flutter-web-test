@@ -1,5 +1,6 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:save_order/util/sqlite_local_database/UserMenuDatabase.dart';
 import '/consts/color.dart';
 import '/model/Order.dart';
@@ -70,12 +71,14 @@ class UserPageState extends State<UserPage> {
         backgroundColor: Colors.white,
         body: SingleChildScrollView(
             child: Container(
+               width: ScreenUtil().screenWidth,
+               height: ScreenUtil().screenHeight,
                 decoration: BoxDecoration(color: DARK_BLUE),
                 child: Column(
                   children: <Widget>[
                     Row(children: <Widget>[
                       SvgPicture.asset(this.user.thumbnail),
-                      SizedBox(height: 62, width: 3),
+                      SizedBox(height: 62.h, width: 3.w),
                       Column(
                         children: [
                           Text('''$name 님,''',
@@ -100,16 +103,16 @@ class UserPageState extends State<UserPage> {
                     Row(
                       children: <Widget>[
                         SizedBox(
-                          width: 335,
-                          height: 75,
+                          width: 335.w,
+                          height: 75.h,
                         )
                       ],
                     ),
                     Row(
                       children: [
                         SizedBox(
-                          width: 27,
-                          height: 20,
+                          width: 27.w,
+                          height: 20.h,
                         ),
                         new GestureDetector(
                           onTap: () {
@@ -158,7 +161,7 @@ class UserPageState extends State<UserPage> {
                                                         fontSize: 18.0),
                                                     textAlign:
                                                         TextAlign.center),
-                                                SizedBox(height: 5),
+                                                SizedBox(height: 5.h),
                                                 Text(
                                                     '''자주 드시는 음료를 나의 메뉴로 등록하시면''',
                                                     style: const TextStyle(
@@ -212,8 +215,8 @@ class UserPageState extends State<UserPage> {
                           ),
                         ),
                         SizedBox(
-                          width: 27,
-                          height: 20,
+                          width: 27.w,
+                          height: 20.h,
                         ),
                         new GestureDetector(
                           onTap: () {
@@ -261,8 +264,8 @@ class UserPageState extends State<UserPage> {
                           ),
                         ),
                         SizedBox(
-                          width: 27,
-                          height: 20,
+                          width: 27.w,
+                          height: 20.h,
                         ),
                         new GestureDetector(
                           onTap: () {
@@ -334,9 +337,9 @@ class UserPageState extends State<UserPage> {
                                                                           .topLeft,
                                                                   child: Container(
                                                                       width:
-                                                                          100,
+                                                                          100.w,
                                                                       height:
-                                                                          100,
+                                                                          100.h,
                                                                       child: TextField(
                                                                           readOnly:
                                                                               !editable,
@@ -384,9 +387,9 @@ class UserPageState extends State<UserPage> {
                                                                           .topLeft,
                                                                   child: Container(
                                                                       width:
-                                                                          100,
+                                                                          100.w,
                                                                       height:
-                                                                          100,
+                                                                          100.h,
                                                                       child: TextField(
                                                                           readOnly:
                                                                               !editable,
@@ -430,9 +433,9 @@ class UserPageState extends State<UserPage> {
                                                                           .topLeft,
                                                                   child: Container(
                                                                       width:
-                                                                          100,
+                                                                          100.w,
                                                                       height:
-                                                                          100,
+                                                                          100.h,
                                                                       child: TextField(
                                                                           // readOnly:
                                                                           //     !editable,
@@ -476,9 +479,9 @@ class UserPageState extends State<UserPage> {
                                                                           .topLeft,
                                                                   child: Container(
                                                                       width:
-                                                                          100,
+                                                                          100.w,
                                                                       height:
-                                                                          100,
+                                                                          100.h,
                                                                       alignment:
                                                                           Alignment
                                                                               .topLeft,
@@ -556,7 +559,7 @@ class UserPageState extends State<UserPage> {
                                                                 decoration: BoxDecoration(
                                                                     borderRadius:
                                                                         BorderRadius.all(Radius.circular(
-                                                                            27)),
+                                                                            27.h)),
                                                                     color: const Color(
                                                                         0xff00276b)),
                                                               ),
@@ -693,7 +696,7 @@ class UserPageState extends State<UserPage> {
         child: Row(
           children: [
             SvgPicture.asset("assets/icons/config/" + imagePath),
-            SizedBox(width: 4),
+            SizedBox(width: 4.w),
             Text(viewName,
                 style: const TextStyle(
                     color: const Color(0xff222222),
@@ -702,7 +705,7 @@ class UserPageState extends State<UserPage> {
                     fontStyle: FontStyle.normal,
                     fontSize: 20.0),
                 textAlign: TextAlign.left),
-            SizedBox(width: 250),
+            SizedBox(width: 250.w),
             new GestureDetector(
                 onTap: () {
                   setState(() {
@@ -772,8 +775,8 @@ class UserPageState extends State<UserPage> {
                         // 메뉴  담는 버튼
                       },
                       child: Container(
-                        width: 94,
-                        height: 40,
+                        width: 94.w,
+                        height: 40.h,
                         decoration: BoxDecoration(
                             borderRadius: BorderRadius.all(Radius.circular(27)),
                             border: Border.all(
@@ -787,16 +790,16 @@ class UserPageState extends State<UserPage> {
                                 fontSize: 16.0),
                             textAlign: TextAlign.center),
                       )),
-                  SizedBox(height: 40, width: 3),
+                  SizedBox(height: 40.h, width: 3.w),
                   GestureDetector(
                       onTap: () {
                         // 메뉴  주문 버튼
                       },
                       child: Container(
                         width: 129.99998474121094,
-                        height: 40,
+                        height: 40.h,
                         decoration: BoxDecoration(
-                            borderRadius: BorderRadius.all(Radius.circular(27)),
+                            borderRadius: BorderRadius.all(Radius.circular(27.h)),
                             color: const Color(0xff00276b)),
                         child: Text("바로 주문",
                             style: const TextStyle(
