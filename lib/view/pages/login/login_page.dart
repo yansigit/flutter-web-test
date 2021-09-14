@@ -42,15 +42,13 @@ class LoginPageState extends State<LoginPage> {
       AccessTokenStore.instance.toStore(token);
       this.token = token;
 
-      Navigator.of(context)
-          .push(MaterialPageRoute(builder: (context) => 
-          //MyOrderPage("5857D43CE90E3B412D0A69D564764F0F4388B76A")
-          //NearStoresPage()
-          //MyOrderPage("5857D43CE90E3B412D0A69D564764F0F4388B76A")
-          //FavoriteStoresPage(token: "5857D43CE90E3B412D0A69D564764F0F4388B76A")
-          UserPage("5857D43CE90E3B412D0A69D564764F0F4388B76A")
-          )
-          );
+      Navigator.of(context).push(MaterialPageRoute(
+          builder: (context) =>
+              //MyOrderPage("5857D43CE90E3B412D0A69D564764F0F4388B76A")
+              //NearStoresPage()
+              //MyOrderPage("5857D43CE90E3B412D0A69D564764F0F4388B76A")
+              //FavoriteStoresPage(token: "5857D43CE90E3B412D0A69D564764F0F4388B76A")
+              UserPage("5857D43CE90E3B412D0A69D564764F0F4388B76A")));
     } catch (e) {
       print("error on issuing access token: $e");
     }
@@ -80,142 +78,211 @@ class LoginPageState extends State<LoginPage> {
     // // KaKao javascript key
     //  KakaoContext.javascriptClientId = "${put your javascript key here}"
     return Scaffold(
-      backgroundColor: Colors.transparent,
-      body: new Container(
-      width: ScreenUtil().screenWidth, 
-      height: ScreenUtil().screenHeight * 0.8,
-        decoration: new BoxDecoration(color: WHITE),
-        child: Column(children: <Widget>[
-          SizedBox(height: 20.h),
-          Row(children: <Widget>[
-            Padding(padding: EdgeInsets.only(left: 30.h)),
-            Text(CAFFE_NAME,
-                style: const TextStyle(
-                    fontWeight: FontWeight.bold,
-                    fontSize: 40,
-                    color: Colors.black))
-          ]),
-          Row(children: <Widget>[
-            Padding(padding: EdgeInsets.only(left: 30.h)),
-            Text(CAFFE_PHRASES,
-                style: const TextStyle(
-                  fontSize: 20,
-                  color: SKY_BLUE,
-                  fontWeight: FontWeight.w400,
-                  fontFamily: "NotoSans",
-                  fontStyle: FontStyle.normal,
-                )),
-          ]),
-          SvgPicture.asset("assets/icons/arumDreamLogo.svg"),
-          ElevatedButton(
-            child: Row(
-                mainAxisAlignment: MainAxisAlignment.center,
-                crossAxisAlignment: CrossAxisAlignment.center,
-                children: <Widget>[
-                  SvgPicture.asset("assets/icons/kakaoIcon.svg"),
-                  SizedBox(width: 5.h, height: 5.h),
-                  Text(KAKAO_LOGIN,
-                      style: TextStyle(fontSize: 18, color: kAKAO_TEXT_COLOR))
-                ]),
-            onPressed: () => _loginWithTalk(), // 카카오톡 로그인 api 불러오기
-            style: ButtonStyle(
-                backgroundColor: MaterialStateProperty.all(KAKAO_COLOR),
-                shape: MaterialStateProperty.all<RoundedRectangleBorder>(
-                    RoundedRectangleBorder(
-                        borderRadius: BorderRadius.circular(loginRaiusSize))),
-                fixedSize: MaterialStateProperty.all<Size>(Size(316.w, 30.h))),
-          ),
-          Row(children: <Widget>[
-            Expanded(
-              child: new Container(
-                  margin: const EdgeInsets.only(left: 10, right: 20),
-                  child: Divider(
-                    color: Colors.black,
-                    height: 20,
-                  )),
-            ),
-            Text("OR",
-                style: TextStyle(
-                  fontSize: 16,
-                  color: const Color(0xff222222),
-                  fontFamily: "NotoSans",
-                  fontStyle: FontStyle.normal,
-                )),
-            Expanded(
-              child: new Container(
-                  margin: const EdgeInsets.only(left: 20.0, right: 10.0),
-                  child: Divider(
-                    color: Colors.black,
-                    height: 20.h,
-                  )),
-            ),
-          ]),
-          // 애플 로그인 버튼
-          ElevatedButton(
-            child: Row(
-                mainAxisAlignment: MainAxisAlignment.center,
-                crossAxisAlignment: CrossAxisAlignment.center,
-                children: <Widget>[
-                  SvgPicture.asset("assets/icons/appleIcon.svg"),
-                  SizedBox(width: 5.w, height: 5..h),
-                  Text(APPLE_LOGIN,
-                      style: TextStyle(
-                          fontSize: 18,
-                          fontFamily: "NotoSans",
-                          fontStyle: FontStyle.normal))
-                ]),
-            onPressed: () => {}, // 애플 로그인 api 불러오기
-
-            style: ButtonStyle(
-                backgroundColor: MaterialStateProperty.all(DARK_BLUE),
-                shape: MaterialStateProperty.all<RoundedRectangleBorder>(
-                    RoundedRectangleBorder(
-                        borderRadius: BorderRadius.circular(loginRaiusSize))),
-                fixedSize: MaterialStateProperty.all<Size>(Size(315.w, 20.h))),
-          ),
-          //이메일로 로그인
-          ElevatedButton(
-            child: Row(
-                mainAxisAlignment: MainAxisAlignment.center,
-                crossAxisAlignment: CrossAxisAlignment.center,
-                children: <Widget>[
-                  SvgPicture.asset("assets/icons/emailIcon.svg"),
-                  SizedBox(width: 5.w, height: 5.h),
-                  Text(EMAIL_LOGIN,
-                      style: TextStyle(
-                          fontSize: 18,
+        backgroundColor: Colors.transparent,
+        body: new Container(
+            decoration: new BoxDecoration(color: WHITE),
+            child: Container(
+              margin: EdgeInsets.only(top: 87.h, left: 30.w, right: 30.w),
+              child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: <Widget>[
+                    Text(CAFFE_NAME,
+                        style: const TextStyle(
+                            fontWeight: FontWeight.bold,
+                            fontSize: 40,
+                            color: Colors.black)),
+                    Text(CAFFE_PHRASES,
+                        style: const TextStyle(
+                          fontSize: 20,
+                          color: SKY_BLUE,
+                          fontWeight: FontWeight.w400,
                           fontFamily: "NotoSans",
                           fontStyle: FontStyle.normal,
-                          color: const Color(0xff00276b)))
-                ]),
-            onPressed: () => {}, // 이메일 로그인 api 불러오기
+                        )),
+                    SvgPicture.asset(
+                      "assets/icons/arumDreamLogo.svg",
+                    ),
+                    Column(
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      children: [
+                        Container(
+                          margin: EdgeInsets.only(top: 24.5.h, bottom: 15.h),
+                          child: ElevatedButton(
+                              child: Container(
+                                height: 54.h,
+                                child: Row(
+                                  mainAxisAlignment: MainAxisAlignment.center,
+                                  crossAxisAlignment: CrossAxisAlignment.center,
+                                  children: <Widget>[
+                                    Container(
+                                      height: 18.h,
+                                      child: SvgPicture.asset(
+                                          "assets/icons/kakaoIcon.svg",
+                                          fit: BoxFit.fitHeight),
+                                    ),
+                                    Container(
+                                      margin: EdgeInsets.only(left: 8.4.w),
+                                      height: 24.h,
+                                      child: FittedBox(
+                                        fit: BoxFit.fitHeight,
+                                        child: Text(KAKAO_LOGIN,
+                                            style: TextStyle(
+                                                color: kAKAO_TEXT_COLOR,
+                                                fontWeight: FontWeight.w700)),
+                                      ),
+                                    )
+                                  ],
+                                ),
+                              ),
+                              onPressed: () =>
+                                  _loginWithTalk(), // 카카오톡 로그인 api 불러오기
+                              style: ButtonStyle(
+                                backgroundColor:
+                                    MaterialStateProperty.all(KAKAO_COLOR),
+                                shape: MaterialStateProperty.all<
+                                        RoundedRectangleBorder>(
+                                    RoundedRectangleBorder(
+                                        borderRadius: BorderRadius.circular(
+                                            loginRaiusSize))),
+                              )),
+                        ),
+                        Row(children: <Widget>[
+                          Expanded(
+                            child: new Container(
+                                margin:
+                                    EdgeInsets.only(left: 15.w, right: 16.5.w),
+                                child: Divider(
+                                  color: Color(0xffd1d1d1),
+                                  height: 20,
+                                )),
+                          ),
+                          Container(
+                            height: 22.h,
+                            child: FittedBox(
+                              fit: BoxFit.fitHeight,
+                              child: Text("OR",
+                                  style: TextStyle(
+                                    color: const Color(0xff222222),
+                                    fontFamily: "NotoSans",
+                                    fontStyle: FontStyle.normal,
+                                  )),
+                            ),
+                          ),
+                          Expanded(
+                            child: new Container(
+                                margin:
+                                    EdgeInsets.only(left: 16.5.w, right: 15.w),
+                                child: Divider(
+                                  color: Color(0xffd1d1d1),
+                                  height: 20.h,
+                                )),
+                          ),
+                        ]),
+                        // 애플 로그인 버튼
+                        Container(
+                          margin: EdgeInsets.only(top: 15.h, bottom: 10.h),
+                          height: 54.h,
+                          child: ElevatedButton(
+                            child: Row(
+                                mainAxisAlignment: MainAxisAlignment.center,
+                                crossAxisAlignment: CrossAxisAlignment.center,
+                                children: <Widget>[
+                                  Container(
+                                    height: 20.h,
+                                    child: SvgPicture.asset(
+                                        "assets/icons/appleIcon.svg",
+                                        fit: BoxFit.fitHeight),
+                                  ),
+                                  Container(
+                                    margin: EdgeInsets.only(left: 8.7.w),
+                                    height: 24.h,
+                                    child: FittedBox(
+                                      fit: BoxFit.fitHeight,
+                                      child: Text(APPLE_LOGIN,
+                                          style: TextStyle(
+                                              color: Color(0xffffffff),
+                                              fontFamily: "NotoSans",
+                                              fontWeight: FontWeight.w700)),
+                                    ),
+                                  )
+                                ]),
+                            onPressed: () => {}, // 애플 로그인 api 불러오기
 
-            style: ButtonStyle(
-                side: MaterialStateProperty.all<BorderSide>(
-                    BorderSide(color: const Color(0xff00276b), width: 1.w)),
-                backgroundColor: MaterialStateProperty.all(EMAIL_COLOR),
-                shape: MaterialStateProperty.all<RoundedRectangleBorder>(
-                    RoundedRectangleBorder(
-                        borderRadius: BorderRadius.circular(loginRaiusSize))),
-                fixedSize: MaterialStateProperty.all<Size>(Size(315.w, 20.h))),
-          ),
-          TextButton(
-              onPressed: () => {},
-              child: Text(SIGN_UP, style: TextStyle(fontSize: 16.0)))
-          // 회원가입하는 버튼
-          // TextButton(onPressed: () => {},
-          //            child: Text(SIGN_UP, style: TextStyle( fontWeight: FontWeight.w400,
-          //                                                   color: darkBlue,
-          //                                                 fontFamily: "NotoSans",
-          //                                                 fontStyle:  FontStyle.normal,
-          //                                                 fontSize: 16.0)))
+                            style: ButtonStyle(
+                              backgroundColor:
+                                  MaterialStateProperty.all(DARK_BLUE),
+                              shape: MaterialStateProperty.all<
+                                      RoundedRectangleBorder>(
+                                  RoundedRectangleBorder(
+                                      borderRadius: BorderRadius.circular(
+                                          loginRaiusSize))),
+                            ),
+                          ),
+                        ),
+                        //이메일로 로그인
+                        Container(
+                          height: 54.h,
+                          child: ElevatedButton(
+                              child: Row(
+                                  mainAxisAlignment: MainAxisAlignment.center,
+                                  crossAxisAlignment: CrossAxisAlignment.center,
+                                  children: <Widget>[
+                                    Container(
+                                      height: 14.4.h,
+                                      child: SvgPicture.asset(
+                                        "assets/icons/emailIcon.svg",
+                                        fit: BoxFit.fitHeight,
+                                      ),
+                                    ),
+                                    Container(
+                                      margin: EdgeInsets.only(left: 8.w),
+                                      height: 24.h,
+                                      child: Text(EMAIL_LOGIN,
+                                          style: TextStyle(
+                                              fontSize: 18,
+                                              fontFamily: "NotoSans",
+                                              fontWeight: FontWeight.w700,
+                                              color: const Color(0xff00276b))),
+                                    )
+                                  ]),
+                              onPressed: () => {}, // 이메일 로그인 api 불러오기
 
-          // TextButton(
-          //   child: Text(
+                              style: ButtonStyle(
+                                side: MaterialStateProperty.all<BorderSide>(
+                                    BorderSide(
+                                        color: const Color(0xff00276b),
+                                        width: 1.w)),
+                                backgroundColor:
+                                    MaterialStateProperty.all(EMAIL_COLOR),
+                                shape: MaterialStateProperty.all<
+                                        RoundedRectangleBorder>(
+                                    RoundedRectangleBorder(
+                                        borderRadius: BorderRadius.circular(
+                                            loginRaiusSize))),
+                              )),
+                        ),
 
-          //   )
-          // )
-        ])));
+                        TextButton(
+                            onPressed: () => {},
+                            child:
+                                Text(SIGN_UP, style: TextStyle(fontSize: 16.0)))
+                      ],
+                    ),
+                    // 회원가입하는 버튼
+                    // TextButton(onPressed: () => {},
+                    //            child: Text(SIGN_UP, style: TextStyle( fontWeight: FontWeight.w400,
+                    //                                                   color: darkBlue,
+                    //                                                 fontFamily: "NotoSans",
+                    //                                                 fontStyle:  FontStyle.normal,
+                    //                                                 fontSize: 16.0)))
+
+                    // TextButton(
+                    //   child: Text(
+
+                    //   )
+                    // )
+                  ]),
+            )));
   }
 }
 
