@@ -64,84 +64,99 @@ class MyOrderPageState extends State<MyOrderPage> {
     return Scaffold(
         backgroundColor: Colors.white,
         body: Container(
-          width: ScreenUtil().screenWidth, 
-          height: ScreenUtil().screenHeight,
+            width: ScreenUtil().screenWidth,
+            height: ScreenUtil().screenHeight,
             child: Column(
-          children: [
-            Row(
               children: [
-                SizedBox(width: 9.w),
-                Container(
-                  
-                  child: 
-                Text(this.orderedStoreLength.toString() + "개")),
-                SizedBox(height: 8.h),
-                // ElevatedButton(
-                //   onPressed: () => {} // 검색해서 view 바꾸는 함수
-                //   ,
-                //   child: Row(children: <Widget>[
-                //     Text("인기순",
-                //         style: TextStyle(
-                //             color: const Color(0xff666666),
-                //             fontWeight: FontWeight.w400,
-                //             fontFamily: "NotoSans",
-                //             fontStyle: FontStyle.normal,
-                //             fontSize: 14.0),
-                //         textAlign: TextAlign.left),
-                //   ]),
-                //   style: ButtonStyle(
-                //     backgroundColor: MaterialStateProperty.all(WHITE),
-                //     shape: MaterialStateProperty.all<RoundedRectangleBorder>(
-                //         RoundedRectangleBorder(
-                //       borderRadius: BorderRadius.circular(smallRadiusSize),
-                //     )),
-                //   ),
-                // )
+                Row(
+                  children: [
+                    SizedBox(width: 9.w),
+                    Container(
+                        margin: EdgeInsets.only(),
+                        child: Text(this.orderedStoreLength.toString() + "개")),
+                    SizedBox(height: 8.h),
+                    // ElevatedButton(
+                    //   onPressed: () => {} // 검색해서 view 바꾸는 함수
+                    //   ,
+                    //   child: Row(children: <Widget>[
+                    //     Text("인기순",
+                    //         style: TextStyle(
+                    //             color: const Color(0xff666666),
+                    //             fontWeight: FontWeight.w400,
+                    //             fontFamily: "NotoSans",
+                    //             fontStyle: FontStyle.normal,
+                    //             fontSize: 14.0),
+                    //         textAlign: TextAlign.left),
+                    //   ]),
+                    //   style: ButtonStyle(
+                    //     backgroundColor: MaterialStateProperty.all(WHITE),
+                    //     shape: MaterialStateProperty.all<RoundedRectangleBorder>(
+                    //         RoundedRectangleBorder(
+                    //       borderRadius: BorderRadius.circular(smallRadiusSize),
+                    //     )),
+                    //   ),
+                    // )
+                  ],
+                ),
+                FutureBuilder(
+                    future: this.fetchRecentOrders(),
+                    builder: (context, AsyncSnapshot projectSnap) {
+                      if (projectSnap.hasData && projectSnap.data != null) {
+                        return ListView.separated(
+                          shrinkWrap: true,
+                          scrollDirection: Axis.vertical,
+                          itemCount: projectSnap.data.length,
+                          itemBuilder: (context, index) {
+                            return buildStoreView(
+                                context, projectSnap.data[index]);
+                          },
+                          separatorBuilder: (context, index) {
+                            return Divider();
+                          },
+                        );
+                      } else if (projectSnap.hasError ||
+                          projectSnap.data == null) {
+                        return Center(
+                          child: Column(
+                            children: [
+                              Container(
+                                height: 60.h,
+                                width: 51.w,
+                                child: FittedBox(
+                                  fit: BoxFit.fitHeight,
+                                  child: SvgPicture.asset(
+                                      "assets/icons/emptyOrder.svg"),
+                                ),
+                              ),
+                              Container(
+                                height: 24.h,
+                                width: 148.w,
+                                child: FittedBox(
+                                  fit: BoxFit.fitHeight,
+                                  child: Text("주문 내역이 없습니다",
+                                      style: const TextStyle(
+                                        color: PHRASE_COLOR,
+                                        fontWeight: FontWeight.w400,
+                                        fontFamily: "NotoSans",
+                                        fontStyle: FontStyle.normal,
+                                      )),
+                                ),
+                              )
+                            ],
+                          ),
+                        );
+                      } else {
+                        return Center(child: CircularProgressIndicator());
+                      }
+                    })
               ],
-            ),
-            FutureBuilder(
-                future: this.fetchRecentOrders(),
-                builder: (context, AsyncSnapshot projectSnap) {
-                  if (projectSnap.hasData && projectSnap.data != null) {
-                    return ListView.separated(
-                      shrinkWrap: true,
-                      scrollDirection: Axis.vertical,
-                      itemCount: projectSnap.data.length,
-                      itemBuilder: (context, index) {
-                        return buildStoreView(context, projectSnap.data[index]);
-                      },
-                      separatorBuilder: (context, index) {
-                        return Divider();
-                      },
-                    );
-                  } else if (projectSnap.hasError || projectSnap.data == null) {
-                    return Center(
-                      child: Column(
-                        children: [
-                          SvgPicture.asset("assets/icons/emptyOrder.svg"),
-                          Text(
-                            "주문 내역이 없습니다",
-                            style: const TextStyle(
-                                color: const Color(0xff999999),
-                                fontWeight: FontWeight.w400,
-                                fontFamily: "NotoSans",
-                                fontStyle: FontStyle.normal,
-                                fontSize: 18.0),
-                          )
-                        ],
-                      ),
-                    );
-                  } else {
-                    return Center(child: CircularProgressIndicator());
-                  }
-                })
-          ],
-        )));
+            )));
   }
 
   Widget buildStoreView(BuildContext context, MyOrder order) {
     return Container(
       width: 350.w,
+      height: 210.h,
       decoration: BoxDecoration(
           borderRadius: BorderRadius.all(Radius.circular(15.h)),
           border: Border.all(color: const Color(0xffededed), width: 1.w),
@@ -157,196 +172,267 @@ class MyOrderPageState extends State<MyOrderPage> {
         children: [
           Row(
             children: [
-              SizedBox(height: 19.h, width: 20.w),
-              Text(
-                "주문확인",
-                style: const TextStyle(
-                    color: const Color(0xff666666),
-                    fontWeight: FontWeight.w700,
-                    fontFamily: "NotoSans",
-                    fontStyle: FontStyle.normal,
-                    fontSize: 15.0),
+              // SizedBox(height: 19.h, width: 20.w),
+              Container(
+                margin: EdgeInsets.only(
+                    left: 20.w, top: 10.h, bottom: 19.h, right: 180.w),
+                height: 19.h,
+                width: 51.w,
+                child: FittedBox(
+                  fit: BoxFit.fitHeight,
+                  child: Text(
+                    "주문확인",
+                    style: const TextStyle(
+                        color: const Color(0xff666666),
+                        fontWeight: FontWeight.w700,
+                        fontFamily: "NotoSans",
+                        fontStyle: FontStyle.normal,
+                        fontSize: 15.0),
+                  ),
+                ),
               ),
-              SizedBox(width: 220.w, height: 7.h),
-              ElevatedButton(
-                  onPressed: () => {} // 주문 상세 모달
-                  ,
-                  child: GestureDetector(
-                      onTap: () {
-                        setState(() {
-                          showModalBottomSheet<void>(
-                              context: context,
-                              builder: (context) {
-                                return Column(
-                                  children: [
-                                    Row(
-                                      children: [
-                                        Text("제조 완료",
-                                            style: const TextStyle(
-                                                color: const Color(0xff222222),
-                                                fontWeight: FontWeight.w700,
-                                                fontFamily: "NotoSans",
-                                                fontStyle: FontStyle.normal,
-                                                fontSize: 24.0),
-                                            textAlign: TextAlign.left),
-                                        Text("01",
-                                            style: const TextStyle(
-                                                color: const Color(0xffed6363),
-                                                fontWeight: FontWeight.w700,
-                                                fontFamily: "NotoSans",
-                                                fontStyle: FontStyle.normal,
-                                                fontSize: 24.0),
-                                            textAlign: TextAlign.left),
-                                        GestureDetector(
-                                          onTap: () {
-                                            // 주문내역 삭제 remove
-                                          },
-                                          child: Container(
-                                              child: Row(
-                                                children: [
-                                                  SvgPicture.asset(
-                                                      "assets/icons/trash.svg"),
-                                                  Text("삭제",
-                                                      style: const TextStyle(
-                                                          color: const Color(
-                                                              0xff666666),
-                                                          fontWeight:
-                                                              FontWeight.w400,
-                                                          fontFamily:
-                                                              "NotoSans",
-                                                          fontStyle:
-                                                              FontStyle.normal,
-                                                          fontSize: 15.0),
-                                                      textAlign: TextAlign.left)
-                                                ],
-                                              ),
-                                              width: 70.w,
-                                              height: 32.h,
-                                              decoration: BoxDecoration(
-                                                  borderRadius:
-                                                      BorderRadius.all(
-                                                          Radius.circular(90.h)),
-                                                  border: Border.all(
-                                                      color: const Color(
-                                                          0xffe8e8e8),
-                                                      width: 1),
-                                                  boxShadow: [
-                                                    BoxShadow(
-                                                        color: const Color(
-                                                            0x0d000000),
-                                                        offset: Offset(0.h, 2.h),
-                                                        blurRadius: 4.h,
-                                                        spreadRadius: 0)
-                                                  ],
-                                                  color:
-                                                      const Color(0xffffffff))),
-                                        )
-                                      ],
-                                    ),
-                                    Row(
-                                      children: [
-                                        // svgpicture 커피 모양
-                                        Text(order.storeName,
-                                            style: TextStyle(
-                                                color: const Color(0xff00276b),
-                                                fontWeight: FontWeight.w700,
-                                                fontFamily: "NotoSans",
-                                                fontStyle: FontStyle.normal,
-                                                fontSize: 22.0),
-                                            textAlign: TextAlign.left)
-                                      ],
-                                    ),
-                                    SizedBox(
-                                        height:
-                                            MediaQuery.of(context).size.height *
-                                                0.005),
-                                    Container(
-                                        color: const Color(0xffd1d1d1)
-                                            .withOpacity(0.15000000596046448),
-                                        child: Column(children: <Widget>[
+
+              Container(
+                  child: FittedBox(
+                      fit: BoxFit.fitHeight,
+                      child: ElevatedButton(
+                          onPressed: () => {} // 주문 상세 모달
+                          ,
+                          child: GestureDetector(
+                            onTap: () {
+                              setState(() {
+                                showModalBottomSheet<void>(
+                                    context: context,
+                                    builder: (context) {
+                                      return Column(
+                                        children: [
                                           Row(
                                             children: [
-                                              Text(
-                                                  "주문 내역 (" +
-                                                      order.orders.length
-                                                          .toString() +
-                                                      ")", // 후에 고치기 상점마다 주문한 메뉴들 개수
-                                                  style: const TextStyle(
-                                                      color: const Color(
-                                                          0xff222222),
-                                                      fontWeight:
-                                                          FontWeight.w700,
-                                                      fontFamily: "NotoSans",
-                                                      fontStyle:
-                                                          FontStyle.normal,
-                                                      fontSize: 18.0),
-                                                  textAlign: TextAlign.left)
-                                            ],
-                                          ),
-                                          order.orders.length == 0
-                                              ? Column(
-                                                  children: [
-                                                    SvgPicture.asset(
-                                                        "assets/icons/emptyOrder.svg"),
-                                                    Text(
-                                                      "주문 내역이 없습니다",
+                                              Container(
+                                                height: 33.h,
+                                                width: 86.w,
+                                                child: FittedBox(
+                                                  fit: BoxFit.fitHeight,
+                                                  child: Text("제조 완료",
                                                       style: const TextStyle(
                                                           color: const Color(
-                                                              0xff999999),
+                                                              0xff222222),
                                                           fontWeight:
-                                                              FontWeight.w400,
+                                                              FontWeight.w700,
                                                           fontFamily:
                                                               "NotoSans",
                                                           fontStyle:
                                                               FontStyle.normal,
-                                                          fontSize: 18.0),
-                                                    )
-                                                  ],
-                                                )
-                                              : SizedBox(
-                                                  height: MediaQuery.of(context)
-                                                          .size
-                                                          .height *
-                                                      0.3,
-                                                  child: ListView.separated(
-                                                      itemBuilder:
-                                                          (context, index) {
-                                                        return buildOrderDetailView(
-                                                            context,
-                                                            order
-                                                                .orders[index]);
-                                                      },
-                                                      separatorBuilder:
-                                                          (context, index) {
-                                                        return Divider();
-                                                      },
-                                                      itemCount:
-                                                          order.orders.length),
+                                                          fontSize: 24.0),
+                                                      textAlign:
+                                                          TextAlign.left),
                                                 ),
-                                        ]))
-                                  ],
-                                );
+                                              ),
+                                              GestureDetector(
+                                                onTap: () {
+                                                  // 주문내역 삭제 remove
+                                                },
+                                                child: Container(
+                                                    child: Row(
+                                                      children: [
+                                                        SvgPicture.asset(
+                                                            "assets/icons/trash.svg"),
+                                                        Container(
+                                                          height: 19.h,
+                                                          width: 26.w,
+                                                          child: FittedBox(
+                                                              fit: BoxFit
+                                                                  .fitHeight,
+                                                              child: Text("삭제",
+                                                                  style: const TextStyle(
+                                                                      color: const Color(
+                                                                          0xff666666),
+                                                                      fontWeight:
+                                                                          FontWeight
+                                                                              .w400,
+                                                                      fontFamily:
+                                                                          "NotoSans",
+                                                                      fontStyle:
+                                                                          FontStyle
+                                                                              .normal,
+                                                                      fontSize:
+                                                                          15.0),
+                                                                  textAlign:
+                                                                      TextAlign
+                                                                          .left)),
+                                                        ),
+                                                      ],
+                                                    ),
+                                                    width: 70.w,
+                                                    height: 32.h,
+                                                    decoration: BoxDecoration(
+                                                        borderRadius:
+                                                            BorderRadius.all(
+                                                                Radius.circular(
+                                                                    9.h)),
+                                                        border: Border.all(
+                                                            color: const Color(
+                                                                0xffe8e8e8),
+                                                            width: 1),
+                                                        boxShadow: [
+                                                          BoxShadow(
+                                                              color: const Color(
+                                                                  0x0d000000),
+                                                              offset: Offset(
+                                                                  0.h, 2.h),
+                                                              blurRadius: 4.h,
+                                                              spreadRadius: 0)
+                                                        ],
+                                                        color: const Color(
+                                                            0xffffffff))),
+                                              )
+                                            ],
+                                          ),
+                                          Row(
+                                            children: [
+                                              // svgpicture 커피 모양
+                                              Container(
+                                                height: 31.h,
+                                                width: 208.w,
+                                                child: FittedBox(
+                                                    fit: BoxFit.fitHeight,
+                                                    child: Text(order.storeName,
+                                                        style: TextStyle(
+                                                            color: const Color(
+                                                                0xff00276b),
+                                                            fontWeight:
+                                                                FontWeight.w700,
+                                                            fontFamily:
+                                                                "NotoSans",
+                                                            fontStyle: FontStyle
+                                                                .normal,
+                                                            fontSize: 22.0),
+                                                        textAlign:
+                                                            TextAlign.left)),
+                                              )
+                                            ],
+                                          ),
+                                          Container(
+                                              color: const Color(0xffd1d1d1)
+                                                  .withOpacity(
+                                                      0.15000000596046448),
+                                              child: Column(children: <Widget>[
+                                                Row(
+                                                  children: [
+                                                    Container(
+                                                      margin: EdgeInsets.only(
+                                                          left: 20.w,
+                                                          top: 20.h,
+                                                          right: 265.w,
+                                                          bottom: 16.h),
+                                                      height: 24.h,
+                                                      width: 90.w,
+                                                      child: FittedBox(
+                                                          fit: BoxFit.fitHeight,
+                                                          child: Text(
+                                                              "주문 내역 (" +
+                                                                  order.orders
+                                                                      .length
+                                                                      .toString() +
+                                                                  ")", // 후에 고치기 상점마다 주문한 메뉴들 개수
+                                                              style: const TextStyle(
+                                                                  color: const Color(
+                                                                      0xff222222),
+                                                                  fontWeight:
+                                                                      FontWeight
+                                                                          .w700,
+                                                                  fontFamily:
+                                                                      "NotoSans",
+                                                                  fontStyle:
+                                                                      FontStyle
+                                                                          .normal,
+                                                                  fontSize:
+                                                                      18.0),
+                                                              textAlign:
+                                                                  TextAlign
+                                                                      .left)),
+                                                    ),
+                                                  ],
+                                                ),
+                                                order.orders.length == 0
+                                                    ? Column(
+                                                        children: [
+                                                          SvgPicture.asset(
+                                                              "assets/icons/emptyOrder.svg"),
+                                                          Container(
+                                                            height: 24.h,
+                                                            width: 148.w,
+                                                            child: FittedBox(
+                                                                fit: BoxFit
+                                                                    .fitHeight,
+                                                                child: Text(
+                                                                  "주문 내역이 없습니다",
+                                                                  style: const TextStyle(
+                                                                      color: const Color(
+                                                                          0xff999999),
+                                                                      fontWeight:
+                                                                          FontWeight
+                                                                              .w400,
+                                                                      fontFamily:
+                                                                          "NotoSans",
+                                                                      fontStyle:
+                                                                          FontStyle
+                                                                              .normal,
+                                                                      fontSize:
+                                                                          18.0),
+                                                                )),
+                                                          ),
+                                                        ],
+                                                      )
+                                                    :
+                                                    //Container()
+                                                    
+                                                    ListView.separated(
+                                                      scrollDirection: Axis.vertical,
+                                                      shrinkWrap: true,
+                                                        itemBuilder:
+                                                            (context, index) {
+                                                          return buildOrderDetailView(
+                                                              context,
+                                                              order.orders[
+                                                                  index]);
+                                                        },
+                                                        separatorBuilder:
+                                                            (context, index) {
+                                                          return Divider();
+                                                        },
+                                                        itemCount:
+                                                            order.orders.length)
+                                              ]))
+                                        ],
+                                      );
+                                    });
                               });
-                        });
-                      },
-                      child: Text(
-                        "주문상세",
-                        overflow: TextOverflow.ellipsis,
-                        textAlign: TextAlign.left,
-                        style: TextStyle(
-                            color: const Color(0xff666666),
-                            fontWeight: FontWeight.w400,
-                            fontFamily: "NotoSans",
-                            fontStyle: FontStyle.normal,
-                            fontSize: 13.0),
-                      )),
-                  style: ButtonStyle(
-                      backgroundColor: MaterialStateProperty.all(WHITE),
-                      shape: MaterialStateProperty.all<RoundedRectangleBorder>(
-                          RoundedRectangleBorder(
-                              borderRadius:
-                                  BorderRadius.circular(smallRadiusSize))),
-                      fixedSize: MaterialStateProperty.all<Size>(Size(70.w, 38.h))))
+                            },
+                            child: Container(
+                              height: 22.h,
+                              child: FittedBox(
+                                  fit: BoxFit.fitHeight,
+                                  child: Text(
+                                    "주문상세",
+                                    overflow: TextOverflow.ellipsis,
+                                    textAlign: TextAlign.left,
+                                    style: TextStyle(
+                                        color: const Color(0xff666666),
+                                        fontWeight: FontWeight.w400,
+                                        fontFamily: "NotoSans",
+                                        fontStyle: FontStyle.normal,
+                                        fontSize: 13.0),
+                                  )),
+                            ),
+                          ),
+                          style: ButtonStyle(
+                            backgroundColor: MaterialStateProperty.all(WHITE),
+                            shape: MaterialStateProperty.all<
+                                    RoundedRectangleBorder>(
+                                RoundedRectangleBorder(
+                                    borderRadius: BorderRadius.circular(5.w))),
+                          ))))
             ],
           ),
           Row(
@@ -354,27 +440,44 @@ class MyOrderPageState extends State<MyOrderPage> {
               SvgPicture.asset(order.storeThumbnail),
               Column(
                 children: <Widget>[
-                  Text(
-                    order.storeName,
-                    style: const TextStyle(
-                        color: const Color(0xff222222),
-                        fontWeight: FontWeight.w700,
-                        fontFamily: "NotoSans",
-                        fontStyle: FontStyle.normal,
-                        fontSize: 20.0),
+                  Container(
+                    margin: EdgeInsets.only(
+                        left: 15.w, top: 30.h, right: 62.w, bottom: 4.h),
+                    height: 27.h,
+                    width: 189.w,
+                    child: FittedBox(
+                      fit: BoxFit.fitHeight,
+                      child: Text(
+                        order.storeName,
+                        style: const TextStyle(
+                            color: const Color(0xff222222),
+                            fontWeight: FontWeight.w700,
+                            fontFamily: "NotoSans",
+                            fontStyle: FontStyle.normal,
+                            fontSize: 20.0),
+                      ),
+                    ),
                   ),
-                  Text(
-                    order.firstMenuName +
-                        " 외 " +
-                        (order.orders.length - 1).toString() +
-                        " " +
-                        order.totalPrice.toString(),
-                    style: const TextStyle(
-                        color: const Color(0xff707070),
-                        fontWeight: FontWeight.w400,
-                        fontFamily: "NotoSans",
-                        fontStyle: FontStyle.normal,
-                        fontSize: 14.0),
+                  Container(
+                    margin: EdgeInsets.only(
+                        left: 15.w, top: 40.h, right: 64.w, bottom: 30.h),
+                    height: 19.h,
+                    width: 187.w,
+                    child: FittedBox(
+                        fit: BoxFit.fitHeight,
+                        child: Text(
+                          order.firstMenuName +
+                              " 외 " +
+                              (order.orders.length - 1).toString() +
+                              " 개" +
+                              order.totalPrice.toString(),
+                          style: const TextStyle(
+                              color: const Color(0xff707070),
+                              fontWeight: FontWeight.w400,
+                              fontFamily: "NotoSans",
+                              fontStyle: FontStyle.normal,
+                              fontSize: 14.0),
+                        )),
                   )
                 ],
               )
@@ -386,31 +489,56 @@ class MyOrderPageState extends State<MyOrderPage> {
   }
 
   Widget buildOrderDetailView(BuildContext context, OrderedMenu myMenus) {
-    return Row(
-      children: [
-        SvgPicture.asset(myMenus.menuThumnail),
-        Column(
+    return 
+
+    Container(
+        height: 54.h,
+        width: 375.w,
+        child: Row(
           children: [
-            Text(myMenus.menuName,
-                style: const TextStyle(
-                    color: const Color(0xff222222),
-                    fontWeight: FontWeight.w700,
-                    fontFamily: "NotoSans",
-                    fontStyle: FontStyle.normal,
-                    fontSize: 18.0),
-                textAlign: TextAlign.left),
-            Text(myMenus.options.join(" / "),
-                style: const TextStyle(
-                    color: const Color(0xff707070),
-                    fontWeight: FontWeight.w400,
-                    fontFamily: "NotoSans",
-                    fontStyle: FontStyle.normal,
-                    fontSize: 14.0),
-                textAlign: TextAlign.left)
+            SvgPicture.asset(myMenus.menuThumnail),
+            Column(
+              
+              children: [
+                 Container(
+                   margin: EdgeInsets.only(left: 5.w, top: 10.h, right: 200.w, bottom: 3.h),
+                                height: 21.h,
+                                width: 76.w,
+                                child: FittedBox(
+                                  fit: BoxFit.fitHeight,
+                                  child:
+                                   Text(myMenus.menuName,
+                    style: const TextStyle(
+                        color: const Color(0xff222222),
+                        fontWeight: FontWeight.w700,
+                        fontFamily: "NotoSans",
+                        fontStyle: FontStyle.normal,
+                        fontSize: 18.0),
+                    textAlign: TextAlign.left),
+                                ),
+                              ),
+                 Container(
+
+                                height: 20.h,
+                                width: 250.w,
+                                child: FittedBox(
+                                  fit: BoxFit.fitHeight,
+                                  child:
+                                  Text(myMenus.options.join(" / "),
+                    style: const TextStyle(
+                        color: const Color(0xff707070),
+                        fontWeight: FontWeight.w400,
+                        fontFamily: "NotoSans",
+                        fontStyle: FontStyle.normal,
+                        fontSize: 14.0),
+                    textAlign: TextAlign.left)
+                                ),
+                              ),
+
+              ],
+            )
           ],
-        )
-      ],
-    );
+        ));
   }
 }
 
