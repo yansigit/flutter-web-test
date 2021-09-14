@@ -1,7 +1,9 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:get/get.dart';
 import 'package:save_order/util/sqlite_local_database/UserMenuDatabase.dart';
+import 'package:save_order/view/pages/Controller/ProfileController.dart';
 import '/consts/color.dart';
 import '/model/Order.dart';
 import '/model/ProfilePair.dart';
@@ -12,8 +14,10 @@ import 'package:flutter_svg/flutter_svg.dart';
 class UserPageState extends State<UserPage> {
   List<String> isSelected = ["0", "0", "0", "0"];
   int menuNumber = 3;
+  var dbHelper = UserMenuDatabase.instance;
   String userAccessToken = "";
   List<SavedMenu> savedMenus = [];
+  var isInserted = false;
   User user = new User(
     "서윤",
     "리나",
@@ -24,7 +28,6 @@ class UserPageState extends State<UserPage> {
   List<ProfilePair> profilePairs = List.empty();
 
   Future<List<SavedMenu>> loadUserMenus() async {
-    final dbHelper = UserMenuDatabase.instance;
     // mock 코드
     SavedMenu savedMenu =
         new SavedMenu("이미지경로", "길티", "물 한잔/ 1샷추가/ 물 적게 넣어주세요", "아메리카노");
@@ -33,7 +36,11 @@ class UserPageState extends State<UserPage> {
     print(mapMenu);
     // no problem
     mapMenu[UserMenuDatabase.userAccessToken] = this.userAccessToken;
-    await dbHelper.insert(mapMenu);
+    if (isInserted == false) {
+      await dbHelper.insert(mapMenu);
+      isInserted = true;
+    }
+
     // mock 코드
     List<Map<String, dynamic>> userMenus =
         await dbHelper.queryRowByUserToken(this.userAccessToken, 3);
@@ -71,8 +78,8 @@ class UserPageState extends State<UserPage> {
         backgroundColor: Colors.white,
         body: SingleChildScrollView(
             child: Container(
-               width: ScreenUtil().screenWidth,
-               height: ScreenUtil().screenHeight,
+                width: ScreenUtil().screenWidth,
+                height: ScreenUtil().screenHeight,
                 decoration: BoxDecoration(color: DARK_BLUE),
                 child: Column(
                   children: <Widget>[
@@ -274,315 +281,271 @@ class UserPageState extends State<UserPage> {
                               showModalBottomSheet<void>(
                                   context: context,
                                   builder: (context) {
-                                    return Column(
-                                      children: [
-                                        buildProfileView(context, "프로필 수정", () {
-                                          showDialog(
-                                              context: context,
-                                              builder: (context) {
-                                                return AlertDialog(
-                                                  content:
-                                                      SingleChildScrollView(
-                                                    child: Container(
-                                                      child: Column(
-                                                        //mainAxisSize: MainAxisSize.min,
-                                                        children: [
-                                                          Row(
-                                                            mainAxisAlignment:
-                                                                MainAxisAlignment
-                                                                    .center,
-                                                            children: [
-                                                              Align(
-                                                                child: SvgPicture
-                                                                    .asset(user
-                                                                        .thumbnail),
-                                                                alignment:
-                                                                    Alignment
-                                                                        .topCenter,
-                                                              ),
-                                                            ],
-                                                          ),
-                                                          Column(
-                                                            children: [
-                                                              // mainAxisAlignment:
-                                                              //     MainAxisAlignment.center,
+                                    final ProfileController profileController =
+                                        Get.put(ProfileController());
+                                    return StatefulBuilder(builder:
+                                        (BuildContext context,
+                                            StateSetter setState) {
+                                      return Column(
+                                        children: [
+                                          buildProfileView(context, "프로필 수정",
+                                              () {
+                                            showDialog(
+                                                context: context,
+                                                builder: (context) {
+                                                  return AlertDialog(
+                                                    content:
+                                                        SingleChildScrollView(
+                                                      child: Container(
+                                                        child: Column(
+                                                          //mainAxisSize: MainAxisSize.min,
+                                                          children: [
+                                                            Row(
+                                                              mainAxisAlignment:
+                                                                  MainAxisAlignment
+                                                                      .center,
+                                                              children: [
+                                                                Align(
+                                                                  child: SvgPicture
+                                                                      .asset(user
+                                                                          .thumbnail),
+                                                                  alignment:
+                                                                      Alignment
+                                                                          .topCenter,
+                                                                ),
+                                                              ],
+                                                            ),
+                                                            Column(
+                                                              children: [
+                                                                // mainAxisAlignment:
+                                                                //     MainAxisAlignment.center,
 
-                                                              Align(
-                                                                child: Text(
-                                                                    profilePairs[0]
-                                                                        .key,
-                                                                    style: const TextStyle(
-                                                                        color: const Color(
-                                                                            0xff222222),
-                                                                        fontWeight:
-                                                                            FontWeight
-                                                                                .w700,
-                                                                        fontFamily:
-                                                                            "NotoSansCJKKR",
-                                                                        fontStyle:
-                                                                            FontStyle
-                                                                                .normal,
-                                                                        fontSize:
-                                                                            18.0),
-                                                                    textAlign:
-                                                                        TextAlign
-                                                                            .left),
-                                                                alignment:
-                                                                    Alignment
-                                                                        .topLeft,
-                                                              ),
-                                                              Align(
+                                                                Align(
+                                                                  child: Text(
+                                                                      profilePairs[0]
+                                                                          .key,
+                                                                      style: const TextStyle(
+                                                                          color: const Color(
+                                                                              0xff222222),
+                                                                          fontWeight: FontWeight
+                                                                              .w700,
+                                                                          fontFamily:
+                                                                              "NotoSansCJKKR",
+                                                                          fontStyle: FontStyle
+                                                                              .normal,
+                                                                          fontSize:
+                                                                              18.0),
+                                                                      textAlign:
+                                                                          TextAlign
+                                                                              .left),
                                                                   alignment:
                                                                       Alignment
                                                                           .topLeft,
-                                                                  child: Container(
-                                                                      width:
-                                                                          100.w,
-                                                                      height:
-                                                                          100.h,
-                                                                      child: TextField(
-                                                                          readOnly:
-                                                                              !editable,
-                                                                          decoration: InputDecoration(
-                                                                              hintText: profilePairs[0]
-                                                                                  .value),
-                                                                          style: const TextStyle(
-                                                                              color: const Color(0xff666666),
-                                                                              fontWeight: FontWeight.w400,
-                                                                              fontFamily: "Roboto",
-                                                                              fontStyle: FontStyle.normal,
-                                                                              fontSize: 20.0),
-                                                                          textAlign: TextAlign.left))),
+                                                                ),
+                                                                Align(
+                                                                    alignment:
+                                                                        Alignment
+                                                                            .topLeft,
+                                                                    child: Container(
+                                                                        width: 100
+                                                                            .w,
+                                                                        height: 100
+                                                                            .h,
+                                                                        child: TextField(
+                                                                            readOnly:
+                                                                                !profileController.isEditable.value,
+                                                                            decoration: InputDecoration(hintText: profilePairs[0].value),
+                                                                            style: const TextStyle(color: const Color(0xff666666), fontWeight: FontWeight.w400, fontFamily: "Roboto", fontStyle: FontStyle.normal, fontSize: 20.0),
+                                                                            textAlign: TextAlign.left))),
 
-                                                              // mainAxisAlignment:
-                                                              //     MainAxisAlignment.center,
+                                                                // mainAxisAlignment:
+                                                                //     MainAxisAlignment.center,
 
-                                                              Align(
-                                                                child: Text(
-                                                                    profilePairs[1]
-                                                                        .key,
-                                                                    style: const TextStyle(
-                                                                        color: const Color(
-                                                                            0xff222222),
-                                                                        fontWeight:
-                                                                            FontWeight
-                                                                                .w700,
-                                                                        fontFamily:
-                                                                            "NotoSansCJKKR",
-                                                                        fontStyle:
-                                                                            FontStyle
-                                                                                .normal,
-                                                                        fontSize:
-                                                                            18.0),
-                                                                    textAlign:
-                                                                        TextAlign
-                                                                            .left),
-                                                                alignment:
-                                                                    Alignment
-                                                                        .topLeft,
-                                                              ),
-                                                              Align(
+                                                                Align(
+                                                                  child: Text(
+                                                                      profilePairs[1]
+                                                                          .key,
+                                                                      style: const TextStyle(
+                                                                          color: const Color(
+                                                                              0xff222222),
+                                                                          fontWeight: FontWeight
+                                                                              .w700,
+                                                                          fontFamily:
+                                                                              "NotoSansCJKKR",
+                                                                          fontStyle: FontStyle
+                                                                              .normal,
+                                                                          fontSize:
+                                                                              18.0),
+                                                                      textAlign:
+                                                                          TextAlign
+                                                                              .left),
                                                                   alignment:
                                                                       Alignment
                                                                           .topLeft,
-                                                                  child: Container(
-                                                                      width:
-                                                                          100.w,
-                                                                      height:
-                                                                          100.h,
-                                                                      child: TextField(
-                                                                          readOnly:
-                                                                              !editable,
-                                                                          decoration: InputDecoration(
-                                                                              hintText: profilePairs[1]
-                                                                                  .value),
-                                                                          style: const TextStyle(
-                                                                              color: const Color(0xff666666),
-                                                                              fontWeight: FontWeight.w400,
-                                                                              fontFamily: "Roboto",
-                                                                              fontStyle: FontStyle.normal,
-                                                                              fontSize: 20.0),
-                                                                          textAlign: TextAlign.left))),
-                                                              Align(
-                                                                child: Text(
-                                                                    profilePairs[2]
-                                                                        .key,
-                                                                    style: const TextStyle(
-                                                                        color: const Color(
-                                                                            0xff222222),
-                                                                        fontWeight:
-                                                                            FontWeight
-                                                                                .w700,
-                                                                        fontFamily:
-                                                                            "NotoSansCJKKR",
-                                                                        fontStyle:
-                                                                            FontStyle
-                                                                                .normal,
-                                                                        fontSize:
-                                                                            18.0),
-                                                                    textAlign:
-                                                                        TextAlign
-                                                                            .left),
-                                                                alignment:
-                                                                    Alignment
-                                                                        .topLeft,
-                                                              ),
-                                                              Align(
+                                                                ),
+                                                                Align(
+                                                                    alignment:
+                                                                        Alignment
+                                                                            .topLeft,
+                                                                    child: Container(
+                                                                        width: 100
+                                                                            .w,
+                                                                        height: 100
+                                                                            .h,
+                                                                        child: TextField(
+                                                                            readOnly:
+                                                                                !profileController.isEditable.value,
+                                                                            decoration: InputDecoration(hintText: profilePairs[1].value),
+                                                                            style: const TextStyle(color: const Color(0xff666666), fontWeight: FontWeight.w400, fontFamily: "Roboto", fontStyle: FontStyle.normal, fontSize: 20.0),
+                                                                            textAlign: TextAlign.left))),
+                                                                Align(
+                                                                  child: Text(
+                                                                      profilePairs[2]
+                                                                          .key,
+                                                                      style: const TextStyle(
+                                                                          color: const Color(
+                                                                              0xff222222),
+                                                                          fontWeight: FontWeight
+                                                                              .w700,
+                                                                          fontFamily:
+                                                                              "NotoSansCJKKR",
+                                                                          fontStyle: FontStyle
+                                                                              .normal,
+                                                                          fontSize:
+                                                                              18.0),
+                                                                      textAlign:
+                                                                          TextAlign
+                                                                              .left),
                                                                   alignment:
                                                                       Alignment
                                                                           .topLeft,
-                                                                  child: Container(
-                                                                      width:
-                                                                          100.w,
-                                                                      height:
-                                                                          100.h,
-                                                                      child: TextField(
-                                                                          // readOnly:
-                                                                          //     !editable,
-                                                                          decoration: InputDecoration(
-                                                                              hintText: profilePairs[2]
-                                                                                  .value),
-                                                                          style: const TextStyle(
-                                                                              color: const Color(0xff666666),
-                                                                              fontWeight: FontWeight.w400,
-                                                                              fontFamily: "Roboto",
-                                                                              fontStyle: FontStyle.normal,
-                                                                              fontSize: 20.0),
-                                                                          textAlign: TextAlign.left))),
-                                                              Align(
-                                                                child: Text(
-                                                                    profilePairs[3]
-                                                                        .key,
-                                                                    style: const TextStyle(
-                                                                        color: const Color(
-                                                                            0xff222222),
-                                                                        fontWeight:
-                                                                            FontWeight
-                                                                                .w700,
-                                                                        fontFamily:
-                                                                            "NotoSansCJKKR",
-                                                                        fontStyle:
-                                                                            FontStyle
-                                                                                .normal,
-                                                                        fontSize:
-                                                                            18.0),
-                                                                    textAlign:
-                                                                        TextAlign
-                                                                            .left),
-                                                                alignment:
-                                                                    Alignment
-                                                                        .topLeft,
-                                                              ),
-                                                              Align(
+                                                                ),
+                                                                Align(
+                                                                    alignment:
+                                                                        Alignment
+                                                                            .topLeft,
+                                                                    child: Container(
+                                                                        width: 100
+                                                                            .w,
+                                                                        height: 100
+                                                                            .h,
+                                                                        child: TextField(
+                                                                            readOnly:
+                                                                                !profileController.isEditable.value,
+                                                                            decoration: InputDecoration(hintText: profilePairs[2].value),
+                                                                            style: const TextStyle(color: const Color(0xff666666), fontWeight: FontWeight.w400, fontFamily: "Roboto", fontStyle: FontStyle.normal, fontSize: 20.0),
+                                                                            textAlign: TextAlign.left))),
+                                                                Align(
+                                                                  child: Text(
+                                                                      profilePairs[3]
+                                                                          .key,
+                                                                      style: const TextStyle(
+                                                                          color: const Color(
+                                                                              0xff222222),
+                                                                          fontWeight: FontWeight
+                                                                              .w700,
+                                                                          fontFamily:
+                                                                              "NotoSansCJKKR",
+                                                                          fontStyle: FontStyle
+                                                                              .normal,
+                                                                          fontSize:
+                                                                              18.0),
+                                                                      textAlign:
+                                                                          TextAlign
+                                                                              .left),
                                                                   alignment:
                                                                       Alignment
                                                                           .topLeft,
-                                                                  child: Container(
-                                                                      width:
-                                                                          100.w,
-                                                                      height:
-                                                                          100.h,
-                                                                      alignment:
-                                                                          Alignment
-                                                                              .topLeft,
-                                                                      child: TextField(
-                                                                          readOnly:
-                                                                              !editable,
-                                                                          decoration: InputDecoration(
-                                                                              hintText: profilePairs[3]
-                                                                                  .value),
-                                                                          style: const TextStyle(
-                                                                              color: const Color(0xff666666),
-                                                                              fontWeight: FontWeight.w400,
-                                                                              fontFamily: "Roboto",
-                                                                              fontStyle: FontStyle.normal,
-                                                                              fontSize: 20.0),
-                                                                          textAlign: TextAlign.left))),
-                                                              Container(
-                                                                child: Row(
-                                                                    children: [
-                                                                      GestureDetector(
-                                                                        onTap:
-                                                                            () {
-                                                                          setState(
+                                                                ),
+                                                                Align(
+                                                                    alignment:
+                                                                        Alignment
+                                                                            .topLeft,
+                                                                    child: Container(
+                                                                        width: 100
+                                                                            .w,
+                                                                        height: 100
+                                                                            .h,
+                                                                        alignment:
+                                                                            Alignment
+                                                                                .topLeft,
+                                                                        child: TextField(
+                                                                            readOnly:
+                                                                                !profileController.isEditable.value,
+                                                                            decoration: InputDecoration(hintText: profilePairs[3].value),
+                                                                            style: const TextStyle(color: const Color(0xff666666), fontWeight: FontWeight.w400, fontFamily: "Roboto", fontStyle: FontStyle.normal, fontSize: 20.0),
+                                                                            textAlign: TextAlign.left))),
+                                                                Container(
+                                                                  child: Row(
+                                                                      children: [
+                                                                        GestureDetector(
+                                                                          onTap:
                                                                               () {
-                                                                            editable =
-                                                                                true;
-                                                                            
-                                                                            print(editable);
-                                                                            print("edit");
-                                                                          });
-                                                                        },
-                                                                        child: Text(
-                                                                            "변경하기",
-                                                                            style: const TextStyle(
-                                                                                color: const Color(0xffffffff),
-                                                                                fontWeight: FontWeight.w700,
-                                                                                fontFamily: "NotoSans",
-                                                                                fontStyle: FontStyle.normal,
-                                                                                fontSize: 20.0),
-                                                                            textAlign: TextAlign.center),
-                                                                      ),
-                                                                      SizedBox(
-                                                                          width:
-                                                                              MediaQuery.of(context).size.width * 0.03),
-                                                                      GestureDetector(
-                                                                        onTap:
-                                                                            () {
-                                                                          setState(
+                                                                            setState(() {
+                                                                              profileController.changeEditable();
+                                                                            });
+                                                                          },
+                                                                          child: Text(
+                                                                              "변경하기",
+                                                                              style: const TextStyle(color: const Color(0xffffffff), fontWeight: FontWeight.w700, fontFamily: "NotoSans", fontStyle: FontStyle.normal, fontSize: 20.0),
+                                                                              textAlign: TextAlign.center),
+                                                                        ),
+                                                                        SizedBox(
+                                                                            width:
+                                                                                MediaQuery.of(context).size.width * 0.03),
+                                                                        GestureDetector(
+                                                                          onTap:
                                                                               () {
-                                                                            editable =
-                                                                                false;
-                                                                          });
-                                                                        },
-                                                                        child: Text(
-                                                                            "수정완료",
-                                                                            style: const TextStyle(
-                                                                                color: const Color(0xffffffff),
-                                                                                fontWeight: FontWeight.w700,
-                                                                                fontFamily: "NotoSans",
-                                                                                fontStyle: FontStyle.normal,
-                                                                                fontSize: 20.0),
-                                                                            textAlign: TextAlign.center),
-                                                                      )
-                                                                    ]),
-                                                                width: MediaQuery.of(
-                                                                            context)
-                                                                        .size
-                                                                        .width *
-                                                                    0.8,
-                                                                height: MediaQuery.of(
-                                                                            context)
-                                                                        .size
-                                                                        .width *
-                                                                    0.1,
-                                                                decoration: BoxDecoration(
-                                                                    borderRadius:
-                                                                        BorderRadius.all(Radius.circular(
-                                                                            27.h)),
-                                                                    color: const Color(
-                                                                        0xff00276b)),
-                                                              ),
-                                                            ],
-                                                          ),
-                                                        ],
+                                                                            setState(() {
+                                                                              profileController.changeEditable();
+                                                                            });
+                                                                          },
+                                                                          child: Text(
+                                                                              "수정완료",
+                                                                              style: const TextStyle(color: const Color(0xffffffff), fontWeight: FontWeight.w700, fontFamily: "NotoSans", fontStyle: FontStyle.normal, fontSize: 20.0),
+                                                                              textAlign: TextAlign.center),
+                                                                        )
+                                                                      ]),
+                                                                  width: MediaQuery.of(
+                                                                              context)
+                                                                          .size
+                                                                          .width *
+                                                                      0.8,
+                                                                  height: MediaQuery.of(
+                                                                              context)
+                                                                          .size
+                                                                          .width *
+                                                                      0.1,
+                                                                  decoration: BoxDecoration(
+                                                                      borderRadius:
+                                                                          BorderRadius.all(Radius.circular(27
+                                                                              .h)),
+                                                                      color: const Color(
+                                                                          0xff00276b)),
+                                                                ),
+                                                              ],
+                                                            ),
+                                                          ],
+                                                        ),
                                                       ),
                                                     ),
-                                                  ),
-                                                );
-                                              });
-                                        }, "profile.svg"),
-                                        buildProfileView(context, "알림 설정", () {
-                                          /*알림 설정하는 함수*/
-                                        }, "bell.svg"),
-                                        buildProfileView(context, "로그아웃", () {
-                                          /* 로그아웃 하는 함수*/
-                                        }, "logout.svg"),
-                                        buildProfileView(context, "회원 탈퇴", () {
-                                          /* 회원 탈퇴하는 함수 */
-                                        }, "withdrawal.svg")
-                                      ],
-                                    );
+                                                  );
+                                                });
+                                          }, "profile.svg"),
+                                          buildProfileView(context, "알림 설정",
+                                              () {
+                                            /*알림 설정하는 함수*/
+                                          }, "bell.svg"),
+                                          buildProfileView(context, "로그아웃", () {
+                                            /* 로그아웃 하는 함수*/
+                                          }, "logout.svg"),
+                                          buildProfileView(context, "회원 탈퇴",
+                                              () {
+                                            /* 회원 탈퇴하는 함수 */
+                                          }, "withdrawal.svg")
+                                        ],
+                                      );
+                                    });
                                   }).whenComplete(() => {
                                     setState(() {
                                       this.isSelected[3] = "0";
@@ -799,7 +762,8 @@ class UserPageState extends State<UserPage> {
                         width: 129.99998474121094,
                         height: 40.h,
                         decoration: BoxDecoration(
-                            borderRadius: BorderRadius.all(Radius.circular(27.h)),
+                            borderRadius:
+                                BorderRadius.all(Radius.circular(27.h)),
                             color: const Color(0xff00276b)),
                         child: Text("바로 주문",
                             style: const TextStyle(

@@ -71,6 +71,7 @@ class MyOrderPageState extends State<MyOrderPage> {
             Row(
               children: [
                 SizedBox(width: 9.w),
+                
                 Text(this.orderedStoreLength.toString() + "개"),
                 SizedBox(height: 8.h),
                 // ElevatedButton(

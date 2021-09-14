@@ -5,7 +5,7 @@ import 'package:sqflite/sqflite.dart';
 import 'package:path_provider/path_provider.dart';
 
 class UserMenuDatabase {
-  static final _databaseName = "My_Database2.db";
+  static final _databaseName = "My_Database6.db";
   static final _databaseVersion = 1;
 
   static final table = 'users_menus';
@@ -33,6 +33,7 @@ class UserMenuDatabase {
   // this opens the database (and creates it if it doesn't exist)
   _initDatabase() async {
     Directory documentsDirectory = await getApplicationDocumentsDirectory();
+    
     String path = join(documentsDirectory.path, _databaseName);
     print(_databaseName);
     return await openDatabase(path,
@@ -44,7 +45,7 @@ class UserMenuDatabase {
     print(table);
     print("ttt");
     await db.execute('''
-          CREATE TABLE $table (
+          CREATE TABLE IF NOT EXISTS $table (
             $userAccessToken STRING PRIMARY KEY,
             $storeName TEXT NOT NULL,
             $menuThumbnailPath STRING NOT NULL,

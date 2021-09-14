@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/rendering.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:get/get.dart';
 import 'package:save_order/model/model.dart';
 import 'package:save_order/widget/order_carousel.dart';
 import '/consts/color.dart';
@@ -51,12 +52,35 @@ class NearStoresPageState extends State<NearStoresPage> {
   Widget build(BuildContext context) {
     return Scaffold(
         backgroundColor: Colors.white,
+         appBar: AppBar(
+          elevation: 2,
+          leading: IconButton(
+            onPressed: () => Get.back(),
+            icon: SvgPicture.asset(
+              "assets/icons/backIcon.svg",
+              color: Color.fromRGBO(34, 34, 34, 1),
+            )),
+          title: Text("아름 드림", style: TextStyle(fontWeight: FontWeight.w700)),
+              actions: [
+            IconButton(
+              onPressed: () => print("검색하기"),
+              icon: SvgPicture.asset(
+                "assets/icons/searchIcon.svg",
+                color: Color.fromRGBO(34, 34, 34, 1),
+              ),
+            ),
+          ]),
         body: Container(
+           margin: EdgeInsets.only(top: 20.0.h, left: 20.0.w, right: 160.w, bottom: 14.h),
             width: ScreenUtil().screenWidth,
             height: ScreenUtil().screenHeight,
             child: Column(children: [
           Flexible(
               child: Row(children: [
+           Container(
+             child: FittedBox(
+               fit: BoxFit.fitHeight,
+               child: 
             Text("내 주변 매장",
                 style: const TextStyle(
                     color: const Color(0xff222222),
@@ -64,32 +88,45 @@ class NearStoresPageState extends State<NearStoresPage> {
                     fontFamily: "NotoSans",
                     fontStyle: FontStyle.normal,
                     fontSize: 18.0),
-                textAlign: TextAlign.left),
+                textAlign: TextAlign.left))),
             SizedBox(width: 160.w, height: 5.h),
+            Container(
+              width: 100.w,
+              height: 32.h,
+              child: 
             ElevatedButton(
               child: Row(
                   mainAxisAlignment: MainAxisAlignment.center,
                   crossAxisAlignment: CrossAxisAlignment.center,
                   children: <Widget>[
-                    SvgPicture.asset("assets/images/location.svg"),
-                    SizedBox(width: 3.w, height: 3.h),
-                    Text("현재위치",
+                    Container(
+                      margin: EdgeInsets.only(left: 3.w, top: 1.h, bottom: 1.h, right: 1.w),
+                      width: 24.w,
+                      height: 26.h,
+                      child:
+                    SvgPicture.asset("assets/images/location.svg", fit: BoxFit.fitHeight)
+                    ),
+                    Container(
+                      width: 54.w,
+                      height: 21.h,
+                      child: FittedBox(
+                        fit: BoxFit.fitHeight,
+                   child:  Text("현재위치",
                         style: const TextStyle(
                             color: const Color(0xff00276b),
                             fontWeight: FontWeight.w400,
                             fontFamily: "NotoSans",
                             fontStyle: FontStyle.normal,
-                            fontSize: 10.0))
+                            fontSize: 10.0))))
                   ]),
               onPressed: () => {this.loadCurLocation()}, // 현재 위치 불러오기
-
               style: ButtonStyle(
                   backgroundColor: MaterialStateProperty.all<Color>(NEAR_WHITE),
                   shape: MaterialStateProperty.all<RoundedRectangleBorder>(
                       RoundedRectangleBorder(
-                          borderRadius: BorderRadius.circular(4))),
-                  fixedSize: MaterialStateProperty.all<Size>(Size(100.w, 28.h))),
-            ),
+                          borderRadius: BorderRadius.circular(4.h))),
+                  ),
+            )),
           ])),
           Row(children: <Widget>[
             Expanded(
@@ -158,10 +195,15 @@ class NearStoresPageState extends State<NearStoresPage> {
                 textAlign: TextAlign.left),
             Row(children: [
               Container(
+                  margin: EdgeInsets.only(left: 15.w, bottom: 25.h, right: 8.w, top: 18.h),
                   width: 10.w,
                   height: 10.h,
                   child: SvgPicture.asset("assets/icons/위치icon.svg")),
-              SizedBox(width: 5.w, height: 5.h),
+                  Container(
+                    margin: EdgeInsets.only(right: 13.w),
+                    width: 48.w,
+                    height: 21.h,
+                  child: 
               Text(
                   //store.distance
                   (store.distanceFromCurPosition / 1000).toStringAsFixed(1) + "km",
@@ -170,42 +212,55 @@ class NearStoresPageState extends State<NearStoresPage> {
                       fontWeight: FontWeight.w400,
                       fontFamily: "Roboto",
                       fontStyle: FontStyle.normal,
-                      fontSize: 18.0)),
-              SizedBox(width: 7.w, height: 7.h),
+                      fontSize: 18.0))),
+
+              Container(
+                height: 32.h,
+                width: 50.w,
+                margin: EdgeInsets.only(right: 6.w, left: 8.w),
+                child:
+
               ElevatedButton(
-                  onPressed: () => {/*매장 에서 구매하는 api */},
-                  child: Text("매장",
+                  onPressed: () => {/*매장 에서 직접 사먹는 api */},
+                  child:
+                  Container(
+                    
+                    child: FittedBox(fit: BoxFit.fitHeight,
+                  child:
+                   Text("매장",
                       style: TextStyle(
                           color: NEAR_WHITE,
                           fontWeight: FontWeight.w400,
                           fontFamily: "NotoSans",
                           fontStyle: FontStyle.normal,
-                          fontSize: 14.0),
-                      textAlign: TextAlign.left),
+                          fontSize: 17.0),
+                      textAlign: TextAlign.left))),
                   style: ButtonStyle(
                       backgroundColor: MaterialStateProperty.all(DARK_BLUE),
                       shape: MaterialStateProperty.all<RoundedRectangleBorder>(
                           RoundedRectangleBorder(
                         borderRadius: BorderRadius.circular(5.h),
-                      )),
-                      fixedSize:
-                          MaterialStateProperty.all<Size>(
-                            Size(40.w, 22.h)
-                            ))),
-              SizedBox(
-                height: 5,
-                width: 5,
-              ),
+                      )),   
+                          ))),
+        
+           Container(
+                            height: 32.h,
+                           width: 50.w,
+                            child: 
               ElevatedButton(
                   onPressed: () => {/*매장 에서 포장하는 api */},
+                  child:
+                  
+                Container(child: FittedBox(
+                  fit: BoxFit.fitHeight, 
                   child: Text("포장",
                       style: TextStyle(
                           color: NEAR_WHITE,
                           fontWeight: FontWeight.w400,
                           fontFamily: "NotoSans",
                           fontStyle: FontStyle.normal,
-                          fontSize: 14.0),
-                      textAlign: TextAlign.left),
+                          fontSize: 17.0),
+                      textAlign: TextAlign.left))),
                   style: ButtonStyle(
                       backgroundColor:
                           MaterialStateProperty.all(LIGHT_SKY_BLUE),
@@ -213,10 +268,7 @@ class NearStoresPageState extends State<NearStoresPage> {
                           RoundedRectangleBorder(
                         borderRadius: BorderRadius.circular(smallRadiusSize),
                       )),
-                      fixedSize:
-                          MaterialStateProperty.all<Size>(
-                            Size(40.w, 22.h)
-                            ))),
+                     ))),
             ])
           ],
         )

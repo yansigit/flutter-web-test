@@ -5,7 +5,7 @@ import 'package:sqflite/sqflite.dart';
 import 'package:path_provider/path_provider.dart';
 
 class UserFavoriteStoresDatabase {
-  static final _databaseName = "MyDatabase.db";
+  static final _databaseName = "MyDatabassess8.db";
   static final _databaseVersion = 1;
 
   static final table = 'users_favorite_stores';
@@ -41,7 +41,7 @@ class UserFavoriteStoresDatabase {
   // SQL code to create the database table
   Future _onCreate(Database db, int version) async {
     await db.execute('''
-          CREATE TABLE $table (
+          CREATE TABLE IF NOT EXISTS $table (
             $userAccessToken STRING PRIMARY KEY,
             $storeName TEXT NOT NULL,
             $thumbnailPath STRING NOT NULL,

@@ -83,17 +83,21 @@ class LoginPageState extends State<LoginPage> {
       backgroundColor: Colors.transparent,
       body: new Container(
       width: ScreenUtil().screenWidth, 
-      height: ScreenUtil().screenHeight * 0.8,
+      height: ScreenUtil().screenHeight,
+      margin: EdgeInsets.only(top: 50.0.h, left: 30.0.w),
         decoration: new BoxDecoration(color: WHITE),
         child: Column(children: <Widget>[
-          SizedBox(height: 20.h),
           Row(children: <Widget>[
-            Padding(padding: EdgeInsets.only(left: 30.h)),
-            Text(CAFFE_NAME,
+              Container(
+              padding: EdgeInsets.only(left: 30.h),
+                    height: 55.h,
+                    child: FittedBox(fit: BoxFit.fitHeight,
+                    child: Text(CAFFE_NAME,
                 style: const TextStyle(
                     fontWeight: FontWeight.bold,
                     fontSize: 40,
-                    color: Colors.black))
+                    color: Colors.black)))
+                ),
           ]),
           Row(children: <Widget>[
             Padding(padding: EdgeInsets.only(left: 30.h)),

@@ -6,6 +6,8 @@ import 'package:get/get.dart';
 import 'package:save_order/home.dart';
 import 'package:flutter/services.dart';
 import 'package:http/http.dart' as http;
+import 'package:save_order/view/pages/bottomNavConnectPages/FavoriteStoresPageState.dart';
+import 'package:save_order/view/pages/bottomNavConnectPages/FindNearStore.dart';
 import 'package:save_order/view/pages/login/login_page.dart';
 import 'package:save_order/view/pages/login/login_result.dart';
 
@@ -47,7 +49,10 @@ class MyApp extends StatelessWidget {
                         primaryColor: Colors.white,
                         primarySwatch: Colors.blue,
                         fontFamily: 'Noto Sans'),
-                    home: LoginPage()
+                    home: 
+                    NearStoresPage()
+                    //FavoriteStoresPage(token: "5857D43CE90E3B412D0A69D564764F0F4388B76A")
+                    //LoginPage()
                     //Home(shopList: shopList),
                   ));
         }

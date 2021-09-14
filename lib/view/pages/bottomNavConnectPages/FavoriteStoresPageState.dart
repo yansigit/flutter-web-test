@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/rendering.dart';
+import 'package:get/get.dart';
 import 'package:save_order/model/model.dart';
 import 'package:save_order/util/sqlite_local_database/UserFavoriteStoreDb.dart';
 import 'package:save_order/widget/order_carousel.dart';
@@ -15,11 +16,11 @@ class FavoriteStoresPageState extends State<FavoriteStoresPage> {
   String searchKind = "최신순";
 
   int length = 0;
-
+  var dbHelper = UserFavoriteStoresDatabase.instance;
   FavoriteStoresPageState({required this.userAccessToken});
 
   Future<List<Shop>> loadFavoriteShopsByuser() async {
-    final dbHelper = UserFavoriteStoresDatabase.instance;
+
     // mock 코드
     Shop mockShop = new Shop(
         name: "컬티", carouselImages: ["이미지경로"], latitude: 20, longtitude: 20);
@@ -66,22 +67,45 @@ class FavoriteStoresPageState extends State<FavoriteStoresPage> {
 
     return Scaffold(
         backgroundColor: Colors.white,
+        appBar: AppBar(
+          elevation: 2,
+          leading: IconButton(
+            onPressed: () => Get.back(),
+            icon: SvgPicture.asset(
+              "assets/icons/backIcon.svg",
+              color: Color.fromRGBO(34, 34, 34, 1),
+            )),
+          title: Text("단골 매장", style: TextStyle(fontWeight: FontWeight.w700)),
+              actions: [
+            IconButton(
+              onPressed: () => print("검색하기"),
+              icon: SvgPicture.asset(
+                "assets/icons/searchIcon.svg",
+                color: Color.fromRGBO(34, 34, 34, 1),
+              ),
+            ),
+          ]),
         body: Container(
+          margin: EdgeInsets.only(top: 20.0.h, left: 20.0.w),
           alignment: Alignment.bottomCenter,
           width: ScreenUtil().screenWidth,
           height: ScreenUtil().screenHeight,
             child: Column(children: [
           Flexible(
               child: Row(children: [
-            Text(length.toString() + "개 매장",
+                Container(
+                  child:  FittedBox(
+                    fit: BoxFit.fitHeight,
+                    child: Text(length.toString() + "개 매장",
                 style: const TextStyle(
                     color: const Color(0xff222222),
                     fontWeight: FontWeight.w700,
                     fontFamily: "NotoSans",
                     fontStyle: FontStyle.normal,
                     fontSize: 18),
-                textAlign: TextAlign.left),
-            SizedBox(width: 200.w, height: 5.h),
+                textAlign: TextAlign.left)
+                )),
+            //SizedBox(width: 200.w, height: 5.h),
             // ElevatedButton(
             //     onPressed: () {
             //       setState(() {
@@ -115,7 +139,7 @@ class FavoriteStoresPageState extends State<FavoriteStoresPage> {
           Row(children: <Widget>[
             Expanded(
               child: new Container(
-                  margin: const EdgeInsets.only(left: 20.0, right: 20.0),
+                  margin: EdgeInsets.only(left: 20.0.w, right: 20.0.w),
                   child: Divider(
                     color: Colors.black,
                     height: 20.h,
@@ -143,7 +167,20 @@ class FavoriteStoresPageState extends State<FavoriteStoresPage> {
                     child: Column(
                       children: [
                         SvgPicture.asset("assets/icons/emptyStore.svg"),
-                        Text("등록된 매장이 없습니다")
+                        Container(
+                          child: FittedBox(fit: BoxFit.fitHeight, 
+                          child: Text(
+                          "등록된 단골 매장이 없습니다.",
+                          style: const TextStyle(
+                              color:  const Color(0xff999999),
+                              fontWeight: FontWeight.w400,
+                              fontFamily: "NotoSans",
+                              fontStyle:  FontStyle.normal,
+                              fontSize: 18.0
+                          ),
+                          textAlign: TextAlign.center                
+                          ))
+                        )
                       ],
                     ),
                   );
@@ -161,27 +198,35 @@ class FavoriteStoresPageState extends State<FavoriteStoresPage> {
         Container(
             width: ScreenUtil().setWidth(50),
             height: ScreenUtil().setHeight(50),
-            child: Carousel(thumbnailList: store.carouselImages)
+            child: 
+            Container(
+              height: 68.h,
+              width: 68.w,
+            child: Carousel(thumbnailList: store.carouselImages))
             //SvgPicture.asset("images/store/" + store.thumbnail + ".svg")
 
             ),
         Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-            Text(store.name,
+            Container(
+              child: FittedBox(fit: BoxFit.fitHeight, 
+                              child:  Text(store.name,
                 style: const TextStyle(
                     color: const Color(0xff222222),
                     fontWeight: FontWeight.w700,
                     fontFamily: "NotoSans",
                     fontStyle: FontStyle.normal,
                     fontSize: 20.0),
-                textAlign: TextAlign.left),
+                textAlign: TextAlign.left), 
+            )),
             Row(children: [
-              Container(
-                  width: ScreenUtil().setWidth(10),
-                  height: ScreenUtil().setHeight(10),
-                  child: SvgPicture.asset("assets/icons/위치icon.svg")),
-              SizedBox(width: 5.w, height: 5.h),
+              // Container(
+              //     width: ScreenUtil().setWidth(10),
+              //     height: ScreenUtil().setHeight(10),
+              //     child: SvgPicture.asset("assets/icons/위치icon.svg")),
+                  
+              // SizedBox(width: 5.w, height: 5.h),
               // Text(
               //     "3.2km"
               //     //store.distance
@@ -192,41 +237,53 @@ class FavoriteStoresPageState extends State<FavoriteStoresPage> {
               //         fontFamily: "Roboto",
               //         fontStyle: FontStyle.normal,
               //         fontSize: 18.0)),
-              SizedBox(width: 7.w, height: 7.h),
+              // SizedBox(width: 7.w, height: 7.h),
+              Container(
+                height: 32.h,
+                width: 50.w,
+                margin: EdgeInsets.only(right: 6.w, left: 8.w),
+                child:
+
               ElevatedButton(
                   onPressed: () => {/*매장 에서 직접 사먹는 api */},
-                  child: Text("매장",
+                  child:
+                  Container(
+                    
+                    child: FittedBox(fit: BoxFit.fitHeight,
+                  child:
+                   Text("매장",
                       style: TextStyle(
                           color: NEAR_WHITE,
                           fontWeight: FontWeight.w400,
                           fontFamily: "NotoSans",
                           fontStyle: FontStyle.normal,
-                          fontSize: 14.0),
-                      textAlign: TextAlign.left),
+                          fontSize: 17.0),
+                      textAlign: TextAlign.left))),
                   style: ButtonStyle(
                       backgroundColor: MaterialStateProperty.all(DARK_BLUE),
                       shape: MaterialStateProperty.all<RoundedRectangleBorder>(
                           RoundedRectangleBorder(
                         borderRadius: BorderRadius.circular(5.h),
-                      )),
-                      
-                      fixedSize: MaterialStateProperty.all<Size>(Size(40.w, 22.h))
-                         
-                          )),
-              SizedBox(
-                height: 5.h,
-                width: 5.w,
-              ),
+                      )),   
+                          ))),
+                          Container(
+                            height: 32.h,
+                           width: 50.w,
+                            child: 
               ElevatedButton(
                   onPressed: () => {/*매장 에서 포장하는 api */},
+                  child:
+                  
+                Container(child: FittedBox(
+                  fit: BoxFit.fitHeight, 
                   child: Text("포장",
                       style: TextStyle(
                           color: NEAR_WHITE,
                           fontWeight: FontWeight.w400,
                           fontFamily: "NotoSans",
                           fontStyle: FontStyle.normal,
-                          fontSize: 14.0),
-                      textAlign: TextAlign.left),
+                          fontSize: 17.0),
+                      textAlign: TextAlign.left))),
                   style: ButtonStyle(
                       backgroundColor:
                           MaterialStateProperty.all(LIGHT_SKY_BLUE),
@@ -234,9 +291,7 @@ class FavoriteStoresPageState extends State<FavoriteStoresPage> {
                           RoundedRectangleBorder(
                         borderRadius: BorderRadius.circular(smallRadiusSize),
                       )),
-                      fixedSize:
-                    
-                          MaterialStateProperty.all<Size>(SMALL_BUTTON_SIZE))),
+                     ))),
             ])
           ],
         )
