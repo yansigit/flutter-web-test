@@ -86,19 +86,29 @@ class LoginPageState extends State<LoginPage> {
               child: Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: <Widget>[
-                    Text(CAFFE_NAME,
-                        style: const TextStyle(
-                            fontWeight: FontWeight.bold,
-                            fontSize: 40,
-                            color: Colors.black)),
-                    Text(CAFFE_PHRASES,
-                        style: const TextStyle(
-                          fontSize: 20,
-                          color: SKY_BLUE,
-                          fontWeight: FontWeight.w400,
-                          fontFamily: "NotoSans",
-                          fontStyle: FontStyle.normal,
-                        )),
+                    Container(
+                      height: 55.h,
+                      child: FittedBox(
+                        fit: BoxFit.fitHeight,
+                        child: Text(CAFFE_NAME,
+                            style: const TextStyle(
+                                fontWeight: FontWeight.bold,
+                                color: Colors.black)),
+                      ),
+                    ),
+                    Container(
+                      height: 27.h,
+                      child: FittedBox(
+                        fit: BoxFit.fitHeight,
+                        child: Text(CAFFE_PHRASES,
+                            style: const TextStyle(
+                              color: PHRASE_COLOR,
+                              fontWeight: FontWeight.w400,
+                              fontFamily: "NotoSans",
+                              fontStyle: FontStyle.normal,
+                            )),
+                      ),
+                    ),
                     SvgPicture.asset(
                       "assets/icons/arumDreamLogo.svg",
                     ),
