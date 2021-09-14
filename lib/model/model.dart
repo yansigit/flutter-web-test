@@ -208,3 +208,16 @@ class CartOption {
     return ({'name': name, 'price': price, 'quantity': quantity});
   }
 }
+
+class Card {
+  String cardBank;
+  int cardNum;
+  int cardCRC;
+  int cardValidationDate;
+
+  Card(
+      {this.cardBank = "",
+      required this.cardNum,
+      required this.cardCRC,
+      required this.cardValidationDate});
+}

@@ -1,11 +1,13 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:flutter_svg/flutter_svg.dart';
 import 'package:get/get.dart';
 import 'package:save_order/page/orderstatus_page.dart';
 
 class BillingPage extends StatelessWidget {
-  const BillingPage({Key? key}) : super(key: key);
+  BillingPage({Key? key}) : super(key: key);
 
+  String couponNumber = "";
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -28,7 +30,7 @@ class BillingPage extends StatelessWidget {
         ),
       ),
       bottomNavigationBar: Container(
-        height: 100.h,
+        height: 75.h,
         decoration: BoxDecoration(
           boxShadow: [
             BoxShadow(
@@ -40,60 +42,47 @@ class BillingPage extends StatelessWidget {
           ],
           color: Color(0xffffffff),
         ),
-        child: InkWell(
-          onTap: (() => Get.bottomSheet(
-                OrderStatusPage(),
-                isDismissible: false,
-                isScrollControlled: true,
-              )),
-          child: Container(
-              margin: EdgeInsets.symmetric(vertical: 26.h, horizontal: 20.w),
-              decoration: BoxDecoration(
-                borderRadius: BorderRadius.all(Radius.circular(27.h)),
-                color: Color(0xff00276b),
-              ),
-              height: 48.h,
-              child: Row(
-                mainAxisAlignment: MainAxisAlignment.center,
-                children: [
-                  Container(width: 20.w, height: 20.h, color: Colors.red),
-                  Container(
-                    margin: EdgeInsets.symmetric(horizontal: 8.w),
-                    height: 27.h,
-                    child: FittedBox(
-                      fit: BoxFit.fitHeight,
-                      child: Text(
-                        "23,000원",
-                        style: TextStyle(
-                          color: Color(0xffffffff),
-                          fontWeight: FontWeight.w700,
-                        ),
+        child: Container(
+            margin: EdgeInsets.symmetric(horizontal: 20.w),
+            child: Row(
+              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+              crossAxisAlignment: CrossAxisAlignment.center,
+              children: [
+                Container(
+                  height: 22.h,
+                  child: FittedBox(
+                    fit: BoxFit.fitHeight,
+                    child: Text(
+                      "최종 결제 금액",
+                      style: TextStyle(
+                        color: Color(0xff707070),
                       ),
                     ),
                   ),
-                  Container(
-                    height: 27.h,
-                    child: FittedBox(
-                      fit: BoxFit.fitHeight,
-                      child: Text(
-                        "결제하기",
-                        style: TextStyle(
-                          color: Color(0xffffffff),
-                          fontWeight: FontWeight.w700,
-                        ),
+                ),
+                Container(
+                  height: 27.h,
+                  child: FittedBox(
+                    fit: BoxFit.fitHeight,
+                    child: Text(
+                      "23,000원",
+                      style: TextStyle(
+                        color: Color(0xff00276b),
+                        fontWeight: FontWeight.w700,
                       ),
                     ),
                   ),
-                ],
-              )),
-        ),
+                ),
+              ],
+            )),
       ),
     );
   }
 }
 
 class PaymentMethodWidget extends StatelessWidget {
-  const PaymentMethodWidget({
+  final TextEditingController tc1 = new TextEditingController();
+  PaymentMethodWidget({
     Key? key,
   }) : super(key: key);
 
@@ -131,10 +120,110 @@ class PaymentMethodWidget extends StatelessWidget {
                   ],
                   color: Color(0xffffffff),
                 ),
+                child: Row(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  crossAxisAlignment: CrossAxisAlignment.center,
+                  children: [
+                    Container(
+                        width: 40.w,
+                        height: 40.h,
+                        child: SvgPicture.asset(
+                          "assets/icons/ic_card.svg",
+                          fit: BoxFit.fill,
+                        )),
+                    Container(
+                        margin: EdgeInsets.only(left: 8.w),
+                        height: 31.h,
+                        child: FittedBox(
+                          fit: BoxFit.fitHeight,
+                          child: Text(
+                            "카드 결제",
+                            style: TextStyle(
+                              color: Color(0xff00276b),
+                              fontWeight: FontWeight.w700,
+                            ),
+                          ),
+                        )),
+                  ],
+                ),
               ),
             ),
             InkWell(
-              onTap: (() => print("현금 결제")),
+              onTap: (() {
+                Get.defaultDialog(
+                  title: "쿠폰 적용",
+                  content: Column(
+                    children: [
+                      Container(
+                        child: Row(
+                          mainAxisAlignment: MainAxisAlignment.center,
+                          children: [
+                            Container(
+                              width: 60.w,
+                              height: 60.h,
+                              child: TextFormField(
+                                textAlign: TextAlign.center,
+                                controller: tc1,
+                                autocorrect: false,
+                                //style: TextStyle(color: Color(0xff00276b)),
+                              ),
+                            ),
+                            Container(
+                              width: 60.w,
+                              height: 60.h,
+                              child: TextFormField(
+                                textAlign: TextAlign.center,
+                                controller: tc1,
+                                autocorrect: false,
+                                //style: TextStyle(color: Color(0xff00276b)),
+                              ),
+                            ),
+                            Container(
+                              width: 60.w,
+                              height: 60.h,
+                              child: TextFormField(
+                                textAlign: TextAlign.center,
+                                controller: tc1,
+                                autocorrect: false,
+                                //style: TextStyle(color: Color(0xff00276b)),
+                              ),
+                            ),
+                          ],
+                        ),
+                      ),
+                    ],
+                  ),
+                  // content: Column(
+                  //   mainAxisAlignment: MainAxisAlignment.center,
+                  //   crossAxisAlignment: CrossAxisAlignment.center,
+                  //   children: [
+                  //     Row(
+                  //       children: [
+                  //         TextFormField(
+                  //           textAlign: TextAlign.center,
+                  //           textCapitalization: TextCapitalization.characters,
+                  //           style: TextStyle(
+                  //             color: Color(0xff00276b),
+                  //           ),
+                  //           controller: tc1,
+                  //         ),
+                  //         Container(),
+                  //       ],
+                  //     ),
+                  //     Row(
+                  //       children: [
+                  //         Container(),
+                  //         Container(),
+                  //       ],
+                  //     ),
+                  //   ],
+                  // ),
+                  titleStyle: TextStyle(
+                    color: Color(0xff00276b),
+                    fontWeight: FontWeight.w700,
+                  ),
+                );
+              }),
               child: Container(
                 margin: EdgeInsets.symmetric(vertical: 5.h),
                 width: double.infinity,
@@ -151,6 +240,32 @@ class PaymentMethodWidget extends StatelessWidget {
                     ),
                   ],
                   color: Color(0xffffffff),
+                ),
+                child: Row(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  crossAxisAlignment: CrossAxisAlignment.center,
+                  children: [
+                    Container(
+                        width: 40.w,
+                        height: 40.h,
+                        child: SvgPicture.asset(
+                          "assets/icons/ic_coin.svg",
+                          fit: BoxFit.fill,
+                        )),
+                    Container(
+                        margin: EdgeInsets.only(left: 8.w),
+                        height: 31.h,
+                        child: FittedBox(
+                          fit: BoxFit.fitHeight,
+                          child: Text(
+                            "쿠폰 적용",
+                            style: TextStyle(
+                              color: Color(0xff00276b),
+                              fontWeight: FontWeight.w700,
+                            ),
+                          ),
+                        )),
+                  ],
                 ),
               ),
             ),
