@@ -71,8 +71,10 @@ class MyOrderPageState extends State<MyOrderPage> {
             Row(
               children: [
                 SizedBox(width: 9.w),
-                
-                Text(this.orderedStoreLength.toString() + "개"),
+                Container(
+                  
+                  child: 
+                Text(this.orderedStoreLength.toString() + "개")),
                 SizedBox(height: 8.h),
                 // ElevatedButton(
                 //   onPressed: () => {} // 검색해서 view 바꾸는 함수

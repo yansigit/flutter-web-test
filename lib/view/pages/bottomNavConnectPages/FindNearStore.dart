@@ -71,13 +71,14 @@ class NearStoresPageState extends State<NearStoresPage> {
             ),
           ]),
         body: Container(
-           margin: EdgeInsets.only(top: 20.0.h, left: 20.0.w, right: 160.w, bottom: 14.h),
+           margin: EdgeInsets.only(top: 20.0.h, left: 20.0.w, right: 80.w, bottom: 14.h),
             width: ScreenUtil().screenWidth,
             height: ScreenUtil().screenHeight,
             child: Column(children: [
           Flexible(
               child: Row(children: [
            Container(
+             margin: EdgeInsets.only(right: 20.w),
              child: FittedBox(
                fit: BoxFit.fitHeight,
                child: 
@@ -89,10 +90,9 @@ class NearStoresPageState extends State<NearStoresPage> {
                     fontStyle: FontStyle.normal,
                     fontSize: 18.0),
                 textAlign: TextAlign.left))),
-            SizedBox(width: 160.w, height: 5.h),
             Container(
-              width: 100.w,
-              height: 32.h,
+              width: 130.w,
+              height: 25.h,
               child: 
             ElevatedButton(
               child: Row(
@@ -101,14 +101,15 @@ class NearStoresPageState extends State<NearStoresPage> {
                   children: <Widget>[
                     Container(
                       margin: EdgeInsets.only(left: 3.w, top: 1.h, bottom: 1.h, right: 1.w),
+                      padding: EdgeInsets.only(left: 3.w),
                       width: 24.w,
-                      height: 26.h,
+                      height: 15.h,
                       child:
                     SvgPicture.asset("assets/images/location.svg", fit: BoxFit.fitHeight)
                     ),
                     Container(
                       width: 54.w,
-                      height: 21.h,
+                      height: 27.h,
                       child: FittedBox(
                         fit: BoxFit.fitHeight,
                    child:  Text("현재위치",
@@ -131,7 +132,7 @@ class NearStoresPageState extends State<NearStoresPage> {
           Row(children: <Widget>[
             Expanded(
               child: new Container(
-                  margin: const EdgeInsets.only(left: 20.0, right: 20.0),
+                  margin: EdgeInsets.only(left: 20.0.w, right: 20.0.w),
                   child: Divider(
                     color: Colors.black,
                     height: 20.h,
