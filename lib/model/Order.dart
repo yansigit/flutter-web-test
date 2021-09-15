@@ -84,7 +84,7 @@ class Order {
   String menuThumbnail;
 
   Order(
-      [this.storeThumbnail = "images/store/위치icon.svg",
+      [this.storeThumbnail = "assets/icons/위치icon.svg",
       this.storeName = "킬티",
       this.orderDetail = "아메리카노 2잔",
       this.menuThumbnail = "images/store/위치icon.svg"]);

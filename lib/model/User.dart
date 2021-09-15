@@ -1,10 +1,11 @@
+import 'package:save_order/model/Shop.dart';
 import 'package:save_order/model/model.dart';
 
 import 'Order.dart';
 
 class StoreAndCoupon {
   int couponNumber;
-  Shop shop;
+  MockShop shop;
   StoreAndCoupon(this.couponNumber, this.shop);
 }
 
@@ -26,6 +27,6 @@ class User {
       this.phoneNumber = "미입력",
       this.birthday = "미입력",
       this.gender = "미입력",
-      this.thumbnail = "images/store/위치icon.svg",
+      this.thumbnail = "assets/icons/위치icon.svg",
       this.email = "lyn312@google.com"]);
 }

@@ -2,6 +2,7 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:get/get.dart';
+import 'package:save_order/model/model.dart';
 import 'package:save_order/util/sqlite_local_database/UserMenuDatabase.dart';
 import 'package:save_order/view/pages/Controller/ProfileController.dart';
 import '/consts/color.dart';
@@ -18,6 +19,7 @@ class UserPageState extends State<UserPage> {
   String userAccessToken = "";
   List<SavedMenu> savedMenus = [];
   var isInserted = false;
+  List<StoreAndCoupon> couponsOfStores = [];
   User user = new User(
     "서윤",
     "리나",
@@ -36,10 +38,8 @@ class UserPageState extends State<UserPage> {
     print(mapMenu);
     // no problem
     mapMenu[UserMenuDatabase.userAccessToken] = this.userAccessToken;
-    if (isInserted == false) {
-      await dbHelper.insert(mapMenu);
-      isInserted = true;
-    }
+
+    //await dbHelper.insert(mapMenu);
 
     // mock 코드
     List<Map<String, dynamic>> userMenus =
@@ -55,12 +55,17 @@ class UserPageState extends State<UserPage> {
 
   UserPageState(String accessToken) {
     this.userAccessToken = accessToken;
-    // user.myMenus.add(new MyOrder());
     // StoreAndCoupon storeAndCoupon1 = new StoreAndCoupon(10, new Shop());
     // StoreAndCoupon storeAndCoupon2 = new StoreAndCoupon(5, new Shop());
     // user.couponsOfStores.add(storeAndCoupon1);
     // user.couponsOfStores.add(storeAndCoupon2);
-    //user.visitedStoreNumber = user.couponsOfStores.length;
+    user.visitedStoreNumber = user.couponsOfStores.length;
+    StoreAndCoupon storeAndCoupon1 = new StoreAndCoupon(10, new MockShop());
+    StoreAndCoupon storeAndCoupon2 = new StoreAndCoupon(5, new MockShop());
+    couponsOfStores.add(storeAndCoupon1);
+    couponsOfStores.add(storeAndCoupon2);
+    print(user.visitedStoreNumber);
+    print("lllllldafdfsa");
   }
 
   Widget build(BuildContext context) {
@@ -74,6 +79,9 @@ class UserPageState extends State<UserPage> {
     String name = user.name;
     bool editable = false;
 
+    print("bb");
+    print(couponsOfStores.length);
+    print("aa");
     return Scaffold(
         backgroundColor: Colors.white,
         body: SingleChildScrollView(
@@ -84,43 +92,55 @@ class UserPageState extends State<UserPage> {
                 child: Column(
                   children: <Widget>[
                     Row(children: <Widget>[
-                      SvgPicture.asset(this.user.thumbnail),
-                      SizedBox(height: 62.h, width: 3.w),
+                      Container(
+                        margin: EdgeInsets.only(
+                            top: 60.h, left: 20.w, bottom: 50.h, right: 15.w),
+                        height: 62.h,
+                        width: 62.w,
+                        child: FittedBox(
+                          fit: BoxFit.fitHeight,
+                          child: SvgPicture.asset(this.user.thumbnail),
+                        ),
+                      ),
                       Column(
                         children: [
-                          Text('''$name 님,''',
-                              maxLines: 2,
-                              style: TextStyle(
-                                  color: const Color(0xffffffff),
-                                  fontWeight: FontWeight.w400,
-                                  fontFamily: "NotoSans",
-                                  fontStyle: FontStyle.normal,
-                                  fontSize: 28.0)),
-                          Text('''안녕하세요!''',
-                              maxLines: 2,
-                              style: TextStyle(
-                                  color: const Color(0xffffffff),
-                                  fontWeight: FontWeight.w400,
-                                  fontFamily: "NotoSans",
-                                  fontStyle: FontStyle.normal,
-                                  fontSize: 28.0))
+                          Container(
+                            margin: EdgeInsets.only(
+                                top: 60.h, left: 15.w, bottom: 10.h),
+                            height: 35.h,
+                            width: 124.w,
+                            child: FittedBox(
+                              fit: BoxFit.fitHeight,
+                              child: Text('''$name 님,''',
+                                  maxLines: 2,
+                                  style: TextStyle(
+                                      color: const Color(0xffffffff),
+                                      fontWeight: FontWeight.w400,
+                                      fontFamily: "NotoSans",
+                                      fontStyle: FontStyle.normal,
+                                      fontSize: 28.0)),
+                            ),
+                          ),
+                          Container(
+                            margin: EdgeInsets.only(left: 15.w, bottom: 50.h),
+                            height: 35.h,
+                            width: 124.w,
+                            child: FittedBox(
+                                fit: BoxFit.fitHeight,
+                                child: Text('''안녕하세요!''',
+                                    maxLines: 2,
+                                    style: TextStyle(
+                                        color: const Color(0xffffffff),
+                                        fontWeight: FontWeight.w400,
+                                        fontFamily: "NotoSans",
+                                        fontStyle: FontStyle.normal,
+                                        fontSize: 28.0))),
+                          ),
                         ],
                       )
                     ]),
                     Row(
-                      children: <Widget>[
-                        SizedBox(
-                          width: 335.w,
-                          height: 75.h,
-                        )
-                      ],
-                    ),
-                    Row(
                       children: [
-                        SizedBox(
-                          width: 27.w,
-                          height: 20.h,
-                        ),
                         new GestureDetector(
                           onTap: () {
                             setState(() {
@@ -155,44 +175,74 @@ class UserPageState extends State<UserPage> {
                                               children: [
                                                 SvgPicture.asset(
                                                     "assets/icons/emptyMenu.svg"),
-                                                SizedBox(height: 5),
-                                                Text("등록된 메뉴가 없습니다.",
-                                                    style: const TextStyle(
-                                                        color: const Color(
-                                                            0xff999999),
-                                                        fontWeight:
-                                                            FontWeight.w400,
-                                                        fontFamily: "NotoSans",
-                                                        fontStyle:
-                                                            FontStyle.normal,
-                                                        fontSize: 18.0),
-                                                    textAlign:
-                                                        TextAlign.center),
-                                                SizedBox(height: 5.h),
-                                                Text(
-                                                    '''자주 드시는 음료를 나의 메뉴로 등록하시면''',
-                                                    style: const TextStyle(
-                                                        color: const Color(
-                                                            0xff999999),
-                                                        fontWeight:
-                                                            FontWeight.w400,
-                                                        fontFamily: "NotoSans",
-                                                        fontStyle:
-                                                            FontStyle.normal,
-                                                        fontSize: 14.0),
-                                                    textAlign:
-                                                        TextAlign.center),
-                                                Text('''보다 간편하게 주문하실 수 있습니다.''',
-                                                    style: const TextStyle(
-                                                        color: const Color(
-                                                            0xff999999),
-                                                        fontWeight:
-                                                            FontWeight.w400,
-                                                        fontFamily: "NotoSans",
-                                                        fontStyle:
-                                                            FontStyle.normal,
-                                                        fontSize: 14.0),
-                                                    textAlign: TextAlign.center)
+                                                Container(
+                                                  margin: EdgeInsets.only(
+                                                      top: 15.h,
+                                                      bottom: 15.h,
+                                                      left: 105.w,
+                                                      right: 105.w),
+                                                  height: 24.h,
+                                                  width: 164.w,
+                                                  child: FittedBox(
+                                                    fit: BoxFit.fitHeight,
+                                                    child: Text("등록된 메뉴가 없습니다.",
+                                                        style: const TextStyle(
+                                                            color: const Color(
+                                                                0xff999999),
+                                                            fontWeight:
+                                                                FontWeight.w400,
+                                                            fontFamily:
+                                                                "NotoSans",
+                                                            fontStyle: FontStyle
+                                                                .normal,
+                                                            fontSize: 18.0),
+                                                        textAlign:
+                                                            TextAlign.center),
+                                                  ),
+                                                ),
+                                                Container(
+                                                  width: 226.w,
+                                                  height: 19.h,
+                                                  child: FittedBox(
+                                                    fit: BoxFit.fitHeight,
+                                                    child: Text(
+                                                        '''자주 드시는 음료를 나의 메뉴로 등록하시면''',
+                                                        style: const TextStyle(
+                                                            color: const Color(
+                                                                0xff999999),
+                                                            fontWeight:
+                                                                FontWeight.w400,
+                                                            fontFamily:
+                                                                "NotoSans",
+                                                            fontStyle: FontStyle
+                                                                .normal,
+                                                            fontSize: 14.0),
+                                                        textAlign:
+                                                            TextAlign.center),
+                                                  ),
+                                                ),
+                                                Container(
+                                                  height: 19.h,
+                                                  width: 226.w,
+                                                  child: FittedBox(
+                                                      fit: BoxFit.fitHeight,
+                                                      child: Text(
+                                                          '''보다 간편하게 주문하실 수 있습니다.''',
+                                                          style: const TextStyle(
+                                                              color: const Color(
+                                                                  0xff999999),
+                                                              fontWeight:
+                                                                  FontWeight
+                                                                      .w400,
+                                                              fontFamily:
+                                                                  "NotoSans",
+                                                              fontStyle:
+                                                                  FontStyle
+                                                                      .normal,
+                                                              fontSize: 14.0),
+                                                          textAlign: TextAlign
+                                                              .center)),
+                                                ),
                                               ],
                                             );
                                           } else {
@@ -209,21 +259,25 @@ class UserPageState extends State<UserPage> {
                             });
                             //  나의 메뉴 보여주는 view
                           },
-                          child: Text(
-                            "나의 메뉴",
-                            style: TextStyle(
-                                color: this.isSelected[1] == "1"
-                                    ? const Color(0xffffffff)
-                                    : const Color(0xff6288c9),
-                                fontWeight: FontWeight.w400,
-                                fontFamily: "NotoSans",
-                                fontStyle: FontStyle.normal,
-                                fontSize: 20.0),
+                          child: Container(
+                            margin: EdgeInsets.only(left: 20.w, right: 25.w),
+                            height: 30.h,
+                            width: 72.w,
+                            child: FittedBox(
+                              fit: BoxFit.fitHeight,
+                              child: Text(
+                                "나의 메뉴",
+                                style: TextStyle(
+                                    color: this.isSelected[1] == "1"
+                                        ? const Color(0xffffffff)
+                                        : const Color(0xff6288c9),
+                                    fontWeight: FontWeight.w400,
+                                    fontFamily: "NotoSans",
+                                    fontStyle: FontStyle.normal,
+                                    fontSize: 20.0),
+                              ),
+                            ),
                           ),
-                        ),
-                        SizedBox(
-                          width: 27.w,
-                          height: 20.h,
                         ),
                         new GestureDetector(
                           onTap: () {
@@ -232,23 +286,41 @@ class UserPageState extends State<UserPage> {
                               showModalBottomSheet<void>(
                                   context: context,
                                   builder: (context) {
-                                    return this.user.visitedStoreNumber == 0
-                                        ? Text("등록된 쿠폰이 없습니다.")
+                                    return this.couponsOfStores.length == 0
+                                        ? Column(
+                                            children: [
+                                              Container(
+                                                margin: EdgeInsets.only(
+                                                    bottom: 8.h),
+                                                height: 60.h,
+                                                width: 60.w,
+                                                child: FittedBox(
+                                                  fit: BoxFit.fitHeight,
+                                                  child: SvgPicture.asset(
+                                                      "assets/icons/Ic_EmptyCoupon.svg"),
+                                                ),
+                                              ),
+                                              Container(
+                                                height: 24.h,
+                                                width: 146.w,
+                                                child: FittedBox(
+                                                    fit: BoxFit.fitHeight,
+                                                    child:
+                                                        Text("등록된 쿠폰이 없습니다.")),
+                                              )
+                                            ],
+                                          )
                                         : ListView.separated(
                                             shrinkWrap: true,
                                             scrollDirection: Axis.vertical,
                                             itemBuilder: (context, index) {
-                                              return buildCouponView(
-                                                  context,
-                                                  this
-                                                      .user
-                                                      .couponsOfStores[index]);
+                                              return buildCouponView(context,
+                                                  couponsOfStores[index]);
                                             },
                                             separatorBuilder: (context, index) {
                                               return Divider();
                                             },
-                                            itemCount:
-                                                this.user.visitedStoreNumber);
+                                            itemCount: couponsOfStores.length);
                                   }).whenComplete(() => {
                                     setState(() {
                                       this.isSelected[2] = "0";
@@ -258,21 +330,25 @@ class UserPageState extends State<UserPage> {
 
                             // 쿠폰  모아두는 view
                           },
-                          child: Text(
-                            "쿠폰",
-                            style: TextStyle(
-                                color: this.isSelected[2] == "1"
-                                    ? const Color(0xffffffff)
-                                    : const Color(0xff6288c9),
-                                fontWeight: FontWeight.w400,
-                                fontFamily: "NotoSans",
-                                fontStyle: FontStyle.normal,
-                                fontSize: 20.0),
+                          child: Container(
+                            margin: EdgeInsets.only(left: 25.w, right: 25.w),
+                            height: 30.h,
+                            width: 72.w,
+                            child: FittedBox(
+                              fit: BoxFit.fitHeight,
+                              child: Text(
+                                "쿠폰",
+                                style: TextStyle(
+                                    color: this.isSelected[2] == "1"
+                                        ? const Color(0xffffffff)
+                                        : const Color(0xff6288c9),
+                                    fontWeight: FontWeight.w400,
+                                    fontFamily: "NotoSans",
+                                    fontStyle: FontStyle.normal,
+                                    fontSize: 20.0),
+                              ),
+                            ),
                           ),
-                        ),
-                        SizedBox(
-                          width: 27.w,
-                          height: 20.h,
                         ),
                         new GestureDetector(
                           onTap: () {
@@ -477,6 +553,7 @@ class UserPageState extends State<UserPage> {
                                                                             textAlign: TextAlign.left))),
                                                                 Container(
                                                                   child: Row(
+                                                                    
                                                                       children: [
                                                                         GestureDetector(
                                                                           onTap:
@@ -485,14 +562,14 @@ class UserPageState extends State<UserPage> {
                                                                               profileController.changeEditable();
                                                                             });
                                                                           },
-                                                                          child: Text(
+                                                                          child: 
+                                                                          
+                                                                          Text(
                                                                               "변경하기",
                                                                               style: const TextStyle(color: const Color(0xffffffff), fontWeight: FontWeight.w700, fontFamily: "NotoSans", fontStyle: FontStyle.normal, fontSize: 20.0),
                                                                               textAlign: TextAlign.center),
                                                                         ),
-                                                                        SizedBox(
-                                                                            width:
-                                                                                MediaQuery.of(context).size.width * 0.03),
+                                                                       
                                                                         GestureDetector(
                                                                           onTap:
                                                                               () {
@@ -531,18 +608,18 @@ class UserPageState extends State<UserPage> {
                                                     ),
                                                   );
                                                 });
-                                          }, "profile.svg"),
+                                          }, "assets/icons/profile.svg"),
                                           buildProfileView(context, "알림 설정",
                                               () {
                                             /*알림 설정하는 함수*/
-                                          }, "bell.svg"),
+                                          }, "assets/icons/bell.svg"),
                                           buildProfileView(context, "로그아웃", () {
                                             /* 로그아웃 하는 함수*/
-                                          }, "logout.svg"),
+                                          }, "assets/icons/logout.svg"),
                                           buildProfileView(context, "회원 탈퇴",
                                               () {
                                             /* 회원 탈퇴하는 함수 */
-                                          }, "withdrawal.svg")
+                                          }, "assets/icons/withdrawal.svg")
                                         ],
                                       );
                                     });
@@ -579,46 +656,62 @@ class UserPageState extends State<UserPage> {
     final childrenOfColumn = <Widget>[];
     childrenOfColumn.add(Align(
       alignment: Alignment.topLeft,
-      child: Text(storeAndCoupon.shop.name,
-          style: const TextStyle(
-              color: const Color(0xff222222),
-              fontWeight: FontWeight.w700,
-              fontFamily: "NotoSans",
-              fontStyle: FontStyle.normal,
-              fontSize: 20.0),
-          textAlign: TextAlign.left),
+      child: Container(
+        margin: EdgeInsets.only(left: 7.w, bottom: 8.h, right: 82.w, top: 18.h),
+        height: 23.h,
+        width: 170.w,
+        child: FittedBox(
+          fit: BoxFit.fitHeight,
+          child: Text(storeAndCoupon.shop.name,
+              style: const TextStyle(
+                  color: const Color(0xff222222),
+                  fontWeight: FontWeight.w700,
+                  fontFamily: "NotoSans",
+                  fontStyle: FontStyle.normal,
+                  fontSize: 20.0),
+              textAlign: TextAlign.left),
+        ),
+      ),
     ));
-    childrenOfColumn.add(
-      SizedBox(height: MediaQuery.of(context).size.height * 0.02),
-    );
 
     final childrenOfRowCoupon = <Widget>[];
 
     for (var i = 0; i < storeAndCoupon.couponNumber; i++) {
       if (i == MAX_SEEN_COUPON_NUM) {
-        childrenOfRowCoupon.add(Text(
-            "+" +
-                (storeAndCoupon.couponNumber - MAX_SEEN_COUPON_NUM).toString(),
-            style: const TextStyle(
-                color: const Color(0xff00276b),
-                fontWeight: FontWeight.w700,
-                fontFamily: "NotoSans",
-                fontStyle: FontStyle.normal,
-                fontSize: 22.0),
-            textAlign: TextAlign.left));
+        childrenOfRowCoupon.add(
+          Container(
+            margin:
+                EdgeInsets.only(left: 6.w, bottom: 15.h, right: 3.w, top: 10.h),
+            height: 25.h,
+            width: 36.w,
+            child: FittedBox(
+                fit: BoxFit.fitHeight,
+                child: Text(
+                    "+" +
+                        (storeAndCoupon.couponNumber - MAX_SEEN_COUPON_NUM)
+                            .toString(),
+                    style: const TextStyle(
+                        color: const Color(0xff00276b),
+                        fontWeight: FontWeight.w700,
+                        fontFamily: "NotoSans",
+                        fontStyle: FontStyle.normal,
+                        fontSize: 22.0),
+                    textAlign: TextAlign.left)),
+          ),
+        );
         break;
       }
-      childrenOfRowCoupon.add(SvgPicture.asset("assets/icons/stamp.svg"));
-      childrenOfRowCoupon.add(SizedBox(
-        width: MediaQuery.of(context).size.width * 0.03,
-      ));
+      childrenOfRowCoupon.add(Container(
+        margin: EdgeInsets.only(bottom: 5.h),
+        child: SvgPicture.asset("assets/icons/stamp.svg")));
     }
 
     final Widget row = Row(children: childrenOfRowCoupon);
     childrenOfColumn.add(row);
+
     return Row(
       children: [
-        SvgPicture.asset(storeAndCoupon.shop.carouselImages[0]),
+        SvgPicture.asset(storeAndCoupon.shop.thumbnail),
         Column(
           children: childrenOfColumn,
         )
@@ -627,26 +720,41 @@ class UserPageState extends State<UserPage> {
   }
 
   Widget buildProfileEditView(BuildContext context, ProfilePair profilePair) {
-    return SizedBox(
+    return Container(
       height: 68,
       child: Column(
         children: [
-          Text(profilePair.key,
-              style: const TextStyle(
-                  color: const Color(0xff222222),
-                  fontWeight: FontWeight.w700,
-                  fontFamily: "NotoSansCJKKR",
-                  fontStyle: FontStyle.normal,
-                  fontSize: 18.0),
-              textAlign: TextAlign.left),
-          Text(profilePair.value,
-              style: const TextStyle(
-                  color: const Color(0xff666666),
-                  fontWeight: FontWeight.w400,
-                  fontFamily: "Roboto",
-                  fontStyle: FontStyle.normal,
-                  fontSize: 20.0),
-              textAlign: TextAlign.left)
+          Container(
+            margin: EdgeInsets.only(left: 20.w, bottom: 7.h, top: 192.h),
+            height: 27.h,
+            width: 49.w,
+            child: FittedBox(
+              fit: BoxFit.fitHeight,
+              child: Text(profilePair.key,
+                  style: const TextStyle(
+                      color: const Color(0xff222222),
+                      fontWeight: FontWeight.w700,
+                      fontFamily: "NotoSansCJKKR",
+                      fontStyle: FontStyle.normal,
+                      fontSize: 18.0),
+                  textAlign: TextAlign.left),
+            ),
+          ),
+          Container(
+            margin: EdgeInsets.only(left: 19.w, bottom: 10.h, top: 7.h),
+            height: 24.h,
+            width: 187.w,
+            child: FittedBox(
+                fit: BoxFit.fitHeight,
+                child: Text(profilePair.value,
+                    style: const TextStyle(
+                        color: const Color(0xff666666),
+                        fontWeight: FontWeight.w400,
+                        fontFamily: "Roboto",
+                        fontStyle: FontStyle.normal,
+                        fontSize: 20.0),
+                    textAlign: TextAlign.left)),
+          ),
         ],
       ),
     );
@@ -654,21 +762,25 @@ class UserPageState extends State<UserPage> {
 
   Widget buildProfileView(BuildContext context, String viewName,
       VoidCallback callBack, String imagePath) {
-    return SizedBox(
-        height: 68,
+    print(viewName);
+    return Container(
+        width: 375.w,
+        height: 68.h,
         child: Row(
           children: [
-            SvgPicture.asset("assets/icons/config/" + imagePath),
-            SizedBox(width: 4.w),
-            Text(viewName,
-                style: const TextStyle(
-                    color: const Color(0xff222222),
-                    fontWeight: FontWeight.w700,
-                    fontFamily: "NotoSans",
-                    fontStyle: FontStyle.normal,
-                    fontSize: 20.0),
-                textAlign: TextAlign.left),
-            SizedBox(width: 250.w),
+            SvgPicture.asset(imagePath),
+           
+      
+                 Text(viewName,
+                    style: const TextStyle(
+                        color: const Color(0xff222222),
+                        fontWeight: FontWeight.w700,
+                        fontFamily: "NotoSans",
+                        fontStyle: FontStyle.normal,
+                        fontSize: 20.0),
+                    textAlign: TextAlign.left),
+              
+            
             new GestureDetector(
                 onTap: () {
                   setState(() {
@@ -690,16 +802,18 @@ class UserPageState extends State<UserPage> {
           Column(
             children: [
               Row(children: [
-                Text(myMenu.menuName,
+                Container(
+                width: 93
+                    .w,
+                height: 35
+                    .h,
+                child:  Text(myMenu.menuName,
                     style: const TextStyle(
                         color: const Color(0xff222222),
                         fontWeight: FontWeight.w700,
                         fontFamily: "NotoSans",
                         fontStyle: FontStyle.normal,
-                        fontSize: 22.0)),
-                SizedBox(
-                  width: 35,
-                ),
+                        fontSize: 22.0))),
                 GestureDetector(
                     onTap: () {
                       setState(() {
@@ -710,19 +824,31 @@ class UserPageState extends State<UserPage> {
               ]),
               Row(
                 children: [
-                  SvgPicture.asset("images/store/location.svg"),
-                  SizedBox(width: 2),
-                  Text(myMenu.storeName,
+                  SvgPicture.asset("assets/icons/위치icon.svg"),
+               Container(
+                 margin: EdgeInsets.only(left: 2.w, top: 7.h),
+                width: 108
+                    .w,
+                height: 22
+                    .h,
+                child:   Text(myMenu.storeName,
                       style: const TextStyle(
                           color: const Color(0xff00276b),
                           fontWeight: FontWeight.w400,
                           fontFamily: "NotoSans",
                           fontStyle: FontStyle.normal,
                           fontSize: 16.0),
-                      textAlign: TextAlign.left)
+                      textAlign: TextAlign.left))
+                
                 ],
               ),
-              Text(
+                 Container(
+                 margin: EdgeInsets.only(left: 2.w, top: 2.h, bottom: 17.h),
+                width: 187
+                    .w,
+                height: 88
+                    .h,
+                child:     Text(
                 myMenu.options,
                 style: const TextStyle(
                     color: const Color(0xff707070),
@@ -730,7 +856,8 @@ class UserPageState extends State<UserPage> {
                     fontFamily: "NotoSans",
                     fontStyle: FontStyle.normal,
                     fontSize: 16.0),
-              ),
+              ),),
+            
               Row(
                 children: [
                   GestureDetector(
@@ -738,6 +865,7 @@ class UserPageState extends State<UserPage> {
                         // 메뉴  담는 버튼
                       },
                       child: Container(
+                        margin: EdgeInsets.only(right: 2.w, ),
                         width: 94.w,
                         height: 40.h,
                         decoration: BoxDecoration(
@@ -753,7 +881,6 @@ class UserPageState extends State<UserPage> {
                                 fontSize: 16.0),
                             textAlign: TextAlign.center),
                       )),
-                  SizedBox(height: 40.h, width: 3.w),
                   GestureDetector(
                       onTap: () {
                         // 메뉴  주문 버튼

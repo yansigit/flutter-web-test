@@ -5,7 +5,7 @@ import 'package:sqflite/sqflite.dart';
 import 'package:path_provider/path_provider.dart';
 
 class UserMenuDatabase {
-  static final _databaseName = "My_Database6.db";
+  static final _databaseName = "My_Database9.db";
   static final _databaseVersion = 1;
 
   static final table = 'users_menus';
@@ -33,7 +33,7 @@ class UserMenuDatabase {
   // this opens the database (and creates it if it doesn't exist)
   _initDatabase() async {
     Directory documentsDirectory = await getApplicationDocumentsDirectory();
-    
+
     String path = join(documentsDirectory.path, _databaseName);
     print(_databaseName);
     return await openDatabase(path,
@@ -46,7 +46,7 @@ class UserMenuDatabase {
     print("ttt");
     await db.execute('''
           CREATE TABLE IF NOT EXISTS $table (
-            $userAccessToken STRING PRIMARY KEY,
+            $userAccessToken STRING,
             $storeName TEXT NOT NULL,
             $menuThumbnailPath STRING NOT NULL,
             $options STRING NOT NULL,
@@ -60,8 +60,16 @@ class UserMenuDatabase {
   // Inserts a row in the database where each key in the Map is a column name
   // and the value is the column value. The return value is the id of the
   // inserted row.
+
   Future<int> insert(Map<String, dynamic> row) async {
     Database? db = await instance.database;
+    String id = row[UserMenuDatabase.userAccessToken];
+    String idKey = UserMenuDatabase.userAccessToken;
+    // int? count =
+    //   Sqflite.firstIntValue(await db!.rawQuery('SELECT * FROM $table WHERE $idKey="$id"'));
+    // if (count! > 0) {
+    //   return 0;
+    // }
     return await db!.insert(table, row);
   }
 

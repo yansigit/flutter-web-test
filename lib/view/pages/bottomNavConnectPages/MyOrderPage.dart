@@ -156,7 +156,7 @@ class MyOrderPageState extends State<MyOrderPage> {
   Widget buildStoreView(BuildContext context, MyOrder order) {
     return Container(
       width: 350.w,
-      height: 210.h,
+      height: 180.h,
       decoration: BoxDecoration(
           borderRadius: BorderRadius.all(Radius.circular(15.h)),
           border: Border.all(color: const Color(0xffededed), width: 1.w),
@@ -264,7 +264,7 @@ class MyOrderPageState extends State<MyOrderPage> {
                                                       ],
                                                     ),
                                                     width: 70.w,
-                                                    height: 32.h,
+                                                    height: 15.h,
                                                     decoration: BoxDecoration(
                                                         borderRadius:
                                                             BorderRadius.all(
@@ -292,7 +292,7 @@ class MyOrderPageState extends State<MyOrderPage> {
                                             children: [
                                               // svgpicture 커피 모양
                                               Container(
-                                                height: 31.h,
+                                                height: 26.h,
                                                 width: 208.w,
                                                 child: FittedBox(
                                                     fit: BoxFit.fitHeight,
@@ -324,8 +324,8 @@ class MyOrderPageState extends State<MyOrderPage> {
                                                           left: 20.w,
                                                           top: 20.h,
                                                           right: 265.w,
-                                                          bottom: 16.h),
-                                                      height: 24.h,
+                                                          bottom: 14.h),
+                                                      height: 17.h,
                                                       width: 90.w,
                                                       child: FittedBox(
                                                           fit: BoxFit.fitHeight,
@@ -360,7 +360,7 @@ class MyOrderPageState extends State<MyOrderPage> {
                                                           SvgPicture.asset(
                                                               "assets/icons/emptyOrder.svg"),
                                                           Container(
-                                                            height: 24.h,
+                                                            height: 18.h,
                                                             width: 148.w,
                                                             child: FittedBox(
                                                                 fit: BoxFit
@@ -410,7 +410,7 @@ class MyOrderPageState extends State<MyOrderPage> {
                               });
                             },
                             child: Container(
-                              height: 22.h,
+                              height: 15.h,
                               child: FittedBox(
                                   fit: BoxFit.fitHeight,
                                   child: Text(
@@ -442,8 +442,8 @@ class MyOrderPageState extends State<MyOrderPage> {
                 children: <Widget>[
                   Container(
                     margin: EdgeInsets.only(
-                        left: 15.w, top: 30.h, right: 62.w, bottom: 4.h),
-                    height: 27.h,
+                        left: 15.w, top: 20.h, right: 62.w, bottom: 4.h),
+                    height: 20.h,
                     width: 189.w,
                     child: FittedBox(
                       fit: BoxFit.fitHeight,
@@ -460,7 +460,7 @@ class MyOrderPageState extends State<MyOrderPage> {
                   ),
                   Container(
                     margin: EdgeInsets.only(
-                        left: 15.w, top: 40.h, right: 64.w, bottom: 30.h),
+                        left: 15.w, top: 40.h, right: 64.w, bottom: 17.h),
                     height: 19.h,
                     width: 187.w,
                     child: FittedBox(
