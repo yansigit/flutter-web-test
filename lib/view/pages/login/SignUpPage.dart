@@ -45,9 +45,9 @@ class SignUpPage extends State<SignUp> {
                     controller: emailController,
                     textAlign: TextAlign.left,
                     decoration: InputDecoration(
-                      border: OutlineInputBorder(),
-                      hintText: '이메일을 입력하세요.',
-                    ),
+                        border: OutlineInputBorder(),
+                        hintText: '이메일을 입력하세요.',
+                        hintStyle: TextStyle(fontSize: 14)),
                   ))
             ]),
             Row(children: <Widget>[
@@ -65,9 +65,9 @@ class SignUpPage extends State<SignUp> {
                     textAlign: TextAlign.left,
                     obscureText: true,
                     decoration: InputDecoration(
-                      border: OutlineInputBorder(),
-                      hintText: '비밀번호를 입력하세요.',
-                    ),
+                        border: OutlineInputBorder(),
+                        hintText: '비밀번호를 입력하세요.',
+                        hintStyle: TextStyle(fontSize: 14)),
                   ))
             ]),
             Container(
@@ -76,44 +76,47 @@ class SignUpPage extends State<SignUp> {
                 children: <Widget>[
                   Container(
                       height: 30.h,
-                        margin: EdgeInsets.only(left: 8.w, top: 8.h),
+                      margin: EdgeInsets.only(left: 8.w, top: 8.h),
                       child: ElevatedButton(
-                             style: ButtonStyle(
-                                side: MaterialStateProperty.all<BorderSide>(
-                                    BorderSide(
-                                        color: const Color(0xff00276b),
-                                        width: 1.w)),
-                                backgroundColor:
-                                    MaterialStateProperty.all(EMAIL_COLOR),
-                                shape: MaterialStateProperty.all<
-                                        RoundedRectangleBorder>(
-                                    RoundedRectangleBorder(
-                                        borderRadius: BorderRadius.circular(
-                                            loginRaiusSize))),
-                              ),
+                          style: ButtonStyle(
+                            side: MaterialStateProperty.all<BorderSide>(
+                                BorderSide(
+                                    color: const Color(0xff00276b),
+                                    width: 1.w)),
+                            backgroundColor:
+                                MaterialStateProperty.all(EMAIL_COLOR),
+                            shape: MaterialStateProperty.all<
+                                    RoundedRectangleBorder>(
+                                RoundedRectangleBorder(
+                                    borderRadius:
+                                        BorderRadius.circular(loginRaiusSize))),
+                          ),
                           onPressed: () async {
-                            var email = emailController.text;
-                            var password = passwordController.text;
+                            var email = emailController.text.toString();
+                            var password = passwordController.text.toString();
 
                             Map data = {"email": email, "password": password};
                             var body = json.encode(data);
-                          
-                            await http.Client().post(
+
+                            var response = await http.Client().post(
                                 Uri.parse(
                                     "http://${devMode()}.dalbodre.me/api/User/Register"),
+                                headers: <String, String>{
+                                  'Content-Type': 'application/json'
+                                },
                                 body: body);
+                            print(response.statusCode);
+                            print(json.decode(response.body));
                             Get.to(() => LoginPage());
                           },
-                          child: 
-                          
-                          Container(
+                          child: Container(
                               margin: EdgeInsets.only(
                                   right: 10.w,
                                   bottom: 8.h,
                                   top: 10.h,
                                   left: 10.w),
                               width: 250.w,
-                              height: 25.h,
+                              height: 30.h,
                               child: FittedBox(
                                   fit: BoxFit.fitHeight,
                                   child: Text("회원 가입 완료",
@@ -123,10 +126,7 @@ class SignUpPage extends State<SignUp> {
                                           color: Colors.blue,
                                           fontFamily: "NotoSans",
                                           fontStyle: FontStyle.normal,
-                                          fontSize: 10.0))))
-                                          
-                                          
-                                          ))
+                                          fontSize: 14.0))))))
                 ],
               ),
             )
