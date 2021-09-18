@@ -15,15 +15,17 @@ class FavoriteStoresPageState extends State<FavoriteStoresPage> {
   String userAccessToken = "";
   List<Shop> favoriteStores = List.empty();
   String searchKind = "최신순";
-
+  
   int length = 0;
   var dbHelper = UserFavoriteStoresDatabase.instance;
   static final storage = new FlutterSecureStorage();
+
 
   _asyncMethod() async {
     //read 함수를 통하여 key값에 맞는 정보를 불러오게 됩니다. 이때 불러오는 결과의 타입은 String 타입임을 기억해야 합니다.
     //(데이터가 없을때는 null을 반환을 합니다.)
     String? userInfo = await storage.read(key: "login");
+
     print(userInfo);
 
     //user의 정보가 있다면 바로 로그아웃 페이지로 넝어가게 합니다.
@@ -47,13 +49,13 @@ class FavoriteStoresPageState extends State<FavoriteStoresPage> {
         name: "컬티", carouselImages: ["이미지경로"], latitude: 20, longtitude: 20);
     Map<String, dynamic> newShop = mockShop.toMap();
     newShop[UserFavoriteStoresDatabase.userAccessToken] = this.userAccessToken;
-    await dbHelper.insert(newShop);
+    //await dbHelper.insert(newShop);
     // mock 코드 끝
-    print(this.userAccessToken);
     List<Map<String, dynamic>> stores =
         await dbHelper.queryRowByUserToken(this.userAccessToken);
 
     List<Shop> shops = [];
+    
     for (int i = 0; i < stores.length; i++) {
       var store = stores[i];
       var storeName = store[UserFavoriteStoresDatabase.storeName];
@@ -110,7 +112,8 @@ class FavoriteStoresPageState extends State<FavoriteStoresPage> {
                 Container(
                     child: FittedBox(
                         fit: BoxFit.fitHeight,
-                        child: Text(length.toString() + "개 매장",
+                        child: Text(
+                          " 개 매장",
                             style: const TextStyle(
                                 color: const Color(0xff222222),
                                 fontWeight: FontWeight.w700,

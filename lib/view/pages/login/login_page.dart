@@ -51,7 +51,7 @@ class LoginPageState extends State<LoginPage> {
               //NearStoresPage()
               //MyOrderPage("5857D43CE90E3B412D0A69D564764F0F4388B76A")
               //FavoriteStoresPage(token: "5857D43CE90E3B412D0A69D564764F0F4388B76A")
-              UserPage(this.token)));
+              UserPage()));
     } catch (e) {
       print("error on issuing access token: $e");
     }

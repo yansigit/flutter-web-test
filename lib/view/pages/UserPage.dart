@@ -11,6 +11,7 @@ import '/model/ProfilePair.dart';
 import '/model/Shop.dart';
 import '/model/User.dart';
 import 'package:flutter_svg/flutter_svg.dart';
+import 'package:flutter_secure_storage/flutter_secure_storage.dart';
 
 class UserPageState extends State<UserPage> {
   List<String> isSelected = ["0", "0", "0", "0"];
@@ -26,7 +27,7 @@ class UserPageState extends State<UserPage> {
     "010-3028-3745",
     "1999년3월12일",
   );
-
+  static final storage = new FlutterSecureStorage();
   List<ProfilePair> profilePairs = List.empty();
 
   Future<List<SavedMenu>> loadUserMenus() async {
@@ -53,8 +54,30 @@ class UserPageState extends State<UserPage> {
     return this.savedMenus;
   }
 
-  UserPageState(String accessToken) {
-    this.userAccessToken = accessToken;
+  _asyncMethod() async {
+    //read 함수를 통하여 key값에 맞는 정보를 불러오게 됩니다. 이때 불러오는 결과의 타입은 String 타입임을 기억해야 합니다.
+    //(데이터가 없을때는 null을 반환을 합니다.)
+    String? userInfo = await storage.read(key: "login");
+
+    print(userInfo);
+
+    //user의 정보가 있다면 바로 로그아웃 페이지로 넝어가게 합니다.
+    if (userInfo != null) {
+      var token = userInfo.split(" ")[5];
+      this.userAccessToken = token;
+    }
+  }
+
+    @override
+  void initState() {
+    super.initState();
+    WidgetsBinding.instance!.addPostFrameCallback((_) {
+      _asyncMethod();
+    });
+  }
+
+
+  UserPageState() {
     // StoreAndCoupon storeAndCoupon1 = new StoreAndCoupon(10, new Shop());
     // StoreAndCoupon storeAndCoupon2 = new StoreAndCoupon(5, new Shop());
     // user.couponsOfStores.add(storeAndCoupon1);
@@ -912,14 +935,9 @@ class UserPageState extends State<UserPage> {
 }
 
 class UserPage extends StatefulWidget {
-  String userAccessToken = "";
-
-  UserPage(String token) {
-    this.userAccessToken = token;
-  }
-
+  
   @override
   State<StatefulWidget> createState() {
-    return UserPageState(this.userAccessToken);
+    return UserPageState();
   }
 }
