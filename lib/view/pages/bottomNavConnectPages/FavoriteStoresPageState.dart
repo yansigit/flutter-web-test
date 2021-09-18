@@ -30,14 +30,15 @@ class FavoriteStoresPageState extends State<FavoriteStoresPage> {
     if (userInfo != null) {
       var token = userInfo.split(" ")[5];
       this.userAccessToken = token;
-      print(this.userAccessToken);
-      print("dddsdsddsdsdsd");
     }
   }
 
   @override
   void initState() {
     super.initState();
+    WidgetsBinding.instance!.addPostFrameCallback((_) {
+      _asyncMethod();
+    });
   }
 
   Future<List<Shop>> loadFavoriteShopsByuser() async {
@@ -48,7 +49,7 @@ class FavoriteStoresPageState extends State<FavoriteStoresPage> {
     newShop[UserFavoriteStoresDatabase.userAccessToken] = this.userAccessToken;
     await dbHelper.insert(newShop);
     // mock 코드 끝
-
+    print(this.userAccessToken);
     List<Map<String, dynamic>> stores =
         await dbHelper.queryRowByUserToken(this.userAccessToken);
 
@@ -74,7 +75,6 @@ class FavoriteStoresPageState extends State<FavoriteStoresPage> {
   void init() {
     this.favoriteStores = List.empty();
   }
-
 
   Widget build(BuildContext context) {
     this.init();

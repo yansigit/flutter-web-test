@@ -51,9 +51,6 @@ class _EmailLoginPage extends State<EmailLoginPage> {
       var email = userInfo!.split(" ")[1];
       var password = userInfo!.split(" ")[3];
       var token = userInfo!.split(" ")[5];
-
-      print("init email");
-      print("init password");
       emailController!.text = email;
       passwordController!.text = password;
       this.token = token;
@@ -116,14 +113,11 @@ class _EmailLoginPage extends State<EmailLoginPage> {
                                   'Content-Type': 'application/json'
                                 },
                         body: body);
-                    print(response.statusCode);
-
+                
                     final decodedToken = json.decode(response.body);
-                    print(decodedToken);
                     this.token = decodedToken["token"];
-                    print(this.token);
                     if (this.token!.length == 0) {
-                      print("no token accessed");
+                    
                       return;
                     }
                     await storage.write(
