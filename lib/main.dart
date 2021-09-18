@@ -54,9 +54,9 @@ class MyApp extends StatelessWidget {
                     home:
                     //MyOrderPage("5857D43CE90E3B412D0A69D564764F0F4388B76A") 
                     //NearStoresPage()
-                    UserPage("5857D43CE90E3B412D0A69D564764F0F4388B76A")
+                    // UserPage("5857D43CE90E3B412D0A69D564764F0F4388B76A")
                     //FavoriteStoresPage(token: "5857D43CE90E3B412D0A69D564764F0F4388B76A")
-                    //LoginPage()
+                    LoginPage()
                     //Home(shopList: shopList),
                   ));
         }

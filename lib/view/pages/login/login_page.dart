@@ -1,9 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:get/get.dart';
 import 'package:save_order/view/pages/UserPage.dart';
 import 'package:save_order/view/pages/bottomNavConnectPages/FavoriteStoresPageState.dart';
 import 'package:save_order/view/pages/bottomNavConnectPages/FindNearStore.dart';
 import 'package:save_order/view/pages/bottomNavConnectPages/MyOrderPage.dart';
+import 'package:save_order/view/pages/login/SignUpPage.dart';
 import 'package:save_order/view/pages/login/login_result.dart';
 import '/consts/cafe.dart';
 import '/consts/color.dart';
@@ -48,7 +50,7 @@ class LoginPageState extends State<LoginPage> {
               //NearStoresPage()
               //MyOrderPage("5857D43CE90E3B412D0A69D564764F0F4388B76A")
               //FavoriteStoresPage(token: "5857D43CE90E3B412D0A69D564764F0F4388B76A")
-              UserPage("5857D43CE90E3B412D0A69D564764F0F4388B76A")));
+              UserPage(this.token)));
     } catch (e) {
       print("error on issuing access token: $e");
     }
@@ -82,8 +84,12 @@ class LoginPageState extends State<LoginPage> {
         body: new Container(
             decoration: new BoxDecoration(color: WHITE),
             child: Container(
+              height: ScreenUtil().screenHeight,
               margin: EdgeInsets.only(top: 87.h, left: 30.w, right: 30.w),
+              child: SingleChildScrollView(
+              
               child: Column(
+                
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: <Widget>[
                     Container(
@@ -114,12 +120,12 @@ class LoginPageState extends State<LoginPage> {
                     ),
                     Column(
                       mainAxisAlignment: MainAxisAlignment.center,
-                      children: [
+                      children: <Widget>[
                         Container(
-                          margin: EdgeInsets.only(top: 24.5.h, bottom: 15.h),
+                          margin: EdgeInsets.only(top: 14.5.h, bottom: 15.h),
                           child: ElevatedButton(
                               child: Container(
-                                height: 54.h,
+                                height: 24.h,
                                 child: Row(
                                   mainAxisAlignment: MainAxisAlignment.center,
                                   crossAxisAlignment: CrossAxisAlignment.center,
@@ -163,11 +169,11 @@ class LoginPageState extends State<LoginPage> {
                                     EdgeInsets.only(left: 15.w, right: 16.5.w),
                                 child: Divider(
                                   color: Color(0xffd1d1d1),
-                                  height: 20,
+                                  height: 10,
                                 )),
                           ),
                           Container(
-                            height: 22.h,
+                            height: 12.h,
                             child: FittedBox(
                               fit: BoxFit.fitHeight,
                               child: Text("OR",
@@ -184,14 +190,14 @@ class LoginPageState extends State<LoginPage> {
                                     EdgeInsets.only(left: 16.5.w, right: 15.w),
                                 child: Divider(
                                   color: Color(0xffd1d1d1),
-                                  height: 20.h,
+                                  height: 10.h,
                                 )),
                           ),
                         ]),
                         // 애플 로그인 버튼
                         Container(
-                          margin: EdgeInsets.only(top: 15.h, bottom: 10.h),
-                          height: 54.h,
+                          margin: EdgeInsets.only(top: 10.h, bottom: 10.h),
+                          height: 20.h,
                           child: ElevatedButton(
                             child: Row(
                                 mainAxisAlignment: MainAxisAlignment.center,
@@ -205,7 +211,7 @@ class LoginPageState extends State<LoginPage> {
                                   ),
                                   Container(
                                     margin: EdgeInsets.only(left: 8.7.w),
-                                    height: 24.h,
+                                    height: 20.h,
                                     child: FittedBox(
                                       fit: BoxFit.fitHeight,
                                       child: Text(APPLE_LOGIN,
@@ -231,7 +237,8 @@ class LoginPageState extends State<LoginPage> {
                         ),
                         //이메일로 로그인
                         Container(
-                          height: 54.h,
+                          height: 25.h,
+                          margin: EdgeInsets.only(bottom: 8.h),
                           child: ElevatedButton(
                               child: Row(
                                   mainAxisAlignment: MainAxisAlignment.center,
@@ -246,16 +253,18 @@ class LoginPageState extends State<LoginPage> {
                                     ),
                                     Container(
                                       margin: EdgeInsets.only(left: 8.w),
-                                      height: 24.h,
+                                      height: 20.h,
                                       child: Text(EMAIL_LOGIN,
                                           style: TextStyle(
-                                              fontSize: 18,
+                                              fontSize: 14,
                                               fontFamily: "NotoSans",
                                               fontWeight: FontWeight.w700,
                                               color: const Color(0xff00276b))),
                                     )
                                   ]),
-                              onPressed: () => {}, // 이메일 로그인 api 불러오기
+                              onPressed: () => {
+
+                              }, // 이메일 로그인 api 불러오기
 
                               style: ButtonStyle(
                                 side: MaterialStateProperty.all<BorderSide>(
@@ -271,28 +280,48 @@ class LoginPageState extends State<LoginPage> {
                                             loginRaiusSize))),
                               )),
                         ),
-
-                        TextButton(
-                            onPressed: () => {},
-                            child:
-                                Text(SIGN_UP, style: TextStyle(fontSize: 16.0)))
+                             Container(
+                               
+                                      margin: EdgeInsets.only(left: 8.w, top: 8.h),
+                                      height: 30.h,
+                                      child: ElevatedButton(
+                                        onPressed: () => Get.to(SignUp()),
+                               child:
+                               Container(
+                                 height: 25.h,
+                                 child:
+                               FittedBox(
+                                 
+                                 fit: BoxFit.fitHeight,
+                                 child: Text(SIGN_UP, style: TextStyle( 
+                                   backgroundColor: Colors.white,
+                                   fontWeight: FontWeight.w400,
+                                                                      color: Colors.blue,
+                                                                    fontFamily: "NotoSans",
+                                                                    fontStyle:  FontStyle.normal,
+                                                                    fontSize: 10.0)))
+                                                                    
+                                                                    ),
+                                    style: ButtonStyle(
+                                side: MaterialStateProperty.all<BorderSide>(
+                                    BorderSide(
+                                        color: const Color(0xff00276b),
+                                        width: 1.w)),
+                                backgroundColor:
+                                    MaterialStateProperty.all(EMAIL_COLOR),
+                                shape: MaterialStateProperty.all<
+                                        RoundedRectangleBorder>(
+                                    RoundedRectangleBorder(
+                                        borderRadius: BorderRadius.circular(
+                                            loginRaiusSize))),
+                              ),
+                                    ))
                       ],
                     ),
-                    // 회원가입하는 버튼
-                    // TextButton(onPressed: () => {},
-                    //            child: Text(SIGN_UP, style: TextStyle( fontWeight: FontWeight.w400,
-                    //                                                   color: darkBlue,
-                    //                                                 fontFamily: "NotoSans",
-                    //                                                 fontStyle:  FontStyle.normal,
-                    //                                                 fontSize: 16.0)))
-
-                    // TextButton(
-                    //   child: Text(
-
-                    //   )
-                    // )
+              
+                    
                   ]),
-            )));
+            ))));
   }
 }
 
