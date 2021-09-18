@@ -6,6 +6,7 @@ import 'package:get/get.dart';
 import 'package:save_order/home.dart';
 import 'package:flutter/services.dart';
 import 'package:http/http.dart' as http;
+import 'package:save_order/page/card_page.dart';
 
 import 'model/model.dart';
 
@@ -43,7 +44,7 @@ class MyApp extends StatelessWidget {
                         brightness: Brightness.light,
                         primaryColor: Colors.white,
                         fontFamily: 'Noto Sans'),
-                    home: Home(shopList: shopList),
+                    home: CardPage(), //Home(shopList: shopList),
                   ));
         }
       },

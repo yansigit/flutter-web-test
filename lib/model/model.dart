@@ -73,6 +73,9 @@ class Category {
         'http://${devMode()}.dalbodre.me/api/Shop/${shopId}/getAllMenus');
     var response = await http.get(url);
     final decodedData = utf8.decode(response.bodyBytes);
+    if (decodedData.isEmpty) {
+      return [];
+    }
     return parseCategory(decodedData);
   }
 }

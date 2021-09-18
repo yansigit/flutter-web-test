@@ -17,12 +17,20 @@ class ShoppingCartPage extends StatelessWidget {
     print(cartListLength.toString());
     return Scaffold(
       appBar: AppBar(
+        backgroundColor: Colors.white,
         title: Text(
           "장바구니",
-          style: TextStyle(fontWeight: FontWeight.w700),
+          style: TextStyle(fontWeight: FontWeight.w700, color: Colors.black),
         ),
         centerTitle: true,
-        elevation: 5,
+        leading: IconButton(
+          icon: SvgPicture.asset(
+            "assets/icons/backIcon.svg",
+            color: Colors.black,
+          ),
+          onPressed: () => Get.back(),
+        ),
+        elevation: 2.0,
         actions: [
           Container(
               height: 20, child: Text("슈발", style: TextStyle(fontSize: 20))),
@@ -81,7 +89,7 @@ class ShoppingCartPage extends StatelessWidget {
                           child: FittedBox(
                             fit: BoxFit.fitHeight,
                             child: Text(
-                              "장바구니에 담으신 물품은 최대 7일간 보관됩니다.",
+                              "장바구니에 담으신 물품은 앱이 종료될 때까지 보관됩니다.",
                               style: TextStyle(
                                 color: Color(0xff707070),
                               ),
@@ -164,31 +172,7 @@ class ShoppingCartPage extends StatelessWidget {
                       ),
                     );
                   } else if (idx == 1) {
-                    return Container(
-                      width: double.infinity,
-                      height: 40.h,
-                      decoration: BoxDecoration(
-                        color: Color(0xfff8f8f8),
-                        border: Border(
-                          top: BorderSide(color: Color(0xffe8e8e8), width: 1),
-                        ),
-                      ),
-                      child: Padding(
-                        padding: EdgeInsets.only(top: 10.5.h, bottom: 10.5.h),
-                        child: Container(
-                          height: 19.h,
-                          child: FittedBox(
-                            fit: BoxFit.fitHeight,
-                            child: Text(
-                              "장바구니에 담으신 물품은 최대 7일간 보관됩니다.",
-                              style: TextStyle(
-                                color: Color(0xff707070),
-                              ),
-                            ),
-                          ),
-                        ),
-                      ),
-                    );
+                    return Container();
                   } else if (idx == 3) {
                     return InkWell(
                       onTap: (() => Get.back()),
@@ -276,16 +260,19 @@ class ShoppingCartPage extends StatelessWidget {
               itemCount: cartListLength != 0 ? cartListLength + 3 : 4),
         ),
       ),
-      bottomNavigationBar: BottomWidget(cartList: cartItemList),
+      bottomNavigationBar:
+          BottomWidget(cartList: cartItemList, cartListLength: cartListLength),
     );
   }
 }
 
 class BottomWidget extends StatelessWidget {
   final cartList;
+  final cartListLength;
   BottomWidget({
     Key? key,
     required this.cartList,
+    required this.cartListLength,
   }) : super(key: key);
 
   @override
@@ -333,7 +320,14 @@ class BottomWidget extends StatelessWidget {
           Padding(
             padding: EdgeInsets.only(left: 20.w, right: 20.w),
             child: InkWell(
-              onTap: (() => Get.to(BillingPage())),
+              onTap: (() {
+                if (cartListLength > 0) {
+                  Get.to(BillingPage());
+                } else {
+                  Get.snackbar("경고", "장바구니에 담긴 내역이 없습니다.",
+                      backgroundColor: Colors.white);
+                }
+              }),
               child: Container(
                 height: 48.h,
                 decoration: BoxDecoration(

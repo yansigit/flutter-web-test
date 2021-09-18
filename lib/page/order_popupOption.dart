@@ -1339,7 +1339,7 @@ class OptionBottomBar extends StatelessWidget {
           ),
           Container(
             child: Padding(
-              padding: const EdgeInsets.only(left: 20, right: 20, bottom: 30),
+              padding: EdgeInsets.only(left: 20.w, right: 20.w, bottom: 30.h),
               child: Row(
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: [

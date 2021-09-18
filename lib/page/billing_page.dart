@@ -4,6 +4,8 @@ import 'package:flutter_svg/flutter_svg.dart';
 import 'package:get/get.dart';
 import 'package:save_order/page/orderstatus_page.dart';
 
+import 'card_page.dart';
+
 class BillingPage extends StatelessWidget {
   BillingPage({Key? key}) : super(key: key);
 
@@ -82,6 +84,10 @@ class BillingPage extends StatelessWidget {
 
 class PaymentMethodWidget extends StatelessWidget {
   final TextEditingController tc1 = new TextEditingController();
+  final TextEditingController tc2 = new TextEditingController();
+  final TextEditingController tc3 = new TextEditingController();
+
+  String couponNo = "";
   PaymentMethodWidget({
     Key? key,
   }) : super(key: key);
@@ -102,7 +108,7 @@ class PaymentMethodWidget extends StatelessWidget {
                     child: Text("결제수단",
                         style: TextStyle(fontWeight: FontWeight.w700)))),
             InkWell(
-              onTap: (() => print("카드 결제")),
+              onTap: (() => Get.to(CardPage())),
               child: Container(
                 margin: EdgeInsets.symmetric(vertical: 5.h),
                 width: double.infinity,
@@ -155,69 +161,103 @@ class PaymentMethodWidget extends StatelessWidget {
                   content: Column(
                     children: [
                       Container(
+                        width: double.infinity,
                         child: Row(
                           mainAxisAlignment: MainAxisAlignment.center,
                           children: [
                             Container(
                               width: 60.w,
                               height: 60.h,
-                              child: TextFormField(
+                              child: TextField(
                                 textAlign: TextAlign.center,
                                 controller: tc1,
                                 autocorrect: false,
-                                //style: TextStyle(color: Color(0xff00276b)),
+                                maxLength: 4,
+                                style: TextStyle(color: Color(0xff00276b)),
+                                decoration: InputDecoration(
+                                  counterText: '',
+                                ),
                               ),
                             ),
+                            Container(
+                                height: 60.h,
+                                child: FittedBox(
+                                  fit: BoxFit.fitHeight,
+                                  child: Text(
+                                    "-",
+                                    style: TextStyle(
+                                      color: Color(0xff00276b),
+                                    ),
+                                  ),
+                                )),
                             Container(
                               width: 60.w,
                               height: 60.h,
                               child: TextFormField(
                                 textAlign: TextAlign.center,
-                                controller: tc1,
+                                controller: tc2,
                                 autocorrect: false,
-                                //style: TextStyle(color: Color(0xff00276b)),
+                                style: TextStyle(color: Color(0xff00276b)),
+                                maxLength: 4,
+                                decoration: InputDecoration(
+                                  counterText: '',
+                                ),
                               ),
                             ),
+                            Container(
+                                height: 60.h,
+                                child: FittedBox(
+                                  fit: BoxFit.fitHeight,
+                                  child: Text(
+                                    "-",
+                                    style: TextStyle(
+                                      color: Color(0xff00276b),
+                                    ),
+                                  ),
+                                )),
                             Container(
                               width: 60.w,
                               height: 60.h,
                               child: TextFormField(
                                 textAlign: TextAlign.center,
-                                controller: tc1,
+                                controller: tc3,
                                 autocorrect: false,
-                                //style: TextStyle(color: Color(0xff00276b)),
+                                maxLength: 4,
+                                style: TextStyle(color: Color(0xff00276b)),
+                                decoration: InputDecoration(
+                                  counterText: '',
+                                ),
                               ),
                             ),
                           ],
                         ),
                       ),
+                      OutlinedButton(
+                        onPressed: () {
+                          print("validation");
+                          final couponVal = tc1.text + tc2.text + tc3.text;
+                          //TODO 쿠폰 검증
+
+                          tc1.clear();
+                          tc2.clear();
+                          tc3.clear();
+                        },
+                        child: Container(
+                          width: 70.w,
+                          height: 40.h,
+                          child: Center(
+                            child: Text(
+                              "적용하기",
+                              style: TextStyle(
+                                color: Color(0xff00276b),
+                                fontWeight: FontWeight.w700,
+                              ),
+                            ),
+                          ),
+                        ),
+                      ),
                     ],
                   ),
-                  // content: Column(
-                  //   mainAxisAlignment: MainAxisAlignment.center,
-                  //   crossAxisAlignment: CrossAxisAlignment.center,
-                  //   children: [
-                  //     Row(
-                  //       children: [
-                  //         TextFormField(
-                  //           textAlign: TextAlign.center,
-                  //           textCapitalization: TextCapitalization.characters,
-                  //           style: TextStyle(
-                  //             color: Color(0xff00276b),
-                  //           ),
-                  //           controller: tc1,
-                  //         ),
-                  //         Container(),
-                  //       ],
-                  //     ),
-                  //     Row(
-                  //       children: [
-                  //         Container(),
-                  //         Container(),
-                  //       ],
-                  //     ),
-                  //   ],
-                  // ),
                   titleStyle: TextStyle(
                     color: Color(0xff00276b),
                     fontWeight: FontWeight.w700,

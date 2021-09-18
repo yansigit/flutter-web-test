@@ -5,12 +5,12 @@
     "version": "0.2.0",
     "configurations": [
         {
-            "name": "Save_Order",
+            "name": "세이브오더",
             "request": "launch",
             "type": "dart"
         },
         {
-            "name": "Save_Order (profile mode)",
+            "name": "세이브오더(테스트)",
             "request": "launch",
             "type": "dart",
             "flutterMode": "profile"
