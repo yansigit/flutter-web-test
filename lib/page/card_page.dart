@@ -1,21 +1,49 @@
+import 'package:card_scanner/card_scanner.dart';
+import 'package:card_scanner/models/card_details.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:get/get.dart';
 import 'package:flutter/cupertino.dart';
+import 'package:get/utils.dart';
 import 'package:save_order/state/controllers.dart';
 
-class CardPage extends StatelessWidget {
+class CardPage extends StatefulWidget {
+  @override
+  State<CardPage> createState() => _CardPageState();
+}
+
+class _CardPageState extends State<CardPage> {
   List<FocusNode> cardFocusNodeList = List.generate(4, (index) => FocusNode());
+
   List<FocusNode> validationFocusNodeList = List.generate(2, (index) => FocusNode());
+
   FocusNode cvcFocusNode = FocusNode();
 
   List<TextEditingController> cardTextController = List.generate(4, (i) => TextEditingController());
+
   List<TextEditingController> validationTextController = List.generate(2, (i) => TextEditingController());
+
   TextEditingController cvcController = TextEditingController();
 
   final CardController cardController = Get.put(CardController());
+
+  CardDetails _cardDetails = new CardDetails();
+  CardScanOptions scanOptions = CardScanOptions(
+    scanCardHolderName: false,
+    scanExpiryDate: true,
+    validCardsToScanBeforeFinishingScan: 7,
+    cardScannerTimeOut: 0,
+  );
+
+  Future<void> scanCard() async {
+    var cardDetails = await CardScanner.scanCard(scanOptions: scanOptions);
+    if (!mounted) return;
+    setState(() {
+      _cardDetails = cardDetails as CardDetails;
+    });
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -508,7 +536,27 @@ class CardPage extends StatelessWidget {
                           child: FittedBox(fit: BoxFit.contain, child: Text("결제하기", style: TextStyle(color: Color(0xff00276b)))))),
                   SizedBox(width: 10.w),
                   OutlinedButton(
-                      onPressed: () => print("click"),
+                      onPressed: () async {
+                        if (GetPlatform.isAndroid || GetPlatform.isIOS) {
+                          await scanCard();
+                          print(_cardDetails.toString());
+                          if (_cardDetails.cardNumber.isNotEmpty && _cardDetails.expiryDate.isNotEmpty) {
+                            String scanNum = _cardDetails.cardNumber;
+                            String scanExp = _cardDetails.expiryDate;
+
+                            cardTextController[0].text = scanNum.substring(0, 4);
+                            cardTextController[1].text = scanNum.substring(4, 8);
+                            cardTextController[2].text = scanNum.substring(8, 12);
+                            cardTextController[3].text = scanNum.substring(12, 16);
+
+                            validationTextController[0].text = scanExp.substring(0, 2);
+                            validationTextController[1].text = "20" + scanExp.substring(3, 5);
+                            Get.snackbar("카드입력", "입력이 완료되었습니다.", backgroundColor: Colors.white);
+                          }
+                        } else {
+                          Get.defaultDialog(title: "오류", middleText: "곧 출시될 앱을 이용해주세요!", textConfirm: "확인");
+                        }
+                      },
                       child: Container(
                           width: 70.w,
                           height: 40.h,
