@@ -502,11 +502,17 @@ class CardPage extends StatelessWidget {
                         print(cardController.cardNum.value);
                         print(cardController.cardValidation.value);
                       },
-                      child: Container(width: 70.w, height: 40.h, child: FittedBox(fit: BoxFit.contain, child: Text("결제하기")))),
+                      child: Container(
+                          width: 70.w,
+                          height: 40.h,
+                          child: FittedBox(fit: BoxFit.contain, child: Text("결제하기", style: TextStyle(color: Color(0xff00276b)))))),
                   SizedBox(width: 10.w),
                   OutlinedButton(
                       onPressed: () => print("click"),
-                      child: Container(width: 70.w, height: 40.h, child: FittedBox(fit: BoxFit.contain, child: Text("사진찍어\n카드입력")))),
+                      child: Container(
+                          width: 70.w,
+                          height: 40.h,
+                          child: FittedBox(fit: BoxFit.contain, child: Text("사진찍어\n카드입력", style: TextStyle(color: Color(0xff00276b)))))),
                 ],
               ),
             ],
