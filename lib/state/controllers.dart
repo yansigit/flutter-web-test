@@ -158,3 +158,16 @@ class ShopController extends GetxController {
     this.shopId.value = id;
   }
 }
+
+class CardController extends GetxController {
+  final cardNum = "".obs;
+  final cardValidation = "".obs;
+
+  updateCardInfo(val) {
+    cardNum.value = val;
+  }
+
+  updateCardValidation(val) {
+    cardValidation.value = val;
+  }
+}
