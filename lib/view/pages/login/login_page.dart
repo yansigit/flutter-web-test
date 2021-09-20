@@ -45,13 +45,13 @@ class LoginPageState extends State<LoginPage> {
       AccessTokenStore.instance.toStore(token);
       this.token = token;
 
-      Navigator.of(context).push(MaterialPageRoute(
-          builder: (context) =>
-              //MyOrderPage("5857D43CE90E3B412D0A69D564764F0F4388B76A")
-              //NearStoresPage()
-              //MyOrderPage("5857D43CE90E3B412D0A69D564764F0F4388B76A")
-              //FavoriteStoresPage(token: "5857D43CE90E3B412D0A69D564764F0F4388B76A")
-              UserPage()));
+      Navigator.of(context)
+          .push(MaterialPageRoute(builder: (context) => NearStoresPage()));
+      //NearStoresPage()
+      //MyOrderPage("5857D43CE90E3B412D0A69D564764F0F4388B76A")
+      //FavoriteStoresPage(token: "5857D43CE90E3B412D0A69D564764F0F4388B76A")
+      //UserPage()));
+      //MyOrderPage();
     } catch (e) {
       print("error on issuing access token: $e");
     }

@@ -518,7 +518,15 @@ class MyOrderPageState extends State<MyOrderPage> {
         width: 375.w,
         child: Row(
           children: [
-            SvgPicture.asset(myMenus.menuThumnail),
+            Container(
+                width: 100,
+                height: 100,
+                padding: EdgeInsets.all(5),
+                margin: EdgeInsets.only(bottom: 5),
+                decoration:
+                    BoxDecoration(border: Border.all(color: Colors.grey)),
+                child: Image.network(myMenus.menuThumnail, fit: BoxFit.contain),
+                ),
             Column(
               
               children: [
@@ -565,7 +573,6 @@ class MyOrderPageState extends State<MyOrderPage> {
 }
 
 class MyOrderPage extends StatefulWidget {
-
 
   @override
   State<StatefulWidget> createState() {

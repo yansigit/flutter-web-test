@@ -104,8 +104,6 @@ class FavoriteStoresPageState extends State<FavoriteStoresPage> {
         body: Container(
             margin: EdgeInsets.only(top: 20.0.h, left: 20.0.w),
             alignment: Alignment.bottomCenter,
-            width: ScreenUtil().screenWidth,
-            height: ScreenUtil().screenHeight,
             child: Column(children: [
               Flexible(
                   child: Row(children: [

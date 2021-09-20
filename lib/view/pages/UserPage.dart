@@ -33,7 +33,10 @@ class UserPageState extends State<UserPage> {
   Future<List<SavedMenu>> loadUserMenus() async {
     // mock 코드
     SavedMenu savedMenu =
-        new SavedMenu("이미지경로", "길티", "물 한잔/ 1샷추가/ 물 적게 넣어주세요", "아메리카노");
+        new SavedMenu("", "컬티", "물 한잔/ 1샷추가/ 물 적게 넣어주세요", "아메리카노");
+    
+    savedMenu.thumbnail = "https://arumdream.s3.ap-northeast-2.amazonaws.com/uploads/2/menus/" + savedMenu.menuName  + ".png";
+
     Map<String, dynamic> mapMenu = savedMenu.toMap();
     print("map");
     print(mapMenu);
@@ -68,14 +71,13 @@ class UserPageState extends State<UserPage> {
     }
   }
 
-    @override
+  @override
   void initState() {
     super.initState();
     WidgetsBinding.instance!.addPostFrameCallback((_) {
       _asyncMethod();
     });
   }
-
 
   UserPageState() {
     // StoreAndCoupon storeAndCoupon1 = new StoreAndCoupon(10, new Shop());
@@ -576,7 +578,6 @@ class UserPageState extends State<UserPage> {
                                                                             textAlign: TextAlign.left))),
                                                                 Container(
                                                                   child: Row(
-                                                                    
                                                                       children: [
                                                                         GestureDetector(
                                                                           onTap:
@@ -585,14 +586,11 @@ class UserPageState extends State<UserPage> {
                                                                               profileController.changeEditable();
                                                                             });
                                                                           },
-                                                                          child: 
-                                                                          
-                                                                          Text(
+                                                                          child: Text(
                                                                               "변경하기",
                                                                               style: const TextStyle(color: const Color(0xffffffff), fontWeight: FontWeight.w700, fontFamily: "NotoSans", fontStyle: FontStyle.normal, fontSize: 20.0),
                                                                               textAlign: TextAlign.center),
                                                                         ),
-                                                                       
                                                                         GestureDetector(
                                                                           onTap:
                                                                               () {
@@ -725,8 +723,8 @@ class UserPageState extends State<UserPage> {
         break;
       }
       childrenOfRowCoupon.add(Container(
-        margin: EdgeInsets.only(bottom: 5.h),
-        child: SvgPicture.asset("assets/icons/stamp.svg")));
+          margin: EdgeInsets.only(bottom: 5.h),
+          child: SvgPicture.asset("assets/icons/stamp.svg")));
     }
 
     final Widget row = Row(children: childrenOfRowCoupon);
@@ -792,18 +790,14 @@ class UserPageState extends State<UserPage> {
         child: Row(
           children: [
             SvgPicture.asset(imagePath),
-           
-      
-                 Text(viewName,
-                    style: const TextStyle(
-                        color: const Color(0xff222222),
-                        fontWeight: FontWeight.w700,
-                        fontFamily: "NotoSans",
-                        fontStyle: FontStyle.normal,
-                        fontSize: 20.0),
-                    textAlign: TextAlign.left),
-              
-            
+            Text(viewName,
+                style: const TextStyle(
+                    color: const Color(0xff222222),
+                    fontWeight: FontWeight.w700,
+                    fontFamily: "NotoSans",
+                    fontStyle: FontStyle.normal,
+                    fontSize: 20.0),
+                textAlign: TextAlign.left),
             new GestureDetector(
                 onTap: () {
                   setState(() {
@@ -821,22 +815,29 @@ class UserPageState extends State<UserPage> {
         child: Column(
       children: [
         Row(children: [
-          SvgPicture.asset(myMenu.thumbnail),
+          Container(
+              width: 100,
+              height: 100,
+              padding: EdgeInsets.all(5),
+              margin: EdgeInsets.only(bottom: 5),
+              decoration: BoxDecoration(border: Border.all(color: Colors.grey)),
+              child: Image.network(
+                myMenu.thumbnail,
+                fit: BoxFit.contain,
+              )),
           Column(
             children: [
               Row(children: [
                 Container(
-                width: 93
-                    .w,
-                height: 35
-                    .h,
-                child:  Text(myMenu.menuName,
-                    style: const TextStyle(
-                        color: const Color(0xff222222),
-                        fontWeight: FontWeight.w700,
-                        fontFamily: "NotoSans",
-                        fontStyle: FontStyle.normal,
-                        fontSize: 22.0))),
+                    width: 93.w,
+                    height: 35.h,
+                    child: Text(myMenu.menuName,
+                        style: const TextStyle(
+                            color: const Color(0xff222222),
+                            fontWeight: FontWeight.w700,
+                            fontFamily: "NotoSans",
+                            fontStyle: FontStyle.normal,
+                            fontSize: 22.0))),
                 GestureDetector(
                     onTap: () {
                       setState(() {
@@ -848,62 +849,57 @@ class UserPageState extends State<UserPage> {
               Row(
                 children: [
                   SvgPicture.asset("assets/icons/위치icon.svg"),
-               Container(
-                 margin: EdgeInsets.only(left: 2.w, top: 7.h),
-                width: 108
-                    .w,
-                height: 22
-                    .h,
-                child:   Text(myMenu.storeName,
-                      style: const TextStyle(
-                          color: const Color(0xff00276b),
-                          fontWeight: FontWeight.w400,
-                          fontFamily: "NotoSans",
-                          fontStyle: FontStyle.normal,
-                          fontSize: 16.0),
-                      textAlign: TextAlign.left))
-                
+                  Container(
+                      margin: EdgeInsets.only(left: 2.w, top: 7.h),
+                      width: 108.w,
+                      height: 22.h,
+                      child: Text(myMenu.storeName,
+                          style: const TextStyle(
+                              color: const Color(0xff00276b),
+                              fontWeight: FontWeight.w400,
+                              fontFamily: "NotoSans",
+                              fontStyle: FontStyle.normal,
+                              fontSize: 16.0),
+                          textAlign: TextAlign.left))
                 ],
               ),
-                 Container(
-                 margin: EdgeInsets.only(left: 2.w, top: 2.h, bottom: 17.h),
-                width: 187
-                    .w,
-                height: 88
-                    .h,
-                child:     Text(
-                myMenu.options,
-                style: const TextStyle(
-                    color: const Color(0xff707070),
-                    fontWeight: FontWeight.w400,
-                    fontFamily: "NotoSans",
-                    fontStyle: FontStyle.normal,
-                    fontSize: 16.0),
-              ),),
-            
+              Container(
+                margin: EdgeInsets.only(left: 2.w, top: 2.h, bottom: 17.h),
+                width: 187.w,
+                height: 88.h,
+                child: Text(
+                  myMenu.options,
+                  style: const TextStyle(
+                      color: const Color(0xff707070),
+                      fontWeight: FontWeight.w400,
+                      fontFamily: "NotoSans",
+                      fontStyle: FontStyle.normal,
+                      fontSize: 16.0),
+                ),
+              ),
               Row(
                 children: [
-                  GestureDetector(
-                      onTap: () {
-                        // 메뉴  담는 버튼
-                      },
-                      child: Container(
-                        margin: EdgeInsets.only(right: 2.w, ),
-                        width: 94.w,
-                        height: 40.h,
-                        decoration: BoxDecoration(
-                            borderRadius: BorderRadius.all(Radius.circular(27)),
-                            border: Border.all(
-                                color: const Color(0xff00276b), width: 1)),
-                        child: Text("담기",
-                            style: const TextStyle(
-                                color: const Color(0xff00276b),
-                                fontWeight: FontWeight.w700,
-                                fontFamily: "NotoSans",
-                                fontStyle: FontStyle.normal,
-                                fontSize: 16.0),
-                            textAlign: TextAlign.center),
-                      )),
+                  // GestureDetector(
+                  //     onTap: () {
+                  //       // 메뉴  담는 버튼
+                  //     },
+                  //     child: Container(
+                  //       margin: EdgeInsets.only(right: 2.w, ),
+                  //       width: 94.w,
+                  //       height: 40.h,
+                  //       decoration: BoxDecoration(
+                  //           borderRadius: BorderRadius.all(Radius.circular(27)),
+                  //           border: Border.all(
+                  //               color: const Color(0xff00276b), width: 1)),
+                  //       child: Text("담기",
+                  //           style: const TextStyle(
+                  //               color: const Color(0xff00276b),
+                  //               fontWeight: FontWeight.w700,
+                  //               fontFamily: "NotoSans",
+                  //               fontStyle: FontStyle.normal,
+                  //               fontSize: 16.0),
+                  //           textAlign: TextAlign.center),
+                  //     )),
                   GestureDetector(
                       onTap: () {
                         // 메뉴  주문 버튼
@@ -935,7 +931,6 @@ class UserPageState extends State<UserPage> {
 }
 
 class UserPage extends StatefulWidget {
-  
   @override
   State<StatefulWidget> createState() {
     return UserPageState();
