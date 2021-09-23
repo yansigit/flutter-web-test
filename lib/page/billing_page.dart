@@ -2,7 +2,6 @@ import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:get/get.dart';
-import 'package:save_order/page/orderstatus_page.dart';
 
 import 'card_page.dart';
 
@@ -67,6 +66,7 @@ class BillingPage extends StatelessWidget {
                   child: FittedBox(
                     fit: BoxFit.fitHeight,
                     child: Text(
+                      //TODO 결제금액
                       "23,000원",
                       style: TextStyle(
                         color: Color(0xff00276b),
@@ -82,6 +82,7 @@ class BillingPage extends StatelessWidget {
   }
 }
 
+//TODO 쿠폰번호 구현
 class PaymentMethodWidget extends StatelessWidget {
   final TextEditingController tc1 = new TextEditingController();
   final TextEditingController tc2 = new TextEditingController();
@@ -101,12 +102,7 @@ class PaymentMethodWidget extends StatelessWidget {
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-            Container(
-                height: 25.h,
-                child: FittedBox(
-                    fit: BoxFit.fitHeight,
-                    child: Text("결제수단",
-                        style: TextStyle(fontWeight: FontWeight.w700)))),
+            Container(height: 25.h, child: FittedBox(fit: BoxFit.fitHeight, child: Text("결제수단", style: TextStyle(fontWeight: FontWeight.w700)))),
             InkWell(
               onTap: (() => Get.to(CardPage())),
               child: Container(
@@ -369,16 +365,14 @@ class _ExpandableListState extends State<ExpandableList> {
                     height: 24.h,
                     child: FittedBox(
                         fit: BoxFit.fitHeight,
-                        child: Text("주문 내역(6)",
-                            style: TextStyle(fontWeight: FontWeight.w700))),
+                        //TODO 주문 내역 갯수구현
+                        child: Text("주문 내역{몇 개}", style: TextStyle(fontWeight: FontWeight.w700))),
                   ),
                   Container(
                     height: 24.h,
                     width: 24.w,
                     child: Icon(
-                      !expandFlag
-                          ? Icons.keyboard_arrow_down
-                          : Icons.keyboard_arrow_up,
+                      !expandFlag ? Icons.keyboard_arrow_down : Icons.keyboard_arrow_up,
                       color: Color(0xff777777),
                     ),
                   ),
@@ -421,14 +415,15 @@ class ExpandableContainer extends StatelessWidget {
       color: Color(0x05000000),
       child: ListView.builder(
         itemBuilder: ((context, index) {
-          return CartItemWidget();
+          return cartItemWidget();
         }),
         itemCount: 6,
       ),
     );
   }
 
-  Widget CartItemWidget() {
+  //TODO 내용수정
+  Widget cartItemWidget() {
     return Container(
       width: double.infinity,
       margin: EdgeInsets.symmetric(vertical: 8.h, horizontal: 20.w),

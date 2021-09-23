@@ -3,15 +3,11 @@ import 'package:flutter/widgets.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:get/get.dart';
 
-import 'package:save_order/home.dart';
+
 import 'package:flutter/services.dart';
 import 'package:http/http.dart' as http;
-import 'package:save_order/view/pages/UserPage.dart';
-import 'package:save_order/view/pages/bottomNavConnectPages/FavoriteStoresPageState.dart';
-import 'package:save_order/view/pages/bottomNavConnectPages/FindNearStore.dart';
-import 'package:save_order/view/pages/bottomNavConnectPages/MyOrderPage.dart';
+
 import 'package:save_order/view/pages/login/login_page.dart';
-import 'package:save_order/view/pages/login/login_result.dart';
 
 import 'model/model.dart';
 

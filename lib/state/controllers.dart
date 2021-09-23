@@ -52,7 +52,6 @@ class OptionDialogController extends GetxController {
 
   @override
   void onClose() {
-    // TODO: implement onClose
     super.onClose();
     selectHotColdOption.value = 1;
     selectIceQuantity.value = 2;
@@ -140,7 +139,6 @@ class QuantityController extends GetxController {
 
   @override
   void onClose() {
-    // TODO: implement onClose
     super.onClose();
     this.menuQuantity.value = 1;
     this.hasMinus.value = false;

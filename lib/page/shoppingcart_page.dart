@@ -14,7 +14,7 @@ class ShoppingCartPage extends StatelessWidget {
     final List<CartItem> cartItemList = controller.shoppingCart.value;
 
     int cartListLength = cartItemList.length;
-    print(cartListLength.toString());
+    // print(cartListLength.toString());
     return Scaffold(
       appBar: AppBar(
         backgroundColor: Colors.white,
@@ -31,10 +31,12 @@ class ShoppingCartPage extends StatelessWidget {
           onPressed: () => Get.back(),
         ),
         elevation: 2.0,
+        //TODO 전체삭제 구현
         actions: [
           Container(
-              height: 20, child: Text("슈발", style: TextStyle(fontSize: 20))),
+              height: 20, child: Text("전체삭제 구현", style: TextStyle(fontSize: 20))),
         ],
+        
       ),
       body: Container(
         height: double.infinity,
@@ -54,6 +56,7 @@ class ShoppingCartPage extends StatelessWidget {
                         child: Row(
                           mainAxisAlignment: MainAxisAlignment.start,
                           children: [
+                            //TODO 아이콘 구현
                             Container(),
                             Container(
                               height: 31.h,
@@ -89,7 +92,7 @@ class ShoppingCartPage extends StatelessWidget {
                           child: FittedBox(
                             fit: BoxFit.fitHeight,
                             child: Text(
-                              "장바구니에 담으신 물품은 앱이 종료될 때까지 보관됩니다.",
+                              "장바구니에 담으신 물품은 종료하실 때까지 보관됩니다.",
                               style: TextStyle(
                                 color: Color(0xff707070),
                               ),
@@ -310,6 +313,7 @@ class BottomWidget extends StatelessWidget {
                     height: 34.h,
                     child: FittedBox(
                         fit: BoxFit.fitHeight,
+                        //TODO 아이템 가격 산정하기.
                         child: Text(cartList.length == 0 ? "0원" : "23,600원",
                             style: TextStyle(
                                 color: Color(0xff00276b),
@@ -390,6 +394,7 @@ class CartMenuWidget extends StatelessWidget {
             ),
             child: Column(
               children: [
+                //TODO 아이템 박스 구현
                 Container(),
                 Container(),
               ],

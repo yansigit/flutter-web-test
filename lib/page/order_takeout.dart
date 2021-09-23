@@ -4,7 +4,7 @@ import 'package:get/get.dart';
 import 'package:save_order/model/model.dart';
 import 'package:save_order/state/controllers.dart';
 import 'package:save_order/widget/bottom_nav.dart';
-import 'package:save_order/widget/bottom_shopnav.dart';
+
 import 'package:save_order/widget/order_cafename.dart';
 import 'package:save_order/widget/order_carousel.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';

@@ -35,7 +35,7 @@ class OrderTakeOutWidget extends StatelessWidget {
               borderRadius: BorderRadius.all(Radius.circular(15)),
               boxShadow: [
                 BoxShadow(
-                  color: const Color(0x0d000000),
+                  color: Color(0x0d000000),
                   offset: Offset(0, 6.h),
                   blurRadius: 12,
                   spreadRadius: 0,

@@ -1,14 +1,12 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:save_order/model/model.dart';
-import 'package:http/http.dart' as http;
+
 import 'package:save_order/page/order_takeout.dart';
-import 'package:save_order/view/pages/bottomNavConnectPages/FavoriteStoresPageState.dart';
-import 'package:save_order/view/pages/bottomNavConnectPages/FindNearStore.dart';
-import 'package:save_order/view/pages/login/login_page.dart';
+
 import 'package:save_order/widget/bottom_nav.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
-import 'package:save_order/widget/bottom_shopnav.dart';
+
 import 'package:save_order/state/controllers.dart';
 
 class Home extends StatelessWidget {

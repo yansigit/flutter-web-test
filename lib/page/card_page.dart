@@ -591,7 +591,6 @@ class _PickerState extends State<Picker> {
 
   @override
   void initState() {
-    // TODO: implement initState
     super.initState();
     if (widget.mode == 0) {
       monthList = List.generate(12, (index) => Text((index + 1).toString(), style: TextStyle(fontSize: 23.sp)));

@@ -1,12 +1,12 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_svg/svg.dart';
+import 'package:flutter_svg/flutter_svg.dart';
 import 'package:get/get.dart';
 import 'package:save_order/model/mockup.dart';
 import 'package:save_order/model/model.dart';
 import 'package:save_order/page/shoppingcart_page.dart';
 import 'package:save_order/state/controllers.dart';
 import 'package:save_order/widget/bottom_nav.dart';
-import 'package:save_order/widget/bottom_shopnav.dart';
+
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:save_order/widget/order_tabbar.dart';
 
@@ -25,7 +25,7 @@ class OrderPage extends StatelessWidget {
               //categories = categories;
               final categories = snapshot.data as List<Category>;
 
-              return OrderTabRe(categoryList: categories);
+              return OrderTab(categoryList: categories);
             } else {
               return Center(child: CircularProgressIndicator());
             }

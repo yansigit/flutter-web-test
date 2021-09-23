@@ -1,6 +1,5 @@
 import 'dart:convert';
 
-import 'package:save_order/model/User.dart';
 import 'package:save_order/util/sqlite_local_database/UserMenuDatabase.dart';
 
 class SavedMenu {

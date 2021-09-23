@@ -6,27 +6,25 @@ import 'package:save_order/page/order_home.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:save_order/widget/order_itembox.dart';
 
-class OrderTabRe extends StatefulWidget {
+class OrderTab extends StatefulWidget {
   List<Category> categoryList;
-  OrderTabRe({Key? key, this.categoryList = const []}) : super(key: key);
+  OrderTab({Key? key, this.categoryList = const []}) : super(key: key);
 
   @override
   _OrderTabReState createState() =>
-      _OrderTabReState(categoryList: categoryList);
+      _OrderTabReState();
 }
 
-class _OrderTabReState extends State<OrderTabRe>
+class _OrderTabReState extends State<OrderTab>
     with SingleTickerProviderStateMixin {
   late TabController _controller;
-
-  List<Category> categoryList = [];
-  _OrderTabReState({required this.categoryList});
+  
   List<Tab> tabList = [];
 
   @override
   void initState() {
     super.initState();
-    tabList = getTabs(this.categoryList);
+    tabList = getTabs(widget.categoryList);
     _controller = new TabController(length: tabList.length, vsync: this);
   }
 
@@ -104,14 +102,14 @@ class _OrderTabReState extends State<OrderTabRe>
               color: Colors.white,
               child: ListView.builder(
                 scrollDirection: Axis.vertical,
-                itemCount: categoryList[_controller.index].menus.isNotEmpty
-                    ? categoryList[_controller.index].menus.length
+                itemCount: widget.categoryList[_controller.index].menus.isNotEmpty
+                    ? widget.categoryList[_controller.index].menus.length
                     : 1,
                 itemBuilder: (context, index) {
                   return Container(
-                      child: categoryList[_controller.index].menus.isNotEmpty
+                      child: widget.categoryList[_controller.index].menus.isNotEmpty
                           ? ItemBoxContainer(
-                              categoryList[_controller.index].menus[index])
+                              widget.categoryList[_controller.index].menus[index])
                           : Container(
                               child: Text("표시할 항목이 없습니다."),
                               height: 200.h,

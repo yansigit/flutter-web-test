@@ -32,7 +32,7 @@ class ItemBoxContainer extends StatelessWidget {
       ),
       child: Container(
         padding: EdgeInsets.symmetric(horizontal: 20.w, vertical: 11.h),
-        width: ScreenUtil().screenWidth,
+        width: double.infinity,
         child: Row(
           mainAxisAlignment: MainAxisAlignment.start,
           children: [
@@ -44,6 +44,7 @@ class ItemBoxContainer extends StatelessWidget {
               width: 90.w,
               height: 154.h,
               child: Column(
+                //TODO 수정
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: [
                   Expanded(
@@ -58,9 +59,8 @@ class ItemBoxContainer extends StatelessWidget {
                   ),
                   Expanded(
                     flex: 102,
-                    child: Center(
-                        child:
-                            SvgPicture.asset("assets/icons/iceOnlyIcon.svg")),
+                    child: Center(child: Image.network(menu.thumbnail) //SvgPicture.asset("assets/icons/iceOnlyIcon.svg"),
+                        ),
                   )
                 ],
               ),
@@ -80,10 +80,7 @@ class ItemBoxContainer extends StatelessWidget {
                       ),
                     ),
                   ),
-                  Container(
-                      margin: EdgeInsets.only(top: 4.h),
-                      child:
-                          priceBoxWidget(menu.isHot, menu.isCold, menu.price)),
+                  Container(margin: EdgeInsets.only(top: 4.h), child: priceBoxWidget(menu)),
                   Container(
                     margin: EdgeInsets.only(top: 11.h),
                     child: ingredientBox(menu.ingredients),
@@ -97,8 +94,8 @@ class ItemBoxContainer extends StatelessWidget {
     );
   }
 
-  Widget priceBoxWidget(bool hot, bool ice, int price) {
-    if (hot == true && ice == true) {
+  Widget priceBoxWidget(Menu menu) {
+    if (menu.isHot == true && menu.isCold == true) {
       return Row(
         crossAxisAlignment: CrossAxisAlignment.center,
         children: [
@@ -117,7 +114,7 @@ class ItemBoxContainer extends StatelessWidget {
             height: 22.h,
             child: FittedBox(
               child: Text(
-                "3,200원",
+                menu.hotPrice.toString() + "원",
                 style: TextStyle(color: Color.fromRGBO(177, 3, 3, 1)),
               ),
             ),
@@ -138,14 +135,14 @@ class ItemBoxContainer extends StatelessWidget {
             height: 22.h,
             child: FittedBox(
               child: Text(
-                "3,200원",
+                menu.coldPrice.toString() + "원",
                 style: TextStyle(color: Color.fromRGBO(0, 39, 107, 1)),
               ),
             ),
           ),
         ],
       );
-    } else if (hot == true && ice == false) {
+    } else if (menu.isHot == true && menu.isCold == false) {
       return Row(
         crossAxisAlignment: CrossAxisAlignment.center,
         children: [
@@ -164,40 +161,14 @@ class ItemBoxContainer extends StatelessWidget {
             height: 22.h,
             child: FittedBox(
               child: Text(
-                "3,200원",
+                menu.hotPrice.toString() + "원",
                 style: TextStyle(color: Color.fromRGBO(177, 3, 3, 1)),
               ),
             ),
           ),
         ],
       );
-    } else if (hot == false && ice == true) {
-      return Row(
-        crossAxisAlignment: CrossAxisAlignment.center,
-        children: [
-          Container(
-            width: 16.w,
-            height: 16.h,
-            child: FittedBox(
-              child: SvgPicture.asset(
-                "assets/icons/hotOnlyIcon.svg",
-                color: Color.fromRGBO(177, 3, 3, 1),
-              ),
-            ),
-          ),
-          Container(
-            margin: EdgeInsets.only(left: 4.w),
-            height: 22.h,
-            child: FittedBox(
-              child: Text(
-                "3,200원",
-                style: TextStyle(color: Color.fromRGBO(177, 3, 3, 1)),
-              ),
-            ),
-          ),
-        ],
-      );
-    } else if (hot == false && ice == true) {
+    } else if (menu.isHot == false && menu.isCold == true) {
       return Row(
         crossAxisAlignment: CrossAxisAlignment.center,
         children: [
@@ -216,23 +187,25 @@ class ItemBoxContainer extends StatelessWidget {
             height: 22.h,
             child: FittedBox(
               child: Text(
-                "3,200원",
+                menu.coldPrice.toString() + "원",
                 style: TextStyle(color: Color.fromRGBO(0, 39, 107, 1)),
               ),
             ),
           ),
         ],
       );
-    }
-    return Container(
-      margin: EdgeInsets.only(left: 4.w),
-      height: 22.h,
-      child: FittedBox(
-        child: Text(
-          "3,200원",
+    } else {
+      return Container(
+        margin: EdgeInsets.only(left: 4.w),
+        height: 22.h,
+        child: FittedBox(
+          child: Text(
+            menu.hotPrice.toString() + "원",
+            style: TextStyle(color: Colors.black),
+          ),
         ),
-      ),
-    );
+      );
+    }
   }
 
   Widget ingredientBox(List<Ingredient> list) {

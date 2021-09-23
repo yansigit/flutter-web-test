@@ -3,8 +3,8 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flutter/material.dart';
 
 class Carousel extends StatefulWidget {
-  List<String> thumbnailList = [];
-  Carousel({Key? key, this.thumbnailList = const []}) : super(key: key);
+  final List<String> thumbnailList;
+  Carousel({Key? key, required this.thumbnailList}) : super(key: key);
 
   @override
   _CarouselState createState() => _CarouselState();
@@ -17,7 +17,9 @@ class _CarouselState extends State<Carousel> {
 
   Future<List<Image>> getThumbnails(List<String> thumbnailList) async {
     List<Image> list = [];
-    if (thumbnailList.isNotEmpty) {
+    if (thumbnailList[0] == "이미지경로") {
+      list.add(Image(image: AssetImage("assets/images/thumbnail.png")));
+    } else if (thumbnailList.isNotEmpty) {
       for (String url in thumbnailList) {
         list.add(Image.network(url));
       }
@@ -32,7 +34,7 @@ class _CarouselState extends State<Carousel> {
   @override
   Widget build(BuildContext context) {
     return FutureBuilder<List<Image>>(
-      future: getThumbnails(Carousel().thumbnailList),
+      future: getThumbnails(widget.thumbnailList),
       builder: (context, snapshot) {
         if (snapshot.hasError) {
           return Center(
@@ -61,8 +63,7 @@ class _CarouselState extends State<Carousel> {
                       );
                     },
                     pageSnapping: true,
-                    autoPlayAnimationDuration:
-                        const Duration(milliseconds: 800),
+                    autoPlayAnimationDuration: const Duration(milliseconds: 800),
                   ),
                 ),
                 Positioned(
@@ -83,14 +84,10 @@ class _CarouselState extends State<Carousel> {
                           return Container(
                             width: _currentIndex == index ? 30.0.w : 10.0.w,
                             height: 10.0.h,
-                            margin: EdgeInsets.symmetric(
-                                vertical: 10.0.w, horizontal: 2.0.h),
+                            margin: EdgeInsets.symmetric(vertical: 10.0.w, horizontal: 2.0.h),
                             decoration: BoxDecoration(
-                              borderRadius:
-                                  BorderRadius.all(Radius.circular(50)),
-                              color: _currentIndex == index
-                                  ? Color.fromRGBO(255, 255, 255, 0.8)
-                                  : Color.fromRGBO(255, 255, 255, 0.3),
+                              borderRadius: BorderRadius.all(Radius.circular(50)),
+                              color: _currentIndex == index ? Color.fromRGBO(255, 255, 255, 0.8) : Color.fromRGBO(255, 255, 255, 0.3),
                             ),
                           );
                         }).toList(),

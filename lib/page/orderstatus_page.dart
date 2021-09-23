@@ -27,8 +27,7 @@ class _OrderStatusPageState extends State<OrderStatusPage> {
       height: ScreenUtil().screenHeight * 0.95,
       decoration: BoxDecoration(
         color: Color(0xffffffff),
-        borderRadius: BorderRadius.only(
-            topLeft: Radius.circular(30.h), topRight: Radius.circular(30.h)),
+        borderRadius: BorderRadius.only(topLeft: Radius.circular(30.h), topRight: Radius.circular(30.h)),
       ),
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
@@ -174,8 +173,7 @@ class OrderNumAppBar extends StatelessWidget {
                   fit: BoxFit.fitHeight,
                   child: Text(
                     "01",
-                    style: TextStyle(
-                        fontWeight: FontWeight.w700, color: Color(0xffed6363)),
+                    style: TextStyle(fontWeight: FontWeight.w700, color: Color(0xffed6363)),
                   ),
                 ),
               ),
@@ -286,9 +284,7 @@ class StatusContainer extends StatelessWidget {
             fit: BoxFit.fitHeight,
             child: Text(
               text,
-              style: TextStyle(
-                  color: flag ? Color(0xff00276b) : Color(0xff999999),
-                  fontWeight: FontWeight.w700),
+              style: TextStyle(color: flag ? Color(0xff00276b) : Color(0xff999999), fontWeight: FontWeight.w700),
             ),
           ),
         ),
@@ -343,9 +339,7 @@ class _ExpandableListState extends State<ExpandableList> {
                       height: 24.h,
                       width: 24.w,
                       child: Icon(
-                        !expandFlag
-                            ? Icons.keyboard_arrow_down
-                            : Icons.keyboard_arrow_up,
+                        !expandFlag ? Icons.keyboard_arrow_down : Icons.keyboard_arrow_up,
                         color: Color(0xff777777),
                       ),
                     ),
@@ -388,14 +382,14 @@ class ExpandableContainer extends StatelessWidget {
       color: Color(0x05000000),
       child: ListView.builder(
         itemBuilder: ((context, index) {
-          return CartItemWidget();
+          return cartItemWidget();
         }),
         itemCount: 6,
       ),
     );
   }
 
-  Widget CartItemWidget() {
+  Widget cartItemWidget() {
     return Container(
       width: double.infinity,
       margin: EdgeInsets.symmetric(vertical: 8.h, horizontal: 20.w),

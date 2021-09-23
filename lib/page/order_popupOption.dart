@@ -3,7 +3,7 @@ import 'package:flutter/services.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:get/get.dart';
-import 'package:save_order/colorTheme/color.dart';
+
 import 'package:save_order/model/model.dart';
 import 'package:save_order/page/shoppingcart_page.dart';
 import 'package:save_order/state/controllers.dart';
@@ -1110,6 +1110,7 @@ class AppBarBody extends StatelessWidget {
     return Container(
       width: double.infinity,
       alignment: Alignment.center,
+      //TODO 상단 레이아웃 고치기
       child: Row(
         mainAxisSize: MainAxisSize.max,
         children: [
@@ -1344,41 +1345,44 @@ class OptionBottomBar extends StatelessWidget {
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: [
                   Expanded(
-                    child: Container(
-                        height: 48.h,
-                        decoration: BoxDecoration(
-                          border:
-                              Border.all(color: Color(0xff00276b), width: 2),
-                          borderRadius: BorderRadius.all(Radius.circular(27)),
-                        ),
-                        child: Row(
-                          mainAxisAlignment: MainAxisAlignment.center,
-                          crossAxisAlignment: CrossAxisAlignment.center,
-                          children: [
-                            Container(
-                              width: 20.w,
-                              height: 18.3.h,
-                              child: SvgPicture.asset(
-                                "assets/icons/orderCartIcon.svg",
-                                color: Color(0xff00276b),
-                              ),
-                            ),
-                            Container(
-                              margin: EdgeInsets.only(left: 8.5.w),
-                              height: 24.h,
-                              child: FittedBox(
-                                fit: BoxFit.fill,
-                                child: Text(
-                                  "담기",
-                                  textAlign: TextAlign.center,
-                                  style: TextStyle(
-                                      color: Color(0xff00276b),
-                                      fontWeight: FontWeight.w700),
+                    child: InkWell(
+                      onTap: () => print("d"),
+                      child: Container(
+                          height: 48.h,
+                          decoration: BoxDecoration(
+                            border:
+                                Border.all(color: Color(0xff00276b), width: 2),
+                            borderRadius: BorderRadius.all(Radius.circular(27)),
+                          ),
+                          child: Row(
+                            mainAxisAlignment: MainAxisAlignment.center,
+                            crossAxisAlignment: CrossAxisAlignment.center,
+                            children: [
+                              Container(
+                                width: 20.w,
+                                height: 18.3.h,
+                                child: SvgPicture.asset(
+                                  "assets/icons/orderCartIcon.svg",
+                                  color: Color(0xff00276b),
                                 ),
                               ),
-                            ),
-                          ],
-                        )),
+                              Container(
+                                margin: EdgeInsets.only(left: 8.5.w),
+                                height: 24.h,
+                                child: FittedBox(
+                                  fit: BoxFit.fill,
+                                  child: Text(
+                                    "담기",
+                                    textAlign: TextAlign.center,
+                                    style: TextStyle(
+                                        color: Color(0xff00276b),
+                                        fontWeight: FontWeight.w700),
+                                  ),
+                                ),
+                              ),
+                            ],
+                          )),
+                    ),
                     flex: 138,
                   ),
                   Expanded(
@@ -1396,7 +1400,9 @@ class OptionBottomBar extends StatelessWidget {
                         print(cartOptions.toString());
                         cartController.shoppingCart.add(new CartItem(
                           name: menu.name,
-                          price: menu.price,
+                          //TODO 메뉴 가격 정하기
+                          price: 0,
+                          //price: menu.price,
                           thumbnail: menu.thumbnail,
                           bgColor: menu.bgColor,
                           cartOptions: cartOptions,
