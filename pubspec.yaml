@@ -35,17 +35,20 @@ dependencies:
   flutter_screenutil: ^5.0.0+2
   http: ^0.13.0
   kakao_flutter_sdk: ^0.7.1
+  card_scanner: 1.0.1-prerelease
 
 dev_dependencies:
   flutter_native_splash: ^1.2.1
   flutter_test:
     sdk: flutter
 
-  
+  sqflite: ^2.0.0
+  path_provider: ^2.0.3
   # The following adds the Cupertino Icons font to your application.
   # Use with the CupertinoIcons class for iOS style icons.
-  geolocator: ^4.0.3
+  geolocator: 7.6.0
   screen_utils: ^0.0.1
+  flutter_secure_storage: 4.2.1
 
 
 

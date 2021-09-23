@@ -6,10 +6,17 @@ import 'package:get/get.dart';
 import 'package:save_order/home.dart';
 import 'package:flutter/services.dart';
 import 'package:http/http.dart' as http;
+import 'package:save_order/view/pages/UserPage.dart';
+import 'package:save_order/view/pages/bottomNavConnectPages/FavoriteStoresPageState.dart';
+import 'package:save_order/view/pages/bottomNavConnectPages/FindNearStore.dart';
+import 'package:save_order/view/pages/bottomNavConnectPages/MyOrderPage.dart';
+import 'package:save_order/view/pages/login/login_page.dart';
+import 'package:save_order/view/pages/login/login_result.dart';
 
 import 'model/model.dart';
 
 void main() {
+ 
   runApp(MyApp());
 }
 
@@ -42,9 +49,14 @@ class MyApp extends StatelessWidget {
                     theme: ThemeData(
                         brightness: Brightness.light,
                         primaryColor: Colors.white,
-                        primarySwatch: Colors.blue,
                         fontFamily: 'Noto Sans'),
-                    home: Home(shopList: shopList),
+                    home:
+                    //MyOrderPage("5857D43CE90E3B412D0A69D564764F0F4388B76A") 
+                    //NearStoresPage()
+                    // UserPage("5857D43CE90E3B412D0A69D564764F0F4388B76A")
+                    //FavoriteStoresPage(token: "5857D43CE90E3B412D0A69D564764F0F4388B76A")
+                    LoginPage()
+                    //Home(shopList: shopList),
                   ));
         }
       },

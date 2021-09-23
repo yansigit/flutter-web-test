@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-
+const PHRASE_COLOR = Color(0xff6288c9);
 const SKY_BLUE = Color.fromRGBO(93, 136, 201, 0.3);
 const WHITE = Colors.white;
 const KAKAO_COLOR = Color.fromRGBO(255, 208, 51, 1);
