@@ -20,10 +20,10 @@ List<Category> categories = [
         ],
         options: <Option>[
           new Option(id: 1, name: "selectHotCold", price: 0, check: 0),
-          new Option(id: 2, name: "addShots", price: 500, check: 0),
-          new Option(id: 3, name: "selectIceVolume", price: 0, check: 0),
+          new Option(id: 2, name: "shot", price: 500, check: 0),
+          new Option(id: 3, name: "iceSize", price: 0, check: 0),
           new Option(id: 4, name: "sugarSyrup", price: 0, check: 0),
-          new Option(id: 5, name: "hazelnutSyrup", price: 500, check: 0),
+          new Option(id: 5, name: "etc", price: 500, check: 0),
           new Option(id: 6, name: "cream", price: 500, check: 0),
         ],
         priority: 0,

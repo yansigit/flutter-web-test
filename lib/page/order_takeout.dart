@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
+import 'package:get/get.dart';
 import 'package:save_order/model/model.dart';
+import 'package:save_order/state/controllers.dart';
 import 'package:save_order/widget/bottom_nav.dart';
 import 'package:save_order/widget/bottom_shopnav.dart';
 import 'package:save_order/widget/order_cafename.dart';
@@ -11,6 +13,7 @@ import 'package:save_order/widget/order_takeoutwidget.dart';
 class OrderTakeOut extends StatelessWidget {
   final Shop shop;
   OrderTakeOut({Key? key, required this.shop}) : super(key: key);
+  final ShoppingCartController c = Get.put(ShoppingCartController());
 
   @override
   Widget build(BuildContext context) {
@@ -18,7 +21,7 @@ class OrderTakeOut extends StatelessWidget {
       appBar: AppBar(
         leading: IconButton(
           icon: SvgPicture.asset("assets/icons/backIcon.svg"),
-          onPressed: () => print("back"),
+          onPressed: () => Get.back(),
         ),
         backgroundColor: Colors.transparent,
         elevation: 0.0,
@@ -43,7 +46,7 @@ class OrderTakeOut extends StatelessWidget {
           ),
           Positioned(
             top: 462.h,
-            child: OrderTakeOutWidget(shop),
+            child: OrderTakeOutWidget(),
           ),
         ],
       ),

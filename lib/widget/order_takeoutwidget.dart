@@ -9,8 +9,6 @@ import 'package:save_order/state/controllers.dart';
 import 'package:http/http.dart' as http;
 
 class OrderTakeOutWidget extends StatelessWidget {
-  final Shop shop;
-  OrderTakeOutWidget(this.shop);
   //컨트롤러에 매장, 포장 적재
   TakeOutController _c = Get.put(TakeOutController());
 
@@ -79,11 +77,7 @@ class OrderTakeOutWidget extends StatelessWidget {
               ),
               onTap: () {
                 _c.updateTakeOut(false);
-                Get.to(
-                    () => OrderPage(
-                          shop: shop,
-                        ),
-                    transition: Transition.rightToLeft);
+                Get.to(() => OrderPage(), transition: Transition.rightToLeft);
               },
             ),
           ),
@@ -140,11 +134,7 @@ class OrderTakeOutWidget extends StatelessWidget {
               ),
               onTap: () {
                 _c.updateTakeOut(true);
-                Get.to(
-                    () => OrderPage(
-                          shop: shop,
-                        ),
-                    transition: Transition.rightToLeft);
+                Get.to(() => OrderPage(), transition: Transition.rightToLeft);
               },
             ),
           ),

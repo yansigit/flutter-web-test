@@ -49,7 +49,6 @@ class MyApp extends StatelessWidget {
                     theme: ThemeData(
                         brightness: Brightness.light,
                         primaryColor: Colors.white,
-                        primarySwatch: Colors.blue,
                         fontFamily: 'Noto Sans'),
                     home:
                     //MyOrderPage("5857D43CE90E3B412D0A69D564764F0F4388B76A") 

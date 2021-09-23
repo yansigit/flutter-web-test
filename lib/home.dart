@@ -9,10 +9,12 @@ import 'package:save_order/view/pages/login/login_page.dart';
 import 'package:save_order/widget/bottom_nav.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:save_order/widget/bottom_shopnav.dart';
+import 'package:save_order/state/controllers.dart';
 
 class Home extends StatelessWidget {
   List<Shop> shopList;
   Home({Key? key, required this.shopList}) : super(key: key);
+  final ShopController shopController = Get.put(ShopController());
 
   @override
   Widget build(BuildContext context) {
@@ -36,10 +38,10 @@ class Home extends StatelessWidget {
                         ),
                       ),
                     ),
-                    onTap: () =>
-                  
-                        Get.to(() => OrderTakeOut(shop: shopList[index]))
-                        ),
+                    onTap: () => Get.to(() {
+                          shopController.updateShopId(shopList.length - index);
+                          return OrderTakeOut(shop: shopList[index]);
+                        })),
               );
             },
             itemCount: shopList.length,

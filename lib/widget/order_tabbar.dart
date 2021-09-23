@@ -42,17 +42,17 @@ class _OrderTabReState extends State<OrderTabRe>
       tabs.add(new Tab(
         child: Container(
           height: 24.h,
-          child: Center(
-            child: FittedBox(
-              child: Text(
-                category.name,
-                style: TextStyle(fontWeight: FontWeight.w700),
-              ),
+          child: FittedBox(
+            fit: BoxFit.fitHeight,
+            child: Text(
+              category.name,
+              // style: TextStyle(fontWeight: FontWeight.w700),
             ),
           ),
         ),
       ));
     }
+
     print(tabs.toString());
     return tabs;
   }
@@ -61,6 +61,7 @@ class _OrderTabReState extends State<OrderTabRe>
   Widget build(BuildContext context) {
     return Scaffold(
         appBar: AppBar(
+          backgroundColor: Colors.white,
           elevation: 2,
           leading: IconButton(
             onPressed: () => Get.back(),
@@ -69,7 +70,11 @@ class _OrderTabReState extends State<OrderTabRe>
               color: Color.fromRGBO(34, 34, 34, 1),
             ),
           ),
-          title: Text("주문하기", style: TextStyle(fontWeight: FontWeight.w700)),
+          title: Text("주문하기",
+              style: TextStyle(
+                fontWeight: FontWeight.w700,
+                color: Colors.black,
+              )),
           actions: [
             IconButton(
               onPressed: () => print("검색하기"),
@@ -83,9 +88,13 @@ class _OrderTabReState extends State<OrderTabRe>
             controller: _controller,
             tabs: tabList,
             isScrollable: true,
+            indicatorPadding: EdgeInsets.symmetric(horizontal: 12.5.w),
             indicatorColor: Color.fromRGBO(34, 34, 34, 1),
             labelColor: Color.fromRGBO(34, 34, 34, 1),
             labelPadding: EdgeInsets.symmetric(horizontal: 15),
+            labelStyle: TextStyle(fontWeight: FontWeight.w700),
+            unselectedLabelStyle: TextStyle(fontWeight: FontWeight.normal),
+            unselectedLabelColor: Color(0xff999999),
           ),
         ),
         body: TabBarView(
