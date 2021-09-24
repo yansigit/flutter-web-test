@@ -13,6 +13,7 @@ import 'package:save_order/view/pages/UserPage.dart';
 import 'package:save_order/view/pages/bottomNavConnectPages/FavoriteStoresPageState.dart';
 import 'package:save_order/view/pages/bottomNavConnectPages/FindNearStore.dart';
 import 'package:save_order/view/pages/bottomNavConnectPages/MyOrderPage.dart';
+import 'package:save_order/widget/bottom_nav.dart';
 
 class EmailLoginPage extends StatefulWidget {
   EmailLoginPage({Key? key}) : super(key: key);
@@ -133,7 +134,7 @@ class _EmailLoginPage extends State<EmailLoginPage> {
                             "token " +
                             this.token!);
                   }
-                  Get.to(() => UserPage());
+                  Get.to(() => BottomNav());
 
                   // Navigator.pushReplacement(/
                   //   context,

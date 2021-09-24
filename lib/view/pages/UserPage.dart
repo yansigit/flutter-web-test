@@ -107,12 +107,10 @@ class UserPageState extends State<UserPage> {
     print("bb");
     print(couponsOfStores.length);
     print("aa");
-    return Scaffold(
-        backgroundColor: Colors.white,
-        body: SingleChildScrollView(
+    return  SingleChildScrollView(
             child: Container(
                 width: ScreenUtil().screenWidth,
-                height: ScreenUtil().screenHeight,
+                height: ScreenUtil().screenHeight  * 0.78,
                 decoration: BoxDecoration(color: DARK_BLUE),
                 child: Column(
                   children: <Widget>[
@@ -667,7 +665,7 @@ class UserPageState extends State<UserPage> {
                       ],
                     )
                   ],
-                ))));
+                )));
   }
 
   Widget buildCouponView(BuildContext context, StoreAndCoupon storeAndCoupon) {

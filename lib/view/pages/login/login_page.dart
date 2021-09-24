@@ -8,6 +8,7 @@ import 'package:save_order/view/pages/bottomNavConnectPages/MyOrderPage.dart';
 import 'package:save_order/view/pages/login/SignUpPage.dart';
 import 'package:save_order/view/pages/login/email_login_page.dart';
 import 'package:save_order/view/pages/login/login_result.dart';
+import 'package:save_order/widget/bottom_nav.dart';
 import '/consts/cafe.dart';
 import '/consts/color.dart';
 import '/consts/login.dart';
@@ -46,7 +47,7 @@ class LoginPageState extends State<LoginPage> {
       this.token = token;
 
       Navigator.of(context)
-          .push(MaterialPageRoute(builder: (context) => NearStoresPage()));
+          .push(MaterialPageRoute(builder: (context) => BottomNav()));
       //NearStoresPage()
       //MyOrderPage("5857D43CE90E3B412D0A69D564764F0F4388B76A")
       //FavoriteStoresPage(token: "5857D43CE90E3B412D0A69D564764F0F4388B76A")

@@ -83,11 +83,9 @@ class MyOrderPageState extends State<MyOrderPage> {
       orderedStoreLength = this._orders.length;
     }
 
-    return Scaffold(
-        backgroundColor: Colors.white,
-        body: Container(
+    return  Container(
             width: ScreenUtil().screenWidth,
-            height: ScreenUtil().screenHeight,
+            height: ScreenUtil().screenHeight * 0.7,
             child: Column(
               children: [
                 Row(
@@ -172,7 +170,7 @@ class MyOrderPageState extends State<MyOrderPage> {
                       }
                     })
               ],
-            )));
+            ));
   }
 
   Widget buildStoreView(BuildContext context, MyOrder order) {

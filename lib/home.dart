@@ -38,10 +38,13 @@ class Home extends StatelessWidget {
                         ),
                       ),
                     ),
-                    onTap: () => Get.to(() {
-                          shopController.updateShopId(shopList.length - index);
-                          return OrderTakeOut(shop: shopList[index]);
-                        })),
+                    onTap: () =>
+                    Get.to(() => LoginPage())
+                    //  Get.to(() {
+                    //       shopController.updateShopId(shopList.length - index);
+                    //       return OrderTakeOut(shop: shopList[index]);
+                    //     })
+                        ),
               );
             },
             itemCount: shopList.length,

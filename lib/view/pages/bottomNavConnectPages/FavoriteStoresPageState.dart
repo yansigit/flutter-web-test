@@ -81,29 +81,11 @@ class FavoriteStoresPageState extends State<FavoriteStoresPage> {
   Widget build(BuildContext context) {
     this.init();
 
-    return Scaffold(
-        backgroundColor: Colors.white,
-        appBar: AppBar(
-            elevation: 2,
-            leading: IconButton(
-                onPressed: () => Get.back(),
-                icon: SvgPicture.asset(
-                  "assets/icons/backIcon.svg",
-                  color: Color.fromRGBO(34, 34, 34, 1),
-                )),
-            title: Text("단골 매장", style: TextStyle(fontWeight: FontWeight.w700)),
-            actions: [
-              IconButton(
-                onPressed: () => print("검색하기"),
-                icon: SvgPicture.asset(
-                  "assets/icons/searchIcon.svg",
-                  color: Color.fromRGBO(34, 34, 34, 1),
-                ),
-              ),
-            ]),
-        body: Container(
+    return  Container(
             margin: EdgeInsets.only(top: 20.0.h, left: 20.0.w),
             alignment: Alignment.bottomCenter,
+             width: ScreenUtil().screenWidth,
+            height: ScreenUtil().screenHeight * 0.7,
             child: Column(children: [
               Flexible(
                   child: Row(children: [
@@ -201,7 +183,7 @@ class FavoriteStoresPageState extends State<FavoriteStoresPage> {
                       return Center(child: CircularProgressIndicator());
                     }
                   })
-            ])));
+            ]));
   }
 
   Widget buildStoreView(BuildContext context, Shop store) {
