@@ -17,7 +17,12 @@ class _CarouselState extends State<Carousel> {
 
   Future<List<Image>> getThumbnails(List<String> thumbnailList) async {
     List<Image> list = [];
-    if (thumbnailList[0] == "이미지경로") {
+    print(thumbnailList.toString());
+    if (thumbnailList.isEmpty) {
+      list.add(Image(image: AssetImage("assets/images/thumbnail.png")));
+      list.add(Image(image: AssetImage("assets/images/thumbnail.png")));
+      list.add(Image(image: AssetImage("assets/images/thumbnail.png")));
+    } else if (thumbnailList[0] == "이미지경로") {
       list.add(Image(image: AssetImage("assets/images/thumbnail.png")));
     } else if (thumbnailList.isNotEmpty) {
       for (String url in thumbnailList) {

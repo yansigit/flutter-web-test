@@ -15,13 +15,15 @@ class OptionDialog extends StatelessWidget {
   OptionDialog({Key? key, required this.menu}) : super(key: key);
 
   final cartOptions = Map<String, CartOption>();
-  // final OptionDialogController _c = Get.put(OptionDialogController());
+
   final textController = TextEditingController();
   final ShoppingCartController cartController = Get.find();
-  final OptionDialogController optionController =
-      Get.put(OptionDialogController());
+  final OptionDialogController optionController = Get.put(OptionDialogController());
   final AddShotController shotController = Get.put(AddShotController());
   final QuantityController quantityController = Get.put(QuantityController());
+  final WhippingController whipController = Get.put(WhippingController());
+  final SyrupController syrupController = Get.put(SyrupController());
+  final PriceController priceController = Get.put(PriceController());
 
   void removeKey(cartOptions) {
     List<String> nullKeys = [];
@@ -39,10 +41,16 @@ class OptionDialog extends StatelessWidget {
     OptionDialogController c1 = Get.find();
     AddShotController c2 = Get.find();
     QuantityController c3 = Get.find();
+    WhippingController c4 = Get.find();
+    SyrupController c5 = Get.find();
+    PriceController c6 = Get.find();
 
     c1.onClose();
     c2.onClose();
     c3.onClose();
+    c4.onClose();
+    c5.onClose();
+    c6.onDelete();
   }
 
   @override
@@ -61,83 +69,106 @@ class OptionDialog extends StatelessWidget {
 
     final _hasHotCold = getHasHotCold(menu);
 
+    cartOptions["temp"] = new CartOption();
+    cartOptions["size"] = new CartOption();
+    cartOptions["addShot"] = new CartOption();
+    cartOptions["iceSize"] = new CartOption();
+    cartOptions["syrup"] = new CartOption();
+    cartOptions["whipping"] = new CartOption();
+
     return Container(
       width: double.infinity,
-      height: ScreenUtil().screenHeight * 0.7,
+      height: ScreenUtil().screenHeight * 0.95,
       color: Colors.transparent,
       child: Scaffold(
         backgroundColor: Colors.transparent,
         body: Container(
             decoration: BoxDecoration(
-                borderRadius: BorderRadius.only(
-                    topLeft: Radius.circular(30.h),
-                    topRight: Radius.circular(30.h))),
-            child: Column(
-              children: [
-                Padding(
-                  padding: EdgeInsets.only(top: 14.h, left: 14.w, right: 14.w),
-                  child: AppBarWidget(),
-                ),
-                Expanded(
-                  child: SingleChildScrollView(
-                    child: Column(
-                      children: [
-                        Padding(
-                          padding: EdgeInsets.only(
-                              left: 14.w, right: 14.w, bottom: 10.h),
-                          child: Container(
-                            child: Column(
-                              crossAxisAlignment: CrossAxisAlignment.center,
-                              children: [
-                                AppBarBody(menu: menu),
-                              ],
-                            ),
-                          ),
-                        ),
-                        //Hot/Ice
-                        Container(
-                          decoration: BoxDecoration(
-                            borderRadius: BorderRadius.only(
-                              topLeft: Radius.circular(30),
-                              topRight: Radius.circular(30),
-                            ),
-                            color: Colors.white,
-                          ),
-                          child: Column(
-                            mainAxisAlignment: MainAxisAlignment.start,
-                            children: [
-                              GetX<OptionDialogController>(
-                                init: OptionDialogController(),
-                                builder: (_c) => Column(
-                                  children: [
-                                    SelectTempWidget(
-                                      hasHotCold: _hasHotCold,
-                                      selected: _c.selectHotColdOption.value,
-                                      cartOptions: this.cartOptions,
-                                    ),
-                                    // SelectSizeWidget(
-                                    //   function: _c.updateSizeOption,
-                                    //   selected: _c.selectSizeOption.value,
-                                    //   cartOptions: this.cartOptions,
-                                    // ),
-                                  ],
-                                ),
-                              ),
-                              ExpandableView(
-                                cartOptions: cartOptions,
-                                menu: menu,
-                              ),
-                              EtcCommentWidget(
-                                textController: textController,
-                              ),
-                            ],
-                          ),
-                        ),
-                      ],
+              borderRadius: BorderRadius.only(
+                topLeft: Radius.circular(30.h),
+                topRight: Radius.circular(30.h),
+              ),
+            ),
+            child: Container(
+              width: double.infinity,
+              child: Column(
+                children: [
+                  Padding(
+                    padding: EdgeInsets.only(top: 14.h, left: 14.w, right: 14.w),
+                    child: AppBarWidget(),
+                  ),
+                  Padding(
+                    padding: EdgeInsets.only(left: 14.w, right: 14.w, bottom: 10.h),
+                    child: Container(
+                      child: Column(
+                        crossAxisAlignment: CrossAxisAlignment.center,
+                        children: [
+                          AppBarBody(menu: menu),
+                        ],
+                      ),
                     ),
                   ),
-                ),
-              ],
+                  Expanded(
+                    child: Container(
+                      decoration: BoxDecoration(
+                        borderRadius: BorderRadius.only(
+                          topLeft: Radius.circular(30.h),
+                          topRight: Radius.circular(30.h),
+                        ),
+                        color: Colors.white,
+                      ),
+                      child: SingleChildScrollView(
+                        child: Column(
+                          children: [
+                            //Hot/Ice
+                            Container(
+                              decoration: BoxDecoration(
+                                borderRadius: BorderRadius.only(
+                                  topLeft: Radius.circular(30),
+                                  topRight: Radius.circular(30),
+                                ),
+                                color: Colors.white,
+                              ),
+                              child: Column(
+                                mainAxisAlignment: MainAxisAlignment.start,
+                                children: [
+                                  GetX<OptionDialogController>(
+                                    init: OptionDialogController(),
+                                    builder: (_c) => Column(
+                                      children: [
+                                        SelectTempWidget(
+                                          menu: menu,
+                                          hasHotCold: _hasHotCold,
+                                          selected: _c.selectHotColdOption.value,
+                                          cartOptions: this.cartOptions,
+                                        ),
+                                        // SelectSizeWidget(
+                                        //   function: _c.updateSizeOption,
+                                        //   selected: _c.selectSizeOption.value,
+                                        //   cartOptions: this.cartOptions,
+                                        // ),
+                                      ],
+                                    ),
+                                  ),
+                                  menu.options.isNotEmpty
+                                      ? ExpandableView(
+                                          cartOptions: cartOptions,
+                                          menu: menu,
+                                        )
+                                      : Container(),
+                                  EtcCommentWidget(
+                                    textController: textController,
+                                  ),
+                                ],
+                              ),
+                            ),
+                          ],
+                        ),
+                      ),
+                    ),
+                  ),
+                ],
+              ),
             )),
         bottomNavigationBar: OptionBottomBar(
           cartOptions: cartOptions,
@@ -174,12 +205,11 @@ class EtcCommentWidget extends StatelessWidget {
               height: 24.h,
               child: FittedBox(
                 fit: BoxFit.fitHeight,
-                child: Text("직접 요청",
-                    style: TextStyle(fontWeight: FontWeight.w700)),
+                child: Text("직접 요청", style: TextStyle(fontWeight: FontWeight.w700)),
               ),
             ),
             CupertinoTextField(
-              placeholder: "내용을 입력해주세요. (예시)물 더 넣어주세요.",
+              placeholder: "내용을 입력해주세요. (예시)당도를 낮춰주세요.",
               cursorColor: Colors.black87,
               controller: textController,
               decoration: BoxDecoration(
@@ -209,15 +239,21 @@ class OptionPlusWidget extends StatelessWidget {
     List<Widget> list = [];
     for (Option option in optionList) {
       switch (option.name) {
-        case "shot":
+        case "addShot":
           list.add(AddShotWidget(cartOptions: cartOptions));
           break;
         case "iceSize":
           list.add(IceSizeWidget(cartOptions: cartOptions));
           break;
-        case "etc":
-          list.add(EtcWidget());
-          break;
+      }
+      if (option.name == "syrup") {
+        print("syrup");
+        list.add(EtcWidget(cartOptions: cartOptions, menu: menu));
+        break;
+      } else if (option.name == "whipping") {
+        print("whipping");
+        list.add(EtcWidget(cartOptions: cartOptions, menu: menu));
+        break;
       }
     }
 
@@ -239,9 +275,30 @@ class OptionPlusWidget extends StatelessWidget {
 }
 
 class EtcWidget extends StatelessWidget {
-  const EtcWidget({
+  final cartOptions;
+  final menu;
+  EtcWidget({
     Key? key,
+    required this.cartOptions,
+    required this.menu,
   }) : super(key: key);
+
+  List<Widget> widgetList() {
+    List<Widget> etcOptionWidgetList = [];
+
+    for (Option option in menu.options) {
+      switch (option.name) {
+        case "syrup":
+          etcOptionWidgetList.add(syrupBox());
+          break;
+        case "whipping":
+          etcOptionWidgetList.add(whipBox());
+          break;
+      }
+    }
+
+    return etcOptionWidgetList;
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -255,36 +312,28 @@ class EtcWidget extends StatelessWidget {
             children: [
               Container(
                 height: 24.h,
-                child: FittedBox(
-                    child: Text("기타 추가  ",
-                        style: TextStyle(
-                            color: Color(0xff222222),
-                            fontWeight: FontWeight.w700)),
-                    fit: BoxFit.fitHeight),
+                child:
+                    FittedBox(child: Text("기타 추가  ", style: TextStyle(color: Color(0xff222222), fontWeight: FontWeight.w700)), fit: BoxFit.fitHeight),
               ),
               Container(
                 height: 24.h,
-                child: FittedBox(
-                    child: Text("+500원",
-                        style: TextStyle(
-                            color: Color(0xffed6363),
-                            fontWeight: FontWeight.w700)),
-                    fit: BoxFit.fitHeight),
+                child:
+                    FittedBox(child: Text("+500원", style: TextStyle(color: Color(0xffed6363), fontWeight: FontWeight.w700)), fit: BoxFit.fitHeight),
               ),
             ],
           ),
           Container(
             margin: EdgeInsets.only(top: 10.h),
             decoration: BoxDecoration(
-              color: Colors.white,
+              color: Colors.transparent,
               borderRadius: BorderRadius.all(Radius.circular(15.h)),
             ),
             child: Row(
               mainAxisAlignment: MainAxisAlignment.center,
-              children: [
-                syrupBox(),
-                whipBox(),
-              ],
+              children: widgetList(), //[
+              //   syrupBox(),
+              //   whipBox(),
+              // ],
             ),
           ),
         ],
@@ -293,28 +342,204 @@ class EtcWidget extends StatelessWidget {
   }
 
   Expanded whipBox() => Expanded(
-        child: Container(
-          margin: EdgeInsets.only(left: 3.5.w),
-          height: 40.h,
-          decoration: BoxDecoration(
-            color: Colors.white,
-            border: Border.all(color: Color(0xff00276b), width: 2),
-            borderRadius: BorderRadius.all(Radius.circular(15.h)),
+        child: GetX<WhippingController>(
+          init: WhippingController(),
+          builder: (_c) => InkWell(
+            onTap: () {
+              _c.switchingWhipState();
+              if (_c.whippingState.value == true) {
+                cartOptions["whipping"] = new CartOption(name: "휘핑크림", price: 500, quantity: 1);
+                PriceController _controller = Get.find();
+                _controller.increaseWhippingPrice();
+              } else {
+                cartOptions["whipping"] = new CartOption(name: "휘핑크림", price: 500, quantity: 0);
+                PriceController _controller = Get.find();
+                _controller.decreaseWhippingPrice();
+              }
+            },
+            child: Container(
+              margin: EdgeInsets.only(left: 3.5.w),
+              height: 80.h,
+              decoration: BoxDecoration(
+                color: Colors.white,
+                border: Border.all(color: _c.whippingState.value ? Color(0xff00276b) : Color(0x59000000), width: 2),
+                borderRadius: BorderRadius.all(Radius.circular(15.h)),
+              ),
+              child: Column(
+                mainAxisAlignment: MainAxisAlignment.center,
+                crossAxisAlignment: CrossAxisAlignment.center,
+                children: [
+                  Container(
+                    width: 28.w,
+                    height: 24.h,
+                    child: SvgPicture.asset(
+                      "assets/icons/ic_whipping.svg",
+                      fit: BoxFit.fill,
+                      color: _c.whippingState.value ? Color(0xff00276b) : Color(0x59000000),
+                    ),
+                  ),
+                  Container(
+                      margin: EdgeInsets.only(top: 6.9.h),
+                      height: 21.h,
+                      child: FittedBox(
+                        fit: BoxFit.fitHeight,
+                        child: Text(
+                          "휘핑크림",
+                          style: TextStyle(
+                            color: _c.whippingState.value ? Color(0xff00276b) : Color(0x59000000),
+                            fontWeight: _c.whippingState.value ? FontWeight.w700 : FontWeight.w500,
+                          ),
+                        ),
+                      )),
+                ],
+              ),
+            ),
           ),
-          child: Text("시럽"),
         ),
       );
 
   Expanded syrupBox() => Expanded(
-        child: Container(
-          margin: EdgeInsets.only(right: 3.5.w),
-          height: 40.h,
-          decoration: BoxDecoration(
-            color: Colors.white,
-            border: Border.all(color: Color(0xff00276b), width: 2),
-            borderRadius: BorderRadius.all(Radius.circular(15.h)),
+        child: GetX<SyrupController>(
+          init: SyrupController(),
+          builder: (_c) => Container(
+            margin: EdgeInsets.only(right: 3.5.w),
+            height: 80.h,
+            decoration: BoxDecoration(
+              color: Colors.white,
+              border: Border.all(color: _c.syrupCount.value > 0 ? Color(0xff00276b) : Color(0x59000000), width: 2),
+              borderRadius: BorderRadius.all(Radius.circular(15.h)),
+            ),
+            child: Column(mainAxisAlignment: MainAxisAlignment.center, crossAxisAlignment: CrossAxisAlignment.center, children: [
+              Row(
+                mainAxisAlignment: MainAxisAlignment.center,
+                crossAxisAlignment: CrossAxisAlignment.center,
+                children: [
+                  Container(
+                    width: 19.7.w,
+                    height: 24.h,
+                    child: SvgPicture.asset(
+                      "assets/icons/ic_syrup.svg",
+                      fit: BoxFit.fill,
+                      color: _c.syrupCount.value > 0 ? Color(0xff00276b) : Color(0x59000000),
+                    ),
+                  ),
+                  Container(
+                    margin: EdgeInsets.only(left: 8.3.w),
+                    height: 21.h,
+                    child: FittedBox(
+                      fit: BoxFit.fitHeight,
+                      child: Text(
+                        "설탕 시럽",
+                        style: TextStyle(
+                          color: _c.syrupCount.value > 0 ? Color(0xff00276b) : Color(0x59000000),
+                          fontWeight: _c.syrupCount.value > 0 ? FontWeight.w700 : FontWeight.w500,
+                        ),
+                      ),
+                    ),
+                  ),
+                ],
+              ),
+              Container(
+                margin: EdgeInsets.only(top: 6.9.h),
+                child: Row(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  crossAxisAlignment: CrossAxisAlignment.center,
+                  children: [
+                    InkWell(
+                      onTap: () {
+                        print("- Button Clicked");
+
+                        if (_c.hasMinus.value == true) {
+                          _c.decreaseSyrupCount();
+                          PriceController _controller = Get.find();
+                          _controller.decreaseSyrupPrice();
+                          cartOptions["syrup"] = new CartOption(name: "시럽", price: 500, quantity: _c.syrupCount.value);
+                        } else {
+                          cartOptions["syrup"] = new CartOption(name: "시럽");
+                        }
+                      },
+                      child: Container(
+                        width: 30.w,
+                        height: 30.h,
+                        decoration: BoxDecoration(
+                            color: Colors.white,
+                            borderRadius: BorderRadius.all(Radius.circular(18)),
+                            border: Border.all(color: Color(0xffe8e8e8)),
+                            boxShadow: [
+                              BoxShadow(
+                                color: Color(0x14000000),
+                                offset: Offset(0, 2),
+                                blurRadius: 4,
+                                spreadRadius: 0,
+                              ),
+                            ]),
+                        child: SizedBox(
+                          width: 24.w,
+                          height: 24.h,
+                          child: SvgPicture.asset(
+                            "assets/icons/minusIcon.svg",
+                            fit: BoxFit.scaleDown,
+                            color: _c.hasMinus.value ? Color(0xff00276b) : Color(0xffd1d1d1),
+                          ),
+                        ),
+                      ),
+                    ),
+                    Padding(
+                      padding: EdgeInsets.symmetric(horizontal: 10.w),
+                      child: Container(
+                        height: 25.h,
+                        child: FittedBox(
+                          fit: BoxFit.fitHeight,
+                          child: Text(
+                            _c.syrupCount.value.toString() + "번",
+                            style: TextStyle(color: _c.syrupCount.value > 0 ? Color(0xff00276b) : Color(0x59000000), fontWeight: FontWeight.w500),
+                          ),
+                        ),
+                      ),
+                    ),
+                    InkWell(
+                      onTap: () {
+                        print("+ Button Clicked");
+                        if (_c.hasPlus.value == true) {
+                          _c.increaseSyrupCount();
+                          PriceController _controller = Get.find();
+                          _controller.increaseSyrupPrice();
+                          cartOptions["syrup"] = new CartOption(name: "시럽", price: 500, quantity: _c.syrupCount.value);
+                        } else {
+                          cartOptions["syrup"] = new CartOption(name: "시럽");
+                        }
+                      },
+                      child: Container(
+                        width: 30.w,
+                        height: 30.h,
+                        decoration: BoxDecoration(
+                            color: Colors.white,
+                            borderRadius: BorderRadius.all(Radius.circular(18)),
+                            border: Border.all(color: Color(0xffe8e8e8)),
+                            boxShadow: [
+                              BoxShadow(
+                                color: Color(0x14000000),
+                                offset: Offset(0, 2),
+                                blurRadius: 4,
+                                spreadRadius: 0,
+                              ),
+                            ]),
+                        child: Container(
+                          width: 24.w,
+                          height: 24.h,
+                          child: SvgPicture.asset(
+                            "assets/icons/plusIcon.svg",
+                            fit: BoxFit.scaleDown,
+                            color: _c.hasPlus.value ? Color(0xff00276b) : Color(0x59000000),
+                          ),
+                        ),
+                      ),
+                    ),
+                  ],
+                ),
+              ),
+            ]),
           ),
-          child: Text("휘핑크림"),
         ),
       );
 }
@@ -330,7 +555,7 @@ class AddShotWidget extends StatelessWidget {
   Widget build(BuildContext context) {
     return Container(
       margin: EdgeInsets.only(bottom: 33.h),
-      color: Colors.red,
+      //color: Colors.red,
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
@@ -338,21 +563,13 @@ class AddShotWidget extends StatelessWidget {
             children: [
               Container(
                 height: 24.h,
-                child: FittedBox(
-                    child: Text("샷 추가  ",
-                        style: TextStyle(
-                            color: Color(0xff222222),
-                            fontWeight: FontWeight.w700)),
-                    fit: BoxFit.fitHeight),
+                child:
+                    FittedBox(child: Text("샷 추가  ", style: TextStyle(color: Color(0xff222222), fontWeight: FontWeight.w700)), fit: BoxFit.fitHeight),
               ),
               Container(
                 height: 24.h,
-                child: FittedBox(
-                    child: Text("+500원",
-                        style: TextStyle(
-                            color: Color(0xffed6363),
-                            fontWeight: FontWeight.w700)),
-                    fit: BoxFit.fitHeight),
+                child:
+                    FittedBox(child: Text("+500원", style: TextStyle(color: Color(0xffed6363), fontWeight: FontWeight.w700)), fit: BoxFit.fitHeight),
               ),
             ],
           ),
@@ -361,10 +578,12 @@ class AddShotWidget extends StatelessWidget {
             decoration: BoxDecoration(
               color: Colors.white,
               borderRadius: BorderRadius.all(Radius.circular(15.h)),
+              border: Border.all(
+                color: Color(0x59000000),
+                width: 0.1.w,
+              ),
             ),
-            child: Center(
-                child: GetX<AddShotController>(
-                    init: AddShotController(), builder: (_c) => shotAddBox())),
+            child: Center(child: GetX<AddShotController>(init: AddShotController(), builder: (_c) => shotAddBox())),
           ),
         ],
       ),
@@ -377,8 +596,7 @@ class AddShotWidget extends StatelessWidget {
       list.add(
         Expanded(
           child: Container(
-            child: SvgPicture.asset("assets/icons/icShot.svg",
-                fit: BoxFit.fitHeight),
+            child: SvgPicture.asset("assets/icons/icShot.svg", fit: BoxFit.fitHeight),
           ),
         ),
       );
@@ -412,10 +630,9 @@ class AddShotWidget extends StatelessWidget {
                     print("- Button Clicked");
                     if (controller.hasMinus.value == true) {
                       controller.decreaseShotCount();
-                      cartOptions["addShot"] = new CartOption(
-                          name: "샷 추가",
-                          price: 500,
-                          quantity: controller.shotCount.value);
+                      PriceController _c = Get.find();
+                      _c.decreaseShotPrice();
+                      cartOptions["addShot"] = new CartOption(name: "샷 추가", price: 500, quantity: controller.shotCount.value);
                     }
                     if (controller.hasMinus.value == false) {
                       cartOptions["addShot"] = new CartOption();
@@ -440,10 +657,7 @@ class AddShotWidget extends StatelessWidget {
                       width: 24.w,
                       height: 24.h,
                       child: SvgPicture.asset("assets/icons/minusIcon.svg",
-                          fit: BoxFit.scaleDown,
-                          color: controller.hasMinus.value
-                              ? Color(0xff00276b)
-                              : Color(0xffd1d1d1)),
+                          fit: BoxFit.scaleDown, color: controller.hasMinus.value ? Color(0xff00276b) : Color(0xffd1d1d1)),
                     ),
                   ),
                 ),
@@ -455,9 +669,7 @@ class AddShotWidget extends StatelessWidget {
                     fit: BoxFit.fill,
                     child: Text(
                       controller.shotCount.value.toString() + "샷",
-                      style: TextStyle(
-                          color: Color(0xff00276b),
-                          fontWeight: FontWeight.w500),
+                      style: TextStyle(color: Color(0xff00276b), fontWeight: FontWeight.w500),
                     ),
                   ),
                 ),
@@ -466,10 +678,9 @@ class AddShotWidget extends StatelessWidget {
                     print("+ Button Clicked");
                     if (controller.hasPlus.value == true) {
                       controller.increaseShotCount();
-                      cartOptions["addShot"] = new CartOption(
-                          name: "샷 추가",
-                          price: 500,
-                          quantity: controller.shotCount.value);
+                      PriceController _c = Get.find();
+                      _c.increaseShotPrice();
+                      cartOptions["addShot"] = new CartOption(name: "샷 추가", price: 500, quantity: controller.shotCount.value);
                     }
                   },
                   child: Container(
@@ -493,9 +704,7 @@ class AddShotWidget extends StatelessWidget {
                       child: SvgPicture.asset(
                         "assets/icons/plusIcon.svg",
                         fit: BoxFit.scaleDown,
-                        color: controller.hasPlus.value
-                            ? Color(0xff00276b)
-                            : Color(0xffd1d1d1),
+                        color: controller.hasPlus.value ? Color(0xff00276b) : Color(0xffd1d1d1),
                       ),
                     ),
                   ),
@@ -573,9 +782,7 @@ class IceSizeWidget extends StatelessWidget {
               Container(
                 decoration: BoxDecoration(
                   color: Colors.transparent,
-                  border: id == selected
-                      ? Border.all(color: Color(0xff00276b), width: 2)
-                      : Border.all(color: Color(0xffe8e8e8), width: 1),
+                  border: id == selected ? Border.all(color: Color(0xff00276b), width: 2) : Border.all(color: Color(0xffe8e8e8), width: 1),
                   borderRadius: BorderRadius.all(Radius.circular(60.h)),
                 ),
                 width: 100.w,
@@ -588,9 +795,7 @@ class IceSizeWidget extends StatelessWidget {
                       child: Text(
                         nameKo,
                         style: id == selected
-                            ? TextStyle(
-                                color: Color(0xff00276b),
-                                fontWeight: FontWeight.w700)
+                            ? TextStyle(color: Color(0xff00276b), fontWeight: FontWeight.w700)
                             : TextStyle(
                                 color: Color(0xff666666),
                               ),
@@ -606,18 +811,15 @@ class IceSizeWidget extends StatelessWidget {
           switch (id) {
             case 1:
               function(1);
-              cartOptions["iceSize"] =
-                  new CartOption(name: "적게", price: 0, quantity: 1);
+              cartOptions["iceSize"] = new CartOption(name: "적게", price: 0, quantity: 1);
               break;
             case 2:
               function(2);
-              cartOptions["iceSize"] =
-                  new CartOption(name: "보통", price: 0, quantity: 1);
+              cartOptions["iceSize"] = new CartOption(name: "보통", price: 0, quantity: 1);
               break;
             case 3:
               function(3);
-              cartOptions["iceSize"] =
-                  new CartOption(name: "많이", price: 0, quantity: 1);
+              cartOptions["iceSize"] = new CartOption(name: "많이", price: 0, quantity: 1);
               break;
           }
         });
@@ -640,9 +842,7 @@ class IceSizeWidget extends StatelessWidget {
                   child: FittedBox(
                       child: Text(
                         "얼음 양",
-                        style: TextStyle(
-                            color: Color(0xff222222),
-                            fontWeight: FontWeight.w700),
+                        style: TextStyle(color: Color(0xff222222), fontWeight: FontWeight.w700),
                       ),
                       fit: BoxFit.fitHeight),
                 ),
@@ -650,14 +850,14 @@ class IceSizeWidget extends StatelessWidget {
                   height: 140.h,
                   margin: EdgeInsets.only(top: 10.h, bottom: 33.h),
                   decoration: BoxDecoration(
-                    color: Colors.orange,
+                    border: Border.all(
+                      color: Color(0x59000000),
+                      width: 0.1.w,
+                    ),
+                    color: Colors.white,
                     borderRadius: BorderRadius.all(Radius.circular(15.h)),
                   ),
-                  child: Center(
-                      child: iceSizeStyle(
-                          _c.updateIceQuantity,
-                          _c.selectIceQuantity.value,
-                          _c.selectHotColdOption.value)),
+                  child: Center(child: iceSizeStyle(_c.updateIceQuantity, _c.selectIceQuantity.value, _c.selectHotColdOption.value)),
                 ),
               ],
             ),
@@ -713,9 +913,7 @@ class _ExpandableListViewState extends State<ExpandableView> {
                       height: 24.h,
                       width: 24.w,
                       child: Icon(
-                        !expandFlag
-                            ? Icons.keyboard_arrow_down
-                            : Icons.keyboard_arrow_up,
+                        !expandFlag ? Icons.keyboard_arrow_down : Icons.keyboard_arrow_up,
                         color: Color(0xff777777),
                       ))
                 ],
@@ -741,20 +939,14 @@ class ExpandableContainer extends StatelessWidget {
   final double collapsedHeight;
 
   final Widget child;
-  ExpandableContainer(
-      {Key? key,
-      this.expanded = true,
-      this.collapsedHeight = 0.0,
-      required this.child})
-      : super(key: key);
+  ExpandableContainer({Key? key, this.expanded = true, this.collapsedHeight = 0.0, required this.child}) : super(key: key);
 
   OptionDialogController _c = Get.find();
 
-  double expandedHeight = 784.h;
-
   double get containerHeight {
+    double expandedHeight = 703.h;
     if (_c.selectHotColdOption.value != 2) {
-      expandedHeight = expandedHeight - 207.6.h;
+      expandedHeight = expandedHeight - 400.6.h;
     } else {
       expandedHeight = 525.h;
     }
@@ -768,7 +960,7 @@ class ExpandableContainer extends StatelessWidget {
         duration: Duration(milliseconds: 500),
         curve: Curves.easeInOut,
         width: double.infinity,
-        height: expanded ? containerHeight : collapsedHeight,
+        height: expanded ? 510.h : collapsedHeight,
         child: child);
   }
 }
@@ -800,14 +992,11 @@ class SelectSizeWidget extends StatelessWidget {
         width: 107.w,
         decoration: BoxDecoration(
           borderRadius: BorderRadius.all(Radius.circular(15.h)),
-          border: selected == 1
-              ? Border.all(color: Color(0xff00276b), width: 2)
-              : Border.all(color: Color(0xffe8e8e8), width: 1),
+          border: selected == 1 ? Border.all(color: Color(0xff00276b), width: 2) : Border.all(color: Color(0xffe8e8e8), width: 1),
         ),
       ),
       onTap: () {
-        cartOptions["size"] =
-            new CartOption(name: "작은 사이즈", price: 0, quantity: 1);
+        cartOptions["size"] = new CartOption(name: "작은 사이즈", price: 0, quantity: 1);
         function(1);
       },
     );
@@ -820,14 +1009,11 @@ class SelectSizeWidget extends StatelessWidget {
         margin: EdgeInsets.symmetric(horizontal: 6.w),
         decoration: BoxDecoration(
           borderRadius: BorderRadius.all(Radius.circular(15.h)),
-          border: selected == 2
-              ? Border.all(color: Color(0xff00276b), width: 2)
-              : Border.all(color: Color(0xffe8e8e8), width: 1),
+          border: selected == 2 ? Border.all(color: Color(0xff00276b), width: 2) : Border.all(color: Color(0xffe8e8e8), width: 1),
         ),
       ),
       onTap: () {
-        cartOptions["size"] =
-            new CartOption(name: "중간 사이즈", price: 0, quantity: 1);
+        cartOptions["size"] = new CartOption(name: "중간 사이즈", price: 0, quantity: 1);
         function(2);
       },
     );
@@ -839,14 +1025,11 @@ class SelectSizeWidget extends StatelessWidget {
         width: 107.w,
         decoration: BoxDecoration(
           borderRadius: BorderRadius.all(Radius.circular(15.h)),
-          border: selected == 3
-              ? Border.all(color: Color(0xff00276b), width: 2)
-              : Border.all(color: Color(0xffe8e8e8), width: 1),
+          border: selected == 3 ? Border.all(color: Color(0xff00276b), width: 2) : Border.all(color: Color(0xffe8e8e8), width: 1),
         ),
       ),
       onTap: () {
-        cartOptions["size"] =
-            new CartOption(name: "큰 사이즈", price: 0, quantity: 1);
+        cartOptions["size"] = new CartOption(name: "큰 사이즈", price: 0, quantity: 1);
         function(3);
       },
     );
@@ -867,8 +1050,7 @@ class SelectSizeWidget extends StatelessWidget {
                 child: FittedBox(
                   child: Text(
                     "음료 양",
-                    style: TextStyle(
-                        color: Colors.black87, fontWeight: FontWeight.w700),
+                    style: TextStyle(color: Colors.black87, fontWeight: FontWeight.w700),
                   ),
                 )),
             Container(
@@ -888,12 +1070,14 @@ class SelectTempWidget extends StatelessWidget {
   final int hasHotCold;
   final int selected;
   final Map<String, CartOption> cartOptions;
+  final menu;
 
   SelectTempWidget({
     Key? key,
     required this.hasHotCold,
     required this.selected,
     required this.cartOptions,
+    required this.menu,
   }) : super(key: key);
   final OptionDialogController controller = Get.find();
 
@@ -902,8 +1086,8 @@ class SelectTempWidget extends StatelessWidget {
       //핫, 아이스 둘 다 있을 때
       case 3:
         //default 값
-        cartOptions["temp"] =
-            new CartOption(name: "뜨겁게", price: 0, quantity: 1);
+        cartOptions["temp"] = new CartOption(name: "뜨겁게", price: 0, quantity: 1);
+
         //controller.updateHotColdOption(1);
         return Row(
           children: [
@@ -913,19 +1097,17 @@ class SelectTempWidget extends StatelessWidget {
         );
       //핫만 있을 때
       case 2:
-        cartOptions["temp"] =
-            new CartOption(name: "뜨겁게", price: 0, quantity: 1);
+        cartOptions["temp"] = new CartOption(name: "뜨겁게", price: 0, quantity: 1);
+
         //controller.updateHotColdOption(1);
         return Expanded(
           child: Container(
-            decoration: BoxDecoration(
-                borderRadius: BorderRadius.all(Radius.circular(30)),
-                color: Color(0xffed6363)),
+            decoration: BoxDecoration(borderRadius: BorderRadius.all(Radius.circular(30)), color: Color(0xffed6363)),
           ),
         );
       case 1:
-        cartOptions["temp"] =
-            new CartOption(name: "차갑게", price: 0, quantity: 1);
+        cartOptions["temp"] = new CartOption(name: "차갑게", price: 0, quantity: 1);
+
         //controller.updateHotColdOption(2);
         return Expanded(
           child: Container(
@@ -959,9 +1141,7 @@ class SelectTempWidget extends StatelessWidget {
                       child: SvgPicture.asset(
                         "assets/icons/ic_hotIcon.svg",
                         fit: BoxFit.fill,
-                        color: selected == 1
-                            ? Color(0xffffffff)
-                            : Color(0xff666666),
+                        color: selected == 1 ? Color(0xffffffff) : Color(0xff666666),
                       ),
                     ),
                     Container(
@@ -991,14 +1171,13 @@ class SelectTempWidget extends StatelessWidget {
                   bottomLeft: Radius.circular(30),
                 ),
                 color: selected == 1 ? Color(0xffed6363) : Colors.transparent,
-                border: selected == 1
-                    ? Border.all(width: 0, color: Colors.transparent)
-                    : Border.all(width: 1, color: Color(0xffe8e8e8)),
+                border: selected == 1 ? Border.all(width: 0, color: Colors.transparent) : Border.all(width: 1, color: Color(0xffe8e8e8)),
               ),
             ),
             onTap: () {
-              cartOptions["temp"] =
-                  new CartOption(name: "뜨겁게", price: 0, quantity: 1);
+              cartOptions["temp"] = new CartOption(name: "뜨겁게", price: 0, quantity: 1);
+              PriceController _c = Get.find();
+              _c.updateTempPrice(menu.hotPrice);
               controller.updateHotColdOption(1);
             }),
         flex: 1);
@@ -1020,9 +1199,7 @@ class SelectTempWidget extends StatelessWidget {
                       child: SvgPicture.asset(
                         "assets/icons/ic_coldIcon.svg",
                         fit: BoxFit.fill,
-                        color: selected == 2
-                            ? Color(0xffffffff)
-                            : Color(0xff666666),
+                        color: selected == 2 ? Color(0xffffffff) : Color(0xff666666),
                       ),
                     ),
                     Container(
@@ -1052,13 +1229,12 @@ class SelectTempWidget extends StatelessWidget {
                     bottomRight: Radius.circular(30),
                   ),
                   color: selected == 2 ? Color(0xff6288c9) : Colors.transparent,
-                  border: selected == 2
-                      ? Border.all(width: 0, color: Colors.transparent)
-                      : Border.all(width: 1, color: Color(0xffe8e8e8))),
+                  border: selected == 2 ? Border.all(width: 0, color: Colors.transparent) : Border.all(width: 1, color: Color(0xffe8e8e8))),
             ),
             onTap: () {
-              cartOptions["temp"] =
-                  new CartOption(name: "차갑게", price: 0, quantity: 1);
+              cartOptions["temp"] = new CartOption(name: "차갑게", price: 0, quantity: 1);
+              PriceController _c = Get.find();
+              _c.updateTempPrice(menu.coldPrice);
               controller.updateHotColdOption(2);
             }),
         flex: 1);
@@ -1066,6 +1242,17 @@ class SelectTempWidget extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    PriceController _c = Get.find();
+    if (cartOptions["temp"]!.name == "뜨겁게") {
+      _c.updateTempPrice(menu.hotPrice);
+    }
+    if (cartOptions["temp"]!.name == "차갑게") {
+      _c.updateTempPrice(menu.coldPrice);
+    }
+    if (cartOptions["temp"]!.name == "") {
+      _c.updateTempPrice(menu.coldPrice);
+    }
+
     return hasHotCold != 0
         ? Padding(
             padding: EdgeInsets.only(left: 20.w, right: 20.w, top: 30.h),
@@ -1079,9 +1266,7 @@ class SelectTempWidget extends StatelessWidget {
                       child: FittedBox(
                         child: Text(
                           "온도 선택",
-                          style: TextStyle(
-                              color: Colors.black87,
-                              fontWeight: FontWeight.w700),
+                          style: TextStyle(color: Colors.black87, fontWeight: FontWeight.w700),
                         ),
                       )),
                   Container(
@@ -1112,29 +1297,23 @@ class AppBarBody extends StatelessWidget {
       alignment: Alignment.center,
       //TODO 상단 레이아웃 고치기
       child: Row(
-        mainAxisSize: MainAxisSize.max,
+        mainAxisAlignment: MainAxisAlignment.spaceBetween,
         children: [
-          Align(
-            alignment: Alignment.centerLeft,
-            child: Container(
-              height: 36.h,
-              child: FittedBox(
-                fit: BoxFit.fitHeight,
-                child: Container(
-                  child: Text(menu.name,
-                      textAlign: TextAlign.center,
-                      style: TextStyle(
-                          color: Colors.white, fontWeight: FontWeight.w700)),
+          Container(
+            height: 36.h,
+            child: FittedBox(
+              fit: BoxFit.fitHeight,
+              child: Container(
+                child: Text(
+                  menu.name,
+                  textAlign: TextAlign.center,
+                  style: TextStyle(
+                    color: Colors.white,
+                    fontWeight: FontWeight.w700,
+                  ),
                 ),
               ),
             ),
-          ),
-          Expanded(
-            child: Container(),
-          ),
-          Align(
-            alignment: Alignment.centerRight,
-            child: Container(color: Colors.red, child: Text("TESYASDFA")),
           ),
         ],
       ),
@@ -1231,9 +1410,7 @@ class OptionBottomBar extends StatelessWidget {
 
                             if (controller.hasMinus.value == true) {
                               controller.decreaseMenuQuantity();
-                              cartOptions["menuQuantity"] = new CartOption(
-                                  name: "수량",
-                                  quantity: controller.menuQuantity.value);
+                              cartOptions["menuQuantity"] = new CartOption(name: "수량", quantity: controller.menuQuantity.value);
                             }
                             if (controller.hasMinus.value == false) {
                               cartOptions["menuQuantity"] = new CartOption();
@@ -1244,8 +1421,7 @@ class OptionBottomBar extends StatelessWidget {
                             height: 36.h,
                             decoration: BoxDecoration(
                                 color: Colors.white,
-                                borderRadius:
-                                    BorderRadius.all(Radius.circular(18)),
+                                borderRadius: BorderRadius.all(Radius.circular(18)),
                                 border: Border.all(color: Color(0xffe8e8e8)),
                                 boxShadow: [
                                   BoxShadow(
@@ -1258,28 +1434,21 @@ class OptionBottomBar extends StatelessWidget {
                             child: SizedBox(
                               width: 24.w,
                               height: 24.h,
-                              child: SvgPicture.asset(
-                                  "assets/icons/minusIcon.svg",
-                                  fit: BoxFit.scaleDown,
-                                  color: controller.hasMinus.value
-                                      ? Color(0xff00276b)
-                                      : Color(0xffd1d1d1)),
+                              child: SvgPicture.asset("assets/icons/minusIcon.svg",
+                                  fit: BoxFit.scaleDown, color: controller.hasMinus.value ? Color(0xff00276b) : Color(0xffd1d1d1)),
                             ),
                           ),
                         ),
                         Padding(
-                          padding: EdgeInsets.symmetric(
-                              horizontal: 17.w, vertical: 3.h),
+                          padding: EdgeInsets.symmetric(horizontal: 17.w, vertical: 3.h),
                           child: Container(
                             width: 31.w,
                             height: 31.w,
                             child: FittedBox(
                               fit: BoxFit.fitHeight,
                               child: Text(
-                                controller.menuQuantity.value.toString() + "개",
-                                style: TextStyle(
-                                    color: Color(0xff00276b),
-                                    fontWeight: FontWeight.w500),
+                                controller.menuQuantity.value.toString() + "잔",
+                                style: TextStyle(color: Color(0xff00276b), fontWeight: FontWeight.w500),
                               ),
                             ),
                           ),
@@ -1288,17 +1457,14 @@ class OptionBottomBar extends StatelessWidget {
                           onTap: () {
                             print("+ Button Clicked");
                             controller.increaseMenuQuantity();
-                            cartOptions["menuQuantity"] = new CartOption(
-                                name: "수량",
-                                quantity: controller.menuQuantity.value);
+                            cartOptions["menuQuantity"] = new CartOption(name: "수량", quantity: controller.menuQuantity.value);
                           },
                           child: Container(
                             width: 36.w,
                             height: 36.h,
                             decoration: BoxDecoration(
                                 color: Colors.white,
-                                borderRadius:
-                                    BorderRadius.all(Radius.circular(18)),
+                                borderRadius: BorderRadius.all(Radius.circular(18)),
                                 border: Border.all(color: Color(0xffe8e8e8)),
                                 boxShadow: [
                                   BoxShadow(
@@ -1311,9 +1477,7 @@ class OptionBottomBar extends StatelessWidget {
                             child: Container(
                               width: 24.w,
                               height: 24.h,
-                              child: SvgPicture.asset(
-                                  "assets/icons/plusIcon.svg",
-                                  fit: BoxFit.scaleDown),
+                              child: SvgPicture.asset("assets/icons/plusIcon.svg", fit: BoxFit.scaleDown),
                             ),
                           ),
                         ),
@@ -1324,13 +1488,26 @@ class OptionBottomBar extends StatelessWidget {
                       child: Container(
                         height: 34.h,
                         child: FittedBox(
-                            fit: BoxFit.fill,
-                            child: Text(
-                              "500,000원",
-                              style: TextStyle(
-                                  color: Color(0xff00276b),
-                                  fontWeight: FontWeight.w700),
-                            )),
+                          fit: BoxFit.fill,
+                          child: GetX<PriceController>(
+                              init: PriceController(),
+                              builder: (_c) {
+                                //TODO 가격
+                                OptionDialogController _controller = Get.find();
+                                if (_controller.selectHotColdOption.value == 1) {
+                                  PriceController _c = Get.find();
+                                  _c.updateTempPrice(menu.hotPrice);
+                                } else if (_controller.selectHotColdOption.value == 2) {
+                                  PriceController _c = Get.find();
+                                  _c.updateTempPrice(menu.coldPrice);
+                                }
+                                _c.updatePrice(cartOptions, menu);
+                                return Text(
+                                  calcStringToWon(_c.price.value),
+                                  style: TextStyle(color: Color(0xff00276b), fontWeight: FontWeight.w700),
+                                );
+                              }),
+                        ),
                       ),
                     ),
                   ],
@@ -1350,8 +1527,7 @@ class OptionBottomBar extends StatelessWidget {
                       child: Container(
                           height: 48.h,
                           decoration: BoxDecoration(
-                            border:
-                                Border.all(color: Color(0xff00276b), width: 2),
+                            border: Border.all(color: Color(0xff00276b), width: 2),
                             borderRadius: BorderRadius.all(Radius.circular(27)),
                           ),
                           child: Row(
@@ -1374,9 +1550,7 @@ class OptionBottomBar extends StatelessWidget {
                                   child: Text(
                                     "담기",
                                     textAlign: TextAlign.center,
-                                    style: TextStyle(
-                                        color: Color(0xff00276b),
-                                        fontWeight: FontWeight.w700),
+                                    style: TextStyle(color: Color(0xff00276b), fontWeight: FontWeight.w700),
                                   ),
                                 ),
                               ),
@@ -1390,11 +1564,9 @@ class OptionBottomBar extends StatelessWidget {
                       onTap: () {
                         String text = textController.text;
                         if (text.isNotEmpty) {
-                          cartOptions["etcOption"] =
-                              new CartOption(name: text, price: 0, quantity: 1);
+                          cartOptions["etcOption"] = new CartOption(name: text, price: 0, quantity: 1);
                         } else {
-                          cartOptions["etcOption"] =
-                              new CartOption(name: "", price: 0, quantity: 0);
+                          cartOptions["etcOption"] = new CartOption(name: "", price: 0, quantity: 0);
                         }
                         removeFunction(cartOptions);
                         print(cartOptions.toString());
@@ -1408,8 +1580,7 @@ class OptionBottomBar extends StatelessWidget {
                           cartOptions: cartOptions,
                         ));
                         OptionDialog.destoryAllController();
-                        Get.off(() => ShoppingCartPage(),
-                            transition: Transition.rightToLeft);
+                        Get.off(() => ShoppingCartPage(), transition: Transition.rightToLeft);
                       },
                       child: Container(
                           margin: EdgeInsets.only(left: 5.w),

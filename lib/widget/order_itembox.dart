@@ -29,7 +29,7 @@ class ItemBoxContainer extends StatelessWidget {
         isDismissible: false,
         isScrollControlled: true,
         ignoreSafeArea: true,
-      ),
+      ).whenComplete(() => OptionDialog.destoryAllController()),
       child: Container(
         padding: EdgeInsets.symmetric(horizontal: 20.w, vertical: 11.h),
         width: double.infinity,
@@ -45,22 +45,23 @@ class ItemBoxContainer extends StatelessWidget {
               height: 154.h,
               child: Column(
                 //TODO 수정
-                mainAxisAlignment: MainAxisAlignment.center,
+                mainAxisAlignment: MainAxisAlignment.spaceAround,
                 children: [
                   Expanded(
                     flex: 52,
                     child: Container(
-                      child: SvgPicture.asset("assets/icons/hotOnlyIcon.svg"),
+                      child: hotIceIconBox(menu.isHot, menu.isCold),
                       //TODO 아이스, 핫 둘 다 가능할 경우 고치기 22x22 -> 57 x 22
-                      width: 22.w,
+                      width: menu.isHot == true && menu.isCold == true ? 57.w : 22.w,
                       height: 22.h,
                       alignment: Alignment.bottomCenter,
                     ),
                   ),
                   Expanded(
                     flex: 102,
-                    child: Center(child: Image.network(menu.thumbnail) //SvgPicture.asset("assets/icons/iceOnlyIcon.svg"),
-                        ),
+                    child: Center(
+                      child: Image.network(menu.thumbnail), //SvgPicture.asset("assets/icons/iceOnlyIcon.svg"),
+                    ),
                   )
                 ],
               ),
@@ -94,6 +95,18 @@ class ItemBoxContainer extends StatelessWidget {
     );
   }
 
+  Widget hotIceIconBox(bool hotFlag, bool iceFlag) {
+    if (hotFlag == true && iceFlag == true) {
+      return SvgPicture.asset("assets/icons/ic_hotAndice.svg", color: Colors.white);
+    } else if (hotFlag == true && iceFlag == false) {
+      return SvgPicture.asset("assets/icons/ic_hotIcon.svg", color: Colors.white);
+    } else if (hotFlag == false && iceFlag == true) {
+      return SvgPicture.asset("assets/icons/ic_iceIcon.svg", color: Colors.white);
+    } else {
+      return Container();
+    }
+  }
+
   Widget priceBoxWidget(Menu menu) {
     if (menu.isHot == true && menu.isCold == true) {
       return Row(
@@ -114,7 +127,7 @@ class ItemBoxContainer extends StatelessWidget {
             height: 22.h,
             child: FittedBox(
               child: Text(
-                menu.hotPrice.toString() + "원",
+                calcStringToWon(menu.hotPrice),
                 style: TextStyle(color: Color.fromRGBO(177, 3, 3, 1)),
               ),
             ),
@@ -135,7 +148,7 @@ class ItemBoxContainer extends StatelessWidget {
             height: 22.h,
             child: FittedBox(
               child: Text(
-                menu.coldPrice.toString() + "원",
+                calcStringToWon(menu.coldPrice),
                 style: TextStyle(color: Color.fromRGBO(0, 39, 107, 1)),
               ),
             ),
@@ -161,7 +174,7 @@ class ItemBoxContainer extends StatelessWidget {
             height: 22.h,
             child: FittedBox(
               child: Text(
-                menu.hotPrice.toString() + "원",
+                calcStringToWon(menu.hotPrice),
                 style: TextStyle(color: Color.fromRGBO(177, 3, 3, 1)),
               ),
             ),
@@ -187,7 +200,7 @@ class ItemBoxContainer extends StatelessWidget {
             height: 22.h,
             child: FittedBox(
               child: Text(
-                menu.coldPrice.toString() + "원",
+                calcStringToWon(menu.coldPrice),
                 style: TextStyle(color: Color.fromRGBO(0, 39, 107, 1)),
               ),
             ),
@@ -200,7 +213,7 @@ class ItemBoxContainer extends StatelessWidget {
         height: 22.h,
         child: FittedBox(
           child: Text(
-            menu.hotPrice.toString() + "원",
+            calcStringToWon(menu.hotPrice),
             style: TextStyle(color: Colors.black),
           ),
         ),

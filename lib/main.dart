@@ -3,16 +3,15 @@ import 'package:flutter/widgets.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:get/get.dart';
 
-
 import 'package:flutter/services.dart';
 import 'package:http/http.dart' as http;
+import 'package:save_order/home.dart';
 
 import 'package:save_order/view/pages/login/login_page.dart';
 
 import 'model/model.dart';
 
 void main() {
- 
   runApp(MyApp());
 }
 
@@ -23,17 +22,14 @@ class MyApp extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    SystemChrome.setSystemUIOverlayStyle(SystemUiOverlayStyle(
-            statusBarBrightness: Brightness.light) //Or Brightness.dark
+    SystemChrome.setSystemUIOverlayStyle(SystemUiOverlayStyle(statusBarBrightness: Brightness.light) //Or Brightness.dark
         );
     return FutureBuilder(
       future: Init.instance.initialize(),
       builder: (context, AsyncSnapshot snapshot) {
         // Show splash screen while waiting for app resources to load:
         if (snapshot.connectionState == ConnectionState.waiting) {
-          return ScreenUtilInit(
-              designSize: Size(375, 812),
-              builder: () => GetMaterialApp(home: Splash()));
+          return ScreenUtilInit(designSize: Size(375, 812), builder: () => GetMaterialApp(home: Splash()));
         } else {
           shopList = snapshot.data;
           print("Data" + shopList.toString());
@@ -42,17 +38,14 @@ class MyApp extends StatelessWidget {
               designSize: Size(375, 812),
               builder: () => GetMaterialApp(
                     title: 'Flutter Demo',
-                    theme: ThemeData(
-                        brightness: Brightness.light,
-                        primaryColor: Colors.white,
-                        fontFamily: 'Noto Sans'),
+                    theme: ThemeData(brightness: Brightness.light, primaryColor: Colors.white, fontFamily: 'Noto Sans'),
                     home:
-                    //MyOrderPage("5857D43CE90E3B412D0A69D564764F0F4388B76A") 
-                    //NearStoresPage()
-                    // UserPage("5857D43CE90E3B412D0A69D564764F0F4388B76A")
-                    //FavoriteStoresPage(token: "5857D43CE90E3B412D0A69D564764F0F4388B76A")
-                    LoginPage()
-                    //Home(shopList: shopList),
+                        //MyOrderPage("5857D43CE90E3B412D0A69D564764F0F4388B76A")
+                        //NearStoresPage()
+                        // UserPage("5857D43CE90E3B412D0A69D564764F0F4388B76A")
+                        //FavoriteStoresPage(token: "5857D43CE90E3B412D0A69D564764F0F4388B76A")
+                        //LoginPage()
+                        Home(shopList: shopList),
                   ));
         }
       },

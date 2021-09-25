@@ -1,16 +1,15 @@
 PODS:
-<<<<<<< HEAD
+  - card_scanner (0.0.1):
+    - Flutter
+    - GoogleMLKit/TextRecognition
   - Flutter (1.0.0)
+  - flutter_secure_storage (3.3.1):
+    - Flutter
   - FMDB (2.7.5):
     - FMDB/standard (= 2.7.5)
   - FMDB/standard (2.7.5)
   - geolocator_apple (1.2.0):
-=======
-  - card_scanner (0.0.1):
->>>>>>> mccreate-match-controller
     - Flutter
-    - GoogleMLKit/TextRecognition
-  - Flutter (1.0.0)
   - GoogleDataTransport (9.1.0):
     - GoogleUtilities/Environment (~> 7.2)
     - nanopb (~> 2.30908.0)
@@ -43,8 +42,6 @@ PODS:
   - GTMSessionFetcher/Core (1.7.0)
   - kakao_flutter_sdk (0.7.1):
     - Flutter
-<<<<<<< HEAD
-=======
   - MLImage (1.0.0-beta1)
   - MLKitCommon (3.1.0):
     - GoogleDataTransport (~> 9.0)
@@ -74,7 +71,6 @@ PODS:
     - nanopb/encode (= 2.30908.0)
   - nanopb/decode (2.30908.0)
   - nanopb/encode (2.30908.0)
->>>>>>> mccreate-match-controller
   - package_info_plus (0.4.5):
     - Flutter
   - path_provider (0.0.1):
@@ -85,15 +81,13 @@ PODS:
     - Flutter
   - sqflite (0.0.2):
     - Flutter
-    - FMDB (>= 2.7.5
+    - FMDB (>= 2.7.5)
 
 DEPENDENCIES:
   - card_scanner (from `.symlinks/plugins/card_scanner/ios`)
   - Flutter (from `Flutter`)
-<<<<<<< HEAD
+  - flutter_secure_storage (from `.symlinks/plugins/flutter_secure_storage/ios`)
   - geolocator_apple (from `.symlinks/plugins/geolocator_apple/ios`)
-=======
->>>>>>> mccreate-match-controller
   - kakao_flutter_sdk (from `.symlinks/plugins/kakao_flutter_sdk/ios`)
   - package_info_plus (from `.symlinks/plugins/package_info_plus/ios`)
   - path_provider (from `.symlinks/plugins/path_provider/ios`)
@@ -103,9 +97,6 @@ DEPENDENCIES:
 SPEC REPOS:
   trunk:
     - FMDB
-
-SPEC REPOS:
-  trunk:
     - GoogleDataTransport
     - GoogleMLKit
     - GoogleToolboxForMac
@@ -126,11 +117,10 @@ EXTERNAL SOURCES:
     :path: ".symlinks/plugins/card_scanner/ios"
   Flutter:
     :path: Flutter
-<<<<<<< HEAD
+  flutter_secure_storage:
+    :path: ".symlinks/plugins/flutter_secure_storage/ios"
   geolocator_apple:
     :path: ".symlinks/plugins/geolocator_apple/ios"
-=======
->>>>>>> mccreate-match-controller
   kakao_flutter_sdk:
     :path: ".symlinks/plugins/kakao_flutter_sdk/ios"
   package_info_plus:
@@ -143,14 +133,11 @@ EXTERNAL SOURCES:
     :path: ".symlinks/plugins/sqflite/ios"
 
 SPEC CHECKSUMS:
-<<<<<<< HEAD
-  Flutter: 50d75fe2f02b26cc09d224853bb45737f8b3214a
-  FMDB: 2ce00b547f966261cd18927a3ddb07cb6f3db82a
-  geolocator_apple: b741765c55dc21950e3e106e8b3584e55cf81ce5
-  kakao_flutter_sdk: b783e0a36aa17736f51457e0fc45e4a718161d38
-=======
   card_scanner: 2ef22da164d7fc6dba57c41bf8757fd5fda53c9f
   Flutter: 50d75fe2f02b26cc09d224853bb45737f8b3214a
+  flutter_secure_storage: 7953c38a04c3fdbb00571bcd87d8e3b5ceb9daec
+  FMDB: 2ce00b547f966261cd18927a3ddb07cb6f3db82a
+  geolocator_apple: b741765c55dc21950e3e106e8b3584e55cf81ce5
   GoogleDataTransport: 85fd18ff3019bb85d3f2c551d04c481dedf71fc9
   GoogleMLKit: 53d5adbee0fe5a701e970f1387d2cfececd5bc50
   GoogleToolboxForMac: 8bef7c7c5cf7291c687cf5354f39f9db6399ad34
@@ -164,7 +151,6 @@ SPEC CHECKSUMS:
   MLKitTextRecognitionCommon: 923315fc744326806d1a1355899be55320182454
   MLKitVision: 26da299aef93291f24f5200e8372919f73abf3b5
   nanopb: a0ba3315591a9ae0a16a309ee504766e90db0c96
->>>>>>> mccreate-match-controller
   package_info_plus: 6c92f08e1f853dc01228d6f553146438dafcd14e
   path_provider: abfe2b5c733d04e238b0d8691db0cfd63a27a93c
   PromisesObjC: 68159ce6952d93e17b2dfe273b8c40907db5ba58

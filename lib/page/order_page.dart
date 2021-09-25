@@ -22,8 +22,8 @@ class OrderPage extends StatelessWidget {
           future: Category.fetchCategories(controller.shopId.value),
           builder: (context, snapshot) {
             if (snapshot.hasData) {
-              //categories = categories;
-              final categories = snapshot.data as List<Category>;
+              categories = categories;
+              //final categories = snapshot.data as List<Category>;
 
               return OrderTab(categoryList: categories);
             } else {
@@ -48,8 +48,7 @@ class OrderPage extends StatelessWidget {
             ],
           ),
           child: Center(
-            child: SvgPicture.asset("assets/icons/orderCartIcon.svg",
-                fit: BoxFit.fill, color: Color(0xffffffff)),
+            child: SvgPicture.asset("assets/icons/orderCartIcon.svg", fit: BoxFit.fill, color: Color(0xffffffff)),
           ),
         ),
       ),

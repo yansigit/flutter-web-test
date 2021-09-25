@@ -178,8 +178,8 @@ class Menu {
           bgColor: _menu["backgroundColor"] == null ? _menu["backgroundColor"] as int : 0XFFFF0000,
           hotPrice: _menu["hotPrice"] as int,
           coldPrice: _menu["coldPrice"] as int,
-          isHot: _menu["isHot"] as bool,
-          isCold: _menu["isCold"] as bool,
+          isHot: _menu["hotPrice"] as int == 0 ? false : true,
+          isCold: _menu["coldPrice"] as int == 0 ? false : true,
           ingredients: Ingredient.getList(_menu['ingredientList']),
           options: Option.getList(_menu['optionList']),
           priority: _menu["priority"] as int));
