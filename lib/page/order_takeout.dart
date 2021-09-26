@@ -24,7 +24,7 @@ class OrderTakeOut extends StatelessWidget {
           onPressed: () => Get.back(),
         ),
         backgroundColor: Colors.transparent,
-        elevation: 0.0,
+        elevation: 3,
       ),
       extendBodyBehindAppBar: true,
       body: Stack(
@@ -50,7 +50,7 @@ class OrderTakeOut extends StatelessWidget {
           ),
         ],
       ),
-      bottomNavigationBar: BottomNav(),
+      //bottomNavigationBar: BottomNav(initialValue: 0),
     );
   }
 }

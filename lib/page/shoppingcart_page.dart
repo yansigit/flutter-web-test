@@ -522,7 +522,8 @@ class CartMenuWidget extends StatelessWidget {
                                     height: 36.h,
                                     decoration: BoxDecoration(
                                       borderRadius: BorderRadius.all(
-                                          Radius.circular(18.h)),
+                                          Radius.circular(18.h)
+                                        ),
                                       border: Border.all(
                                         color: Color(0xffe8e8e8),
                                         width: 1,

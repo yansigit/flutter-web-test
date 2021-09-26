@@ -4,20 +4,26 @@ import 'package:flutter_svg/svg.dart';
 import 'package:get/get.dart';
 import 'package:save_order/colorTheme/color.dart';
 import 'package:save_order/model/User.dart';
+import 'package:save_order/page/order_takeout.dart';
 import 'package:save_order/view/pages/UserPage.dart';
 import 'package:save_order/view/pages/bottomNavConnectPages/FavoriteStoresPageState.dart';
 import 'package:save_order/view/pages/bottomNavConnectPages/FindNearStore.dart';
 import 'package:save_order/view/pages/bottomNavConnectPages/MyOrderPage.dart';
 
 class BottomNav extends StatefulWidget {
-  BottomNav({Key? key}) : super(key: key);
+  final initialValue;
+
+  BottomNav({Key? key, required this.initialValue}) : super(key: key);
 
   @override
-  _BottomNavState createState() => _BottomNavState();
+  _BottomNavState createState() => _BottomNavState(initialValue: this.initialValue);
 }
 
 class _BottomNavState extends State<BottomNav> {
-  static int _currentIdx = 0;
+  int currentIdx = 0;
+  int initialValue = 0;
+
+  _BottomNavState({required this.initialValue});
 
   BottomNavigationBarItem _bottomNavigationBarItem(
       String iconName, String label) {
@@ -31,15 +37,24 @@ class _BottomNavState extends State<BottomNav> {
 
   static List<String> appBarTitles = <String>[
     "아름 드림",
-    "단골 매장", 
+    "단골 매장",
     "주문 내역",
-    ""
+    "아름 드림"
   ];
   static List<StatefulWidget> _widgetOptions = <StatefulWidget>[
     NearStoresPage(),
     FavoriteStoresPage(),
-    MyOrderPage(),
-    UserPage()
+
+   
+    MyOrderPage()
+    // SnackBar(content: Row(children: [
+    //   Text("주문 내역을 볼 수 있는 기능이 아직 구현되지 않았습니다. ")
+    // ]), duration: Duration(seconds: 3))
+    ,
+    UserPage(),
+    // SnackBar(content: Row(children: [
+    //   Text("내 정보를 볼 수 있는 기능이 아직 구현되지 않았습니다. ")
+    // ]), duration: Duration(seconds: 3))
   ];
 
   Widget _bottomNavigationBarWidget() {
@@ -49,9 +64,9 @@ class _BottomNavState extends State<BottomNav> {
       selectedLabelStyle:
           TextStyle(color: ColorThemes().selectedColor, fontSize: 12.sp),
       onTap: (int idx) => setState(() {
-        _currentIdx = idx;
+        currentIdx = idx;
       }),
-      currentIndex: _currentIdx,
+      currentIndex: currentIdx,
       items: [
         _bottomNavigationBarItem("icHome", "홈"),
         _bottomNavigationBarItem("icFav", "단골 매장"),
@@ -63,7 +78,8 @@ class _BottomNavState extends State<BottomNav> {
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
+    return 
+    Scaffold(
       backgroundColor: Colors.white,
       appBar: AppBar(
           backgroundColor: Colors.white,
@@ -75,9 +91,7 @@ class _BottomNavState extends State<BottomNav> {
                 color: Color.fromRGBO(34, 34, 34, 1),
               )),
           centerTitle: true,
-          title: Text
-          (
-            appBarTitles[_currentIdx],
+          title: Text(appBarTitles[currentIdx],
               style:
                   TextStyle(fontWeight: FontWeight.w700, color: Colors.black)),
           actions: [
@@ -89,12 +103,52 @@ class _BottomNavState extends State<BottomNav> {
               ),
             ),
           ]),
-      body: Container(
-          color: Colors.white,
-          child: Column(children: [
-            _widgetOptions[_currentIdx],
-          ])),
+      body: this.initialValue != 4
+          ? Container(
+              color: Colors.white,
+              child: Column(children: [_widgetOptions[currentIdx]]))
+          : Card(
+              color: Colors.white,
+              elevation: 0,
+            ),
       bottomNavigationBar: _bottomNavigationBarWidget(),
     );
   }
 }
+
+
+
+// Scaffold(
+//       backgroundColor: Colors.white,
+//       appBar: AppBar(
+//           backgroundColor: Colors.white,
+//           elevation: 2,
+//           leading: IconButton(
+//               onPressed: () => Get.back(),
+//               icon: SvgPicture.asset(
+//                 "assets/icons/ic_qrcode.svg",
+//                 color: Color.fromRGBO(34, 34, 34, 1),
+//               )),
+//           centerTitle: true,
+//           title: Text(appBarTitles[currentIdx],
+//               style:
+//                   TextStyle(fontWeight: FontWeight.w700, color: Colors.black)),
+//           actions: [
+//             IconButton(
+//               onPressed: () => print("검색하기"),
+//               icon: SvgPicture.asset(
+//                 "assets/icons/searchIcon.svg",
+//                 color: Color.fromRGBO(34, 34, 34, 1),
+//               ),
+//             ),
+//           ]),
+//       body: this.initialValue != 4
+//           ? Container(
+//               color: Colors.white,
+//               child: Column(children: [_widgetOptions[currentIdx]]))
+//           : Card(
+//               color: Colors.white,
+//               elevation: 0,
+//             ),
+//       bottomNavigationBar: _bottomNavigationBarWidget(),
+//     );

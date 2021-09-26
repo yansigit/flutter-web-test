@@ -47,7 +47,7 @@ class LoginPageState extends State<LoginPage> {
       this.token = token;
 
       Navigator.of(context)
-          .push(MaterialPageRoute(builder: (context) => BottomNav()));
+          .push(MaterialPageRoute(builder: (context) => BottomNav(initialValue: 0)));
       //NearStoresPage()
       //MyOrderPage("5857D43CE90E3B412D0A69D564764F0F4388B76A")
       //FavoriteStoresPage(token: "5857D43CE90E3B412D0A69D564764F0F4388B76A")

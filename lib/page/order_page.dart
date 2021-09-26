@@ -53,7 +53,7 @@ class OrderPage extends StatelessWidget {
           ),
         ),
       ),
-      bottomNavigationBar: BottomNav(),
+      //bottomNavigationBar: BottomNav(initialValue: 4),
     );
   }
 }

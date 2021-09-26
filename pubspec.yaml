@@ -35,7 +35,7 @@ dependencies:
   flutter_screenutil: ^5.0.0+2
   http: ^0.13.0
   kakao_flutter_sdk: ^0.7.1
-  # card_scanner: 1.0.1-prerelease
+  card_scanner: 1.0.1-prerelease
 
 dev_dependencies:
   flutter_native_splash: ^1.2.1

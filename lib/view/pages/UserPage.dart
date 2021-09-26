@@ -8,7 +8,6 @@ import 'package:save_order/view/pages/Controller/ProfileController.dart';
 import '/consts/color.dart';
 import '/model/Order.dart';
 import '/model/ProfilePair.dart';
-import '/model/Shop.dart';
 import '/model/User.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:flutter_secure_storage/flutter_secure_storage.dart';
@@ -88,11 +87,11 @@ class UserPageState extends State<UserPage> {
     // user.couponsOfStores.add(storeAndCoupon1);
     // user.couponsOfStores.add(storeAndCoupon2);
     user.visitedStoreNumber = user.couponsOfStores.length;
-    StoreAndCoupon storeAndCoupon1 = new StoreAndCoupon(10, new MockShop());
-    StoreAndCoupon storeAndCoupon2 = new StoreAndCoupon(5, new MockShop());
-    couponsOfStores.add(storeAndCoupon1);
-    couponsOfStores.add(storeAndCoupon2);
-    print(user.visitedStoreNumber);
+    // StoreAndCoupon storeAndCoupon1 = new StoreAndCoupon(10, new MockShop());
+    // StoreAndCoupon storeAndCoupon2 = new StoreAndCoupon(5, new MockShop());
+    // couponsOfStores.add(storeAndCoupon1);
+    // couponsOfStores.add(storeAndCoupon2);
+    // print(user.visitedStoreNumber);
     print("lllllldafdfsa");
   }
 
@@ -110,7 +109,14 @@ class UserPageState extends State<UserPage> {
     print("bb");
     print(couponsOfStores.length);
     print("aa");
-    return SingleChildScrollView(
+    return Container(
+        height: 20.h,
+        child: Text("내 정보를 볼 수 있는 기능이 아직 구현되지 않았습니다. ")
+    );
+
+    
+    
+    SingleChildScrollView(
         child: Container(
             width: ScreenUtil().screenWidth,
             height: ScreenUtil().screenHeight * 0.78,

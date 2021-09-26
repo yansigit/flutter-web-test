@@ -39,12 +39,13 @@ class Home extends StatelessWidget {
                       ),
                     ),
                     onTap: () =>
-                    Get.to(() => LoginPage())
-                    //  Get.to(() {
-                    //       shopController.updateShopId(shopList.length - index);
-                    //       return OrderTakeOut(shop: shopList[index]);
-                    //     })
-                        ),
+                        // Get.to(() => LoginPage())
+
+                        Get.to(() {
+                          print(";;");
+                          shopController.updateShopId(shopList.length - index);
+                          return OrderTakeOut(shop: shopList[index]);
+                        })),
               );
             },
             itemCount: shopList.length,
@@ -63,7 +64,7 @@ class Home extends StatelessWidget {
           //   ),
           // ),
           ),
-      bottomNavigationBar: BottomNav(),
+      bottomNavigationBar: BottomNav(initialValue: 4),
     );
   }
 }

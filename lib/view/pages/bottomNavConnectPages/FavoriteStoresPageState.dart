@@ -194,10 +194,18 @@ class FavoriteStoresPageState extends State<FavoriteStoresPage> {
         Container(
             width: ScreenUtil().setWidth(50),
             height: ScreenUtil().setHeight(50),
-            child: Container(
-                height: 68.h,
-                width: 68.w,
-                child: Carousel(thumbnailList: store.carouselImages))
+            child:  Container(
+                width: 75.w,
+                height: 75.h,
+                decoration: BoxDecoration(
+                    borderRadius: BorderRadius.all(Radius.circular(15)),
+                    border:
+                        Border.all(color: const Color(0xffe8e8e8), width: 1)),
+                child: Image.network("https://arumdream.s3.ap-northeast-2.amazonaws.com/uploads/1/menus/%EB%B0%80%ED%81%AC%ED%8B%B0%EB%9D%BC%EB%96%BC.png")
+                //Carousel(thumbnailList: store.carouselImages),
+
+                //SvgPicture.asset("images/store/" + store.thumbnail + ".svg")
+                ),
             //SvgPicture.asset("images/store/" + store.thumbnail + ".svg")
 
             ),
@@ -205,6 +213,7 @@ class FavoriteStoresPageState extends State<FavoriteStoresPage> {
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
             Container(
+              margin: EdgeInsets.only(top: 12.h, left: 3.w),
                 child: FittedBox(
               fit: BoxFit.fitHeight,
               child: Text(store.name,
@@ -241,6 +250,8 @@ class FavoriteStoresPageState extends State<FavoriteStoresPage> {
                   child: ElevatedButton(
                       onPressed: () => {/*매장 에서 직접 사먹는 api */},
                       child: Container(
+                        padding: EdgeInsets.only(left: 8.w, right: 8.w, top: 2.h, bottom: 2.h),
+                        height: 20.h,
                           child: FittedBox(
                               fit: BoxFit.fitHeight,
                               child: Text("매장",
@@ -256,7 +267,7 @@ class FavoriteStoresPageState extends State<FavoriteStoresPage> {
                         shape:
                             MaterialStateProperty.all<RoundedRectangleBorder>(
                                 RoundedRectangleBorder(
-                          borderRadius: BorderRadius.circular(5.h),
+                          borderRadius: BorderRadius.circular(15.h),
                         )),
                       ))),
               Container(
@@ -265,6 +276,7 @@ class FavoriteStoresPageState extends State<FavoriteStoresPage> {
                   child: ElevatedButton(
                       onPressed: () => {/*매장 에서 포장하는 api */},
                       child: Container(
+                        padding: EdgeInsets.only(left: 8.w, right: 8.w, top: 2.h, bottom: 2.h),
                           child: FittedBox(
                               fit: BoxFit.fitHeight,
                               child: Text("포장",
@@ -281,7 +293,7 @@ class FavoriteStoresPageState extends State<FavoriteStoresPage> {
                         shape:
                             MaterialStateProperty.all<RoundedRectangleBorder>(
                                 RoundedRectangleBorder(
-                          borderRadius: BorderRadius.circular(smallRadiusSize),
+                          borderRadius: BorderRadius.circular(15.h),
                         )),
                       ))),
             ])
