@@ -227,7 +227,15 @@ class LoginPageState extends State<LoginPage> {
                                         ),
                                       )
                                     ]),
-                                onPressed: () => {}, // 애플 로그인 api 불러오기
+                                onPressed: () => {
+                                  showDialog(
+                                      context: context,
+                                      builder: (BuildContext context) {
+                                        return AlertDialog(
+                                            content: Text(
+                                                "아직 애플 로그인 기능이 구현되지 않았습니다. 카카오 로그인이나 회원가입을 이용해 주시길 바랍니다."));
+                                      })
+                                }, // 애플 로그인 api 불러오기
 
                                 style: ButtonStyle(
                                   backgroundColor:
@@ -260,10 +268,10 @@ class LoginPageState extends State<LoginPage> {
                                         ),
                                         Container(
                                           margin: EdgeInsets.only(left: 8.w),
-                                          height: 27.h,
+                                          height: 20.h,
                                           child: Text(EMAIL_LOGIN,
                                               style: TextStyle(
-                                                  fontSize: 14,
+                                                  // fontSize: 14,
                                                   fontFamily: "NotoSans",
                                                   fontWeight: FontWeight.w700,
                                                   color:

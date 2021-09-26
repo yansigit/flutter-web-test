@@ -51,19 +51,24 @@ class NearStoresPageState extends State<NearStoresPage> {
   @override
   Widget build(BuildContext context) {
     return  Container(
-           margin: EdgeInsets.only(top: 20.0.h, left: 20.0.w, right: 80.w, bottom: 14.h),
+           margin: EdgeInsets.only(top: 24.0.h, 
+           left: 20.w,
+          //  left: 20.0.w, right: 80.w, 
+           ),
             width: ScreenUtil().screenWidth,
-            height: ScreenUtil().screenHeight * 0.7,
+            height: ScreenUtil().screenHeight * 0.75,
             child: Column(children: [
           Flexible(
               child: Row(children: [
            Container(
-             margin: EdgeInsets.only(right: 20.w),
+             height: 24.h,
+             width: 84.w,
+             margin: EdgeInsets.only(right: 151.w),
              child: FittedBox(
                fit: BoxFit.fitHeight,
                child: 
             Text("내 주변 매장",
-                style: const TextStyle(
+                style: TextStyle(
                     color: const Color(0xff222222),
                     fontWeight: FontWeight.w700,
                     fontFamily: "NotoSans",
@@ -80,8 +85,7 @@ class NearStoresPageState extends State<NearStoresPage> {
                   crossAxisAlignment: CrossAxisAlignment.center,
                   children: <Widget>[
                     Container(
-                      margin: EdgeInsets.only(left: 3.w, top: 1.h, bottom: 1.h, right: 1.w),
-                      padding: EdgeInsets.only(left: 3.w),
+                      margin: EdgeInsets.only(left: 3.w, top: 1.h, bottom: 1.h, right: 8.w),
                       width: 24.w,
                       height: 15.h,
                       child:
@@ -89,7 +93,8 @@ class NearStoresPageState extends State<NearStoresPage> {
                     ),
                     Container(
                       width: 54.w,
-                      height: 27.h,
+                      height: 15.h,
+                      margin: EdgeInsets.only(left: 8.w),
                       child: FittedBox(
                         fit: BoxFit.fitHeight,
                    child:  Text("현재위치",
@@ -112,10 +117,9 @@ class NearStoresPageState extends State<NearStoresPage> {
           Row(children: <Widget>[
             Expanded(
               child: new Container(
-                  margin: EdgeInsets.only(left: 20.0.w, right: 20.0.w),
                   child: Divider(
-                    color: Colors.black,
-                    height: 20.h,
+                    thickness: 1,
+                    color: Colors.black
                   )),
             )
           ]),
@@ -158,6 +162,7 @@ class NearStoresPageState extends State<NearStoresPage> {
         child: Row(
       children: [
         Container(
+           margin: EdgeInsets.only(left: 12.w),
             width: 50.w,
             height: 50.h,
             child: Carousel(thumbnailList: store.carouselImages)
@@ -166,6 +171,9 @@ class NearStoresPageState extends State<NearStoresPage> {
         Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
+            Container(
+              margin: EdgeInsets.only(top: 12.h,  left: 6.w),
+              child:
             Text(store.name,
                 style: const TextStyle(
                     color: const Color(0xff222222),
@@ -173,21 +181,23 @@ class NearStoresPageState extends State<NearStoresPage> {
                     fontFamily: "NotoSans",
                     fontStyle: FontStyle.normal,
                     fontSize: 20.0),
-                textAlign: TextAlign.left),
+                textAlign: TextAlign.left)),
             Row(children: [
-              Container(
-                  margin: EdgeInsets.only(left: 15.w, bottom: 25.h, right: 8.w, top: 18.h),
-                  width: 10.w,
-                  height: 10.h,
-                  child: SvgPicture.asset("assets/icons/위치icon.svg")),
+               SvgPicture.asset("assets/icons/witch_icon.svg"),
+              // Container(
+              //     // margin: EdgeInsets.only(left: 5.w, bottom: 20.h, right: 6.w, top: 18.h),
+              //     // width: 10.w,
+              //     // height: 10.h,
+              //     child:),
                   Container(
-                    margin: EdgeInsets.only(right: 13.w),
-                    width: 48.w,
+                    margin: EdgeInsets.only(right: 13.w, left: 6.w),
+                    width: 80.w,
                     height: 21.h,
                   child: 
               Text(
                   //store.distance
-                  (store.distanceFromCurPosition / 1000).toStringAsFixed(1) + "km",
+                  (store.distanceFromCurPosition / 1000).round().toString() +
+                   "km",
                   style: const TextStyle(
                       color: const Color(0xffed6363),
                       fontWeight: FontWeight.w400,
@@ -198,7 +208,7 @@ class NearStoresPageState extends State<NearStoresPage> {
               Container(
                 height: 32.h,
                 width: 50.w,
-                margin: EdgeInsets.only(right: 6.w, left: 8.w),
+                margin: EdgeInsets.only(right: 6.w, left: 14.w),
                 child:
 
               ElevatedButton(

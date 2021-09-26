@@ -29,6 +29,12 @@ class _BottomNavState extends State<BottomNav> {
     );
   }
 
+  static List<String> appBarTitles = <String>[
+    "아름 드림",
+    "단골 매장", 
+    "주문 내역",
+    ""
+  ];
   static List<StatefulWidget> _widgetOptions = <StatefulWidget>[
     NearStoresPage(),
     FavoriteStoresPage(),
@@ -59,16 +65,22 @@ class _BottomNavState extends State<BottomNav> {
   Widget build(BuildContext context) {
     return Scaffold(
       backgroundColor: Colors.white,
-         appBar: AppBar(
+      appBar: AppBar(
+          backgroundColor: Colors.white,
           elevation: 2,
           leading: IconButton(
-            onPressed: () => Get.back(),
-            icon: SvgPicture.asset(
-              "assets/icons/backIcon.svg",
-              color: Color.fromRGBO(34, 34, 34, 1),
-            )),
-          title: Text("아름 드림", style: TextStyle(fontWeight: FontWeight.w700)),
-              actions: [
+              onPressed: () => Get.back(),
+              icon: SvgPicture.asset(
+                "assets/icons/ic_qrcode.svg",
+                color: Color.fromRGBO(34, 34, 34, 1),
+              )),
+          centerTitle: true,
+          title: Text
+          (
+            appBarTitles[_currentIdx],
+              style:
+                  TextStyle(fontWeight: FontWeight.w700, color: Colors.black)),
+          actions: [
             IconButton(
               onPressed: () => print("검색하기"),
               icon: SvgPicture.asset(
@@ -79,14 +91,10 @@ class _BottomNavState extends State<BottomNav> {
           ]),
       body: Container(
           color: Colors.white,
-        child:
-    Column(
-      children: [
-      _widgetOptions[_currentIdx],
-    
-    ])
-    ),
-    bottomNavigationBar: _bottomNavigationBarWidget(),
+          child: Column(children: [
+            _widgetOptions[_currentIdx],
+          ])),
+      bottomNavigationBar: _bottomNavigationBarWidget(),
     );
   }
 }

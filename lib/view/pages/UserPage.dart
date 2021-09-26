@@ -34,8 +34,11 @@ class UserPageState extends State<UserPage> {
     // mock 코드
     SavedMenu savedMenu =
         new SavedMenu("", "컬티", "물 한잔/ 1샷추가/ 물 적게 넣어주세요", "아메리카노");
-    
-    savedMenu.thumbnail = "https://arumdream.s3.ap-northeast-2.amazonaws.com/uploads/2/menus/" + savedMenu.menuName  + ".png";
+
+    savedMenu.thumbnail =
+        "https://arumdream.s3.ap-northeast-2.amazonaws.com/uploads/2/menus/" +
+            savedMenu.menuName +
+            ".png";
 
     Map<String, dynamic> mapMenu = savedMenu.toMap();
     print("map");
@@ -107,549 +110,568 @@ class UserPageState extends State<UserPage> {
     print("bb");
     print(couponsOfStores.length);
     print("aa");
-    return  SingleChildScrollView(
-            child: Container(
-                width: ScreenUtil().screenWidth,
-                height: ScreenUtil().screenHeight  * 0.78,
-                decoration: BoxDecoration(color: DARK_BLUE),
-                child: Column(
-                  children: <Widget>[
-                    Row(children: <Widget>[
+    return SingleChildScrollView(
+        child: Container(
+            width: ScreenUtil().screenWidth,
+            height: ScreenUtil().screenHeight * 0.78,
+            decoration: BoxDecoration(color: DARK_BLUE),
+            child: Column(
+              children: <Widget>[
+                Row(children: <Widget>[
+                  Container(
+                    margin: EdgeInsets.only(
+                        top: 60.h, left: 20.w, bottom: 50.h, right: 15.w),
+                    height: 62.h,
+                    width: 62.w,
+                    child: FittedBox(
+                        fit: BoxFit.fitHeight,
+                        child: Image.network(
+                            "https://arumdream.s3.ap-northeast-2.amazonaws.com/uploads/1/menus/%EB%B0%80%ED%81%AC%ED%8B%B0%EB%9D%BC%EB%96%BC.png")),
+                  ),
+                  Column(
+                    children: [
                       Container(
                         margin: EdgeInsets.only(
-                            top: 60.h, left: 20.w, bottom: 50.h, right: 15.w),
-                        height: 62.h,
-                        width: 62.w,
+                            top: 60.h, left: 15.w, bottom: 10.h),
+                        height: 35.h,
+                        width: 124.w,
                         child: FittedBox(
                           fit: BoxFit.fitHeight,
-                          child: SvgPicture.asset(this.user.thumbnail),
+                          child: Text('''$name 님,''',
+                              maxLines: 2,
+                              style: TextStyle(
+                                  color: const Color(0xffffffff),
+                                  fontWeight: FontWeight.w400,
+                                  fontFamily: "NotoSans",
+                                  fontStyle: FontStyle.normal,
+                                  fontSize: 28.0)),
                         ),
                       ),
-                      Column(
-                        children: [
-                          Container(
-                            margin: EdgeInsets.only(
-                                top: 60.h, left: 15.w, bottom: 10.h),
-                            height: 35.h,
-                            width: 124.w,
-                            child: FittedBox(
-                              fit: BoxFit.fitHeight,
-                              child: Text('''$name 님,''',
-                                  maxLines: 2,
-                                  style: TextStyle(
-                                      color: const Color(0xffffffff),
-                                      fontWeight: FontWeight.w400,
-                                      fontFamily: "NotoSans",
-                                      fontStyle: FontStyle.normal,
-                                      fontSize: 28.0)),
-                            ),
-                          ),
-                          Container(
-                            margin: EdgeInsets.only(left: 15.w, bottom: 50.h),
-                            height: 35.h,
-                            width: 124.w,
-                            child: FittedBox(
-                                fit: BoxFit.fitHeight,
-                                child: Text('''안녕하세요!''',
-                                    maxLines: 2,
-                                    style: TextStyle(
-                                        color: const Color(0xffffffff),
-                                        fontWeight: FontWeight.w400,
-                                        fontFamily: "NotoSans",
-                                        fontStyle: FontStyle.normal,
-                                        fontSize: 28.0))),
-                          ),
-                        ],
-                      )
-                    ]),
-                    Row(
-                      children: [
-                        new GestureDetector(
-                          onTap: () {
-                            setState(() {
-                              if (isSelected[1] == "0") {
-                                isSelected[1] = "1";
-                              }
-                              showModalBottomSheet<void>(
-                                  context: context,
-                                  builder: (context) {
-                                    return FutureBuilder(
-                                        future: this.loadUserMenus(),
-                                        builder: (context,
-                                            AsyncSnapshot projectSnap) {
-                                          if (projectSnap.hasData &&
-                                              projectSnap.data != null &&
-                                              projectSnap.data.length > 0) {
-                                            return ListView.separated(
-                                                itemBuilder: (context, index) {
-                                                  return buildMenusView(context,
-                                                      projectSnap.data[index]);
-                                                },
-                                                separatorBuilder:
-                                                    (context, index) {
-                                                  return Divider();
-                                                },
-                                                itemCount:
-                                                    projectSnap.data.length);
-                                          } else if (projectSnap.hasError ||
-                                              projectSnap.data == null ||
-                                              projectSnap.data.length == 0) {
-                                            return Column(
-                                              children: [
-                                                SvgPicture.asset(
-                                                    "assets/icons/emptyMenu.svg"),
-                                                Container(
-                                                  margin: EdgeInsets.only(
-                                                      top: 15.h,
-                                                      bottom: 15.h,
-                                                      left: 105.w,
-                                                      right: 105.w),
-                                                  height: 24.h,
-                                                  width: 164.w,
-                                                  child: FittedBox(
-                                                    fit: BoxFit.fitHeight,
-                                                    child: Text("등록된 메뉴가 없습니다.",
-                                                        style: const TextStyle(
-                                                            color: const Color(
-                                                                0xff999999),
-                                                            fontWeight:
-                                                                FontWeight.w400,
-                                                            fontFamily:
-                                                                "NotoSans",
-                                                            fontStyle: FontStyle
-                                                                .normal,
-                                                            fontSize: 18.0),
-                                                        textAlign:
-                                                            TextAlign.center),
-                                                  ),
-                                                ),
-                                                Container(
-                                                  width: 226.w,
-                                                  height: 19.h,
-                                                  child: FittedBox(
-                                                    fit: BoxFit.fitHeight,
-                                                    child: Text(
-                                                        '''자주 드시는 음료를 나의 메뉴로 등록하시면''',
-                                                        style: const TextStyle(
-                                                            color: const Color(
-                                                                0xff999999),
-                                                            fontWeight:
-                                                                FontWeight.w400,
-                                                            fontFamily:
-                                                                "NotoSans",
-                                                            fontStyle: FontStyle
-                                                                .normal,
-                                                            fontSize: 14.0),
-                                                        textAlign:
-                                                            TextAlign.center),
-                                                  ),
-                                                ),
-                                                Container(
-                                                  height: 19.h,
-                                                  width: 226.w,
-                                                  child: FittedBox(
-                                                      fit: BoxFit.fitHeight,
-                                                      child: Text(
-                                                          '''보다 간편하게 주문하실 수 있습니다.''',
-                                                          style: const TextStyle(
-                                                              color: const Color(
-                                                                  0xff999999),
-                                                              fontWeight:
-                                                                  FontWeight
-                                                                      .w400,
-                                                              fontFamily:
-                                                                  "NotoSans",
-                                                              fontStyle:
-                                                                  FontStyle
-                                                                      .normal,
-                                                              fontSize: 14.0),
-                                                          textAlign: TextAlign
-                                                              .center)),
-                                                ),
-                                              ],
-                                            );
-                                          } else {
-                                            return Center(
-                                                child:
-                                                    CircularProgressIndicator());
-                                          }
-                                        });
-                                  }).whenComplete(() => {
-                                    setState(() {
-                                      this.isSelected[1] = "0";
-                                    })
-                                  });
-                            });
-                            //  나의 메뉴 보여주는 view
-                          },
-                          child: Container(
-                            margin: EdgeInsets.only(left: 20.w, right: 25.w),
-                            height: 30.h,
-                            width: 72.w,
-                            child: FittedBox(
-                              fit: BoxFit.fitHeight,
-                              child: Text(
-                                "나의 메뉴",
+                      Container(
+                        margin: EdgeInsets.only(left: 15.w, bottom: 50.h),
+                        height: 35.h,
+                        width: 124.w,
+                        child: FittedBox(
+                            fit: BoxFit.fitHeight,
+                            child: Text('''안녕하세요!''',
+                                maxLines: 2,
                                 style: TextStyle(
-                                    color: this.isSelected[1] == "1"
-                                        ? const Color(0xffffffff)
-                                        : const Color(0xff6288c9),
+                                    color: const Color(0xffffffff),
                                     fontWeight: FontWeight.w400,
                                     fontFamily: "NotoSans",
                                     fontStyle: FontStyle.normal,
-                                    fontSize: 20.0),
-                              ),
-                            ),
-                          ),
-                        ),
-                        new GestureDetector(
-                          onTap: () {
-                            setState(() {
-                              this.isSelected[2] = "1";
-                              showModalBottomSheet<void>(
-                                  context: context,
-                                  builder: (context) {
-                                    return this.couponsOfStores.length == 0
-                                        ? Column(
-                                            children: [
-                                              Container(
-                                                margin: EdgeInsets.only(
-                                                    bottom: 8.h),
-                                                height: 60.h,
-                                                width: 60.w,
-                                                child: FittedBox(
-                                                  fit: BoxFit.fitHeight,
-                                                  child: SvgPicture.asset(
-                                                      "assets/icons/Ic_EmptyCoupon.svg"),
-                                                ),
-                                              ),
-                                              Container(
-                                                height: 24.h,
-                                                width: 146.w,
-                                                child: FittedBox(
-                                                    fit: BoxFit.fitHeight,
-                                                    child:
-                                                        Text("등록된 쿠폰이 없습니다.")),
-                                              )
-                                            ],
-                                          )
-                                        : ListView.separated(
-                                            shrinkWrap: true,
-                                            scrollDirection: Axis.vertical,
+                                    fontSize: 28.0))),
+                      ),
+                    ],
+                  )
+                ]),
+                Row(
+                  children: [
+                    new GestureDetector(
+                      onTap: () {
+                        setState(() {
+                          if (isSelected[1] == "0") {
+                            isSelected[1] = "1";
+                          }
+                          showModalBottomSheet<void>(
+                              context: context,
+                              builder: (context) {
+                                return FutureBuilder(
+                                    future: this.loadUserMenus(),
+                                    builder:
+                                        (context, AsyncSnapshot projectSnap) {
+                                      if (projectSnap.hasData &&
+                                          projectSnap.data != null &&
+                                          projectSnap.data.length > 0) {
+                                        return ListView.separated(
                                             itemBuilder: (context, index) {
-                                              return buildCouponView(context,
-                                                  couponsOfStores[index]);
+                                              return buildMenusView(context,
+                                                  projectSnap.data[index]);
                                             },
                                             separatorBuilder: (context, index) {
                                               return Divider();
                                             },
-                                            itemCount: couponsOfStores.length);
-                                  }).whenComplete(() => {
-                                    setState(() {
-                                      this.isSelected[2] = "0";
-                                    })
-                                  });
-                            });
-
-                            // 쿠폰  모아두는 view
-                          },
-                          child: Container(
-                            margin: EdgeInsets.only(left: 25.w, right: 25.w),
-                            height: 30.h,
-                            width: 72.w,
-                            child: FittedBox(
-                              fit: BoxFit.fitHeight,
-                              child: Text(
-                                "쿠폰",
-                                style: TextStyle(
-                                    color: this.isSelected[2] == "1"
-                                        ? const Color(0xffffffff)
-                                        : const Color(0xff6288c9),
-                                    fontWeight: FontWeight.w400,
-                                    fontFamily: "NotoSans",
-                                    fontStyle: FontStyle.normal,
-                                    fontSize: 20.0),
-                              ),
-                            ),
+                                            itemCount: projectSnap.data.length);
+                                      } else if (projectSnap.hasError ||
+                                          projectSnap.data == null ||
+                                          projectSnap.data.length == 0) {
+                                        return Column(
+                                          children: [
+                                            SvgPicture.asset(
+                                                "assets/icons/emptyMenu.svg"),
+                                            Container(
+                                              margin: EdgeInsets.only(
+                                                  top: 15.h,
+                                                  bottom: 15.h,
+                                                  left: 105.w,
+                                                  right: 105.w),
+                                              height: 24.h,
+                                              width: 164.w,
+                                              child: FittedBox(
+                                                fit: BoxFit.fitHeight,
+                                                child: Text("등록된 메뉴가 없습니다.",
+                                                    style: const TextStyle(
+                                                        color: const Color(
+                                                            0xff999999),
+                                                        fontWeight:
+                                                            FontWeight.w400,
+                                                        fontFamily: "NotoSans",
+                                                        fontStyle:
+                                                            FontStyle.normal,
+                                                        fontSize: 18.0),
+                                                    textAlign:
+                                                        TextAlign.center),
+                                              ),
+                                            ),
+                                            Container(
+                                              width: 226.w,
+                                              height: 19.h,
+                                              child: FittedBox(
+                                                fit: BoxFit.fitHeight,
+                                                child: Text(
+                                                    '''자주 드시는 음료를 나의 메뉴로 등록하시면''',
+                                                    style: const TextStyle(
+                                                        color: const Color(
+                                                            0xff999999),
+                                                        fontWeight:
+                                                            FontWeight.w400,
+                                                        fontFamily: "NotoSans",
+                                                        fontStyle:
+                                                            FontStyle.normal,
+                                                        fontSize: 14.0),
+                                                    textAlign:
+                                                        TextAlign.center),
+                                              ),
+                                            ),
+                                            Container(
+                                              height: 19.h,
+                                              width: 226.w,
+                                              child: FittedBox(
+                                                  fit: BoxFit.fitHeight,
+                                                  child: Text(
+                                                      '''보다 간편하게 주문하실 수 있습니다.''',
+                                                      style: const TextStyle(
+                                                          color: const Color(
+                                                              0xff999999),
+                                                          fontWeight:
+                                                              FontWeight.w400,
+                                                          fontFamily:
+                                                              "NotoSans",
+                                                          fontStyle:
+                                                              FontStyle.normal,
+                                                          fontSize: 14.0),
+                                                      textAlign:
+                                                          TextAlign.center)),
+                                            ),
+                                          ],
+                                        );
+                                      } else {
+                                        return Center(
+                                            child: CircularProgressIndicator());
+                                      }
+                                    });
+                              }).whenComplete(() => {
+                                setState(() {
+                                  this.isSelected[1] = "0";
+                                })
+                              });
+                        });
+                        //  나의 메뉴 보여주는 view
+                      },
+                      child: Container(
+                        margin: EdgeInsets.only(left: 20.w, right: 25.w),
+                        height: 30.h,
+                        width: 72.w,
+                        child: FittedBox(
+                          fit: BoxFit.fitHeight,
+                          child: Text(
+                            "나의 메뉴",
+                            style: TextStyle(
+                                color: this.isSelected[1] == "1"
+                                    ? const Color(0xffffffff)
+                                    : const Color(0xff6288c9),
+                                fontWeight: FontWeight.w400,
+                                fontFamily: "NotoSans",
+                                fontStyle: FontStyle.normal,
+                                fontSize: 20.0),
                           ),
                         ),
-                        new GestureDetector(
-                          onTap: () {
-                            setState(() {
-                              isSelected[3] = "1";
-                              showModalBottomSheet<void>(
-                                  context: context,
-                                  builder: (context) {
-                                    final ProfileController profileController =
-                                        Get.put(ProfileController());
-                                    return StatefulBuilder(builder:
-                                        (BuildContext context,
-                                            StateSetter setState) {
-                                      return Column(
+                      ),
+                    ),
+                    new GestureDetector(
+                      onTap: () {
+                        setState(() {
+                          this.isSelected[2] = "1";
+                          showModalBottomSheet<void>(
+                              context: context,
+                              builder: (context) {
+                                return this.couponsOfStores.length == 0
+                                    ? Column(
                                         children: [
-                                          buildProfileView(context, "프로필 수정",
-                                              () {
-                                            showDialog(
-                                                context: context,
-                                                builder: (context) {
-                                                  return AlertDialog(
-                                                    content:
-                                                        SingleChildScrollView(
-                                                      child: Container(
-                                                        child: Column(
-                                                          //mainAxisSize: MainAxisSize.min,
-                                                          children: [
-                                                            Row(
-                                                              mainAxisAlignment:
-                                                                  MainAxisAlignment
-                                                                      .center,
-                                                              children: [
-                                                                Align(
-                                                                  child: SvgPicture
-                                                                      .asset(user
-                                                                          .thumbnail),
-                                                                  alignment:
-                                                                      Alignment
-                                                                          .topCenter,
-                                                                ),
-                                                              ],
-                                                            ),
-                                                            Column(
-                                                              children: [
-                                                                // mainAxisAlignment:
-                                                                //     MainAxisAlignment.center,
-
-                                                                Align(
-                                                                  child: Text(
-                                                                      profilePairs[0]
-                                                                          .key,
-                                                                      style: const TextStyle(
-                                                                          color: const Color(
-                                                                              0xff222222),
-                                                                          fontWeight: FontWeight
-                                                                              .w700,
-                                                                          fontFamily:
-                                                                              "NotoSansCJKKR",
-                                                                          fontStyle: FontStyle
-                                                                              .normal,
-                                                                          fontSize:
-                                                                              18.0),
-                                                                      textAlign:
-                                                                          TextAlign
-                                                                              .left),
-                                                                  alignment:
-                                                                      Alignment
-                                                                          .topLeft,
-                                                                ),
-                                                                Align(
-                                                                    alignment:
-                                                                        Alignment
-                                                                            .topLeft,
-                                                                    child: Container(
-                                                                        width: 100
-                                                                            .w,
-                                                                        height: 100
-                                                                            .h,
-                                                                        child: TextField(
-                                                                            readOnly:
-                                                                                !profileController.isEditable.value,
-                                                                            decoration: InputDecoration(hintText: profilePairs[0].value),
-                                                                            style: const TextStyle(color: const Color(0xff666666), fontWeight: FontWeight.w400, fontFamily: "Roboto", fontStyle: FontStyle.normal, fontSize: 20.0),
-                                                                            textAlign: TextAlign.left))),
-
-                                                                // mainAxisAlignment:
-                                                                //     MainAxisAlignment.center,
-
-                                                                Align(
-                                                                  child: Text(
-                                                                      profilePairs[1]
-                                                                          .key,
-                                                                      style: const TextStyle(
-                                                                          color: const Color(
-                                                                              0xff222222),
-                                                                          fontWeight: FontWeight
-                                                                              .w700,
-                                                                          fontFamily:
-                                                                              "NotoSansCJKKR",
-                                                                          fontStyle: FontStyle
-                                                                              .normal,
-                                                                          fontSize:
-                                                                              18.0),
-                                                                      textAlign:
-                                                                          TextAlign
-                                                                              .left),
-                                                                  alignment:
-                                                                      Alignment
-                                                                          .topLeft,
-                                                                ),
-                                                                Align(
-                                                                    alignment:
-                                                                        Alignment
-                                                                            .topLeft,
-                                                                    child: Container(
-                                                                        width: 100
-                                                                            .w,
-                                                                        height: 100
-                                                                            .h,
-                                                                        child: TextField(
-                                                                            readOnly:
-                                                                                !profileController.isEditable.value,
-                                                                            decoration: InputDecoration(hintText: profilePairs[1].value),
-                                                                            style: const TextStyle(color: const Color(0xff666666), fontWeight: FontWeight.w400, fontFamily: "Roboto", fontStyle: FontStyle.normal, fontSize: 20.0),
-                                                                            textAlign: TextAlign.left))),
-                                                                Align(
-                                                                  child: Text(
-                                                                      profilePairs[2]
-                                                                          .key,
-                                                                      style: const TextStyle(
-                                                                          color: const Color(
-                                                                              0xff222222),
-                                                                          fontWeight: FontWeight
-                                                                              .w700,
-                                                                          fontFamily:
-                                                                              "NotoSansCJKKR",
-                                                                          fontStyle: FontStyle
-                                                                              .normal,
-                                                                          fontSize:
-                                                                              18.0),
-                                                                      textAlign:
-                                                                          TextAlign
-                                                                              .left),
-                                                                  alignment:
-                                                                      Alignment
-                                                                          .topLeft,
-                                                                ),
-                                                                Align(
-                                                                    alignment:
-                                                                        Alignment
-                                                                            .topLeft,
-                                                                    child: Container(
-                                                                        width: 100
-                                                                            .w,
-                                                                        height: 100
-                                                                            .h,
-                                                                        child: TextField(
-                                                                            readOnly:
-                                                                                !profileController.isEditable.value,
-                                                                            decoration: InputDecoration(hintText: profilePairs[2].value),
-                                                                            style: const TextStyle(color: const Color(0xff666666), fontWeight: FontWeight.w400, fontFamily: "Roboto", fontStyle: FontStyle.normal, fontSize: 20.0),
-                                                                            textAlign: TextAlign.left))),
-                                                                Align(
-                                                                  child: Text(
-                                                                      profilePairs[3]
-                                                                          .key,
-                                                                      style: const TextStyle(
-                                                                          color: const Color(
-                                                                              0xff222222),
-                                                                          fontWeight: FontWeight
-                                                                              .w700,
-                                                                          fontFamily:
-                                                                              "NotoSansCJKKR",
-                                                                          fontStyle: FontStyle
-                                                                              .normal,
-                                                                          fontSize:
-                                                                              18.0),
-                                                                      textAlign:
-                                                                          TextAlign
-                                                                              .left),
-                                                                  alignment:
-                                                                      Alignment
-                                                                          .topLeft,
-                                                                ),
-                                                                Align(
-                                                                    alignment:
-                                                                        Alignment
-                                                                            .topLeft,
-                                                                    child: Container(
-                                                                        width: 100
-                                                                            .w,
-                                                                        height: 100
-                                                                            .h,
-                                                                        alignment:
-                                                                            Alignment
-                                                                                .topLeft,
-                                                                        child: TextField(
-                                                                            readOnly:
-                                                                                !profileController.isEditable.value,
-                                                                            decoration: InputDecoration(hintText: profilePairs[3].value),
-                                                                            style: const TextStyle(color: const Color(0xff666666), fontWeight: FontWeight.w400, fontFamily: "Roboto", fontStyle: FontStyle.normal, fontSize: 20.0),
-                                                                            textAlign: TextAlign.left))),
-                                                                Container(
-                                                                  child: Row(
-                                                                      children: [
-                                                                        GestureDetector(
-                                                                          onTap:
-                                                                              () {
-                                                                            setState(() {
-                                                                              profileController.changeEditable();
-                                                                            });
-                                                                          },
-                                                                          child: Text(
-                                                                              "변경하기",
-                                                                              style: const TextStyle(color: const Color(0xffffffff), fontWeight: FontWeight.w700, fontFamily: "NotoSans", fontStyle: FontStyle.normal, fontSize: 20.0),
-                                                                              textAlign: TextAlign.center),
-                                                                        ),
-                                                                        GestureDetector(
-                                                                          onTap:
-                                                                              () {
-                                                                            setState(() {
-                                                                              profileController.changeEditable();
-                                                                            });
-                                                                          },
-                                                                          child: Text(
-                                                                              "수정완료",
-                                                                              style: const TextStyle(color: const Color(0xffffffff), fontWeight: FontWeight.w700, fontFamily: "NotoSans", fontStyle: FontStyle.normal, fontSize: 20.0),
-                                                                              textAlign: TextAlign.center),
-                                                                        )
-                                                                      ]),
-                                                                  width: MediaQuery.of(
-                                                                              context)
-                                                                          .size
-                                                                          .width *
-                                                                      0.8,
-                                                                  height: MediaQuery.of(
-                                                                              context)
-                                                                          .size
-                                                                          .width *
-                                                                      0.1,
-                                                                  decoration: BoxDecoration(
-                                                                      borderRadius:
-                                                                          BorderRadius.all(Radius.circular(27
-                                                                              .h)),
-                                                                      color: const Color(
-                                                                          0xff00276b)),
-                                                                ),
-                                                              ],
-                                                            ),
-                                                          ],
-                                                        ),
-                                                      ),
-                                                    ),
-                                                  );
-                                                });
-                                          }, "assets/icons/profile.svg"),
-                                          buildProfileView(context, "알림 설정",
-                                              () {
-                                            /*알림 설정하는 함수*/
-                                          }, "assets/icons/bell.svg"),
-                                          buildProfileView(context, "로그아웃", () {
-                                            /* 로그아웃 하는 함수*/
-                                          }, "assets/icons/logout.svg"),
-                                          buildProfileView(context, "회원 탈퇴",
-                                              () {
-                                            /* 회원 탈퇴하는 함수 */
-                                          }, "assets/icons/withdrawal.svg")
+                                          Container(
+                                            margin:
+                                                EdgeInsets.only(bottom: 8.h),
+                                            height: 60.h,
+                                            width: 60.w,
+                                            child: FittedBox(
+                                              fit: BoxFit.fitHeight,
+                                              child: SvgPicture.asset(
+                                                  "assets/icons/Ic_EmptyCoupon.svg"),
+                                            ),
+                                          ),
+                                          Container(
+                                            height: 24.h,
+                                            width: 146.w,
+                                            child: FittedBox(
+                                                fit: BoxFit.fitHeight,
+                                                child: Text("등록된 쿠폰이 없습니다.")),
+                                          )
                                         ],
-                                      );
-                                    });
-                                  }).whenComplete(() => {
-                                    setState(() {
-                                      this.isSelected[3] = "0";
-                                    })
-                                  });
-                              // 설정 view
-                            });
-                          },
+                                      )
+                                    : ListView.separated(
+                                        shrinkWrap: true,
+                                        scrollDirection: Axis.vertical,
+                                        itemBuilder: (context, index) {
+                                          return buildCouponView(
+                                              context, couponsOfStores[index]);
+                                        },
+                                        separatorBuilder: (context, index) {
+                                          return Divider();
+                                        },
+                                        itemCount: couponsOfStores.length);
+                              }).whenComplete(() => {
+                                setState(() {
+                                  this.isSelected[2] = "0";
+                                })
+                              });
+                        });
+
+                        // 쿠폰  모아두는 view
+                      },
+                      child: Container(
+                        margin: EdgeInsets.only(left: 25.w, right: 25.w),
+                        height: 30.h,
+                        width: 72.w,
+                        child: FittedBox(
+                          fit: BoxFit.fitHeight,
+                          child: Text(
+                            "쿠폰",
+                            style: TextStyle(
+                                color: this.isSelected[2] == "1"
+                                    ? const Color(0xffffffff)
+                                    : const Color(0xff6288c9),
+                                fontWeight: FontWeight.w400,
+                                fontFamily: "NotoSans",
+                                fontStyle: FontStyle.normal,
+                                fontSize: 20.0),
+                          ),
+                        ),
+                      ),
+                    ),
+                    new GestureDetector(
+                      onTap: () {
+                        setState(() {
+                          isSelected[3] = "1";
+                          showModalBottomSheet<void>(
+                              context: context,
+                              builder: (context) {
+                                final ProfileController profileController =
+                                    Get.put(ProfileController());
+                                return StatefulBuilder(builder:
+                                    (BuildContext context,
+                                        StateSetter setState) {
+                                  return Column(
+                                    children: [
+                                      buildProfileView(context, "프로필 수정", () {
+                                        showDialog(
+                                            context: context,
+                                            builder: (context) {
+                                              return AlertDialog(
+                                                  content: Text(
+                                                      "프로필 작성 기능은 아직 구현되지 않았습니다."));
+                                              // return AlertDialog(
+                                              //   content:
+                                              //       SingleChildScrollView(
+                                              //     child: Container(
+                                              //       child: Column(
+                                              //         //mainAxisSize: MainAxisSize.min,
+                                              //         children: [
+                                              //           Row(
+                                              //             mainAxisAlignment:
+                                              //                 MainAxisAlignment
+                                              //                     .center,
+                                              //             children: [
+                                              //               Align(
+                                              //                 child: SvgPicture
+                                              //                     .asset(user
+                                              //                         .thumbnail),
+                                              //                 alignment:
+                                              //                     Alignment
+                                              //                         .topCenter,
+                                              //               ),
+                                              //             ],
+                                              //           ),
+                                              //           Column(
+                                              //             children: [
+                                              //               // mainAxisAlignment:
+                                              //               //     MainAxisAlignment.center,
+
+                                              //               Align(
+                                              //                 child: Text(
+                                              //                     profilePairs[0]
+                                              //                         .key,
+                                              //                     style: const TextStyle(
+                                              //                         color: const Color(
+                                              //                             0xff222222),
+                                              //                         fontWeight: FontWeight
+                                              //                             .w700,
+                                              //                         fontFamily:
+                                              //                             "NotoSansCJKKR",
+                                              //                         fontStyle: FontStyle
+                                              //                             .normal,
+                                              //                         fontSize:
+                                              //                             18.0),
+                                              //                     textAlign:
+                                              //                         TextAlign
+                                              //                             .left),
+                                              //                 alignment:
+                                              //                     Alignment
+                                              //                         .topLeft,
+                                              //               ),
+                                              //               Align(
+                                              //                   alignment:
+                                              //                       Alignment
+                                              //                           .topLeft,
+                                              //                   child: Container(
+                                              //                       width: 100
+                                              //                           .w,
+                                              //                       height: 100
+                                              //                           .h,
+                                              //                       child: TextField(
+                                              //                           readOnly:
+                                              //                               !profileController.isEditable.value,
+                                              //                           decoration: InputDecoration(hintText: profilePairs[0].value),
+                                              //                           style: const TextStyle(color: const Color(0xff666666), fontWeight: FontWeight.w400, fontFamily: "Roboto", fontStyle: FontStyle.normal, fontSize: 20.0),
+                                              //                           textAlign: TextAlign.left))),
+
+                                              //               // mainAxisAlignment:
+                                              //               //     MainAxisAlignment.center,
+
+                                              //               Align(
+                                              //                 child: Text(
+                                              //                     profilePairs[1]
+                                              //                         .key,
+                                              //                     style: const TextStyle(
+                                              //                         color: const Color(
+                                              //                             0xff222222),
+                                              //                         fontWeight: FontWeight
+                                              //                             .w700,
+                                              //                         fontFamily:
+                                              //                             "NotoSansCJKKR",
+                                              //                         fontStyle: FontStyle
+                                              //                             .normal,
+                                              //                         fontSize:
+                                              //                             18.0),
+                                              //                     textAlign:
+                                              //                         TextAlign
+                                              //                             .left),
+                                              //                 alignment:
+                                              //                     Alignment
+                                              //                         .topLeft,
+                                              //               ),
+                                              //               Align(
+                                              //                   alignment:
+                                              //                       Alignment
+                                              //                           .topLeft,
+                                              //                   child: Container(
+                                              //                       width: 100
+                                              //                           .w,
+                                              //                       height: 100
+                                              //                           .h,
+                                              //                       child: TextField(
+                                              //                           readOnly:
+                                              //                               !profileController.isEditable.value,
+                                              //                           decoration: InputDecoration(hintText: profilePairs[1].value),
+                                              //                           style: const TextStyle(color: const Color(0xff666666), fontWeight: FontWeight.w400, fontFamily: "Roboto", fontStyle: FontStyle.normal, fontSize: 20.0),
+                                              //                           textAlign: TextAlign.left))),
+                                              //               Align(
+                                              //                 child: Text(
+                                              //                     profilePairs[2]
+                                              //                         .key,
+                                              //                     style: const TextStyle(
+                                              //                         color: const Color(
+                                              //                             0xff222222),
+                                              //                         fontWeight: FontWeight
+                                              //                             .w700,
+                                              //                         fontFamily:
+                                              //                             "NotoSansCJKKR",
+                                              //                         fontStyle: FontStyle
+                                              //                             .normal,
+                                              //                         fontSize:
+                                              //                             18.0),
+                                              //                     textAlign:
+                                              //                         TextAlign
+                                              //                             .left),
+                                              //                 alignment:
+                                              //                     Alignment
+                                              //                         .topLeft,
+                                              //               ),
+                                              //               Align(
+                                              //                   alignment:
+                                              //                       Alignment
+                                              //                           .topLeft,
+                                              //                   child: Container(
+                                              //                       width: 100
+                                              //                           .w,
+                                              //                       height: 100
+                                              //                           .h,
+                                              //                       child: TextField(
+                                              //                           readOnly:
+                                              //                               !profileController.isEditable.value,
+                                              //                           decoration: InputDecoration(hintText: profilePairs[2].value),
+                                              //                           style: const TextStyle(color: const Color(0xff666666), fontWeight: FontWeight.w400, fontFamily: "Roboto", fontStyle: FontStyle.normal, fontSize: 20.0),
+                                              //                           textAlign: TextAlign.left))),
+                                              //               Align(
+                                              //                 child: Text(
+                                              //                     profilePairs[3]
+                                              //                         .key,
+                                              //                     style: const TextStyle(
+                                              //                         color: const Color(
+                                              //                             0xff222222),
+                                              //                         fontWeight: FontWeight
+                                              //                             .w700,
+                                              //                         fontFamily:
+                                              //                             "NotoSansCJKKR",
+                                              //                         fontStyle: FontStyle
+                                              //                             .normal,
+                                              //                         fontSize:
+                                              //                             18.0),
+                                              //                     textAlign:
+                                              //                         TextAlign
+                                              //                             .left),
+                                              //                 alignment:
+                                              //                     Alignment
+                                              //                         .topLeft,
+                                              //               ),
+                                              //               Align(
+                                              //                   alignment:
+                                              //                       Alignment
+                                              //                           .topLeft,
+                                              //                   child: Container(
+                                              //                       width: 100
+                                              //                           .w,
+                                              //                       height: 100
+                                              //                           .h,
+                                              //                       alignment:
+                                              //                           Alignment
+                                              //                               .topLeft,
+                                              //                       child: TextField(
+                                              //                           readOnly:
+                                              //                               !profileController.isEditable.value,
+                                              //                           decoration: InputDecoration(hintText: profilePairs[3].value),
+                                              //                           style: const TextStyle(color: const Color(0xff666666), fontWeight: FontWeight.w400, fontFamily: "Roboto", fontStyle: FontStyle.normal, fontSize: 20.0),
+                                              //                           textAlign: TextAlign.left))),
+                                              //               Container(
+                                              //                 child: Row(
+                                              //                     children: [
+                                              //                       GestureDetector(
+                                              //                         onTap:
+                                              //                             () {
+                                              //                           setState(() {
+                                              //                             profileController.changeEditable();
+                                              //                           });
+                                              //                         },
+                                              //                         child: Text(
+                                              //                             "변경하기",
+                                              //                             style: const TextStyle(color: const Color(0xffffffff), fontWeight: FontWeight.w700, fontFamily: "NotoSans", fontStyle: FontStyle.normal, fontSize: 20.0),
+                                              //                             textAlign: TextAlign.center),
+                                              //                       ),
+                                              //                       GestureDetector(
+                                              //                         onTap:
+                                              //                             () {
+                                              //                           setState(() {
+                                              //                             profileController.changeEditable();
+                                              //                           });
+                                              //                         },
+                                              //                         child: Text(
+                                              //                             "수정완료",
+                                              //                             style: const TextStyle(color: const Color(0xffffffff), fontWeight: FontWeight.w700, fontFamily: "NotoSans", fontStyle: FontStyle.normal, fontSize: 20.0),
+                                              //                             textAlign: TextAlign.center),
+                                              //                       )
+                                              //                     ]),
+                                              //                 width: MediaQuery.of(
+                                              //                             context)
+                                              //                         .size
+                                              //                         .width *
+                                              //                     0.8,
+                                              //                 height: MediaQuery.of(
+                                              //                             context)
+                                              //                         .size
+                                              //                         .width *
+                                              //                     0.1,
+                                              //                 decoration: BoxDecoration(
+                                              //                     borderRadius:
+                                              //                         BorderRadius.all(Radius.circular(27
+                                              //                             .h)),
+                                              //                     color: const Color(
+                                              //                         0xff00276b)),
+                                              //               ),
+                                              //             ],
+                                              //           ),
+                                              //         ],
+                                              //       ),
+                                              //     ),
+                                              //   ),
+                                              // );
+                                            });
+                                      }, "assets/icons/profile.svg"),
+                                      buildProfileView(context, "알림 설정", () {
+                                        showDialog(
+                                            context: context,
+                                            builder: (context) {
+                                              return AlertDialog(
+                                                  content: Text(
+                                                      "알림 설정 기능은 아직 구현되지 않았습니다."));
+                                            });
+                                        /*알림 설정하는 함수*/
+                                      }, "assets/icons/bell.svg"),
+                                      buildProfileView(context, "로그아웃", () {
+                                        showDialog(
+                                            context: context,
+                                            builder: (context) {
+                                              return AlertDialog(
+                                                  content: Text(
+                                                      "로그아웃 기능은 아직 구현되지 않았습니다."));
+                                            });
+                                      },
+                                          "assets/icons/logout.svg"),
+                                      buildProfileView(context, "회원 탈퇴", () {
+                                        showDialog(
+                                            context: context,
+                                            builder: (context) {
+                                              return AlertDialog(
+                                                  content: Text(
+                                                      "회원 탈퇴 기능은 아직 구현되지 않았습니다."));
+                                            });
+                                        /* 회원 탈퇴하는 함수 */
+                                      }, "assets/icons/withdrawal.svg")
+                                    ],
+                                  );
+                                });
+                              }).whenComplete(() => {
+                                setState(() {
+                                  this.isSelected[3] = "0";
+                                })
+                              });
+                          // 설정 view
+                        });
+                      },
+                      child: Container(
+                        margin: EdgeInsets.only(left: 25.w, right: 25.w),
+                        height: 30.h,
+                        width: 72.w,
+                        child: FittedBox(
+                          fit: BoxFit.fitHeight,
                           child: Text(
                             "설정",
                             style: TextStyle(
@@ -662,10 +684,12 @@ class UserPageState extends State<UserPage> {
                                 fontSize: 20.0),
                           ),
                         ),
-                      ],
-                    )
+                      ),
+                    ),
                   ],
-                )));
+                )
+              ],
+            )));
   }
 
   Widget buildCouponView(BuildContext context, StoreAndCoupon storeAndCoupon) {

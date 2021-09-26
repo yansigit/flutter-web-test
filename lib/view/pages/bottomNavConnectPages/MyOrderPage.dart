@@ -20,7 +20,7 @@ class MyOrderPageState extends State<MyOrderPage> {
   static final storage = new FlutterSecureStorage();
   MyOrderPageState() {
     _orders = <Order>[];
-    _orders.add(new Order());
+    // _orders.add(new Order());
     orderedStoreLength = _orders.length;
     // _mockMyMenus.add(new MyOrder());
     // _mockMyMenus.add(new MyOrder());

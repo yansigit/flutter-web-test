@@ -56,19 +56,19 @@ class FavoriteStoresPageState extends State<FavoriteStoresPage> {
 
     List<Shop> shops = [];
     
-    for (int i = 0; i < stores.length; i++) {
-      var store = stores[i];
-      var storeName = store[UserFavoriteStoresDatabase.storeName];
-      var myCarsouelImages = store[UserFavoriteStoresDatabase.thumbnailPath];
-      var latitude = store[UserFavoriteStoresDatabase.latitude];
-      var longitutde = store[UserFavoriteStoresDatabase.longitutde];
-      Shop shop = new Shop(
-          name: storeName,
-          carouselImages: [myCarsouelImages],
-          latitude: 0,
-          longtitude: 0);
-      shops.add(shop);
-    }
+    // for (int i = 0; i < stores.length; i++) {
+    //   var store = stores[i];
+    //   var storeName = store[UserFavoriteStoresDatabase.storeName];
+    //   var myCarsouelImages = store[UserFavoriteStoresDatabase.thumbnailPath];
+    //   var latitude = store[UserFavoriteStoresDatabase.latitude];
+    //   var longitutde = store[UserFavoriteStoresDatabase.longitutde];
+    //   Shop shop = new Shop(
+    //       name: storeName,
+    //       carouselImages: [myCarsouelImages],
+    //       latitude: 0,
+    //       longtitude: 0);
+    //   shops.add(shop);
+    // }
 
     return shops;
   }
@@ -82,7 +82,7 @@ class FavoriteStoresPageState extends State<FavoriteStoresPage> {
     this.init();
 
     return  Container(
-            margin: EdgeInsets.only(top: 20.0.h, left: 20.0.w),
+            margin: EdgeInsets.only(top: 20.0.h),
             alignment: Alignment.bottomCenter,
              width: ScreenUtil().screenWidth,
             height: ScreenUtil().screenHeight * 0.7,
@@ -90,10 +90,11 @@ class FavoriteStoresPageState extends State<FavoriteStoresPage> {
               Flexible(
                   child: Row(children: [
                 Container(
+                  margin: EdgeInsets.only(left: 8.w),
                     child: FittedBox(
                         fit: BoxFit.fitHeight,
                         child: Text(
-                          " 개 매장",
+                          "0 개 매장",
                             style: const TextStyle(
                                 color: const Color(0xff222222),
                                 fontWeight: FontWeight.w700,
@@ -135,7 +136,6 @@ class FavoriteStoresPageState extends State<FavoriteStoresPage> {
               Row(children: <Widget>[
                 Expanded(
                   child: new Container(
-                      margin: EdgeInsets.only(left: 20.0.w, right: 20.0.w),
                       child: Divider(
                         color: Colors.black,
                         height: 20.h,
@@ -145,7 +145,8 @@ class FavoriteStoresPageState extends State<FavoriteStoresPage> {
               FutureBuilder(
                   future: this.loadFavoriteShopsByuser(),
                   builder: (context, AsyncSnapshot projectSnap) {
-                    if (projectSnap.hasData && projectSnap.data != null) {
+                    
+                    if (projectSnap.hasData &&  projectSnap.data != null && projectSnap.data.length > 0) {
                       return Container(
                           child: ListView.separated(
                         shrinkWrap: true,
@@ -160,7 +161,7 @@ class FavoriteStoresPageState extends State<FavoriteStoresPage> {
                         },
                       ));
                     } else if (projectSnap.hasError ||
-                        projectSnap.data == null) {
+                        projectSnap.data == null || projectSnap.data.length == 0) {
                       return Center(
                         child: Column(
                           children: [

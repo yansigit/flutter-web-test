@@ -75,7 +75,7 @@ class _EmailLoginPage extends State<EmailLoginPage> {
                 child: TextField(
                   controller: emailController,
                   decoration: InputDecoration(
-                      labelText: "이메일", hintText: "이메일을 입력하세요."),
+                   hintText: "이메일을 입력하세요."),
                 )),
             Container(
               margin: EdgeInsets.only(right: 10.w, bottom: 8.h),
@@ -85,7 +85,7 @@ class _EmailLoginPage extends State<EmailLoginPage> {
                 controller: passwordController,
                 obscureText: true,
                 decoration: InputDecoration(
-                    labelText: "비밀번호", hintText: "비밀번호를 입력하세요."),
+                   hintText: "비밀번호를 입력하세요."),
               ),
             ),
             ElevatedButton(
