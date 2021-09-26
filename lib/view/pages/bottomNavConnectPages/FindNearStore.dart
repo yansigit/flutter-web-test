@@ -34,7 +34,6 @@ class NearStoresPageState extends State<NearStoresPage> {
     });
     print(this.curPosition);
     return await Shop.fetchShopsByLocation(http.Client(), N, this.curPosition);
-
     // if (this.nearStores != null) {
     //   this.nearStoreLength = this.nearStores!.length;
     // } else {

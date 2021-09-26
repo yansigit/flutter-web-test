@@ -114,8 +114,6 @@ class UserPageState extends State<UserPage> {
         child: Text("내 정보를 볼 수 있는 기능이 아직 구현되지 않았습니다. ")
     );
 
-    
-    
     SingleChildScrollView(
         child: Container(
             width: ScreenUtil().screenWidth,

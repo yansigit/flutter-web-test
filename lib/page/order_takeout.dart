@@ -9,6 +9,7 @@ import 'package:save_order/widget/order_cafename.dart';
 import 'package:save_order/widget/order_carousel.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:save_order/widget/order_takeoutwidget.dart';
+import 'package:save_order/widget/tempoarary_bottom_nav.dart';
 
 class OrderTakeOut extends StatelessWidget {
   final Shop shop;
@@ -50,7 +51,7 @@ class OrderTakeOut extends StatelessWidget {
           ),
         ],
       ),
-      //bottomNavigationBar: BottomNav(initialValue: 0),
+      bottomNavigationBar: TemporaryBottomNav()
     );
   }
 }
