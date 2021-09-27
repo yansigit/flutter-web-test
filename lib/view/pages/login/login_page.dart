@@ -123,10 +123,10 @@ class LoginPageState extends State<LoginPage> {
                           children: <Widget>[
                             Container(
                               margin:
-                                  EdgeInsets.only(top: 14.5.h, bottom: 15.h),
+                                  EdgeInsets.only(top: 14.5.h, bottom: 26.h),
                               child: ElevatedButton(
                                   child: Container(
-                                    height: 24.h,
+                                    height: 54.h,
                                     child: Row(
                                       mainAxisAlignment:
                                           MainAxisAlignment.center,
@@ -135,9 +135,11 @@ class LoginPageState extends State<LoginPage> {
                                       children: <Widget>[
                                         Container(
                                           height: 18.h,
+                                          child: FittedBox(
+                                              fit: BoxFit.fitHeight,
                                           child: SvgPicture.asset(
-                                              "assets/icons/kakaoIcon.svg",
-                                              fit: BoxFit.fitHeight),
+                                              "assets/icons/kakaoIcon.svg")
+                                            ),
                                         ),
                                         Container(
                                           margin: EdgeInsets.only(left: 8.4.w),
@@ -163,7 +165,7 @@ class LoginPageState extends State<LoginPage> {
                                             RoundedRectangleBorder>(
                                         RoundedRectangleBorder(
                                             borderRadius: BorderRadius.circular(
-                                                loginRaiusSize))),
+                                                30.0.w))),
                                   )),
                             ),
                             Row(children: <Widget>[
@@ -173,11 +175,11 @@ class LoginPageState extends State<LoginPage> {
                                         left: 15.w, right: 16.5.w),
                                     child: Divider(
                                       color: Color(0xffd1d1d1),
-                                      height: 10,
+                                      height: 10.h,
                                     )),
                               ),
                               Container(
-                                height: 12.h,
+                                height: 16.h,
                                 child: FittedBox(
                                   fit: BoxFit.fitHeight,
                                   child: Text("OR",
@@ -201,7 +203,7 @@ class LoginPageState extends State<LoginPage> {
                             // 애플 로그인 버튼
                             Container(
                               margin: EdgeInsets.only(top: 10.h, bottom: 10.h),
-                              height: 27.h,
+                              height: 54.h,
                               child: ElevatedButton(
                                 child: Row(
                                     mainAxisAlignment: MainAxisAlignment.center,
@@ -210,9 +212,11 @@ class LoginPageState extends State<LoginPage> {
                                     children: <Widget>[
                                       Container(
                                         height: 20.h,
-                                        child: SvgPicture.asset(
+                                        child: FittedBox(
+                                          fit: BoxFit.fitHeight,
+                                          child: SvgPicture.asset(
                                             "assets/icons/appleIcon.svg",
-                                            fit: BoxFit.fitHeight),
+                                            fit: BoxFit.fitHeight)),
                                       ),
                                       Container(
                                         margin: EdgeInsets.only(left: 8.7.w),
@@ -250,8 +254,8 @@ class LoginPageState extends State<LoginPage> {
                             ),
                             //이메일로 로그인
                             Container(
-                              height: 30.h,
-                              margin: EdgeInsets.only(bottom: 8.h),
+                              height: 54.h,
+                              margin: EdgeInsets.only(bottom: 27.h),
                               child: ElevatedButton(
                                   child: Row(
                                       mainAxisAlignment:
@@ -261,22 +265,25 @@ class LoginPageState extends State<LoginPage> {
                                       children: <Widget>[
                                         Container(
                                           height: 14.4.h,
-                                          child: SvgPicture.asset(
+                                          child: FittedBox(
+                                            child: SvgPicture.asset(
                                             "assets/icons/emailIcon.svg",
                                             fit: BoxFit.fitHeight,
-                                          ),
+                                          )),
                                         ),
                                         Container(
                                           margin: EdgeInsets.only(left: 8.w),
                                           height: 20.h,
-                                          child: Text(EMAIL_LOGIN,
+                                          child: FittedBox(
+                                            fit:  BoxFit.fitHeight,
+                                            child: Text(EMAIL_LOGIN,
                                               style: TextStyle(
                                                   // fontSize: 14,
                                                   fontFamily: "NotoSans",
                                                   fontWeight: FontWeight.w700,
                                                   color:
                                                       const Color(0xff00276b))),
-                                        )
+                                        ))
                                       ]),
                                   onPressed: () {
                                     Get.to(() => EmailLoginPage());
@@ -298,11 +305,11 @@ class LoginPageState extends State<LoginPage> {
                             ),
                             Container(
                                 margin: EdgeInsets.only(left: 8.w, top: 8.h),
-                                height: 30.h,
-                                child: ElevatedButton(
-                                  onPressed: () => Get.to(SignUp()),
+                                height: 18.h,
+                                child: GestureDetector(
+                                  onTap: () => Get.to(SignUp()),
                                   child: Container(
-                                      height: 25.h,
+                                      height: 18.h,
                                       child: FittedBox(
                                           fit: BoxFit.fitHeight,
                                           child: Text(SIGN_UP,
@@ -312,21 +319,11 @@ class LoginPageState extends State<LoginPage> {
                                                   color: Colors.blue,
                                                   fontFamily: "NotoSans",
                                                   fontStyle: FontStyle.normal,
-                                                  fontSize: 10.0)))),
-                                  style: ButtonStyle(
-                                    side: MaterialStateProperty.all<BorderSide>(
-                                        BorderSide(
-                                            color: const Color(0xff00276b),
-                                            width: 1.w)),
-                                    backgroundColor:
-                                        MaterialStateProperty.all(EMAIL_COLOR),
-                                    shape: MaterialStateProperty.all<
-                                            RoundedRectangleBorder>(
-                                        RoundedRectangleBorder(
-                                            borderRadius: BorderRadius.circular(
-                                                loginRaiusSize))),
-                                  ),
-                                ))
+                                                  fontSize: 10.0)
+                                                  ))
+                                                ),
+                                )
+                                )
                           ],
                         ),
                       ]),

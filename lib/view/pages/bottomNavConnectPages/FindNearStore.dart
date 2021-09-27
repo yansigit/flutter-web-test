@@ -72,8 +72,7 @@ class NearStoresPageState extends State<NearStoresPage> {
                             fontFamily: "NotoSans",
                             fontStyle: FontStyle.normal,
                             fontSize: 18.0),
-                        textAlign: TextAlign.left)
-                        )),
+                        textAlign: TextAlign.left))),
             Container(
                 margin: EdgeInsets.only(bottom: 14.h, right: 10.w),
                 decoration: BoxDecoration(
@@ -108,7 +107,7 @@ class NearStoresPageState extends State<NearStoresPage> {
                             width: 54.w,
                             height: 20.h,
                             margin: EdgeInsets.only(left: 2.w, right: 8.w),
-                            padding: EdgeInsets.only(top: 3.h, bottom: 3.h),
+                            padding: EdgeInsets.only(top: 1.h, bottom: 1.h),
                             child: FittedBox(
                                 fit: BoxFit.fitHeight,
                                 child: Text("현재위치",
@@ -267,7 +266,12 @@ class NearStoresPageState extends State<NearStoresPage> {
                       height: 32.h,
                       width: 50.w,
                       child: ElevatedButton(
-                          onPressed: () => {/*매장 에서 포장하는 api */},
+                          onPressed: () {
+                            Get.to(() {
+                              shopController.updateShopId(store.id);
+                              return OrderTakeOut(shop: store);
+                            });
+                          },
                           child: Container(
                               padding: EdgeInsets.only(
                                   left: 8.w, right: 8.w, top: 2.h, bottom: 2.h),

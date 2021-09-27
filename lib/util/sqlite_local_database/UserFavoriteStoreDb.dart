@@ -5,7 +5,7 @@ import 'package:sqflite/sqflite.dart';
 import 'package:path_provider/path_provider.dart';
 
 class UserFavoriteStoresDatabase {
-  static final _databaseName = "UserFavoriteStore.db";
+  static final _databaseName = "UserFavoriteStoreaa.db";
   static final _databaseVersion = 1;
 
   static final table = 'users_favorite_stores';

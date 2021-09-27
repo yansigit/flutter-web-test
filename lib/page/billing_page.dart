@@ -109,8 +109,8 @@ class PaymentMethodWidget extends StatelessWidget {
                         style: TextStyle(fontWeight: FontWeight.w700)))),
             InkWell(
               onTap: (() => 
-            
-              Get.to(CardPage())
+              print("aa")
+              //Get.to(CardPage())
               ),
               child: Container(
                 margin: EdgeInsets.symmetric(vertical: 5.h),
