@@ -11,19 +11,20 @@ import 'package:save_order/view/pages/bottomNavConnectPages/FindNearStore.dart';
 import 'package:save_order/view/pages/bottomNavConnectPages/MyOrderPage.dart';
 
 class BottomNav extends StatefulWidget {
-  final initialValue;
 
-  BottomNav({Key? key, required this.initialValue}) : super(key: key);
+
+  BottomNav({Key? key}) : super(key: key);
 
   @override
-  _BottomNavState createState() => _BottomNavState(initialValue: this.initialValue);
+  _BottomNavState createState() =>
+      _BottomNavState();
 }
 
 class _BottomNavState extends State<BottomNav> {
   int currentIdx = 0;
-  int initialValue = 0;
 
-  _BottomNavState({required this.initialValue});
+
+  _BottomNavState();
 
   BottomNavigationBarItem _bottomNavigationBarItem(
       String iconName, String label) {
@@ -44,8 +45,6 @@ class _BottomNavState extends State<BottomNav> {
   static List<StatefulWidget> _widgetOptions = <StatefulWidget>[
     NearStoresPage(),
     FavoriteStoresPage(),
-
-   
     MyOrderPage()
     // SnackBar(content: Row(children: [
     //   Text("주문 내역을 볼 수 있는 기능이 아직 구현되지 않았습니다. ")
@@ -78,45 +77,22 @@ class _BottomNavState extends State<BottomNav> {
 
   @override
   Widget build(BuildContext context) {
-    return 
-    Scaffold(
-      backgroundColor: Colors.white,
-      appBar: AppBar(
-          backgroundColor: Colors.white,
-          elevation: 2,
-          leading: IconButton(
-              onPressed: () => Get.back(),
-              icon: SvgPicture.asset(
-                "assets/icons/ic_qrcode.svg",
-                color: Color.fromRGBO(34, 34, 34, 1),
-              )),
-          centerTitle: true,
-          title: Text(appBarTitles[currentIdx],
-              style:
-                  TextStyle(fontWeight: FontWeight.w700, color: Colors.black)),
-          actions: [
-            IconButton(
-              onPressed: () => print("검색하기"),
-              icon: SvgPicture.asset(
-                "assets/icons/searchIcon.svg",
-                color: Color.fromRGBO(34, 34, 34, 1),
-              ),
-            ),
-          ]),
-      body: this.initialValue != 4
-          ? Container(
-              color: Colors.white,
-              child: Column(children: [_widgetOptions[currentIdx]]))
-          : Card(
-              color: Colors.white,
-              elevation: 0,
-            ),
-      bottomNavigationBar: _bottomNavigationBarWidget(),
-    );
+    return _bottomNavigationBarWidget();
+    // Scaffold(
+    //   backgroundColor: Colors.white,
+
+    //   body: this.initialValue != 4
+    //       ? Container(
+    //           color: Colors.white,
+    //           child: Column(children: [_widgetOptions[currentIdx]]))
+    //       : Card(
+    //           color: Colors.white,
+    //           elevation: 0,
+    //         ),
+    //   bottomNavigationBar: _bottomNavigationBarWidget(),
+    // );
   }
 }
-
-
 
 // Scaffold(
 //       backgroundColor: Colors.white,

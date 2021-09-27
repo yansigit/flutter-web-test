@@ -54,7 +54,7 @@ class OrderPage extends StatelessWidget {
           ),
         ),
       ),
-      bottomNavigationBar: TemporaryBottomNav()
+      bottomNavigationBar: BottomNav()
     );
   }
 }

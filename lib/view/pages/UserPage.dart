@@ -581,9 +581,9 @@ class UserPageState extends State<UserPage> {
                                               //                       GestureDetector(
                                               //                         onTap:
                                               //                             () {
-                                              //                           setState(() {
+                                              //                        
                                               //                             profileController.changeEditable();
-                                              //                           });
+                                              //                          
                                               //                         },
                                               //                         child: Text(
                                               //                             "변경하기",
@@ -593,9 +593,9 @@ class UserPageState extends State<UserPage> {
                                               //                       GestureDetector(
                                               //                         onTap:
                                               //                             () {
-                                              //                           setState(() {
+                                              //                          
                                               //                             profileController.changeEditable();
-                                              //                           });
+                                              //                           
                                               //                         },
                                               //                         child: Text(
                                               //                             "수정완료",

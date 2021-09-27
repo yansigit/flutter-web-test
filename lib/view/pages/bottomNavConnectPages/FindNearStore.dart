@@ -8,6 +8,7 @@ import 'package:save_order/model/model.dart';
 import 'package:save_order/page/order_takeout.dart';
 import 'package:save_order/state/controllers.dart';
 import 'package:save_order/view/pages/login/login_page.dart';
+import 'package:save_order/widget/bottom_nav.dart';
 import '/consts/color.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:geolocator/geolocator.dart';
@@ -48,7 +49,32 @@ class NearStoresPageState extends State<NearStoresPage> {
 
   @override
   Widget build(BuildContext context) {
-    return Container(
+    return Scaffold(
+      appBar: AppBar(
+          backgroundColor: Colors.white,
+          elevation: 5,
+          leading: IconButton(
+              onPressed: () => Get.back(),
+              icon: SvgPicture.asset(
+                "assets/icons/ic_qrcode.svg",
+                color: Color.fromRGBO(34, 34, 34, 1),
+              )),
+          centerTitle: true,
+          title: Text("아름 드림",
+              style:
+                  TextStyle(fontWeight: FontWeight.w700, color: Colors.black)),
+          actions: [
+            IconButton(
+              onPressed: () => print("검색하기"),
+              icon: SvgPicture.asset(
+                "assets/icons/searchIcon.svg",
+                color: Color.fromRGBO(34, 34, 34, 1),
+              ),
+            ),
+          ]
+          ),
+      bottomNavigationBar: BottomNav(),
+      body: Container(
         margin: EdgeInsets.only(
           top: 24.0.h,
           left: 20.w,
@@ -160,7 +186,7 @@ class NearStoresPageState extends State<NearStoresPage> {
               }
             },
           )
-        ]));
+        ])));
   }
 
   Widget buildStoreView(BuildContext context, Shop store) {
@@ -171,10 +197,19 @@ class NearStoresPageState extends State<NearStoresPage> {
     // print("dgggggggggggggggggggg");
     //print(distance);
     final ShopController shopController = Get.put(ShopController());
+    final Map<String, String> storeNameToAddress = {
+  "컬티": "울산광역시 남구 ",
+  "카페마냥": "울산광역시 남구",
+  "11호관": "울산광역시 남구"
+};
 
     print(store.carouselImages);
+
+    // 각 가게 위치 데이터 넣기.  카페  이름이랑 비교
+    //
+    // 가게 view 누르면 가게로 이동
     return Container(
-        margin: EdgeInsets.only(left: 20.w),
+        margin: EdgeInsets.only(left: 20.w, top: 13.h, bottom: 16.h),
         child: Row(
           children: [
             // margin: EdgeInsets.only(bottom: 16.h),
@@ -189,7 +224,6 @@ class NearStoresPageState extends State<NearStoresPage> {
                 child: Image.network(
                     "https://arumdream.s3.ap-northeast-2.amazonaws.com/uploads/1/menus/%EB%B0%80%ED%81%AC%ED%8B%B0%EB%9D%BC%EB%96%BC.png")
                 //Carousel(thumbnailList: store.carouselImages),
-
                 //SvgPicture.asset("images/store/" + store.thumbnail + ".svg")
                 ),
             Column(
@@ -206,11 +240,14 @@ class NearStoresPageState extends State<NearStoresPage> {
                             fontSize: 20.0),
                         textAlign: TextAlign.left)),
                 Row(children: [
-                  SvgPicture.asset(
-                    "assets/icons/ic_placeholder.svg",
+                 // margin left 16.w
+                 Container(
+                   margin: EdgeInsets.only(left: 16.w),
                     width: 12.7.w,
                     height: 16.h,
-                  ),
+                child:  SvgPicture.asset(
+                    "assets/icons/ic_placeholder.svg",
+                  )),
                   Container(
                       margin: EdgeInsets.only(right: 13.w, left: 6.w),
                       width: 80.w,

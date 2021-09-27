@@ -39,8 +39,8 @@ class MyApp extends StatelessWidget {
               designSize: Size(375, 812),
               builder: () => GetMaterialApp(home: Splash()));
         } else {
-          shopList = snapshot.data;
-          print("Data" + shopList.toString());
+          // shopList = snapshot.data;
+          // print("Data" + shopList.toString());
           // Loading is done, return the app:
           return ScreenUtilInit(
               designSize: Size(375, 812),
