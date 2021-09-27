@@ -9,7 +9,6 @@ import 'package:save_order/widget/bottom_nav.dart';
 import 'package:save_order/widget/bottom_shopnav.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:save_order/widget/order_tabbar.dart';
-import 'package:save_order/widget/tempoarary_bottom_nav.dart';
 
 class OrderPage extends StatelessWidget {
   OrderPage({Key? key}) : super(key: key);
@@ -20,7 +19,7 @@ class OrderPage extends StatelessWidget {
     return Scaffold(
       backgroundColor: Colors.white,
       body: FutureBuilder<List<Category>>(
-          future: Category.fetchCategories(controller.shopId.value),
+          future: Category.fetchCategories(controller.shop.value.id),
           builder: (context, snapshot) {
             if (snapshot.hasData) {
               //categories = categories;

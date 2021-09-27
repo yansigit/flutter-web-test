@@ -11,18 +11,14 @@ import 'package:save_order/view/pages/bottomNavConnectPages/FindNearStore.dart';
 import 'package:save_order/view/pages/bottomNavConnectPages/MyOrderPage.dart';
 
 class BottomNav extends StatefulWidget {
-
-
   BottomNav({Key? key}) : super(key: key);
 
   @override
-  _BottomNavState createState() =>
-      _BottomNavState();
+  _BottomNavState createState() => _BottomNavState();
 }
 
 class _BottomNavState extends State<BottomNav> {
   int currentIdx = 0;
-
 
   _BottomNavState();
 
@@ -45,15 +41,8 @@ class _BottomNavState extends State<BottomNav> {
   static List<StatefulWidget> _widgetOptions = <StatefulWidget>[
     NearStoresPage(),
     FavoriteStoresPage(),
-    MyOrderPage()
-    // SnackBar(content: Row(children: [
-    //   Text("주문 내역을 볼 수 있는 기능이 아직 구현되지 않았습니다. ")
-    // ]), duration: Duration(seconds: 3))
-    ,
+    MyOrderPage(),
     UserPage(),
-    // SnackBar(content: Row(children: [
-    //   Text("내 정보를 볼 수 있는 기능이 아직 구현되지 않았습니다. ")
-    // ]), duration: Duration(seconds: 3))
   ];
 
   Widget _bottomNavigationBarWidget() {
@@ -64,6 +53,36 @@ class _BottomNavState extends State<BottomNav> {
           TextStyle(color: ColorThemes().selectedColor, fontSize: 12.sp),
       onTap: (int idx) => setState(() {
         currentIdx = idx;
+        if(idx == 0) {
+            Get.to(() => _widgetOptions[currentIdx]);
+        }
+          if(idx == 1) {
+          showDialog(
+              context: context,
+              builder: (BuildContext context) {
+                return AlertDialog(
+                    content: Text(
+                        "아직 단골 매장을 볼 수 있는 기능이 구현되지 않았습니다. 베타 테스트 이후에 기능 구현 예정입니다."));
+              });
+        }
+         if (idx == 2) {
+          showDialog(
+              context: context,
+              builder: (BuildContext context) {
+                return AlertDialog(
+                    content: Text(
+                        "아직 주문 내역을 볼 수 있는기능이 구현되지 않았습니다. 베타 테스트 이후에  기능 구현 예정입니다."));
+              });
+        }
+         if(idx == 3) {
+            showDialog(
+              context: context,
+              builder: (BuildContext context) {
+                return AlertDialog(
+                    content: Text(
+                        "아직 내 정보를 볼 수 있는 기능이 구현되지 않았습니다. 베타테스트 이후에 기능 구현 예정입니다."));
+              });
+        }
       }),
       currentIndex: currentIdx,
       items: [

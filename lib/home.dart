@@ -42,7 +42,7 @@ class Home extends StatelessWidget {
                         // Get.to(() => LoginPage())
 
                         Get.to(() {
-                          shopController.updateShopId(shopList.length - index);
+                          shopController.updateShop(shopList[index]);
                           return OrderTakeOut(shop: shopList[index]);
                         })),
               );

@@ -152,10 +152,10 @@ class PriceController extends GetxController {
 }
 
 class ShopController extends GetxController {
-  final shopId = 0.obs;
+  final shop = new Shop().obs;
 
-  updateShopId(int id) {
-    this.shopId.value = id;
+  updateShop(Shop shop) {
+    this.shop.value = shop;
   }
 }
 

@@ -134,7 +134,7 @@ class _EmailLoginPage extends State<EmailLoginPage> {
                             "token " +
                             this.token!);
                   }
-                  Get.to(() => BottomNav());
+                  Get.to(() => NearStoresPage());
 
                   // Navigator.pushReplacement(/
                   //   context,

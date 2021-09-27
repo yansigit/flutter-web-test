@@ -274,7 +274,7 @@ class FavoriteStoresPageState extends State<FavoriteStoresPage> {
                         //Get.to(() => LoginPage());
 
                         Get.to(() {
-                          shopController.updateShopId(store.id);
+                          shopController.updateShop(store);
                           return OrderTakeOut(shop: store);
                         });
                       },
@@ -306,7 +306,7 @@ class FavoriteStoresPageState extends State<FavoriteStoresPage> {
                   child: ElevatedButton(
                       onPressed: () {
                         Get.to(() {
-                          shopController.updateShopId(store.id);
+                          shopController.updateShop(store);
                           return OrderTakeOut(shop: store);
                         });
                       },
