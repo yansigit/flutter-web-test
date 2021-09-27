@@ -59,9 +59,8 @@ class ItemBoxContainer extends StatelessWidget {
                   ),
                   Expanded(
                     flex: 102,
-                    child: Center(
-                      child: Image.network(menu.thumbnail), //SvgPicture.asset("assets/icons/iceOnlyIcon.svg"),
-                    ),
+                    child: Center(child: Container() //Image.network(menu.thumbnail), //SvgPicture.asset("assets/icons/iceOnlyIcon.svg"),
+                        ),
                   )
                 ],
               ),

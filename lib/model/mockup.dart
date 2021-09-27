@@ -22,7 +22,7 @@ List<Category> categories = [
         options: <Option>[
           new Option(id: 1, name: "selectHotCold", price: 0, check: 0),
           new Option(id: 2, name: "addShot", price: 500, check: 0),
-          new Option(id: 3, name: "iceSize", price: 0, check: 0),
+          //new Option(id: 3, name: "iceSize", price: 0, check: 0),
           new Option(id: 4, name: "syrup", price: 500, check: 0),
           new Option(id: 6, name: "whipping", price: 500, check: 0),
         ],

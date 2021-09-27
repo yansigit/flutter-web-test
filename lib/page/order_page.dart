@@ -13,6 +13,7 @@ import 'package:save_order/widget/order_tabbar.dart';
 class OrderPage extends StatelessWidget {
   OrderPage({Key? key}) : super(key: key);
   final ShopController controller = Get.find();
+  final ShoppingCartController s = Get.find();
 
   @override
   Widget build(BuildContext context) {
@@ -47,8 +48,42 @@ class OrderPage extends StatelessWidget {
               ),
             ],
           ),
-          child: Center(
-            child: SvgPicture.asset("assets/icons/orderCartIcon.svg", fit: BoxFit.fill, color: Color(0xffffffff)),
+          child: Obx(
+            () => Stack(
+              children: [
+                Center(
+                  child: SvgPicture.asset("assets/icons/orderCartIcon.svg", fit: BoxFit.fill, color: Color(0xffffffff)),
+                ),
+                s.shoppingCart.length > 0
+                    ? Positioned(
+                        right: 0.w,
+                        bottom: 0.h,
+                        child: Container(
+                          width: 25.w,
+                          height: 25.h,
+                          decoration: BoxDecoration(
+                            borderRadius: BorderRadius.all(
+                              Radius.circular(15.w),
+                            ),
+                            color: Colors.white,
+                            boxShadow: [
+                              BoxShadow(
+                                color: Color(0x59000000),
+                                offset: Offset(3, 3),
+                                blurRadius: 5,
+                                spreadRadius: 0,
+                              ),
+                            ],
+                          ),
+                          child: FittedBox(
+                            fit: BoxFit.fitHeight,
+                            child: Text(s.shoppingCart.length.toString(), style: TextStyle(color: Color(0xff00276b), fontWeight: FontWeight.w500)),
+                          ),
+                        ),
+                      )
+                    : Container(),
+              ],
+            ),
           ),
         ),
       ),

@@ -213,60 +213,82 @@ class WhippingController extends GetxController {
 
 class PriceController extends GetxController {
   final price = 0.obs;
+  final shotPrice = 0.obs;
+  final syrupPrice = 0.obs;
+  final whippingPrice = 0.obs;
+  final optionPrice = 0.obs;
+  final finalPrice = 0.obs;
+
+  OptionDialogController tempController = Get.find();
+  AddShotController addShotController = Get.find();
+  SyrupController syrupController = Get.find();
+  WhippingController whippingController = Get.find();
 
   updateTempPrice(int price) {
     this.price.value = price;
   }
 
-  increaseShotPrice() {
-    this.price.value += 500;
+  updateShotPrice() {
+    this.shotPrice.value = addShotController.shotCount.value * 500;
   }
 
-  decreaseShotPrice() {
-    this.price.value -= 500;
+  updateSyrupPrice() {
+    this.syrupPrice.value = syrupController.syrupCount.value * 500;
   }
 
-  increaseSyrupPrice() {
-    this.price.value += 500;
+  updateWhippingPrice() {
+    this.whippingPrice.value = whippingController.whippingState.value == true ? 500 : 0;
   }
 
-  decreaseSyrupPrice() {
-    this.price.value -= 500;
+  migratePrice() {
+    this.optionPrice.value = this.shotPrice.value + this.syrupPrice.value + this.whippingPrice.value;
   }
 
-  increaseWhippingPrice() {
-    this.price.value += 500;
-  }
+  // increaseShotPrice() {
+  //   this.optionPrice.value += 500;
+  //   print(this.price.value.toString());
+  // }
 
-  decreaseWhippingPrice() {
-    this.price.value -= 500;
-  }
+  // decreaseShotPrice() {
+  //   this.optionPrice.value -= 500;
+  // }
+
+  // increaseSyrupPrice() {
+  //   this.optionPrice.value += 500;
+  // }
+
+  // decreaseSyrupPrice() {
+  //   this.optionPrice.value -= 500;
+  // }
+
+  // increaseWhippingPrice() {
+  //   this.optionPrice.value += 500;
+  // }
+
+  // decreaseWhippingPrice() {
+  //   this.optionPrice.value -= 500;
+  // }
 
   updatePrice(Map<String, CartOption> cartOptions, Menu menu) {
-    // //temp
-    // print("isCalled");
-    // print(cartOptions["temp"]!.name);
-    // print(cartOptions["addShot"]!.quantity);
-    // print(cartOptions["syrup"]!.quantity);
-    // print(cartOptions["whipping"]!.quantity);
+    //temp
+    print("isCalled");
 
-    // //addShot
+    //addShot
     // if (cartOptions["addShot"]!.quantity > 0) {
-    //   this.price.value += cartOptions["addShot"]!.quantity * cartOptions["addShot"]!.price;
-    //   // AddShotController _c = Get.find();
-    //   // this.price.value += _c.shotCount.value * cartOptions["addShot"]!.price;
+    //   this.optionPrice.value = cartOptions["addShot"]!.quantity * cartOptions["addShot"]!.price;
     // }
 
     // //syrup
     // if (cartOptions["syrup"]!.quantity > 0) {
-    //   this.price.value += cartOptions["syrup"]!.quantity * cartOptions["syrup"]!.price;
+    //   this.optionPrice.value = cartOptions["syrup"]!.quantity * cartOptions["syrup"]!.price;
     // }
 
     // if (cartOptions["whipping"]!.quantity > 0) {
-    //   this.price.value += cartOptions["whipping"]!.quantity * cartOptions["whipping"]!.price;
+    //   this.optionPrice.value = cartOptions["whipping"]!.quantity * cartOptions["whipping"]!.price;
     // }
-
+    migratePrice();
+    this.finalPrice.value = this.price.value + this.optionPrice.value;
     QuantityController _c = Get.find();
-    this.price.value *= _c.menuQuantity.value;
+    this.finalPrice.value *= _c.menuQuantity.value;
   }
 }

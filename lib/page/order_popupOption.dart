@@ -350,11 +350,13 @@ class EtcWidget extends StatelessWidget {
               if (_c.whippingState.value == true) {
                 cartOptions["whipping"] = new CartOption(name: "휘핑크림", price: 500, quantity: 1);
                 PriceController _controller = Get.find();
-                _controller.increaseWhippingPrice();
+                // _controller.increaseWhippingPrice();
+                _controller.updateWhippingPrice();
               } else {
                 cartOptions["whipping"] = new CartOption(name: "휘핑크림", price: 500, quantity: 0);
                 PriceController _controller = Get.find();
-                _controller.decreaseWhippingPrice();
+                // _controller.decreaseWhippingPrice();
+                _controller.updateWhippingPrice();
               }
             },
             child: Container(
@@ -452,7 +454,8 @@ class EtcWidget extends StatelessWidget {
                         if (_c.hasMinus.value == true) {
                           _c.decreaseSyrupCount();
                           PriceController _controller = Get.find();
-                          _controller.decreaseSyrupPrice();
+                          // _controller.decreaseSyrupPrice();
+                          _controller.updateSyrupPrice();
                           cartOptions["syrup"] = new CartOption(name: "시럽", price: 500, quantity: _c.syrupCount.value);
                         } else {
                           cartOptions["syrup"] = new CartOption(name: "시럽");
@@ -503,7 +506,8 @@ class EtcWidget extends StatelessWidget {
                         if (_c.hasPlus.value == true) {
                           _c.increaseSyrupCount();
                           PriceController _controller = Get.find();
-                          _controller.increaseSyrupPrice();
+                          // _controller.increaseSyrupPrice();
+                          _controller.updateSyrupPrice();
                           cartOptions["syrup"] = new CartOption(name: "시럽", price: 500, quantity: _c.syrupCount.value);
                         } else {
                           cartOptions["syrup"] = new CartOption(name: "시럽");
@@ -631,7 +635,8 @@ class AddShotWidget extends StatelessWidget {
                     if (controller.hasMinus.value == true) {
                       controller.decreaseShotCount();
                       PriceController _c = Get.find();
-                      _c.decreaseShotPrice();
+                      // _c.decreaseShotPrice();
+                      _c.updateShotPrice();
                       cartOptions["addShot"] = new CartOption(name: "샷 추가", price: 500, quantity: controller.shotCount.value);
                     }
                     if (controller.hasMinus.value == false) {
@@ -679,7 +684,8 @@ class AddShotWidget extends StatelessWidget {
                     if (controller.hasPlus.value == true) {
                       controller.increaseShotCount();
                       PriceController _c = Get.find();
-                      _c.increaseShotPrice();
+                      // _c.increaseShotPrice();
+                      _c.updateShotPrice();
                       cartOptions["addShot"] = new CartOption(name: "샷 추가", price: 500, quantity: controller.shotCount.value);
                     }
                   },
@@ -1080,6 +1086,15 @@ class SelectTempWidget extends StatelessWidget {
     required this.menu,
   }) : super(key: key);
   final OptionDialogController controller = Get.find();
+  final PriceController _c = Get.find();
+
+  void setStateTemp() {
+    switch (hasHotCold) {
+      case 3:
+        _c.updateTempPrice(menu.hotPrice);
+        break;
+    }
+  }
 
   Widget expandedHotColdContainer(hasHotCold) {
     switch (hasHotCold) {
@@ -1087,7 +1102,6 @@ class SelectTempWidget extends StatelessWidget {
       case 3:
         //default 값
         cartOptions["temp"] = new CartOption(name: "뜨겁게", price: 0, quantity: 1);
-
         //controller.updateHotColdOption(1);
         return Row(
           children: [
@@ -1176,7 +1190,7 @@ class SelectTempWidget extends StatelessWidget {
             ),
             onTap: () {
               cartOptions["temp"] = new CartOption(name: "뜨겁게", price: 0, quantity: 1);
-              PriceController _c = Get.find();
+              // PriceController _c = Get.find();
               _c.updateTempPrice(menu.hotPrice);
               controller.updateHotColdOption(1);
             }),
@@ -1233,25 +1247,25 @@ class SelectTempWidget extends StatelessWidget {
             ),
             onTap: () {
               cartOptions["temp"] = new CartOption(name: "차갑게", price: 0, quantity: 1);
-              PriceController _c = Get.find();
+              // PriceController _c = Get.find();
               _c.updateTempPrice(menu.coldPrice);
               controller.updateHotColdOption(2);
             }),
         flex: 1);
   }
 
+  
   @override
   Widget build(BuildContext context) {
-    PriceController _c = Get.find();
-    if (cartOptions["temp"]!.name == "뜨겁게") {
-      _c.updateTempPrice(menu.hotPrice);
-    }
-    if (cartOptions["temp"]!.name == "차갑게") {
-      _c.updateTempPrice(menu.coldPrice);
-    }
-    if (cartOptions["temp"]!.name == "") {
-      _c.updateTempPrice(menu.coldPrice);
-    }
+    // if (cartOptions["temp"]!.name == "뜨겁게") {
+    //   _c.updateTempPrice(menu.hotPrice);
+    // }
+    // if (cartOptions["temp"]!.name == "차갑게") {
+    //   _c.updateTempPrice(menu.coldPrice);
+    // }
+    // if (cartOptions["temp"]!.name == "") {
+    //   _c.updateTempPrice(menu.coldPrice);
+    // }
 
     return hasHotCold != 0
         ? Padding(
@@ -1378,6 +1392,8 @@ class OptionBottomBar extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    PriceController _c = Get.find();
+
     return Container(
       alignment: Alignment.bottomCenter,
       width: ScreenUtil().screenWidth,
@@ -1494,16 +1510,14 @@ class OptionBottomBar extends StatelessWidget {
                               builder: (_c) {
                                 //TODO 가격
                                 OptionDialogController _controller = Get.find();
-                                if (_controller.selectHotColdOption.value == 1) {
-                                  PriceController _c = Get.find();
-                                  _c.updateTempPrice(menu.hotPrice);
-                                } else if (_controller.selectHotColdOption.value == 2) {
-                                  PriceController _c = Get.find();
-                                  _c.updateTempPrice(menu.coldPrice);
-                                }
+                                // if (_controller.selectHotColdOption.value == 1) {
+                                //   _c.updateTempPrice(menu.hotPrice);
+                                // } else if (_controller.selectHotColdOption.value == 2) {
+                                //   _c.updateTempPrice(menu.coldPrice);
+                                // }
                                 _c.updatePrice(cartOptions, menu);
                                 return Text(
-                                  calcStringToWon(_c.price.value),
+                                  calcStringToWon(_c.finalPrice.value),
                                   style: TextStyle(color: Color(0xff00276b), fontWeight: FontWeight.w700),
                                 );
                               }),
@@ -1523,7 +1537,28 @@ class OptionBottomBar extends StatelessWidget {
                 children: [
                   Expanded(
                     child: InkWell(
-                      onTap: () => print("d"),
+                      onTap: () {
+                        String text = textController.text;
+                        PriceController p = Get.find();
+                        if (text.isNotEmpty) {
+                          cartOptions["etcOption"] = new CartOption(name: text, price: 0, quantity: 1);
+                        } else {
+                          cartOptions["etcOption"] = new CartOption(name: "", price: 0, quantity: 0);
+                        }
+                        removeFunction(cartOptions);
+                        print(cartOptions.toString());
+                        cartController.shoppingCart.add(new CartItem(
+                          name: menu.name,
+                          //TODO 메뉴 가격 정하기
+                          price: p.finalPrice.value,
+                          //price: menu.price,
+                          thumbnail: menu.thumbnail,
+                          bgColor: menu.bgColor,
+                          cartOptions: cartOptions,
+                        ));
+                        OptionDialog.destoryAllController();
+                        Get.back();
+                      },
                       child: Container(
                           height: 48.h,
                           decoration: BoxDecoration(
@@ -1563,6 +1598,7 @@ class OptionBottomBar extends StatelessWidget {
                     child: InkWell(
                       onTap: () {
                         String text = textController.text;
+                        PriceController p = Get.find();
                         if (text.isNotEmpty) {
                           cartOptions["etcOption"] = new CartOption(name: text, price: 0, quantity: 1);
                         } else {
@@ -1573,7 +1609,7 @@ class OptionBottomBar extends StatelessWidget {
                         cartController.shoppingCart.add(new CartItem(
                           name: menu.name,
                           //TODO 메뉴 가격 정하기
-                          price: 0,
+                          price: p.finalPrice.value,
                           //price: menu.price,
                           thumbnail: menu.thumbnail,
                           bgColor: menu.bgColor,
