@@ -47,21 +47,18 @@ class FavoriteStoresPageState extends State<FavoriteStoresPage> {
   }
 
   Future<Position> loadCurLocation() async {
-    Position position = await Geolocator.getCurrentPosition(
-        desiredAccuracy: LocationAccuracy.high);
+    Position position = await Geolocator.getCurrentPosition(desiredAccuracy: LocationAccuracy.high);
     return position;
   }
 
   Future<List<Shop>> loadFavoriteShopsByuser() async {
     // mock 코드
-    Shop mockShop = new Shop(
-        name: "컬티", carouselImages: ["이미지경로"], latitude: 20, longtitude: 20);
+    Shop mockShop = new Shop(name: "컬티", carouselImages: ["이미지경로"], latitude: 20, longtitude: 20);
     Map<String, dynamic> newShop = mockShop.toMap();
     newShop[UserFavoriteStoresDatabase.userAccessToken] = this.userAccessToken;
     //await dbHelper.insert(newShop);
     // mock 코드 끝
-    List<Map<String, dynamic>> stores =
-        await dbHelper.queryRowByUserToken(this.userAccessToken);
+    List<Map<String, dynamic>> stores = await dbHelper.queryRowByUserToken(this.userAccessToken);
 
     await this.loadCurLocation().then((val) {
       this.curPosition = val;
@@ -75,16 +72,11 @@ class FavoriteStoresPageState extends State<FavoriteStoresPage> {
       var myCarsouelImages = store[UserFavoriteStoresDatabase.thumbnailPath];
       var latitude = store[UserFavoriteStoresDatabase.latitude];
       var longitude = store[UserFavoriteStoresDatabase.longitutde];
-      double d = Geolocator.distanceBetween(
-          curPosition.latitude, curPosition.longitude, latitude, longitude);
+      double d = Geolocator.distanceBetween(curPosition.latitude, curPosition.longitude, latitude, longitude);
       print(d);
       print('dist');
-      Shop shop = new Shop(
-          name: storeName,
-          carouselImages: [myCarsouelImages],
-          latitude: latitude,
-          longtitude: longitude,
-          distanceFromCurPosition: d);
+      Shop shop =
+          new Shop(name: storeName, carouselImages: [myCarsouelImages], latitude: latitude, longtitude: longitude, distanceFromCurPosition: d);
       shops.add(shop);
     }
 
@@ -162,9 +154,7 @@ class FavoriteStoresPageState extends State<FavoriteStoresPage> {
           FutureBuilder(
               future: this.loadFavoriteShopsByuser(),
               builder: (context, AsyncSnapshot projectSnap) {
-                if (projectSnap.hasData &&
-                    projectSnap.data != null &&
-                    projectSnap.data.length > 0) {
+                if (projectSnap.hasData && projectSnap.data != null && projectSnap.data.length > 0) {
                   return Container(
                       child: ListView.separated(
                     shrinkWrap: true,
@@ -177,9 +167,7 @@ class FavoriteStoresPageState extends State<FavoriteStoresPage> {
                       return Divider();
                     },
                   ));
-                } else if (projectSnap.hasError ||
-                    projectSnap.data == null ||
-                    projectSnap.data.length == 0) {
+                } else if (projectSnap.hasError || projectSnap.data == null || projectSnap.data.length == 0) {
                   return Center(
                     child: Column(
                       children: [
@@ -217,11 +205,10 @@ class FavoriteStoresPageState extends State<FavoriteStoresPage> {
           child: Container(
               width: 75.w,
               height: 75.h,
-              decoration: BoxDecoration(
-                  borderRadius: BorderRadius.all(Radius.circular(15)),
-                  border: Border.all(color: const Color(0xffe8e8e8), width: 1)),
-              child: Image.network(
-                  "https://arumdream.s3.ap-northeast-2.amazonaws.com/uploads/1/menus/%EB%B0%80%ED%81%AC%ED%8B%B0%EB%9D%BC%EB%96%BC.png")
+              decoration:
+                  BoxDecoration(borderRadius: BorderRadius.all(Radius.circular(15)), border: Border.all(color: const Color(0xffe8e8e8), width: 1)),
+              child:
+                  Image.network("https://arumdream.s3.ap-northeast-2.amazonaws.com/uploads/1/menus/%EB%B0%80%ED%81%AC%ED%8B%B0%EB%9D%BC%EB%96%BC.png")
               //Carousel(thumbnailList: store.carouselImages),
 
               //SvgPicture.asset("images/store/" + store.thumbnail + ".svg")
@@ -256,8 +243,7 @@ class FavoriteStoresPageState extends State<FavoriteStoresPage> {
                   height: 21.h,
                   child: Text(
                       //store.distance
-                      (store.distanceFromCurPosition % 10).toStringAsFixed(1) +
-                          "km",
+                      (store.distanceFromCurPosition % 10).toStringAsFixed(1) + "km",
                       style: const TextStyle(
                           color: const Color(0xffed6363),
                           fontWeight: FontWeight.w400,
@@ -279,8 +265,7 @@ class FavoriteStoresPageState extends State<FavoriteStoresPage> {
                         });
                       },
                       child: Container(
-                          padding: EdgeInsets.only(
-                              left: 8.w, right: 8.w, top: 2.h, bottom: 2.h),
+                          padding: EdgeInsets.only(left: 8.w, right: 8.w, top: 2.h, bottom: 2.h),
                           height: 20.h,
                           child: FittedBox(
                               fit: BoxFit.fitHeight,
@@ -294,9 +279,7 @@ class FavoriteStoresPageState extends State<FavoriteStoresPage> {
                                   textAlign: TextAlign.left))),
                       style: ButtonStyle(
                         backgroundColor: MaterialStateProperty.all(DARK_BLUE),
-                        shape:
-                            MaterialStateProperty.all<RoundedRectangleBorder>(
-                                RoundedRectangleBorder(
+                        shape: MaterialStateProperty.all<RoundedRectangleBorder>(RoundedRectangleBorder(
                           borderRadius: BorderRadius.circular(15.h),
                         )),
                       ))),
@@ -311,8 +294,7 @@ class FavoriteStoresPageState extends State<FavoriteStoresPage> {
                         });
                       },
                       child: Container(
-                          padding: EdgeInsets.only(
-                              left: 8.w, right: 8.w, top: 2.h, bottom: 2.h),
+                          padding: EdgeInsets.only(left: 8.w, right: 8.w, top: 2.h, bottom: 2.h),
                           height: 20.h,
                           child: FittedBox(
                               fit: BoxFit.fitHeight,
@@ -325,11 +307,8 @@ class FavoriteStoresPageState extends State<FavoriteStoresPage> {
                                       fontSize: 17.0),
                                   textAlign: TextAlign.left))),
                       style: ButtonStyle(
-                        backgroundColor:
-                            MaterialStateProperty.all(LIGHT_SKY_BLUE),
-                        shape:
-                            MaterialStateProperty.all<RoundedRectangleBorder>(
-                                RoundedRectangleBorder(
+                        backgroundColor: MaterialStateProperty.all(LIGHT_SKY_BLUE),
+                        shape: MaterialStateProperty.all<RoundedRectangleBorder>(RoundedRectangleBorder(
                           borderRadius: BorderRadius.circular(15.h),
                         )),
                       ))),

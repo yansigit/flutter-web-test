@@ -37,9 +37,9 @@ class _BottomNavState extends State<BottomNav> {
   static List<String> appBarTitles = <String>["아름 드림", "단골 매장", "주문 내역", "아름 드림"];
   static List<StatefulWidget> _widgetOptions = <StatefulWidget>[
     NearStoresPage(),
-    FavoriteStoresPage(),
-    MyOrderPage(),
-    UserPage(),
+    // FavoriteStoresPage(),
+    // MyOrderPage(),
+    // UserPage(),
   ];
 
   Widget _bottomNavigationBarWidget() {

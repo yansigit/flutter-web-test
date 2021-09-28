@@ -32,7 +32,12 @@ class NearStoresPageState extends State<NearStoresPage> {
     await this.loadCurLocation().then((val) {
       this.curPosition = val;
     });
-    return await Shop.fetchShopsByLocation(http.Client(), N, this.curPosition);
+    //return await Shop.fetchShopsByLocation(http.Client(), N, this.curPosition);
+    return [
+      // new Shop(id:1,  name: "컬티", latitude: 38.5, longtitude: 40.5, distanceFromCurPosition: 3.5),
+      // new Shop(id:1,  name: "카페마냥", latitude: 38.5, longtitude: 40.5, distanceFromCurPosition: 4.5),
+      new Shop(id: 1, name: "11호관 커피", latitude: 38.5, longtitude: 40.5, distanceFromCurPosition: 6.5),
+    ];
   }
 
   @override
@@ -152,7 +157,7 @@ class NearStoresPageState extends State<NearStoresPage> {
                     scrollDirection: Axis.vertical,
                     itemCount: projectSnap.data.length,
                     itemBuilder: (BuildContext context, index) {
-                      return index == 2 ? buildStoreView(context, projectSnap.data[index]) : Container();
+                      return buildStoreView(context, projectSnap.data[index]);
                     },
                     separatorBuilder: (context, index) {
                       return Container(
