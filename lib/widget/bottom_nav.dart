@@ -53,35 +53,29 @@ class _BottomNavState extends State<BottomNav> {
           TextStyle(color: ColorThemes().selectedColor, fontSize: 12.sp),
       onTap: (int idx) => setState(() {
         currentIdx = idx;
-        if(idx == 0) {
-            Get.to(() => _widgetOptions[currentIdx]);
+        if (idx == 0) {
+          Get.to(() => _widgetOptions[currentIdx]);
         }
-          if(idx == 1) {
-          showDialog(
-              context: context,
-              builder: (BuildContext context) {
-                return AlertDialog(
+        if (idx == 1) {
+          ScaffoldMessenger.of(context).showSnackBar(
+               SnackBar(
                     content: Text(
-                        "아직 단골 매장을 볼 수 있는 기능이 구현되지 않았습니다. 베타 테스트 이후에 기능 구현 예정입니다."));
-              });
+                        "아직 단골 매장을 볼 수 있는 기능이 구현되지 않았습니다. 베타 테스트 이후에 기능 구현 예정입니다."))
+              );
         }
-         if (idx == 2) {
-          showDialog(
-              context: context,
-              builder: (BuildContext context) {
-                return AlertDialog(
+        if (idx == 2) {
+          ScaffoldMessenger.of(context).showSnackBar(
+             SnackBar(
                     content: Text(
-                        "아직 주문 내역을 볼 수 있는기능이 구현되지 않았습니다. 베타 테스트 이후에  기능 구현 예정입니다."));
-              });
+                        "아직 주문 내역을 볼 수 있는기능이 구현되지 않았습니다. 베타 테스트 이후에  기능 구현 예정입니다."))
+              );
         }
-         if(idx == 3) {
-            showDialog(
-              context: context,
-              builder: (BuildContext context) {
-                return AlertDialog(
+        if (idx == 3) {
+          ScaffoldMessenger.of(context).showSnackBar(
+             SnackBar(
                     content: Text(
-                        "아직 내 정보를 볼 수 있는 기능이 구현되지 않았습니다. 베타테스트 이후에 기능 구현 예정입니다."));
-              });
+                        "아직 내 정보를 볼 수 있는 기능이 구현되지 않았습니다. 베타테스트 이후에 기능 구현 예정입니다."))
+              );
         }
       }),
       currentIndex: currentIdx,
