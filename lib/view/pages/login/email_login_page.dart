@@ -2,6 +2,7 @@ import 'dart:convert';
 
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:flutter_secure_storage/flutter_secure_storage.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:get/get.dart';
@@ -13,6 +14,7 @@ import 'package:save_order/view/pages/UserPage.dart';
 import 'package:save_order/view/pages/bottomNavConnectPages/FavoriteStoresPageState.dart';
 import 'package:save_order/view/pages/bottomNavConnectPages/FindNearStore.dart';
 import 'package:save_order/view/pages/bottomNavConnectPages/MyOrderPage.dart';
+import 'package:save_order/widget/bottom_nav.dart';
 
 class EmailLoginPage extends StatefulWidget {
   EmailLoginPage({Key? key}) : super(key: key);
@@ -63,30 +65,81 @@ class _EmailLoginPage extends State<EmailLoginPage> {
   Widget build(BuildContext context) {
     return Scaffold(
       backgroundColor: Color(0xFFFFFF).withOpacity(1.0),
-      body: new Container(
+      body: Container(
         child: Column(
           mainAxisAlignment: MainAxisAlignment.center,
+          crossAxisAlignment: CrossAxisAlignment.center,
           children: <Widget>[
             Container(
-                margin: EdgeInsets.only(right: 10.w, bottom: 8.h),
-                width: 230.w,
-                height: 30.h,
-                child: TextField(
+                child: Row(
+              mainAxisAlignment: MainAxisAlignment.center,
+              children: [
+                Container(
+                  alignment: Alignment.center,             
+                    margin: EdgeInsets.only(right: 10.w),
+                    height: 30.h,
+                    width: 50.w,
+                    // decoration: BoxDecoration(
+                    //     color: Colors.white,
+                    //     border: Border.all(
+                    //         color: const Color(0xffe8e8e8), width: 1.w),
+                    //     boxShadow: [
+                    //       BoxShadow(
+                    //           color: const Color(0x0c000000),
+                    //           offset: Offset(0, 2),
+                    //           blurRadius: 4,
+                    //           spreadRadius: 0)
+                    //     ],
+                    //   ),
+                    child: Text(
+                      "이메일: ",
+                      style: TextStyle(
+                          color: const Color(0xff222222),
+                          fontFamily: "NotoSans",
+                          fontSize: 14.0),
+                    )
+                    ),
+                    
+                Container(
+                  height: 30.h,
+                  width: 200.w,
+                  alignment: Alignment.center,
+                   decoration: BoxDecoration(
+                        color: Colors.white,
+                        border: Border.all(
+                            color: const Color(0xffe8e8e8), width: 1.w),
+                        boxShadow: [
+                          BoxShadow(
+                              color: const Color(0x0c000000),
+                              offset: Offset(0, 2),
+                              blurRadius: 4,
+                              spreadRadius: 0)
+                        ],
+                      ),
+                  child: TextFormField(
+                  textAlignVertical: TextAlignVertical.center,
+                  inputFormatters: [
+                  LengthLimitingTextInputFormatter(20),
+                  ],
+                  style: TextStyle(fontFamily: "NotoSans", fontSize: 14.0),
+                  textAlign: TextAlign.center,
+                  // textAlignVertical: TextAlignVertical.center,
                   controller: emailController,
-                  decoration: InputDecoration(
-                      labelText: "이메일", hintText: "이메일을 입력하세요."),
-                )),
-            Container(
-              margin: EdgeInsets.only(right: 10.w, bottom: 8.h),
-              width: 230.w,
-              height: 30.h,
-              child: TextField(
-                controller: passwordController,
-                obscureText: true,
-                decoration: InputDecoration(
-                    labelText: "비밀번호", hintText: "비밀번호를 입력하세요."),
-              ),
-            ),
+                  decoration: InputDecoration(hintText: "이메일을 입력하세요.", 
+                  ),
+                  )),
+              ],
+            )),
+            // Container(
+            //   margin: EdgeInsets.only(right: 10.w, bottom: 8.h),
+            //   width: 230.w,
+            //   height: 30.h,
+            //   child: TextField(
+            //     controller: passwordController,
+            //     obscureText: true,
+            //     decoration: InputDecoration(hintText: "비밀번호를 입력하세요."),
+            //   ),
+            // ),
             ElevatedButton(
                 style: ButtonStyle(
                   side: MaterialStateProperty.all<BorderSide>(
@@ -97,29 +150,25 @@ class _EmailLoginPage extends State<EmailLoginPage> {
                           borderRadius: BorderRadius.circular(loginRaiusSize))),
                 ),
                 onPressed: () async {
-                  // write 함수를 통하여 key에 맞는 정보를 적게 됩니다.
-                  //{"login" : "id id_value password password_value"}
-                  //와 같은 형식으로 저장이 된다고 생각을 하면 됩니다.
-
                   if (userInfo == null) {
                     Map data = {
                       "email": emailController!.text.toString(),
                       "password": passwordController!.text.toString()
                     };
-               
+
                     var body = json.encode(data);
                     var response = await http.Client().post(
                         Uri.parse(
                             "http://${devMode()}.dalbodre.me/api/User/Login"),
                         headers: <String, String>{
-                                  'Content-Type': 'application/json'
-                                },
+                          'Content-Type': 'application/json'
+                        },
                         body: body);
-                
+
                     final decodedToken = json.decode(response.body);
                     this.token = decodedToken["token"];
-                    if (this.token!.length == 0) {
-                    
+                    print(this.token);
+                    if (this.token == null || this.token!.length == 0) {
                       return;
                     }
                     await storage.write(
@@ -133,7 +182,7 @@ class _EmailLoginPage extends State<EmailLoginPage> {
                             "token " +
                             this.token!);
                   }
-                  Get.to(() => UserPage());
+                  Get.to(() => NearStoresPage());
 
                   // Navigator.pushReplacement(/
                   //   context,

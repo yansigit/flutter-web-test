@@ -20,14 +20,14 @@ class MyOrderPageState extends State<MyOrderPage> {
   static final storage = new FlutterSecureStorage();
   MyOrderPageState() {
     _orders = <Order>[];
-    _orders.add(new Order());
+    // _orders.add(new Order());
     orderedStoreLength = _orders.length;
     // _mockMyMenus.add(new MyOrder());
     // _mockMyMenus.add(new MyOrder());
     eachOrderLength = _mockMyMenus.length;
   }
-  
-    _asyncMethod() async {
+
+  _asyncMethod() async {
     //read 함수를 통하여 key값에 맞는 정보를 불러오게 됩니다. 이때 불러오는 결과의 타입은 String 타입임을 기억해야 합니다.
     //(데이터가 없을때는 null을 반환을 합니다.)
     String? userInfo = await storage.read(key: "login");
@@ -41,7 +41,7 @@ class MyOrderPageState extends State<MyOrderPage> {
     }
   }
 
-    @override
+  @override
   void initState() {
     super.initState();
     WidgetsBinding.instance!.addPostFrameCallback((_) {
@@ -79,100 +79,108 @@ class MyOrderPageState extends State<MyOrderPage> {
   }
 
   Widget build(BuildContext context) {
-    if (!(this._orders == null)) {
-      orderedStoreLength = this._orders.length;
-    }
+    // if (!(this._orders == null)) {
+    //   orderedStoreLength = this._orders.length;
+    // }
+    // showDialog(context: context, builder: (context) {
+    //   return AlertDialog(
+    //       // SnackBar의 배경색
+    //       backgroundColor: Colors.red[400],
+    //       content: Text("주문 내역을 볼 수 있는 기능이 아직 구현되지 않았습니다. "),
+    //     );
+    // });
 
-    return Scaffold(
-        backgroundColor: Colors.white,
-        body: Container(
-            width: ScreenUtil().screenWidth,
-            height: ScreenUtil().screenHeight,
-            child: Column(
+    return Container(
+        height: 20.h,
+        child: Text("주문 내역을 볼 수 있는 기능이 아직 구현되지 않았습니다. ")
+    );
+
+    return Container(
+        width: ScreenUtil().screenWidth,
+        height: ScreenUtil().screenHeight * 0.7,
+        child: Column(
+          children: [
+            Row(
               children: [
-                Row(
-                  children: [
-                    SizedBox(width: 9.w),
-                    Container(
-                        margin: EdgeInsets.only(),
-                        child: Text(this.orderedStoreLength.toString() + "개")),
-                    SizedBox(height: 8.h),
-                    // ElevatedButton(
-                    //   onPressed: () => {} // 검색해서 view 바꾸는 함수
-                    //   ,
-                    //   child: Row(children: <Widget>[
-                    //     Text("인기순",
-                    //         style: TextStyle(
-                    //             color: const Color(0xff666666),
-                    //             fontWeight: FontWeight.w400,
-                    //             fontFamily: "NotoSans",
-                    //             fontStyle: FontStyle.normal,
-                    //             fontSize: 14.0),
-                    //         textAlign: TextAlign.left),
-                    //   ]),
-                    //   style: ButtonStyle(
-                    //     backgroundColor: MaterialStateProperty.all(WHITE),
-                    //     shape: MaterialStateProperty.all<RoundedRectangleBorder>(
-                    //         RoundedRectangleBorder(
-                    //       borderRadius: BorderRadius.circular(smallRadiusSize),
-                    //     )),
-                    //   ),
-                    // )
-                  ],
-                ),
-                FutureBuilder(
-                    future: this.fetchRecentOrders(),
-                    builder: (context, AsyncSnapshot projectSnap) {
-                      if (projectSnap.hasData && projectSnap.data != null) {
-                        return ListView.separated(
-                          shrinkWrap: true,
-                          scrollDirection: Axis.vertical,
-                          itemCount: projectSnap.data.length,
-                          itemBuilder: (context, index) {
-                            return buildStoreView(
-                                context, projectSnap.data[index]);
-                          },
-                          separatorBuilder: (context, index) {
-                            return Divider();
-                          },
-                        );
-                      } else if (projectSnap.hasError ||
-                          projectSnap.data == null) {
-                        return Center(
-                          child: Column(
-                            children: [
-                              Container(
-                                height: 60.h,
-                                width: 51.w,
-                                child: FittedBox(
-                                  fit: BoxFit.fitHeight,
-                                  child: SvgPicture.asset(
-                                      "assets/icons/emptyOrder.svg"),
-                                ),
-                              ),
-                              Container(
-                                height: 24.h,
-                                width: 148.w,
-                                child: FittedBox(
-                                  fit: BoxFit.fitHeight,
-                                  child: Text("주문 내역이 없습니다",
-                                      style: const TextStyle(
-                                        color: PHRASE_COLOR,
-                                        fontWeight: FontWeight.w400,
-                                        fontFamily: "NotoSans",
-                                        fontStyle: FontStyle.normal,
-                                      )),
-                                ),
-                              )
-                            ],
-                          ),
-                        );
-                      } else {
-                        return Center(child: CircularProgressIndicator());
-                      }
-                    })
+                SizedBox(width: 9.w),
+                Container(
+                    margin: EdgeInsets.only(),
+                    child: Text(this.orderedStoreLength.toString() + "개")),
+                SizedBox(height: 8.h),
+                // ElevatedButton(
+                //   onPressed: () => {} // 검색해서 view 바꾸는 함수
+                //   ,
+                //   child: Row(children: <Widget>[
+                //     Text("인기순",
+                //         style: TextStyle(
+                //             color: const Color(0xff666666),
+                //             fontWeight: FontWeight.w400,
+                //             fontFamily: "NotoSans",
+                //             fontStyle: FontStyle.normal,
+                //             fontSize: 14.0),
+                //         textAlign: TextAlign.left),
+                //   ]),
+                //   style: ButtonStyle(
+                //     backgroundColor: MaterialStateProperty.all(WHITE),
+                //     shape: MaterialStateProperty.all<RoundedRectangleBorder>(
+                //         RoundedRectangleBorder(
+                //       borderRadius: BorderRadius.circular(smallRadiusSize),
+                //     )),
+                //   ),
+                // )
               ],
-            )));
+            ),
+            FutureBuilder(
+                future: this.fetchRecentOrders(),
+                builder: (context, AsyncSnapshot projectSnap) {
+                  if (projectSnap.hasData && projectSnap.data != null) {
+                    return ListView.separated(
+                      shrinkWrap: true,
+                      scrollDirection: Axis.vertical,
+                      itemCount: projectSnap.data.length,
+                      itemBuilder: (context, index) {
+                        return buildStoreView(context, projectSnap.data[index]);
+                      },
+                      separatorBuilder: (context, index) {
+                        return Divider();
+                      },
+                    );
+                  } else if (projectSnap.hasError || projectSnap.data == null) {
+                    return Center(
+                      child: Column(
+                        children: [
+                          Container(
+                            height: 60.h,
+                            width: 51.w,
+                            child: FittedBox(
+                              fit: BoxFit.fitHeight,
+                              child: SvgPicture.asset(
+                                  "assets/icons/emptyOrder.svg"),
+                            ),
+                          ),
+                          Container(
+                            height: 24.h,
+                            width: 148.w,
+                            child: FittedBox(
+                              fit: BoxFit.fitHeight,
+                              child: Text("주문 내역이 없습니다",
+                                  style: const TextStyle(
+                                    color: PHRASE_COLOR,
+                                    fontWeight: FontWeight.w400,
+                                    fontFamily: "NotoSans",
+                                    fontStyle: FontStyle.normal,
+                                  )),
+                            ),
+                          )
+                        ],
+                      ),
+                    );
+                  } else {
+                    return Center(child: CircularProgressIndicator());
+                  }
+                })
+          ],
+        ));
   }
 
   Widget buildStoreView(BuildContext context, MyOrder order) {
@@ -408,10 +416,11 @@ class MyOrderPageState extends State<MyOrderPage> {
                                                       )
                                                     :
                                                     //Container()
-                                                    
+
                                                     ListView.separated(
-                                                      scrollDirection: Axis.vertical,
-                                                      shrinkWrap: true,
+                                                        scrollDirection:
+                                                            Axis.vertical,
+                                                        shrinkWrap: true,
                                                         itemBuilder:
                                                             (context, index) {
                                                           return buildOrderDetailView(
@@ -511,60 +520,52 @@ class MyOrderPageState extends State<MyOrderPage> {
   }
 
   Widget buildOrderDetailView(BuildContext context, OrderedMenu myMenus) {
-    return 
-
-    Container(
+    return Container(
         height: 54.h,
         width: 375.w,
         child: Row(
           children: [
             Container(
-                width: 100,
-                height: 100,
-                padding: EdgeInsets.all(5),
-                margin: EdgeInsets.only(bottom: 5),
-                decoration:
-                    BoxDecoration(border: Border.all(color: Colors.grey)),
-                child: Image.network(myMenus.menuThumnail, fit: BoxFit.contain),
-                ),
+              width: 100,
+              height: 100,
+              padding: EdgeInsets.all(5),
+              margin: EdgeInsets.only(bottom: 5),
+              decoration: BoxDecoration(border: Border.all(color: Colors.grey)),
+              child: Image.network(myMenus.menuThumnail, fit: BoxFit.contain),
+            ),
             Column(
-              
               children: [
-                 Container(
-                   margin: EdgeInsets.only(left: 5.w, top: 10.h, right: 200.w, bottom: 3.h),
-                                height: 21.h,
-                                width: 76.w,
-                                child: FittedBox(
-                                  fit: BoxFit.fitHeight,
-                                  child:
-                                   Text(myMenus.menuName,
-                    style: const TextStyle(
-                        color: const Color(0xff222222),
-                        fontWeight: FontWeight.w700,
-                        fontFamily: "NotoSans",
-                        fontStyle: FontStyle.normal,
-                        fontSize: 18.0),
-                    textAlign: TextAlign.left),
-                                ),
-                              ),
-                 Container(
-
-                                height: 20.h,
-                                width: 250.w,
-                                child: FittedBox(
-                                  fit: BoxFit.fitHeight,
-                                  child:
-                                  Text(myMenus.options.join(" / "),
-                    style: const TextStyle(
-                        color: const Color(0xff707070),
-                        fontWeight: FontWeight.w400,
-                        fontFamily: "NotoSans",
-                        fontStyle: FontStyle.normal,
-                        fontSize: 14.0),
-                    textAlign: TextAlign.left)
-                                ),
-                              ),
-
+                Container(
+                  margin: EdgeInsets.only(
+                      left: 5.w, top: 10.h, right: 200.w, bottom: 3.h),
+                  height: 21.h,
+                  width: 76.w,
+                  child: FittedBox(
+                    fit: BoxFit.fitHeight,
+                    child: Text(myMenus.menuName,
+                        style: const TextStyle(
+                            color: const Color(0xff222222),
+                            fontWeight: FontWeight.w700,
+                            fontFamily: "NotoSans",
+                            fontStyle: FontStyle.normal,
+                            fontSize: 18.0),
+                        textAlign: TextAlign.left),
+                  ),
+                ),
+                Container(
+                  height: 20.h,
+                  width: 250.w,
+                  child: FittedBox(
+                      fit: BoxFit.fitHeight,
+                      child: Text(myMenus.options.join(" / "),
+                          style: const TextStyle(
+                              color: const Color(0xff707070),
+                              fontWeight: FontWeight.w400,
+                              fontFamily: "NotoSans",
+                              fontStyle: FontStyle.normal,
+                              fontSize: 14.0),
+                          textAlign: TextAlign.left)),
+                ),
               ],
             )
           ],
@@ -573,7 +574,6 @@ class MyOrderPageState extends State<MyOrderPage> {
 }
 
 class MyOrderPage extends StatefulWidget {
-
   @override
   State<StatefulWidget> createState() {
     return MyOrderPageState();

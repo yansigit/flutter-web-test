@@ -10,6 +10,7 @@ import 'package:save_order/widget/order_carousel.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:save_order/widget/order_takeoutwidget.dart';
 
+
 class OrderTakeOut extends StatelessWidget {
   final Shop shop;
   OrderTakeOut({Key? key, required this.shop}) : super(key: key);
@@ -24,7 +25,7 @@ class OrderTakeOut extends StatelessWidget {
           onPressed: () => Get.back(),
         ),
         backgroundColor: Colors.transparent,
-        elevation: 0.0,
+        elevation: 3,
       ),
       extendBodyBehindAppBar: true,
       body: Stack(
@@ -50,7 +51,7 @@ class OrderTakeOut extends StatelessWidget {
           ),
         ],
       ),
-      bottomNavigationBar: BottomNav(),
+      bottomNavigationBar: BottomNav()
     );
   }
 }

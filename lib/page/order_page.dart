@@ -91,7 +91,7 @@ class OrderPage extends StatelessWidget {
           ),
         ),
       ),
-      bottomNavigationBar: BottomNav(),
+      bottomNavigationBar: BottomNav()
     );
   }
 }

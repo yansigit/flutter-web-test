@@ -104,7 +104,10 @@ class PaymentMethodWidget extends StatelessWidget {
           children: [
             Container(height: 25.h, child: FittedBox(fit: BoxFit.fitHeight, child: Text("결제수단", style: TextStyle(fontWeight: FontWeight.w700)))),
             InkWell(
-              onTap: (() => Get.to(CardPage())),
+              onTap: (() => 
+              print("aa")
+              //Get.to(CardPage())
+              ),
               child: Container(
                 margin: EdgeInsets.symmetric(vertical: 5.h),
                 width: double.infinity,

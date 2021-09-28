@@ -36,7 +36,10 @@ class Home extends StatelessWidget {
                         ),
                       ),
                     ),
-                    onTap: () => Get.to(() {
+                    onTap: () =>
+                        // Get.to(() => LoginPage())
+
+                        Get.to(() {
                           shopController.updateShop(shopList[index]);
                           return OrderTakeOut(shop: shopList[index]);
                         })),

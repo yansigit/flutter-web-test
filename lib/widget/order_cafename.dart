@@ -11,6 +11,7 @@ class CafeNameWidget extends StatelessWidget {
   Widget build(BuildContext context) {
     return Container(
       width: ScreenUtil().screenWidth,
+      
       child: Column(
         mainAxisAlignment: MainAxisAlignment.center,
         children: [
