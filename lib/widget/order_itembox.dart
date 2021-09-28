@@ -59,8 +59,9 @@ class ItemBoxContainer extends StatelessWidget {
                   ),
                   Expanded(
                     flex: 102,
-                    child: Center(child: Container() //Image.network(menu.thumbnail), //SvgPicture.asset("assets/icons/iceOnlyIcon.svg"),
-                        ),
+                    child: Center(
+                      child: Image.network(menu.thumbnail), //SvgPicture.asset("assets/icons/iceOnlyIcon.svg"),
+                    ),
                   )
                 ],
               ),
@@ -248,16 +249,23 @@ class ItemBoxContainer extends StatelessWidget {
             children: [
               Expanded(
                 flex: 1,
-                child: Container(
-                  alignment: Alignment.bottomCenter,
-                  child: Text("a"),
+                child: Padding(
+                  padding: EdgeInsets.only(top: 8.0.h),
+                  child: Container(
+                    width: 45.w,
+                    alignment: Alignment.bottomCenter,
+                    child: Image.network(list.thumbnail),
+                  ),
                 ),
               ),
               Expanded(
                 flex: 1,
                 child: Container(
                   alignment: Alignment.center,
-                  child: Text(list.name),
+                  child: Text(
+                    list.name,
+                    textAlign: TextAlign.center,
+                  ),
                 ),
               )
             ],

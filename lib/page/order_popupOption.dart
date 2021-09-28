@@ -1301,6 +1301,14 @@ class AppBarBody extends StatelessWidget {
               ),
             ),
           ),
+          Container(
+            width: 82.2.w,
+            height: 68.h,
+            child: Image.network(
+              menu.thumbnail,
+              fit: BoxFit.scaleDown,
+            ),
+          ),
         ],
       ),
     );
@@ -1401,7 +1409,7 @@ class OptionBottomBar extends StatelessWidget {
                               cartOptions["menuQuantity"] = new CartOption(name: "수량", quantity: controller.menuQuantity.value);
                             }
                             if (controller.hasMinus.value == false) {
-                              cartOptions["menuQuantity"] = new CartOption();
+                              cartOptions["menuQuantity"] = new CartOption(name: "수량", quantity: 1);
                             }
                           },
                           child: Container(
@@ -1506,21 +1514,24 @@ class OptionBottomBar extends StatelessWidget {
                     child: InkWell(
                       onTap: () {
                         String text = textController.text;
-                        PriceController p = Get.find();
                         OptionDialogController c = Get.find();
+                        PriceController p = Get.find();
 
+                        c.selectHotColdOption.value == 1
+                            ? cartOptions["temp"] = new CartOption(name: "따뜻한", quantity: 1)
+                            : cartOptions["temp"] = new CartOption(name: "시원한", quantity: 1);
                         if (text.isNotEmpty) {
                           cartOptions["etcOption"] = new CartOption(name: text, price: 0, quantity: 1);
                         } else {
                           cartOptions["etcOption"] = new CartOption(name: "", price: 0, quantity: 0);
                         }
                         removeFunction(cartOptions);
-                        print(cartOptions.toString());
+
                         cartController.shoppingCart.add(new CartItem(
                           name: menu.name,
                           //TODO 메뉴 가격 정하기
                           price: p.finalPrice.value,
-                          //price: menu.price,
+                          quantity: cartOptions["menuQuantity"]!.quantity,
                           thumbnail: menu.thumbnail,
                           bgColor: menu.bgColor,
                           cartOptions: cartOptions,
@@ -1569,6 +1580,7 @@ class OptionBottomBar extends StatelessWidget {
                         String text = textController.text;
                         OptionDialogController c = Get.find();
                         PriceController p = Get.find();
+
                         c.selectHotColdOption.value == 1
                             ? cartOptions["temp"] = new CartOption(name: "따뜻한", quantity: 1)
                             : cartOptions["temp"] = new CartOption(name: "시원한", quantity: 1);
@@ -1578,13 +1590,6 @@ class OptionBottomBar extends StatelessWidget {
                           cartOptions["etcOption"] = new CartOption(name: "", price: 0, quantity: 0);
                         }
                         removeFunction(cartOptions);
-
-                        print(cartOptions["temp"]?.quantity);
-                        print(cartOptions["size"]?.name);
-                        print(cartOptions["addShot"]?.name);
-                        print(cartOptions["iceSize"]?.name);
-                        print(cartOptions["syrup"]?.name);
-                        print(cartOptions["whipping"]?.name);
 
                         cartController.shoppingCart.add(new CartItem(
                           name: menu.name,

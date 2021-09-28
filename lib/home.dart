@@ -16,7 +16,6 @@ class Home extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    print(shopList[0].id.toString());
     return Scaffold(
       body: Container(
           color: Colors.white,

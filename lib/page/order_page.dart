@@ -18,80 +18,79 @@ class OrderPage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: Colors.white,
-      body: FutureBuilder<List<Category>>(
-          future: Category.fetchCategories(controller.shop.value.id),
-          builder: (context, snapshot) {
-            if (snapshot.hasData) {
-              categories = categories;
-              //final categories = snapshot.data as List<Category>;
+        backgroundColor: Colors.white,
+        body: FutureBuilder<List<Category>>(
+            future: Category.fetchCategories(controller.shop.value.id),
+            builder: (context, snapshot) {
+              if (snapshot.hasData) {
+                categories = categories;
+                //final categories = snapshot.data as List<Category>;
 
-              return OrderTab(categoryList: categories);
-            } else {
-              return Center(child: CircularProgressIndicator());
+                return OrderTab(categoryList: categories);
+              } else {
+                return Center(child: CircularProgressIndicator());
+              }
+            }),
+        floatingActionButton: InkWell(
+          onTap: () => Get.to(() => ShoppingCartPage())?.whenComplete(() {
+            for (int idx = 0; idx < s.shoppingCart.length; idx++) {
+              s.reset11stDiscount(idx);
             }
           }),
-      floatingActionButton: InkWell(
-        onTap: () => Get.to(() => ShoppingCartPage())?.whenComplete(() {
-          for (int idx = 0; idx < s.shoppingCart.length; idx++) {
-            s.reset11stDiscount(idx);
-          }
-        }),
-        child: Container(
-          width: 60.w,
-          height: 60.h,
-          decoration: BoxDecoration(
-            borderRadius: BorderRadius.all(Radius.circular(30.h)),
-            color: Color(0xff00276b),
-            boxShadow: [
-              BoxShadow(
-                color: Color(0x59000000),
-                offset: Offset(3, 3),
-                blurRadius: 5,
-                spreadRadius: 0,
-              ),
-            ],
-          ),
-          child: Obx(
-            () => Stack(
-              children: [
-                Center(
-                  child: SvgPicture.asset("assets/icons/orderCartIcon.svg", fit: BoxFit.fill, color: Color(0xffffffff)),
+          child: Container(
+            width: 60.w,
+            height: 60.h,
+            decoration: BoxDecoration(
+              borderRadius: BorderRadius.all(Radius.circular(30.h)),
+              color: Color(0xff00276b),
+              boxShadow: [
+                BoxShadow(
+                  color: Color(0x59000000),
+                  offset: Offset(3, 3),
+                  blurRadius: 5,
+                  spreadRadius: 0,
                 ),
-                s.shoppingCart.length > 0
-                    ? Positioned(
-                        right: 0.w,
-                        bottom: 0.h,
-                        child: Container(
-                          width: 25.w,
-                          height: 25.h,
-                          decoration: BoxDecoration(
-                            borderRadius: BorderRadius.all(
-                              Radius.circular(15.w),
-                            ),
-                            color: Colors.white,
-                            boxShadow: [
-                              BoxShadow(
-                                color: Color(0x59000000),
-                                offset: Offset(3, 3),
-                                blurRadius: 5,
-                                spreadRadius: 0,
-                              ),
-                            ],
-                          ),
-                          child: FittedBox(
-                            fit: BoxFit.fitHeight,
-                            child: Text(s.shoppingCart.length.toString(), style: TextStyle(color: Color(0xff00276b), fontWeight: FontWeight.w500)),
-                          ),
-                        ),
-                      )
-                    : Container(),
               ],
+            ),
+            child: Obx(
+              () => Stack(
+                children: [
+                  Center(
+                    child: SvgPicture.asset("assets/icons/orderCartIcon.svg", fit: BoxFit.fill, color: Color(0xffffffff)),
+                  ),
+                  s.shoppingCart.length > 0
+                      ? Positioned(
+                          right: 0.w,
+                          bottom: 0.h,
+                          child: Container(
+                            width: 25.w,
+                            height: 25.h,
+                            decoration: BoxDecoration(
+                              borderRadius: BorderRadius.all(
+                                Radius.circular(15.w),
+                              ),
+                              color: Colors.white,
+                              boxShadow: [
+                                BoxShadow(
+                                  color: Color(0x59000000),
+                                  offset: Offset(3, 3),
+                                  blurRadius: 5,
+                                  spreadRadius: 0,
+                                ),
+                              ],
+                            ),
+                            child: FittedBox(
+                              fit: BoxFit.fitHeight,
+                              child: Text(s.shoppingCart.length.toString(), style: TextStyle(color: Color(0xff00276b), fontWeight: FontWeight.w500)),
+                            ),
+                          ),
+                        )
+                      : Container(),
+                ],
+              ),
             ),
           ),
         ),
-      ),
-      bottomNavigationBar: BottomNav()
-    );
+        bottomNavigationBar: BottomNav());
   }
 }

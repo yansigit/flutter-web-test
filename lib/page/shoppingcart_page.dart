@@ -22,7 +22,7 @@ class _ShoppingCartPageState extends State<ShoppingCartPage> {
   void initState() {
     // TODO: implement initState
     super.initState();
-    if (DateTime.now().hour >= 3 && shopController.shop.value.name == "11호관카페") {
+    if (DateTime.now().hour >= 3 && shopController.shop.value.name == "11호관 커피") {
       ShoppingCartPage.discountFlag = true;
       for (int idx = 0; idx < shoppingCartController.shoppingCart.length; idx++) {
         shoppingCartController.update11stDiscount(idx);
@@ -66,7 +66,14 @@ class _ShoppingCartPageState extends State<ShoppingCartPage> {
           Transform.scale(
             scale: 0.7,
             child: InkWell(
-              onTap: () => shoppingCartController.shoppingCart.clear(),
+              onTap: () {
+                if (shoppingCartController.shoppingCart.length != 0) {
+                  shoppingCartController.shoppingCart.clear();
+                  Get.snackbar("알림", "장바구니 내용이 모두 삭제되었습니다.", backgroundColor: Colors.white);
+                } else {
+                  Get.snackbar("알림", "장바구니에 담긴 내역이 없습니다.", backgroundColor: Colors.white);
+                }
+              },
               child: Container(
                 margin: EdgeInsets.only(top: 5.h),
                 child: Image.asset("assets/icons/ic_allClear.png"),
@@ -162,7 +169,11 @@ class _ShoppingCartPageState extends State<ShoppingCartPage> {
                           child: Row(
                             mainAxisAlignment: MainAxisAlignment.center,
                             children: [
-                              Container(),
+                              Container(
+                                width: 20.w,
+                                height: 18.3.h,
+                                child: SvgPicture.asset("assets/icons/orderCartIcon.svg", fit: BoxFit.fill, color: Color(0xff00276b)),
+                              ),
                               Container(
                                 height: 24.h,
                                 margin: EdgeInsets.only(left: 10.w),
@@ -241,7 +252,10 @@ class _ShoppingCartPageState extends State<ShoppingCartPage> {
                           child: Row(
                             mainAxisAlignment: MainAxisAlignment.center,
                             children: [
-                              Container(),
+                              Container(
+                                  width: 20.w,
+                                  height: 18.3.h,
+                                  child: SvgPicture.asset("assets/icons/orderCartIcon.svg", fit: BoxFit.fill, color: Color(0xff00276b))),
                               Container(
                                 height: 24.h,
                                 margin: EdgeInsets.only(left: 10.w),
@@ -329,16 +343,35 @@ class _ShoppingCartPageState extends State<ShoppingCartPage> {
           Container(
             margin: EdgeInsets.only(right: 15.h),
             width: 90.w,
-            height: 150.h,
+            height: 154.h,
             decoration: BoxDecoration(
               borderRadius: BorderRadius.all(Radius.circular(90.h)),
               color: Color(c.shoppingCart[idx].bgColor),
             ),
             child: Column(
+              mainAxisAlignment: MainAxisAlignment.spaceAround,
+              crossAxisAlignment: CrossAxisAlignment.center,
               children: [
                 //TODO 아이템 박스 구현
-                Container(),
-                Container(),
+                Expanded(
+                  flex: 52,
+                  child: Container(
+                    margin: EdgeInsets.only(top: 20.h),
+                    child: SvgPicture.asset(
+                        c.shoppingCart[idx].cartOptions["temp"]!.name == "따뜻한" ? "assets/icons/ic_hotIcon.svg" : "assets/icons/ic_coldIcon.svg",
+                        color: Colors.white,
+                        fit: BoxFit.fitWidth),
+                    //TODO 아이스, 핫 둘 다 가능할 경우 고치기 22x22 -> 57 x 22
+                    width: 22.w,
+                    height: 22.h,
+                  ),
+                ),
+                Expanded(
+                  flex: 102,
+                  child: Center(
+                    child: Image.network(c.shoppingCart[idx].thumbnail), //SvgPicture.asset("assets/icons/iceOnlyIcon.svg"),
+                  ),
+                )
               ],
             ),
           ),
@@ -375,7 +408,9 @@ class _ShoppingCartPageState extends State<ShoppingCartPage> {
                           Container(
                             height: 19.h,
                             width: 19.w,
-                            color: c.shoppingCart[idx].cartOptions["temp"]!.name == "따뜻한" ? Color(0xffad1616) : Color(0xff00276b),
+                            child: c.shoppingCart[idx].cartOptions["temp"]!.name == "따뜻한"
+                                ? SvgPicture.asset("assets/icons/ic_hotIcon.svg", color: Color(0xffad1616))
+                                : SvgPicture.asset("assets/icons/ic_coldIcon.svg", color: Color(0xff00276b)),
                           ),
                           Container(
                             margin: EdgeInsets.only(left: 4.w),
@@ -586,7 +621,12 @@ class BottomWidget extends StatelessWidget {
             child: InkWell(
               onTap: (() {
                 if (cartListLength > 0) {
-                  Get.to(BillingPage());
+                  // Get.to(BillingPage());
+                  Get.snackbar(
+                    "오류",
+                    "결제 시스템 오류로 인해 10월 4일부터 이용 가능합니다.",
+                    backgroundColor: Colors.white,
+                  );
                 } else {
                   Get.snackbar("경고", "장바구니에 담긴 내역이 없습니다.", backgroundColor: Colors.white);
                 }
@@ -650,9 +690,27 @@ class CartMenuWidget extends StatelessWidget {
               color: Color(cartItem.bgColor),
             ),
             child: Column(
+              mainAxisAlignment: MainAxisAlignment.spaceAround,
               children: [
-                Container(),
-                Container(),
+                Expanded(
+                  flex: 52,
+                  child: Container(
+                    child: SvgPicture.asset(
+                        cartItem.cartOptions["temp"]!.name == "따뜻한" ? "assets/icons/ic_hotIcon.svg" : "assets/icons/ic_coldIcon.svg",
+                        color: Colors.white,
+                        fit: BoxFit.fill),
+                    //TODO 아이스, 핫 둘 다 가능할 경우 고치기 22x22 -> 57 x 22
+                    width: 22.w,
+                    height: 22.h,
+                    alignment: Alignment.bottomCenter,
+                  ),
+                ),
+                Expanded(
+                  flex: 102,
+                  child: Center(
+                    child: Image.network(cartItem.thumbnail), //SvgPicture.asset("assets/icons/iceOnlyIcon.svg"),
+                  ),
+                )
               ],
             ),
           ),

@@ -6,6 +6,7 @@ import 'package:get/get.dart';
 import 'package:flutter/services.dart';
 import 'package:http/http.dart' as http;
 import 'package:save_order/home.dart';
+import 'package:save_order/view/pages/bottomNavConnectPages/FindNearStore.dart';
 
 import 'package:save_order/view/pages/login/login_page.dart';
 
@@ -37,15 +38,15 @@ class MyApp extends StatelessWidget {
           return ScreenUtilInit(
               designSize: Size(375, 812),
               builder: () => GetMaterialApp(
-                    title: 'Flutter Demo',
-                    theme: ThemeData(brightness: Brightness.light, primaryColor: Colors.white, fontFamily: 'Noto Sans'),
-                    home:
-                        //MyOrderPage("5857D43CE90E3B412D0A69D564764F0F4388B76A")
-                        //NearStoresPage()
-                        // UserPage("5857D43CE90E3B412D0A69D564764F0F4388B76A")
-                        //FavoriteStoresPage(token: "5857D43CE90E3B412D0A69D564764F0F4388B76A")
-                        //LoginPage()
-                        Home(shopList: shopList),
+                  title: 'Flutter Demo',
+                  theme: ThemeData(brightness: Brightness.light, primaryColor: Colors.white, fontFamily: 'Noto Sans'),
+                  home:
+                      //MyOrderPage("5857D43CE90E3B412D0A69D564764F0F4388B76A")
+                      NearStoresPage()
+                  // UserPage("5857D43CE90E3B412D0A69D564764F0F4388B76A")
+                  //FavoriteStoresPage(token: "5857D43CE90E3B412D0A69D564764F0F4388B76A")
+                  //LoginPage()
+                  //Home(shopList: shopList),
                   ));
         }
       },
@@ -72,7 +73,7 @@ class Init {
     // the splash screen is displayed.  Remove the following example because
     // delaying the user experience is a bad design practice!
 
-    await Future.delayed(Duration(seconds: 0));
+    await Future.delayed(Duration(seconds: 1));
     return await Shop.fetchShops(http.Client());
   }
 }
