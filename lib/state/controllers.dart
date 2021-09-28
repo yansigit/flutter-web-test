@@ -30,6 +30,7 @@ class OptionDialogController extends GetxController {
   updateHotColdOption(int num) {
     selectHotColdOption.value = num;
     print("상태 바뀜");
+    print(selectHotColdOption.value.toString());
   }
 
   updateSizeOption(int num) {
@@ -41,9 +42,7 @@ class OptionDialogController extends GetxController {
     print(num.toString());
   }
 
-  @override
-  void onClose() {
-    super.onClose();
+  reset() {
     selectHotColdOption.value = 1;
     selectIceQuantity.value = 2;
     selectSizeOption.value = 0;
@@ -54,8 +53,37 @@ class ShoppingCartController extends GetxController {
   final shoppingCart = RxList<CartItem>([]);
   final totalPrice = 0.obs;
 
-  updateTotalPrice(int price) {
-    totalPrice.value += price;
+  int updateTotalPrice(List<CartItem> shoppingCartList) {
+    int prices = 0;
+    for (CartItem cartItemPrice in shoppingCartList) {
+      prices += cartItemPrice.price;
+    }
+    this.totalPrice.value = prices;
+    return this.totalPrice.value;
+  }
+
+  removeCartItem(int idx) {
+    shoppingCart.removeAt(idx);
+  }
+
+  decreaseMenuQuantity(int idx) {
+    int price = shoppingCart[idx].price ~/ shoppingCart[idx].quantity;
+    shoppingCart[idx].quantity -= 1;
+    shoppingCart[idx].price = price * shoppingCart[idx].quantity;
+  }
+
+  increaseMenuQuantity(int idx) {
+    int price = shoppingCart[idx].price ~/ shoppingCart[idx].quantity;
+    shoppingCart[idx].quantity += 1;
+    shoppingCart[idx].price = price * shoppingCart[idx].quantity;
+  }
+
+  update11stDiscount(int idx) {
+    shoppingCart[idx].price = (shoppingCart[idx].price * 0.9).toInt();
+  }
+
+  reset11stDiscount(int idx) {
+    shoppingCart[idx].price = (shoppingCart[idx].price * 10 ~/ 9).toInt();
   }
 }
 
@@ -92,10 +120,7 @@ class AddShotController extends GetxController {
     updateCanChange();
   }
 
-  @override
-  void onClose() {
-    // TODO: implement onClose
-    super.onClose();
+  reset() {
     this.shotCount.value = 0;
     this.hasMinus.value = false;
     this.hasPlus.value = true;
@@ -126,19 +151,17 @@ class QuantityController extends GetxController {
     updateMenuQuantityStatus();
   }
 
-  @override
-  void onClose() {
-    super.onClose();
+  reset() {
     this.menuQuantity.value = 1;
     this.hasMinus.value = false;
   }
 }
 
 class ShopController extends GetxController {
-  final shopId = 0.obs;
+  final shop = new Shop().obs;
 
-  updateShopId(int id) {
-    this.shopId.value = id;
+  updateShop(Shop shop) {
+    this.shop.value = shop;
   }
 }
 
@@ -190,9 +213,7 @@ class SyrupController extends GetxController {
     }
   }
 
-  @override
-  void onClose() {
-    super.onClose();
+  reset() {
     this.syrupCount.value = 0;
     this.hasMinus.value = false;
     this.hasPlus.value = true;
@@ -208,6 +229,10 @@ class WhippingController extends GetxController {
     } else {
       this.whippingState.value = false;
     }
+  }
+
+  reset() {
+    this.whippingState.value = false;
   }
 }
 
@@ -268,6 +293,14 @@ class PriceController extends GetxController {
   // decreaseWhippingPrice() {
   //   this.optionPrice.value -= 500;
   // }
+  reset() {
+    price.value = 0;
+    shotPrice.value = 0;
+    syrupPrice.value = 0;
+    whippingPrice.value = 0;
+    optionPrice.value = 0;
+    finalPrice.value = 0;
+  }
 
   updatePrice(Map<String, CartOption> cartOptions, Menu menu) {
     //temp

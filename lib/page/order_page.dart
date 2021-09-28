@@ -20,7 +20,7 @@ class OrderPage extends StatelessWidget {
     return Scaffold(
       backgroundColor: Colors.white,
       body: FutureBuilder<List<Category>>(
-          future: Category.fetchCategories(controller.shopId.value),
+          future: Category.fetchCategories(controller.shop.value.id),
           builder: (context, snapshot) {
             if (snapshot.hasData) {
               categories = categories;
@@ -32,7 +32,11 @@ class OrderPage extends StatelessWidget {
             }
           }),
       floatingActionButton: InkWell(
-        onTap: () => Get.to(() => ShoppingCartPage()),
+        onTap: () => Get.to(() => ShoppingCartPage())?.whenComplete(() {
+          for (int idx = 0; idx < s.shoppingCart.length; idx++) {
+            s.reset11stDiscount(idx);
+          }
+        }),
         child: Container(
           width: 60.w,
           height: 60.h,

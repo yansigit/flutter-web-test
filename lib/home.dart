@@ -37,7 +37,7 @@ class Home extends StatelessWidget {
                       ),
                     ),
                     onTap: () => Get.to(() {
-                          shopController.updateShopId(shopList.length - index);
+                          shopController.updateShop(shopList[index]);
                           return OrderTakeOut(shop: shopList[index]);
                         })),
               );
