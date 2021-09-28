@@ -16,6 +16,7 @@ import '/consts/color.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:geolocator/geolocator.dart';
 import "package:http/http.dart" as http;
+import "package:permission_handler/permission_handler.dart";
 
 class NearStoresPageState extends State<NearStoresPage> {
   Future<List<Shop>>? nearStoresFuture;
@@ -25,39 +26,42 @@ class NearStoresPageState extends State<NearStoresPage> {
   int N = 3;
 
   Future<Position> loadCurLocation() async {
+    print("location");
     Position position = await Geolocator.getCurrentPosition(
         desiredAccuracy: LocationAccuracy.high);
-    print(position.latitude);
+
     return position;
   }
 
-  Future<List<Shop>> fetchAllStores() async {
-    http.Client client = http.Client();
-    final userResponse = await client
-        .get(Uri.parse("http://${devMode()}.dalbbodre.me/api/Shop"));
-    List<Shop> decodedShops = json.decode(userResponse.body);
-    print("decoded");
-    print(decodedShops);
-    return decodedShops;
+  List<bool> statusPermissions = [false, false];
+
+  Future getStatusPermissonList() async {
+    var _statusLocation = await Permission.location.status.isGranted;
+    statusPermissions[0] = _statusLocation;
+    var _statusCamera = await Permission.camera.status.isGranted;
+    statusPermissions[1] = _statusCamera;
   }
 
   Future<List<Shop>> fetchNearStores() async {
     //await Future.delayed(Duration(seconds: 0));
+    await getStatusPermissonList();
+    print("jj");
+    var shops;
+    var locationPermissionStatus = statusPermissions[0];
+    print(locationPermissionStatus);
+    if (locationPermissionStatus == true) {
+      await this.loadCurLocation().then((val) {
+        print(val);
+        print("al");
+        this.curPosition = val;
+      });
+      shops =
+          await Shop.fetchShopsByLocation(http.Client(), N, this.curPosition);
+    } else {
+      shops = await Shop.fetchShops(http.Client());
+      print("all shops fetched");
+    }
 
-    List<Shop> allStores = await fetchAllStores();
-    print(allStores);
-    await this.loadCurLocation().then((val) {
-      print(val);
-      print("al");
-      this.curPosition = val;
-    });
-
-    print(";;;;;");
-
-    final shops =
-        await Shop.fetchShopsByLocation(http.Client(), N, this.curPosition);
-    print("shops");
-    print(shops.length);
     return shops;
   }
 

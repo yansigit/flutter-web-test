@@ -229,7 +229,8 @@ class _EmailFindPage extends State<EmailFindPage> {
                   } else {
                     ScaffoldMessenger.of(context).showSnackBar(SnackBar(
                         duration: const Duration(milliseconds: 1000),
-                        content: Text("이름 혹은 휴대폰 번호를 잘못 입력하셨습니다.")));
+                        content: Text("이름 혹은 휴대폰 번호를 잘못 입력하셨습니다."))
+                        );
                   }
                 },
                 child: Container(

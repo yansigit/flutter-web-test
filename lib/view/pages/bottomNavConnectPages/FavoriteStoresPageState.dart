@@ -11,7 +11,6 @@ import '/consts/color.dart';
 import '/consts/size.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flutter_svg/flutter_svg.dart';
-import 'package:flutter_secure_storage/flutter_secure_storage.dart';
 import 'package:geolocator/geolocator.dart';
 
 class FavoriteStoresPageState extends State<FavoriteStoresPage> {
@@ -22,27 +21,27 @@ class FavoriteStoresPageState extends State<FavoriteStoresPage> {
 
   int length = 0;
   var dbHelper = UserFavoriteStoresDatabase.instance;
-  static final storage = new FlutterSecureStorage();
+  // static final storage = new FlutterSecureStorage();
 
-  _asyncMethod() async {
-    //read 함수를 통하여 key값에 맞는 정보를 불러오게 됩니다. 이때 불러오는 결과의 타입은 String 타입임을 기억해야 합니다.
-    //(데이터가 없을때는 null을 반환을 합니다.)
-    String? userInfo = await storage.read(key: "login");
+  // _asyncMethod() async {
+  //   //read 함수를 통하여 key값에 맞는 정보를 불러오게 됩니다. 이때 불러오는 결과의 타입은 String 타입임을 기억해야 합니다.
+  //   //(데이터가 없을때는 null을 반환을 합니다.)
+  //   String? userInfo = await storage.read(key: "login");
 
-    print(userInfo);
+  //   print(userInfo);
 
-    //user의 정보가 있다면 바로 로그아웃 페이지로 넝어가게 합니다.
-    if (userInfo != null) {
-      var token = userInfo.split(" ")[5];
-      this.userAccessToken = token;
-    }
-  }
+  //   //user의 정보가 있다면 바로 로그아웃 페이지로 넝어가게 합니다.
+  //   if (userInfo != null) {
+  //     var token = userInfo.split(" ")[5];
+  //     this.userAccessToken = token;
+  //   }
+  // }
 
   @override
   void initState() {
     super.initState();
     WidgetsBinding.instance!.addPostFrameCallback((_) {
-      _asyncMethod();
+      //_asyncMethod();
     });
   }
 
