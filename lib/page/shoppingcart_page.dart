@@ -33,7 +33,6 @@ class _ShoppingCartPageState extends State<ShoppingCartPage> {
       });
     }
   }
-
   @override
   Widget build(BuildContext context) {
     return Scaffold(

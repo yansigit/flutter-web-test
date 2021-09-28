@@ -42,10 +42,10 @@ class MyApp extends StatelessWidget {
                   theme: ThemeData(brightness: Brightness.light, primaryColor: Colors.white, fontFamily: 'Noto Sans'),
                   home:
                       //MyOrderPage("5857D43CE90E3B412D0A69D564764F0F4388B76A")
-                      NearStoresPage()
+                      //NearStoresPage()
                   // UserPage("5857D43CE90E3B412D0A69D564764F0F4388B76A")
                   //FavoriteStoresPage(token: "5857D43CE90E3B412D0A69D564764F0F4388B76A")
-                  //LoginPage()
+                  LoginPage()
                   //Home(shopList: shopList),
                   ));
         }
