@@ -126,6 +126,7 @@ class Category {
   }
 
   static Future<List<Category>> fetchCategories(int shopId) async {
+    print(shopId);
     var url = Uri.parse('http://${devMode()}.dalbodre.me/api/Shop/${shopId}/getAllMenus');
     var response = await http.get(url);
     final decodedData = utf8.decode(response.bodyBytes);
