@@ -27,12 +27,11 @@ class _PasswordFindPage extends State<PasswordFindPage> {
     };
     var body = json.encode(data);
     var response = await http.Client().post(
-        Uri.parse("http://${devMode}.dalbodre.me/api/User/ChangePassword"),
-        body: body,
-        headers: <String, String>{
-                                    'Content-Type': 'application/json'
-                                  },
-        );
+      Uri.parse("http://${devMode}.dalbodre.me/api/User/ChangePassword"),
+      body: body,
+      headers: <String, String>{'Content-Type': 'application/json'},
+    );
+    print("check your unist email");
     print(response.statusCode);
     print(json.decode(response.body));
     return true;
@@ -46,22 +45,28 @@ class _PasswordFindPage extends State<PasswordFindPage> {
   }
 
   Widget inputUserInfoWidget(
-    TextEditingController textEditingController, String infoName,
+    TextEditingController textEditingController,
+    String infoName,
   ) {
-   return Row(children: <Widget>[
+    return Row(
+      mainAxisAlignment: MainAxisAlignment.center,
+      children: <Widget>[
       Container(
-              margin: EdgeInsets.only(right: 10.w),
-                      height: 30.h,
-                      width: 50.w,
-          child: FittedBox(fit: BoxFit.fitHeight, child: Text(infoName))),
+          margin: EdgeInsets.only(right: 10.w),
+          height: 16.h,
+          width: 50.w,
+          child: FittedBox(fit: BoxFit.fitHeight, child: Text(infoName,   style: TextStyle(
+                                  color: const Color(0xff222222),
+                                  fontFamily: "NotoSans",
+                                  fontSize: 14.0),))),
       Container(
           margin: EdgeInsets.only(right: 10.w, bottom: 8.h),
           width: 200.w,
           height: 30.h,
           child: TextFormField(
             textAlignVertical: TextAlignVertical.center,
-                        inputFormatters: [
-                          LengthLimitingTextInputFormatter(36),
+            inputFormatters: [
+              LengthLimitingTextInputFormatter(36),
             ],
             controller: textEditingController,
             textAlign: TextAlign.left,
@@ -76,10 +81,20 @@ class _PasswordFindPage extends State<PasswordFindPage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+         appBar: AppBar(
+          backgroundColor: Colors.white,
+          elevation: 1.3,
+          centerTitle: true,
+          title: Text("비밀번호 찾기",
+              style:
+                  TextStyle(fontWeight: FontWeight.w700, color: Colors.black)),
+      ),
         backgroundColor: Color(0xFFFFFF).withOpacity(1.0),
         body: Center(
             child: Container(
           child: Column(
+            mainAxisAlignment: MainAxisAlignment.center,
+            crossAxisAlignment: CrossAxisAlignment.center,
             children: [
               inputUserInfoWidget(emailController!, "이메일"),
               inputUserInfoWidget(nameController!, "이름"),
@@ -111,7 +126,7 @@ class _PasswordFindPage extends State<PasswordFindPage> {
                   child: Container(
                       margin: EdgeInsets.only(
                           right: 10.w, bottom: 8.h, top: 10.h, left: 10.w),
-                      width: 250.w,
+                      width: 200.w,
                       height: 25.h,
                       child: FittedBox(
                           fit: BoxFit.fitHeight,
@@ -122,9 +137,7 @@ class _PasswordFindPage extends State<PasswordFindPage> {
                                   color: Colors.blue,
                                   fontFamily: "NotoSans",
                                   fontStyle: FontStyle.normal,
-                                  fontSize: 10.0))))
-                                  
-                                  ),
+                                  fontSize: 10.0))))),
             ],
           ),
           width: 325.w,

@@ -52,7 +52,7 @@ class _EmailLoginPage extends State<EmailLoginPage> {
     print(token);
 
     //user의 정보가 있다면 바로 로그아웃 페이지로 넝어가게 합니다.
-    if (token != null  && token.length != 0) {
+    if (token != null && token.length != 0) {
       emailController!.text = sharedPreferences!.getString("email").toString();
       passwordController!.text =
           sharedPreferences!.getString("password").toString();
@@ -64,6 +64,14 @@ class _EmailLoginPage extends State<EmailLoginPage> {
   Widget build(BuildContext context) {
     return Scaffold(
       backgroundColor: Color(0xFFFFFF).withOpacity(1.0),
+      appBar: AppBar(
+          backgroundColor: Colors.white,
+          elevation: 1.3,
+          centerTitle: true,
+          title: Text("이메일로 로그인",
+              style:
+                  TextStyle(fontWeight: FontWeight.w700, color: Colors.black)),
+      ),
       body: Center(
         child: Container(
           width: 325.w,
@@ -190,7 +198,7 @@ class _EmailLoginPage extends State<EmailLoginPage> {
                   onPressed: () async {
                     print(token!.length);
                     print("print");
-                    if (token!.length == 0 || token == null) {
+                   
                       Map data = {
                         "email": emailController!.text.toString(),
                         "password": passwordController!.text.toString()
@@ -203,7 +211,13 @@ class _EmailLoginPage extends State<EmailLoginPage> {
                             'Content-Type': 'application/json'
                           },
                           body: body);
-
+                      if (response.statusCode != 200) {
+                        ScaffoldMessenger.of(context).showSnackBar(
+                          SnackBar(content: Text("이메일 혹은 비밀번호를 잘못 입력하셨습니다."), duration: const Duration(milliseconds: 1000)
+                          )
+                        );
+                        return;
+                      }
                       final decodedToken = json.decode(response.body);
                       this.token = decodedToken["token"];
                       print(this.token);
@@ -218,7 +232,7 @@ class _EmailLoginPage extends State<EmailLoginPage> {
                       await sharedPreferences!.setString(
                           "password", passwordController!.text.toString());
                       await sharedPreferences!.setString("token", this.token!);
-                    }
+                    
                     Get.to(() => NearStoresPage());
                   },
                   child: Container(

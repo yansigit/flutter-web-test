@@ -62,6 +62,14 @@ class _EmailFindPage extends State<EmailFindPage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+       appBar: AppBar(
+          backgroundColor: Colors.white,
+          elevation: 1.3,
+          centerTitle: true,
+          title: Text("이메일 찾기",
+              style:
+                  TextStyle(fontWeight: FontWeight.w700, color: Colors.black)),
+      ),
         backgroundColor: Color(0xFFFFFF).withOpacity(1.0),
         body: Center(
             child: Container(
