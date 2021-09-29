@@ -32,11 +32,13 @@ class PersonalInfoAgree extends State<PersonalInfoAgreePage> {
           children: [
             Container(
               height: 25.h,
-              width: 248.w,
+              width: 280.w,
               child: Row(
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: [
-                  Checkbox(
+                 Transform.scale(
+                   scale: 1.2,
+                   child: Checkbox(
                     value: this.isAgreedForPersonalInfo,
                     onChanged: (bool? value) {
                       setState(() {
@@ -44,7 +46,7 @@ class PersonalInfoAgree extends State<PersonalInfoAgreePage> {
                         print(this.isAgreedForPersonalInfo);
                       });
                     },
-                  ),
+                  )),
                   Container(
                     alignment: Alignment.center,
                     height: 20.h,
@@ -55,7 +57,7 @@ class PersonalInfoAgree extends State<PersonalInfoAgreePage> {
                           style: TextStyle(
                               color: const Color(0xff222222),
                               fontFamily: "NotoSans",
-                              fontSize: 14)),
+                              fontSize: 16)),
                     ),
                   ),
                 ],
