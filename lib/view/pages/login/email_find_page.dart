@@ -225,7 +225,7 @@ class _EmailFindPage extends State<EmailFindPage> {
                   if (isSuccess) {
                     ScaffoldMessenger.of(context).showSnackBar(SnackBar(
                         duration: const Duration(milliseconds: 1000),
-                        content: Text("입력하신 휴대폰 번호로 인증번호를 보내드렸습니다.")));
+                        content: Text("입력하신 이메일입니다.")));
                   } else {
                     ScaffoldMessenger.of(context).showSnackBar(SnackBar(
                         duration: const Duration(milliseconds: 1000),

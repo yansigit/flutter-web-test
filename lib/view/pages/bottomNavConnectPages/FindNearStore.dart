@@ -29,7 +29,6 @@ class NearStoresPageState extends State<NearStoresPage> {
     print("location");
     Position position = await Geolocator.getCurrentPosition(
         desiredAccuracy: LocationAccuracy.high);
-
     return position;
   }
 
@@ -58,6 +57,12 @@ class NearStoresPageState extends State<NearStoresPage> {
     }
 
     return shops;
+   
+    // return [
+    //   // new Shop(id:1,  name: "컬티", latitude: 38.5, longtitude: 40.5, distanceFromCurPosition: 3.5),
+    //   // new Shop(id:1,  name: "카페마냥", latitude: 38.5, longtitude: 40.5, distanceFromCurPosition: 4.5),
+    //   new Shop(id: 1, name: "11호관 커피", latitude: 38.5, longtitude: 40.5, distanceFromCurPosition: 6.5),
+    // ];
   }
 
   @override
@@ -118,7 +123,7 @@ class NearStoresPageState extends State<NearStoresPage> {
                       width: 95.w,
                       margin: EdgeInsets.only(bottom: 14.h),
                       child: FittedBox(
-                          fit: BoxFit.fill,
+                          fit: BoxFit.fitHeight,
                           child: Text("내 주변 매장",
                               style: TextStyle(
                                   color: const Color(0xff222222),
@@ -180,7 +185,8 @@ class NearStoresPageState extends State<NearStoresPage> {
                                             fontWeight: FontWeight.w400,
                                             fontFamily: "NotoSans",
                                             fontStyle: FontStyle.normal,
-                                            fontSize: 15.0))))
+                                            fontSize: 15.0)))
+                                            )
                           ]),
                     ),
                   ),

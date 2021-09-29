@@ -16,6 +16,7 @@ class BillingPage extends StatelessWidget {
         title: Text("결제하기", style: TextStyle(fontWeight: FontWeight.w700)),
         centerTitle: true,
         elevation: 5,
+  
       ),
       body: Container(
         color: Color(0xffffffff),

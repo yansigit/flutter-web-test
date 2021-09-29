@@ -292,7 +292,6 @@ class LoginPageState extends State<LoginPage> {
                     )),
               ]),
               GestureDetector(
-                
                 onTap: () => Get.to(PersonalInfoAgreePage()),
                 child: Container(
                     margin: EdgeInsets.only(left: 8.w, top: 27.h),
