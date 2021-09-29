@@ -52,10 +52,9 @@ class _EmailLoginPage extends State<EmailLoginPage> {
     print(token);
 
     //user의 정보가 있다면 바로 로그아웃 페이지로 넝어가게 합니다.
-    if (token != null  && token.length != 0) {
+    if (token != null && token.length != 0) {
       emailController!.text = sharedPreferences!.getString("email").toString();
-      passwordController!.text =
-          sharedPreferences!.getString("password").toString();
+      passwordController!.text = sharedPreferences!.getString("password").toString();
       this.token = token;
     }
   }
@@ -68,8 +67,7 @@ class _EmailLoginPage extends State<EmailLoginPage> {
         child: Container(
           width: 325.w,
           height: 300.h,
-          decoration:
-              BoxDecoration(border: Border.all(color: Colors.blueAccent)),
+          decoration: BoxDecoration(border: Border.all(color: Colors.blueAccent)),
           child: Column(
             mainAxisAlignment: MainAxisAlignment.center,
             crossAxisAlignment: CrossAxisAlignment.center,
@@ -87,10 +85,7 @@ class _EmailLoginPage extends State<EmailLoginPage> {
                         fit: BoxFit.fitWidth,
                         child: Text(
                           "이메일: ",
-                          style: TextStyle(
-                              color: const Color(0xff222222),
-                              fontFamily: "NotoSans",
-                              fontSize: 14.0),
+                          style: TextStyle(color: const Color(0xff222222), fontFamily: "NotoSans", fontSize: 14.0),
                         ),
                       )),
                   Container(
@@ -99,23 +94,15 @@ class _EmailLoginPage extends State<EmailLoginPage> {
                       alignment: Alignment.center,
                       decoration: BoxDecoration(
                         color: Colors.white,
-                        border: Border.all(
-                            color: const Color(0xffe8e8e8), width: 1.w),
-                        boxShadow: [
-                          BoxShadow(
-                              color: const Color(0x0c000000),
-                              offset: Offset(0, 2),
-                              blurRadius: 4,
-                              spreadRadius: 0)
-                        ],
+                        border: Border.all(color: const Color(0xffe8e8e8), width: 1.w),
+                        boxShadow: [BoxShadow(color: const Color(0x0c000000), offset: Offset(0, 2), blurRadius: 4, spreadRadius: 0)],
                       ),
                       child: TextFormField(
                         textAlignVertical: TextAlignVertical.center,
                         inputFormatters: [
                           LengthLimitingTextInputFormatter(36),
                         ],
-                        style:
-                            TextStyle(fontFamily: "NotoSans", fontSize: 14.0),
+                        style: TextStyle(fontFamily: "NotoSans", fontSize: 14.0),
                         textAlign: TextAlign.center,
                         // textAlignVertical: TextAlignVertical.center,
                         controller: emailController,
@@ -139,10 +126,7 @@ class _EmailLoginPage extends State<EmailLoginPage> {
                               fit: BoxFit.fitWidth,
                               child: Text(
                                 "비밀번호: ",
-                                style: TextStyle(
-                                    color: const Color(0xff222222),
-                                    fontFamily: "NotoSans",
-                                    fontSize: 14.0),
+                                style: TextStyle(color: const Color(0xff222222), fontFamily: "NotoSans", fontSize: 14.0),
                               ))),
                       Container(
                           height: 30.h,
@@ -150,15 +134,8 @@ class _EmailLoginPage extends State<EmailLoginPage> {
                           alignment: Alignment.center,
                           decoration: BoxDecoration(
                             color: Colors.white,
-                            border: Border.all(
-                                color: const Color(0xffe8e8e8), width: 1.w),
-                            boxShadow: [
-                              BoxShadow(
-                                  color: const Color(0x0c000000),
-                                  offset: Offset(0, 2),
-                                  blurRadius: 4,
-                                  spreadRadius: 0)
-                            ],
+                            border: Border.all(color: const Color(0xffe8e8e8), width: 1.w),
+                            boxShadow: [BoxShadow(color: const Color(0x0c000000), offset: Offset(0, 2), blurRadius: 4, spreadRadius: 0)],
                           ),
                           child: TextFormField(
                             obscureText: true,
@@ -166,8 +143,7 @@ class _EmailLoginPage extends State<EmailLoginPage> {
                             inputFormatters: [
                               LengthLimitingTextInputFormatter(20),
                             ],
-                            style: TextStyle(
-                                fontFamily: "NotoSans", fontSize: 14.0),
+                            style: TextStyle(fontFamily: "NotoSans", fontSize: 14.0),
                             textAlign: TextAlign.center,
                             // textAlignVertical: TextAlignVertical.center,
                             controller: passwordController,
@@ -179,30 +155,31 @@ class _EmailLoginPage extends State<EmailLoginPage> {
                   )),
               ElevatedButton(
                   style: ButtonStyle(
-                    side: MaterialStateProperty.all<BorderSide>(
-                        BorderSide(color: const Color(0xff00276b), width: 1.w)),
+                    side: MaterialStateProperty.all<BorderSide>(BorderSide(color: const Color(0xff00276b), width: 1.w)),
                     backgroundColor: MaterialStateProperty.all(EMAIL_COLOR),
                     shape: MaterialStateProperty.all<RoundedRectangleBorder>(
-                        RoundedRectangleBorder(
-                            borderRadius:
-                                BorderRadius.circular(loginRaiusSize))),
+                        RoundedRectangleBorder(borderRadius: BorderRadius.circular(loginRaiusSize))),
                   ),
                   onPressed: () async {
                     print(token!.length);
                     print("print");
                     if (token!.length == 0 || token == null) {
-                      Map data = {
-                        "email": emailController!.text.toString(),
-                        "password": passwordController!.text.toString()
-                      };
+                      Map data = {"email": emailController!.text.toString(), "password": passwordController!.text.toString()};
                       var body = json.encode(data);
-                      var response = await http.Client().post(
-                          Uri.parse(
-                              "http://${devMode()}.dalbodre.me/api/User/Login"),
-                          headers: <String, String>{
-                            'Content-Type': 'application/json'
-                          },
-                          body: body);
+                      var response;
+                      if (!GetPlatform.isWeb) {
+                        response = await http.Client().post(Uri.parse("http://${devMode()}.dalbodre.me/api/User/Login"),
+                            headers: <String, String>{'Content-Type': 'application/json'}, body: body);
+                      } else {
+                        print("web");
+                        response = await http.Client().post(Uri.parse("http://${devMode()}.dalbodre.me/api/User/Login"),
+                            headers: <String, String>{
+                              'Content-Type': 'application/json',
+                              "Access-Control-Allow-Origin": "*",
+                              "Access-Control-Allow-Headers": "Origin,Content-Type,X-Amz-Date,Authorization,X-Api-Key,X-Amz-Security-Token"
+                            },
+                            body: body);
+                      }
 
                       final decodedToken = json.decode(response.body);
                       this.token = decodedToken["token"];
@@ -212,11 +189,9 @@ class _EmailLoginPage extends State<EmailLoginPage> {
                       }
                       print("ssad");
                       print(emailController!.text.toString());
-                      await sharedPreferences!
-                          .setString("email", emailController!.text.toString());
+                      await sharedPreferences!.setString("email", emailController!.text.toString());
 
-                      await sharedPreferences!.setString(
-                          "password", passwordController!.text.toString());
+                      await sharedPreferences!.setString("password", passwordController!.text.toString());
                       await sharedPreferences!.setString("token", this.token!);
                     }
                     Get.to(() => NearStoresPage());
