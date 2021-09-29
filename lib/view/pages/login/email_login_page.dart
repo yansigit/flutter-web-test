@@ -14,6 +14,7 @@ import 'package:save_order/view/pages/bottomNavConnectPages/FavoriteStoresPageSt
 import 'package:save_order/view/pages/bottomNavConnectPages/FindNearStore.dart';
 import 'package:save_order/view/pages/bottomNavConnectPages/MyOrderPage.dart';
 import 'package:save_order/view/pages/login/email_find_page.dart';
+import 'package:save_order/view/pages/login/password_chage_page.dart';
 import 'package:save_order/view/pages/login/password_find_page.dart';
 import 'package:save_order/widget/bottom_nav.dart';
 import 'package:shared_preferences/shared_preferences.dart';
@@ -53,9 +54,10 @@ class _EmailLoginPage extends State<EmailLoginPage> {
 
     //user의 정보가 있다면 바로 로그아웃 페이지로 넝어가게 합니다.
     if (token != null && token.length != 0) {
-      emailController!.text = sharedPreferences!.getString("email").toString();
+      emailController!.text =
+          sharedPreferences!.getString("email").toString().trim();
       passwordController!.text =
-          sharedPreferences!.getString("password").toString();
+          sharedPreferences!.getString("password").toString().trim();
       this.token = token;
     }
   }
@@ -65,12 +67,11 @@ class _EmailLoginPage extends State<EmailLoginPage> {
     return Scaffold(
       backgroundColor: Color(0xFFFFFF).withOpacity(1.0),
       appBar: AppBar(
-          backgroundColor: Colors.white,
-          elevation: 1.3,
-          centerTitle: true,
-          title: Text("이메일로 로그인",
-              style:
-                  TextStyle(fontWeight: FontWeight.w700, color: Colors.black)),
+        backgroundColor: Colors.white,
+        elevation: 1.3,
+        centerTitle: true,
+        title: Text("이메일로 로그인",
+            style: TextStyle(fontWeight: FontWeight.w700, color: Colors.black)),
       ),
       body: Center(
         child: Container(
@@ -103,7 +104,7 @@ class _EmailLoginPage extends State<EmailLoginPage> {
                       )),
                   Container(
                       height: 30.h,
-                      width: 200.w,
+                      width: 240.w,
                       alignment: Alignment.center,
                       decoration: BoxDecoration(
                         color: Colors.white,
@@ -154,7 +155,7 @@ class _EmailLoginPage extends State<EmailLoginPage> {
                               ))),
                       Container(
                           height: 30.h,
-                          width: 200.w,
+                          width: 240.w,
                           alignment: Alignment.center,
                           decoration: BoxDecoration(
                             color: Colors.white,
@@ -178,6 +179,7 @@ class _EmailLoginPage extends State<EmailLoginPage> {
                                 fontFamily: "NotoSans", fontSize: 14.0),
                             textAlign: TextAlign.center,
                             // textAlignVertical: TextAlignVertical.center,
+                            // 비밀번호 입력할 때 스페이스바 지우기
                             controller: passwordController,
                             decoration: InputDecoration(
                               hintText: "비밀번호를 입력하세요.",
@@ -198,41 +200,49 @@ class _EmailLoginPage extends State<EmailLoginPage> {
                   onPressed: () async {
                     print(token!.length);
                     print("print");
-                   
-                      Map data = {
-                        "email": emailController!.text.toString(),
-                        "password": passwordController!.text.toString()
-                      };
-                      var body = json.encode(data);
-                      var response = await http.Client().post(
-                          Uri.parse(
-                              "http://${devMode()}.dalbodre.me/api/User/Login"),
-                          headers: <String, String>{
-                            'Content-Type': 'application/json'
-                          },
-                          body: body);
-                      if (response.statusCode != 200) {
-                        ScaffoldMessenger.of(context).showSnackBar(
-                          SnackBar(content: Text("이메일 혹은 비밀번호를 잘못 입력하셨습니다."), duration: const Duration(milliseconds: 1000)
-                          )
-                        );
-                        return;
-                      }
-                      final decodedToken = json.decode(response.body);
-                      this.token = decodedToken["token"];
-                      print(this.token);
-                      if (this.token == null || this.token!.length == 0) {
-                        return;
-                      }
-                      print("ssad");
-                      print(emailController!.text.toString());
-                      await sharedPreferences!
-                          .setString("email", emailController!.text.toString());
 
-                      await sharedPreferences!.setString(
-                          "password", passwordController!.text.toString());
-                      await sharedPreferences!.setString("token", this.token!);
-                    
+                    Map data = {
+                      "email": emailController!.text.toString().trim(),
+                      "password": passwordController!.text.toString().trim()
+                    };
+                    var body = json.encode(data);
+                    var response = await http.Client().post(
+                        Uri.parse(
+                            "http://${devMode()}.dalbodre.me/api/User/Login"),
+                        headers: <String, String>{
+                          'Content-Type': 'application/json'
+                        },
+                        body: body);
+
+                    if (response.statusCode != 200) {
+                      ScaffoldMessenger.of(context).showSnackBar(SnackBar(
+                          content: Text("이메일 혹은 비밀번호를 잘못 입력하셨습니다."),
+                          duration: const Duration(milliseconds: 1000)));
+                      return;
+                    }
+                    final decodedToken = json.decode(response.body);
+                    this.token = decodedToken["token"];
+                    final isTempPassword = decodedToken["isTempPassword"];
+                    print(isTempPassword);
+                    print(this.token);
+                    if (this.token == null || this.token!.length == 0) {
+                      return;
+                    }
+
+                    if (isTempPassword == true) {
+                      Get.to(() => PasswordChangePage());
+                      return;
+                    }
+
+                    print("ssad");
+                    print(emailController!.text.toString());
+                    await sharedPreferences!
+                        .setString("email", emailController!.text.toString());
+
+                    await sharedPreferences!.setString(
+                        "password", passwordController!.text.toString());
+                    await sharedPreferences!.setString("token", this.token!);
+
                     Get.to(() => NearStoresPage());
                   },
                   child: Container(
@@ -254,7 +264,7 @@ class _EmailLoginPage extends State<EmailLoginPage> {
                 children: [
                   Container(
                     width: 100.w,
-                    height: 20.h,
+                    height: 25.h,
                     child: GestureDetector(
                         onTap: () {
                           Get.to(EmailFindPage());
@@ -263,7 +273,7 @@ class _EmailLoginPage extends State<EmailLoginPage> {
                   ),
                   Container(
                     width: 100.w,
-                    height: 20.h,
+                    height: 25.h,
                     child: GestureDetector(
                         onTap: () {
                           Get.to(PasswordFindPage());

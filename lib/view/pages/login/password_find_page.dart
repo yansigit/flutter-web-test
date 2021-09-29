@@ -22,16 +22,22 @@ class _PasswordFindPage extends State<PasswordFindPage> {
   Future<bool> sendPasswordToUser() async {
     // 유저  이메일로 임시 비밀번호 보내는 api 불러오기.
     Map data = {
-      "name": nameController!.text.toString(),
-      "email": emailController!.text.toString()
+      "name": nameController!.text.toString().trim(),
+      "email": emailController!.text.toString().trim()
     };
     var body = json.encode(data);
     var response = await http.Client().post(
-      Uri.parse("http://${devMode}.dalbodre.me/api/User/ChangePassword"),
+      Uri.parse("http://${devMode()}.dalbodre.me/api/User/ChangePassword"),
       body: body,
       headers: <String, String>{'Content-Type': 'application/json'},
     );
-    print("check your unist email");
+
+    if (response.statusCode != 200) {
+      return false;
+    }
+    print(data["email"]);
+    print(data["email"].length);
+    print("check your email");
     print(response.statusCode);
     print(json.decode(response.body));
     return true;
@@ -48,20 +54,23 @@ class _PasswordFindPage extends State<PasswordFindPage> {
     TextEditingController textEditingController,
     String infoName,
   ) {
-    return Row(
-      mainAxisAlignment: MainAxisAlignment.center,
-      children: <Widget>[
+    return Row(mainAxisAlignment: MainAxisAlignment.center, children: <Widget>[
       Container(
           margin: EdgeInsets.only(right: 10.w),
           height: 16.h,
           width: 50.w,
-          child: FittedBox(fit: BoxFit.fitHeight, child: Text(infoName,   style: TextStyle(
-                                  color: const Color(0xff222222),
-                                  fontFamily: "NotoSans",
-                                  fontSize: 14.0),))),
+          child: FittedBox(
+              fit: BoxFit.fitHeight,
+              child: Text(
+                infoName,
+                style: TextStyle(
+                    color: const Color(0xff222222),
+                    fontFamily: "NotoSans",
+                    fontSize: 14.0),
+              ))),
       Container(
           margin: EdgeInsets.only(right: 10.w, bottom: 8.h),
-          width: 200.w,
+          width: 240.w,
           height: 30.h,
           child: TextFormField(
             textAlignVertical: TextAlignVertical.center,
@@ -81,14 +90,14 @@ class _PasswordFindPage extends State<PasswordFindPage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-         appBar: AppBar(
+        appBar: AppBar(
           backgroundColor: Colors.white,
           elevation: 1.3,
           centerTitle: true,
           title: Text("비밀번호 찾기",
               style:
                   TextStyle(fontWeight: FontWeight.w700, color: Colors.black)),
-      ),
+        ),
         backgroundColor: Color(0xFFFFFF).withOpacity(1.0),
         body: Center(
             child: Container(
@@ -112,7 +121,7 @@ class _PasswordFindPage extends State<PasswordFindPage> {
                     } else {
                       ScaffoldMessenger.of(context).showSnackBar(SnackBar(
                           duration: const Duration(milliseconds: 500),
-                          content: Text("입력하신 이메일은 유효하지 않은 이메일입니다.")));
+                          content: Text("입력하신 이메일에 해당하는 회원분은 존재하지 않습니다.")));
                     }
                   },
                   style: ButtonStyle(
@@ -126,8 +135,8 @@ class _PasswordFindPage extends State<PasswordFindPage> {
                   child: Container(
                       margin: EdgeInsets.only(
                           right: 10.w, bottom: 8.h, top: 10.h, left: 10.w),
-                      width: 200.w,
-                      height: 25.h,
+                      width: 150.w,
+                      height: 20.h,
                       child: FittedBox(
                           fit: BoxFit.fitHeight,
                           child: Text("다음",

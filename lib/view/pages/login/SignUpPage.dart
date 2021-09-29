@@ -32,7 +32,7 @@ class SignUpPage extends State<SignUp> {
 
   bool isValidFormat(
       String email, String password, String name, String phoneNumber) {
-    if (email.length >= 101 || !emailRegExp.hasMatch(email)) {
+    if (email.length >= 31 || !emailRegExp.hasMatch(email)) {
       ScaffoldMessenger.of(context).showSnackBar(SnackBar(
           duration: const Duration(milliseconds: 1500),
           content: Text("형식에 맞지 않는 이메일입니다. 다시 입력해 주세요.")));
@@ -94,7 +94,7 @@ class SignUpPage extends State<SignUp> {
                                       RoundedRectangleBorder>(
                                   RoundedRectangleBorder(
                                       borderRadius: BorderRadius.circular(
-                                          loginRaiusSize))),
+                                          15.h))),
                             ),
                             onPressed: () async {
                               var email =
@@ -103,7 +103,7 @@ class SignUpPage extends State<SignUp> {
                                 ..trim();
                               var name = nameControlller.text.toString().trim();
                               var phoneNumber =
-                                  phoneNumberController.text.toString()..trim();
+                                  phoneNumberController.text.toString().trim();
                               if (!isValidFormat(
                                   email, password, name, phoneNumber)) {
                                 return;
@@ -170,12 +170,12 @@ class SignUpPage extends State<SignUp> {
     return Row(children: <Widget>[
       Container(
           margin: EdgeInsets.only(right: 10.w, bottom: 8.h),
-          width: 100.w,
+          width: 60.w,
           height: 20.h,
           child: FittedBox(fit: BoxFit.fitHeight, child: Text(infoName))),
       Container(
           margin: EdgeInsets.only(right: 10.w, bottom: 8.h),
-          width: 200.w,
+          width: 240.w,
           height: 30.h,
           child: TextField(
             obscureText: isSensitiveInfo,
