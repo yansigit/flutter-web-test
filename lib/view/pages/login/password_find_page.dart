@@ -27,7 +27,12 @@ class _PasswordFindPage extends State<PasswordFindPage> {
     };
     var body = json.encode(data);
     var response = await http.Client().post(
-        Uri.parse("http://${devMode}.dalbodre.me/api/User/ChangePassword"));
+        Uri.parse("http://${devMode}.dalbodre.me/api/User/ChangePassword"),
+        body: body,
+        headers: <String, String>{
+                                    'Content-Type': 'application/json'
+                                  },
+        );
     print(response.statusCode);
     print(json.decode(response.body));
     return true;

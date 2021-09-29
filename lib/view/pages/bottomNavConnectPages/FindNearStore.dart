@@ -45,21 +45,16 @@ class NearStoresPageState extends State<NearStoresPage> {
   Future<List<Shop>> fetchNearStores() async {
     //await Future.delayed(Duration(seconds: 0));
     await getStatusPermissonList();
-    print("jj");
     var shops;
     var locationPermissionStatus = statusPermissions[0];
     print(locationPermissionStatus);
     if (locationPermissionStatus == true) {
       await this.loadCurLocation().then((val) {
-        print(val);
-        print("al");
         this.curPosition = val;
       });
-      shops =
-          await Shop.fetchShopsByLocation(http.Client(), N, this.curPosition);
+      shops = await Shop.fetchShopsByLocation(http.Client(), N, this.curPosition);
     } else {
       shops = await Shop.fetchShops(http.Client());
-      print("all shops fetched");
     }
 
     return shops;

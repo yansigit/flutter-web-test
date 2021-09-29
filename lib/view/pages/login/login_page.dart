@@ -8,6 +8,7 @@ import 'package:save_order/view/pages/bottomNavConnectPages/MyOrderPage.dart';
 import 'package:save_order/view/pages/login/SignUpPage.dart';
 import 'package:save_order/view/pages/login/email_login_page.dart';
 import 'package:save_order/view/pages/login/login_result.dart';
+import 'package:save_order/view/pages/login/personal_info_agree_page.dart';
 import 'package:save_order/widget/bottom_nav.dart';
 import '/consts/cafe.dart';
 import '/consts/color.dart';
@@ -292,7 +293,7 @@ class LoginPageState extends State<LoginPage> {
               ]),
               GestureDetector(
                 
-                onTap: () => Get.to(SignUp()),
+                onTap: () => Get.to(PersonalInfoAgreePage()),
                 child: Container(
                     margin: EdgeInsets.only(left: 8.w, top: 27.h),
                     height: 20.h,
