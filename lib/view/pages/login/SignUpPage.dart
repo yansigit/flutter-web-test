@@ -20,6 +20,7 @@ class SignUpPage extends State<SignUp> {
   TextEditingController passwordController = new TextEditingController();
   TextEditingController nameControlller = new TextEditingController();
   TextEditingController phoneNumberController = new TextEditingController();
+  String SUCCESS_MESSAGE = "성공적으로 일반 가입되었습니다";
 
   RegExp emailRegExp = RegExp(
       r"^[a-zA-Z0-9.a-zA-Z0-9.!#$%&'*+-/=?^_`{|}~]+@[a-zA-Z0-9]+\.[a-zA-Z]+");
@@ -45,7 +46,7 @@ class SignUpPage extends State<SignUp> {
               "형식에 맞지 않는 비밀번호입니다. 영어 소문자를 적어도 1개 이상, 숫자를 적어도 1개 이상 포함하는 8자리 글자를 입력해주세요.")));
       return false;
     }
-    if (name.length <= 1) {
+    if (name.length < 1) {
       ScaffoldMessenger.of(context).showSnackBar(SnackBar(
           duration: const Duration(milliseconds: 1500),
           content: Text("이름을 입력해주세요.")));
@@ -54,7 +55,8 @@ class SignUpPage extends State<SignUp> {
     if (!phoneNumberExp.hasMatch(phoneNumber)) {
       ScaffoldMessenger.of(context).showSnackBar(SnackBar(
           duration: const Duration(milliseconds: 1500),
-          content: Text("형식에 맞지 않는 휴대폰 번호입니다.'-' 없이 숫자를 입력해주세요.")));
+          content:
+              Text("형식에 맞지 않는 휴대폰 번호입니다.'-' 없이 010 혹은 020 로 시작하는 숫자 11자리 혹은 12자리를 입력해주세요.")));
       return false;
     }
 
@@ -78,9 +80,11 @@ class SignUpPage extends State<SignUp> {
               Container(
                 margin: EdgeInsets.only(top: 20.h, left: 10.w, right: 10.w),
                 child: Row(
+                  mainAxisAlignment: MainAxisAlignment.center,
                   children: <Widget>[
                     Container(
-                        height: 30.h,
+                        height: 60.h,
+                        width: 200.w,
                         margin: EdgeInsets.only(top: 8.h),
                         child: ElevatedButton(
                             style: ButtonStyle(
@@ -124,19 +128,20 @@ class SignUpPage extends State<SignUp> {
                                     'Content-Type': 'application/json'
                                   },
                                   body: body);
-                              print("response");
+
                               print(response.statusCode);
                               final decodedData = json.decode(response.body);
-                              String status = decodedData["status"];
-                              print(status);
+                              print("response");
+                              print(decodedData);
+                              String message = decodedData["msg"];
 
-                              if (status == "false") {
-                                ScaffoldMessenger.of(context).showSnackBar(
-                                    SnackBar(
-                                        duration:
-                                            const Duration(milliseconds: 1000),
-                                        content: Text(
-                                            "이미 회원 가입이 된 이메일 혹은 휴대전화입니다.")));
+                              print(message);
+                              if (message !=  SUCCESS_MESSAGE) {
+                                ScaffoldMessenger.of(context).showSnackBar(SnackBar(
+                                    duration:
+                                        const Duration(milliseconds: 1000),
+                                    content: Text(
+                                        "이미 회원 가입이 된 이메일 혹은 휴대전화입니다. 다시 입력해주세요.")));
                                 return;
                               }
                               print(json.decode(response.body));
@@ -169,7 +174,7 @@ class SignUpPage extends State<SignUp> {
                                             color: Colors.blue,
                                             fontFamily: "NotoSans",
                                             fontStyle: FontStyle.normal,
-                                            fontSize: 14.0))))))
+                                            fontSize: 18.0))))))
                   ],
                 ),
               )
@@ -190,7 +195,7 @@ class SignUpPage extends State<SignUp> {
       Container(
           margin: EdgeInsets.only(right: 10.w, bottom: 8.h),
           width: 240.w,
-          height: 30.h,
+          height: 40.h,
           child: TextField(
             obscureText: isSensitiveInfo,
             controller: textEditingController,

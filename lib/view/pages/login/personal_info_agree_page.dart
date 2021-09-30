@@ -26,7 +26,7 @@ class PersonalInfoAgree extends State<PersonalInfoAgreePage> {
   final ScrollController _scrollController2 = ScrollController();
   List<String> agreedContents = [
     '''
-    달보드레 이용약관 어쩌구 저쩌구
+    달보드레 서비스 회원가입을 하시면, 카페의 메뉴를 앱으로 편하게 결제 할 수 있습니다.
     ''',
     '''개인정보보호법에 따라 달보드레에 회원가입 신청하시는 분께 수집하는 개인정보의 항목, 개인정보의 수집 및 이용목적, 개인정보의 보유 및 이용기간, 동의 거부권 및 동의 거부 시 불이익에 관한 사항을 안내 드리오니 자세히 읽은 후 동의하여 주시기 바랍니다.
 1. 수집하는 개인정보
@@ -72,7 +72,7 @@ class PersonalInfoAgree extends State<PersonalInfoAgreePage> {
                   mainAxisAlignment: MainAxisAlignment.center,
                   children: [
                     Transform.scale(
-                        scale: 1.2,
+                        scale: 1.4,
                         child: Checkbox(
                           value: this.isAgreedForTermsOfUse,
                           onChanged: (bool? value) {
@@ -121,7 +121,7 @@ class PersonalInfoAgree extends State<PersonalInfoAgreePage> {
                   mainAxisAlignment: MainAxisAlignment.center,
                   children: [
                     Transform.scale(
-                        scale: 1.2,
+                        scale: 1.4,
                         child: Checkbox(
                           value: this.isAgreedForPersonalInfo,
                           onChanged: (bool? value) {
@@ -177,7 +177,7 @@ class PersonalInfoAgree extends State<PersonalInfoAgreePage> {
                       });
 
                       ScaffoldMessenger.of(context).showSnackBar(SnackBar(
-                          duration: const Duration(milliseconds: 500),
+                          duration: const Duration(milliseconds: 1500),
                           content:
                               Text(" 개인 정보 수집 및 이용과 이용 약관에 대해 모두 동의해주세요.")));
                     }

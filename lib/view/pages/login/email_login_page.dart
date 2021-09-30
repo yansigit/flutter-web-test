@@ -48,6 +48,10 @@ class _EmailLoginPage extends State<EmailLoginPage> {
   }
 
   _asyncMethod() async {
+    if (userController.isLoginedAtLeastOnce.isFalse) {
+      return;
+    }
+
     sharedPreferences = await SharedPreferences.getInstance();
     //read 함수를 통하여 key값에 맞는 정보를 불러오게 됩니다. 이때 불러오는 결과의 타입은 String 타입임을 기억해야 합니다.
     //(데이터가 없을때는 null을 반환을 합니다.)
@@ -215,6 +219,8 @@ class _EmailLoginPage extends State<EmailLoginPage> {
                           'Content-Type': 'application/json'
                         },
                         body: body);
+                    print("response");
+                    print(response.body);
 
                     if (response.statusCode != 200) {
                       ScaffoldMessenger.of(context).showSnackBar(SnackBar(
@@ -226,8 +232,11 @@ class _EmailLoginPage extends State<EmailLoginPage> {
 
                     this.token = decodedToken["token"];
 
-                    bool isTempPassword = decodedToken["isTempPassword"].toString().toLowerCase() == 'true';
-                    print(isTempPassword ==  true);
+                    bool isTempPassword = decodedToken["isTempPassword"]
+                            .toString()
+                            .toLowerCase() ==
+                        'true';
+                    print(isTempPassword == true);
                     print("as");
                     if (this.token.length == 0) {
                       return;
@@ -250,6 +259,7 @@ class _EmailLoginPage extends State<EmailLoginPage> {
                     if (this.token.length != 0) {
                       userController.updateUserInfo(
                           emailController!.text.toString(), this.token);
+                      userController.login();
                     }
 
                     Get.to(() => NearStoresPage());
