@@ -384,10 +384,10 @@ class NearStoresPageState extends State<NearStoresPage> {
                                 height: 21.h,
                                 child: Text(
                                     //store.distance
-                                    (store.distanceFromCurPosition)
+                                    (store.distanceFromCurPosition / 1000)
                                             .toStringAsFixed(3) +
                                         " " +
-                                        "m",
+                                        "km",
                                     style: const TextStyle(
                                         color: const Color(0xffed6363),
                                         fontWeight: FontWeight.w400,
