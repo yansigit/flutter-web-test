@@ -1,3 +1,5 @@
+import 'dart:convert';
+
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
@@ -6,6 +8,8 @@ import "package:http/http.dart" as http;
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:save_order/consts/color.dart';
 import 'package:save_order/consts/size.dart';
+import 'package:save_order/model/model.dart';
+import 'package:save_order/state/controllers.dart';
 import 'package:save_order/view/pages/login/login_page.dart';
 
 class PasswordChangePage extends StatefulWidget {
@@ -83,7 +87,7 @@ class _PasswordChagePage extends State<PasswordChangePage> {
             crossAxisAlignment: CrossAxisAlignment.center,
             children: [
               inputUserInfoWidget(emailController!, "이메일"),
-              inputUserInfoWidget(passwordController!, "새로운 비밀번호",
+              inputUserInfoWidget(passwordController!, "비밀번호",
                   isSensitiveInfo: true),
               Container(
                   height: 30.h,
@@ -100,9 +104,36 @@ class _PasswordChagePage extends State<PasswordChangePage> {
                       ),
                       onPressed: () async {
                         // /api/User/ChangePassword/Token
-                        
-                        print('new password');
-                        Get.to(() => LoginPage());
+                        // token 과 password 입력받음.
+                        UserController userController = Get.find();
+                        print("llllllll");
+                        print(userController.userToken);
+                        Map data = {
+                          "token": userController.userToken.toString(),
+                          "password": passwordController!.text.toString().trim()
+                        };
+
+                        var body = json.encode(data);
+                        var response = await http.Client().post(
+                            Uri.parse(
+                                "http://${devMode()}.dalbodre.me/api/User/ChangePassword/Token"),
+                            headers: <String, String>{
+                              'Content-Type': 'application/json'
+                            },
+                            body: body);
+                        print(response.body);
+                        print(response.statusCode);
+                        final decodedToken = json.decode(response.body);
+
+                        if (response.statusCode != 200 ||
+                            decodedToken["statis"] == false) {
+                          ScaffoldMessenger.of(context).showSnackBar(SnackBar(
+                              content: Text("이메일을 잘못 입력하셨습니다."),
+                              duration: const Duration(milliseconds: 1000)));
+                        } else {
+                          print('new password');
+                          Get.to(() => LoginPage());
+                        }
                       },
                       child: Container(
                           margin: EdgeInsets.only(
@@ -111,7 +142,7 @@ class _PasswordChagePage extends State<PasswordChangePage> {
                           height: 30.h,
                           child: FittedBox(
                               fit: BoxFit.fitHeight,
-                              child: Text("회원 가입 완료",
+                              child: Text("비밀변호 변경 완료",
                                   style: TextStyle(
                                       backgroundColor: Colors.white,
                                       fontWeight: FontWeight.w400,

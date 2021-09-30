@@ -14,71 +14,21 @@ class PersonalInfoAgree extends State<PersonalInfoAgreePage> {
   @override
   void initState() {
     super.initState();
+    this.emailColor = DEFAULT_COLOR;
   }
 
-  bool isAgreedForPersonalInfo = false;
+  Color DEFAULT_COLOR = Colors.white;
 
-  @override
-  Widget build(BuildContext context) {
-    return Scaffold(
-      backgroundColor: Colors.white,
-      body: Center(
-          child: Container(
-        width: 325.w,
-        height: 500.h,
-        decoration: BoxDecoration(border: Border.all(color: Colors.blueAccent)),
-        child: Column(
-          mainAxisAlignment: MainAxisAlignment.center,
-          children: [
-            Container(
-              height: 25.h,
-              width: 280.w,
-              child: Row(
-                mainAxisAlignment: MainAxisAlignment.center,
-                children: [
-                 Transform.scale(
-                   scale: 1.2,
-                   child: Checkbox(
-                    value: this.isAgreedForPersonalInfo,
-                    onChanged: (bool? value) {
-                      setState(() {
-                        this.isAgreedForPersonalInfo = value!;
-                        print(this.isAgreedForPersonalInfo);
-                      });
-                    },
-                  )),
-                  Container(
-                    alignment: Alignment.center,
-                    height: 20.h,
-                    margin: EdgeInsets.only(left: 10.w),
-                    child: FittedBox(
-                      fit: BoxFit.fitHeight,
-                      child: Text("개인 정보 수집 및 이용 동의 (필수)",
-                          style: TextStyle(
-                              color: const Color(0xff222222),
-                              fontFamily: "NotoSans",
-                              fontSize: 16)),
-                    ),
-                  ),
-                ],
-              ),
-            ),
-            Container(
-                margin: EdgeInsets.only(top: 20.h, bottom: 20.h),
-                width: 200.w,
-                height: 200.h,
-                decoration:
-                    BoxDecoration(border: Border.all(color: Colors.black)),
-                child: Scrollbar(
-                  isAlwaysShown: true,
-                  child: SingleChildScrollView(
-                      scrollDirection: Axis.vertical,
-                      child: Column(
-                        mainAxisAlignment: MainAxisAlignment.center,
-                        crossAxisAlignment: CrossAxisAlignment.center,
-                        children: [
-                          Text(
-                              '''개인정보보호법에 따라 달보드레에 회원가입 신청하시는 분께 수집하는 개인정보의 항목, 개인정보의 수집 및 이용목적, 개인정보의 보유 및 이용기간, 동의 거부권 및 동의 거부 시 불이익에 관한 사항을 안내 드리오니 자세히 읽은 후 동의하여 주시기 바랍니다.
+  bool isAgreedForPersonalInfo = false;
+  bool isAgreedForTermsOfUse = false;
+  Color? emailColor;
+  final ScrollController _scrollController = ScrollController();
+  final ScrollController _scrollController2 = ScrollController();
+  List<String> agreedContents = [
+    '''
+    달보드레 서비스 회원가입을 하시면, 카페의 메뉴를 앱으로 편하게 결제 할 수 있습니다.
+    ''',
+    '''개인정보보호법에 따라 달보드레에 회원가입 신청하시는 분께 수집하는 개인정보의 항목, 개인정보의 수집 및 이용목적, 개인정보의 보유 및 이용기간, 동의 거부권 및 동의 거부 시 불이익에 관한 사항을 안내 드리오니 자세히 읽은 후 동의하여 주시기 바랍니다.
 1. 수집하는 개인정보
  이용자가 베타 테스트 기간동안 달보드레를 이용하기 위해 회원가입을 할 경우, 달보드레는 서비스 이용을 위해 필요한 최소한의 개인정보를 수집합니다.
 
@@ -99,47 +49,166 @@ class PersonalInfoAgree extends State<PersonalInfoAgreePage> {
 
 4. 개인정보 수집 및 이용 동의를 거부할 권리
 이용자는 개인정보의 수집 및 이용 동의를 거부할 권리가 있습니다. 회원가입 시 수집하는 최소한의 개인정보, 즉, 필수 항목에 대한 수집 및 이용 동의를 거부하실 경우, 회원가입이 어려울 수 있습니다.
-                          ''')
-                        ],
-                      )),
-                )),
-            ElevatedButton(
-                onPressed: () {
-                  if (isAgreedForPersonalInfo) {
-                    print(isAgreedForPersonalInfo);
-                    Get.to(() => SignUp());
-                  } else {
-                    ScaffoldMessenger.of(context).showSnackBar(SnackBar(
-                        duration: const Duration(milliseconds: 500),
-                        content: Text(" 개인 정보 수집 및 이용에 대한 안내 모두 동의해주세요.")));
-                  }
-                },
-                style: ButtonStyle(
-                  side: MaterialStateProperty.all<BorderSide>(
-                      BorderSide(color: const Color(0xff00276b), width: 1.w)),
-                  backgroundColor: MaterialStateProperty.all(EMAIL_COLOR),
-                  shape: MaterialStateProperty.all<RoundedRectangleBorder>(
-                      RoundedRectangleBorder(
-                          borderRadius: BorderRadius.circular(10.w))),
-                ),
-                child: Container(
-                    margin: EdgeInsets.only(
-                        right: 10.w, bottom: 8.h, top: 10.h, left: 10.w),
-                    width: 250.w,
-                    height: 25.h,
-                    child: FittedBox(
+                          '''
+  ];
+
+  @override
+  Widget build(BuildContext context) {
+    return Scaffold(
+      backgroundColor: Colors.white,
+      body: Center(
+        child: Container(
+          width: 325.w,
+          height: 700.h,
+          decoration:
+              BoxDecoration(border: Border.all(color: Colors.blueAccent)),
+          child: Column(
+            mainAxisAlignment: MainAxisAlignment.center,
+            children: [
+              Container(
+                height: 25.h,
+                width: 280.w,
+                child: Row(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  children: [
+                    Transform.scale(
+                        scale: 1.4,
+                        child: Checkbox(
+                          value: this.isAgreedForTermsOfUse,
+                          onChanged: (bool? value) {
+                            setState(() {
+                              this.isAgreedForTermsOfUse = value!;
+                            });
+                          },
+                        )),
+                    Container(
+                      alignment: Alignment.center,
+                      height: 20.h,
+                      margin: EdgeInsets.only(left: 10.w),
+                      child: FittedBox(
                         fit: BoxFit.fitHeight,
-                        child: Text("다음",
+                        child: Text("이용 약관 동의 (필수)",
                             style: TextStyle(
-                                backgroundColor: Colors.white,
-                                fontWeight: FontWeight.w400,
-                                color: Colors.blue,
-                                fontFamily: "NotoSans",
-                                fontStyle: FontStyle.normal,
-                                fontSize: 10.0))))),
-          ],
+                                fontFamily: "NotoSans", fontSize: 16)),
+                      ),
+                    ),
+                  ],
+                ),
+              ),
+              Container(
+                  margin: EdgeInsets.only(top: 20.h, bottom: 20.h),
+                  width: 250.w,
+                  height: 200.h,
+                  decoration: BoxDecoration(
+                      border: Border.all(color: Colors.black),
+                      color: const Color.fromRGBO(226, 226, 226, 10)),
+                  child: Scrollbar(
+                    isAlwaysShown: true,
+                    controller: this._scrollController,
+                    child: new SingleChildScrollView(
+                       controller: this._scrollController,
+                        scrollDirection: Axis.vertical,
+                        child: Column(
+                          mainAxisAlignment: MainAxisAlignment.center,
+                          crossAxisAlignment: CrossAxisAlignment.center,
+                          children: [Text(agreedContents[0])],
+                        )),
+                  )),
+              Container(
+                height: 25.h,
+                width: 280.w,
+                child: Row(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  children: [
+                    Transform.scale(
+                        scale: 1.4,
+                        child: Checkbox(
+                          value: this.isAgreedForPersonalInfo,
+                          onChanged: (bool? value) {
+                            setState(() {
+                              this.isAgreedForPersonalInfo = value!;
+                            });
+                          },
+                        )),
+                    Container(
+                      alignment: Alignment.center,
+                      height: 20.h,
+                      margin: EdgeInsets.only(left: 10.w),
+                      child: FittedBox(
+                        fit: BoxFit.fitHeight,
+                        child: Text("개인 정보 수집 및 이용 동의 (필수)",
+                            style: TextStyle(
+                                fontFamily: "NotoSans", fontSize: 16)),
+                      ),
+                    ),
+                  ],
+                ),
+              ),
+              Container(
+                  margin: EdgeInsets.only(top: 20.h, bottom: 20.h),
+                  width: 250.w,
+                  height: 200.h,
+                  decoration: BoxDecoration(
+                      border: Border.all(color: Colors.black),
+                      color: const Color.fromRGBO(226, 226, 226, 10)),
+                  child: Scrollbar(
+                    isAlwaysShown: true,
+                    controller: this._scrollController2,
+                    child: new SingleChildScrollView(
+                        controller: this._scrollController2,
+                        scrollDirection: Axis.vertical,
+                        child: Column(
+                          mainAxisAlignment: MainAxisAlignment.center,
+                          crossAxisAlignment: CrossAxisAlignment.center,
+                          children: [Text(agreedContents[1])],
+                        )),
+                  )),
+              ElevatedButton(
+                  onPressed: () {
+                    if (isAgreedForPersonalInfo && isAgreedForTermsOfUse) {
+                      print(isAgreedForPersonalInfo);
+                      this.setState(() {
+                        this.emailColor = Colors.white;
+                      });
+                      Get.to(() => SignUp());
+                    } else {
+                      setState(() {
+                        this.emailColor = Colors.grey;
+                      });
+
+                      ScaffoldMessenger.of(context).showSnackBar(SnackBar(
+                          duration: const Duration(milliseconds: 1500),
+                          content:
+                              Text(" 개인 정보 수집 및 이용과 이용 약관에 대해 모두 동의해주세요.")));
+                    }
+                  },
+                  style: ButtonStyle(
+                    side: MaterialStateProperty.all<BorderSide>(
+                        BorderSide(color: const Color(0xff00276b), width: 1.w)),
+                    backgroundColor: MaterialStateProperty.all(this.emailColor),
+                    shape: MaterialStateProperty.all<RoundedRectangleBorder>(
+                        RoundedRectangleBorder(
+                            borderRadius: BorderRadius.circular(10.w))),
+                  ),
+                  child: Container(
+                      margin: EdgeInsets.only(
+                          right: 10.w, bottom: 8.h, top: 10.h, left: 10.w),
+                      width: 250.w,
+                      height: 25.h,
+                      child: FittedBox(
+                          fit: BoxFit.fitHeight,
+                          child: Text("다음",
+                              style: TextStyle(
+                                  backgroundColor: this.emailColor,
+                                  fontWeight: FontWeight.w400,
+                                  color: Colors.orange,
+                                  fontFamily: "NotoSans",
+                                  fontStyle: FontStyle.normal,
+                                  fontSize: 10.0))))),
+            ],
+          ),
         ),
-      )),
+      ),
     );
   }
 }

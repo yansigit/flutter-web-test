@@ -1,16 +1,29 @@
-# save_order
+9.30 
+남은 기능들
 
-A new Flutter project.
+개인 정보 수집 및 동의: 
+[o] ( 배경색 회색)으로 하기 너비 넓히기 , 체크표시 구현
+[o] 회원가입할때 
+이메일, 폰번 중복 체크하기 
+[o] 로그인 할 때 비밀번호 8자리 이상 입력하라는  표시 하기. 
 
-## Getting Started
+[] 회원가입 후 토큰 저장하기.
+[o] UserController 에서 isLoginedAtLeast 를 추가하기 
 
-This project is a starting point for a Flutter application.
+[] 회원가입 후 로그인 한번도 안한 상테에서, 
+비번 바꿀때 토근 가져오기. 
 
-A few resources to get you started if this is your first Flutter project:
+app build 후에 테스트 해봐야 할 것. 
 
-- [Lab: Write your first Flutter app](https://flutter.dev/docs/get-started/codelab)
-- [Cookbook: Useful Flutter samples](https://flutter.dev/docs/cookbook)
+1. 회원 가입 하기. (o)
+2. 로그인, 자동 로그인 되는지 확인 (o)
+3. 이메일 찾기 해보고 로그인 해보기  (o)
+4. 비밀번호 찾기 해보고 변경 하고 로그인 하기. 
 
-For help getting started with Flutter, view our
-[online documentation](https://flutter.dev/docs), which offers tutorials,
-samples, guidance on mobile development, and a full API reference.
+오류 1: 
+이미 가입된 메일 혹은 전화번호 인지 못함.
+
+오류 2:  비밀번호 변경 api 잘 안됨.
+
+회원 가입 할 때 얻은 토큰은 sign_up_token key 에 넣기. 
+(비밀번호 찾기 할 때 쓰기)

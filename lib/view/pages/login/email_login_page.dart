@@ -35,6 +35,7 @@ class _EmailLoginPage extends State<EmailLoginPage> {
   String token = "";
   static SharedPreferences? sharedPreferences;
   //flutter_secure_storage 사용을 위한 초기화 작업
+
   @override
   void initState() {
     super.initState();
@@ -48,9 +49,12 @@ class _EmailLoginPage extends State<EmailLoginPage> {
   }
 
   _asyncMethod() async {
+    print("bbb");
     sharedPreferences = await SharedPreferences.getInstance();
+
     //read 함수를 통하여 key값에 맞는 정보를 불러오게 됩니다. 이때 불러오는 결과의 타입은 String 타입임을 기억해야 합니다.
     //(데이터가 없을때는 null을 반환을 합니다.)
+
     String? token = await sharedPreferences!.getString("token");
     print(token);
 
@@ -200,8 +204,7 @@ class _EmailLoginPage extends State<EmailLoginPage> {
                                 BorderRadius.circular(loginRaiusSize))),
                   ),
                   onPressed: () async {
-                    print(token
-                  .length);
+                    print(token.length);
                     print("print");
 
                     Map data = {
@@ -216,6 +219,8 @@ class _EmailLoginPage extends State<EmailLoginPage> {
                           'Content-Type': 'application/json'
                         },
                         body: body);
+                    print("response");
+                    print(response.body);
 
                     if (response.statusCode != 200) {
                       ScaffoldMessenger.of(context).showSnackBar(SnackBar(
@@ -224,12 +229,15 @@ class _EmailLoginPage extends State<EmailLoginPage> {
                       return;
                     }
                     final decodedToken = json.decode(response.body);
-                  
-                        this.token = decodedToken["token"];
-                    
-                  
-                    final isTempPassword = decodedToken["isTempPassword"];
-                
+
+                    this.token = decodedToken["token"];
+
+                    bool isTempPassword = decodedToken["isTempPassword"]
+                            .toString()
+                            .toLowerCase() ==
+                        'true';
+                    print(isTempPassword == true);
+                    print("as");
                     if (this.token.length == 0) {
                       return;
                     }
@@ -239,8 +247,12 @@ class _EmailLoginPage extends State<EmailLoginPage> {
                       return;
                     }
 
-                    print("ssad");
                     print(emailController!.text.toString());
+
+                    if (sharedPreferences == null) {
+                      sharedPreferences = await SharedPreferences.getInstance();
+                    }
+
                     await sharedPreferences!
                         .setString("email", emailController!.text.toString());
 
@@ -248,13 +260,13 @@ class _EmailLoginPage extends State<EmailLoginPage> {
                         "password", passwordController!.text.toString());
                     await sharedPreferences!.setString("token", this.token);
 
-                    if(this.token.length != 0) {
-                       userController.updateUserInfo(
-                      emailController!.text.toString(),
-                      this.token
-                    );
+                    if (this.token.length != 0) {
+                      userController.updateUserInfo(
+                          emailController!.text.toString(), this.token);
+                      ;
+                      print("Sdsdssdsd");
                     }
-                   
+
 
                     Get.to(() => NearStoresPage());
                   },

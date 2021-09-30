@@ -90,7 +90,7 @@ class _ShowForgatEmailPage extends State<ShowForgatEmailPage> {
                 ),
                 Container(
                   margin: EdgeInsets.only(top: 10.h),
-                  height: 28.h,
+                  height: 38.h,
                   width: 160.w,
                   child: ElevatedButton(
                       onPressed: () {
