@@ -103,6 +103,7 @@ class PersonalInfoAgree extends State<PersonalInfoAgreePage> {
                       border: Border.all(color: Colors.black),
                       color: const Color.fromRGBO(226, 226, 226, 10)),
                   child: Scrollbar(
+                    isAlwaysShown: true,
                     controller: this._scrollController,
                     child: new SingleChildScrollView(
                        controller: this._scrollController,
@@ -151,6 +152,7 @@ class PersonalInfoAgree extends State<PersonalInfoAgreePage> {
                       border: Border.all(color: Colors.black),
                       color: const Color.fromRGBO(226, 226, 226, 10)),
                   child: Scrollbar(
+                    isAlwaysShown: true,
                     controller: this._scrollController2,
                     child: new SingleChildScrollView(
                         controller: this._scrollController2,

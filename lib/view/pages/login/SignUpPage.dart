@@ -93,8 +93,8 @@ class SignUpPage extends State<SignUp> {
                               shape: MaterialStateProperty.all<
                                       RoundedRectangleBorder>(
                                   RoundedRectangleBorder(
-                                      borderRadius: BorderRadius.circular(
-                                          15.h))),
+                                      borderRadius:
+                                          BorderRadius.circular(15.h))),
                             ),
                             onPressed: () async {
                               var email =
@@ -124,7 +124,21 @@ class SignUpPage extends State<SignUp> {
                                     'Content-Type': 'application/json'
                                   },
                                   body: body);
+                              print("response");
                               print(response.statusCode);
+                              final decodedData = json.decode(response.body);
+                              String status = decodedData["status"];
+                              print(status);
+
+                              if (status == "false") {
+                                ScaffoldMessenger.of(context).showSnackBar(
+                                    SnackBar(
+                                        duration:
+                                            const Duration(milliseconds: 1000),
+                                        content: Text(
+                                            "이미 회원 가입이 된 이메일 혹은 휴대전화입니다.")));
+                                return;
+                              }
                               print(json.decode(response.body));
                               ScaffoldMessenger.of(context).showSnackBar(
                                   SnackBar(

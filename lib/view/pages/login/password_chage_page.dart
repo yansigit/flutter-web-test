@@ -87,7 +87,7 @@ class _PasswordChagePage extends State<PasswordChangePage> {
             crossAxisAlignment: CrossAxisAlignment.center,
             children: [
               inputUserInfoWidget(emailController!, "이메일"),
-              inputUserInfoWidget(passwordController!, "새로운 비밀번호",
+              inputUserInfoWidget(passwordController!, "비밀번호",
                   isSensitiveInfo: true),
               Container(
                   height: 30.h,
