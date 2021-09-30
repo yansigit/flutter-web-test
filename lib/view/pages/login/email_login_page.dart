@@ -200,8 +200,7 @@ class _EmailLoginPage extends State<EmailLoginPage> {
                                 BorderRadius.circular(loginRaiusSize))),
                   ),
                   onPressed: () async {
-                    print(token
-                  .length);
+                    print(token.length);
                     print("print");
 
                     Map data = {
@@ -224,12 +223,12 @@ class _EmailLoginPage extends State<EmailLoginPage> {
                       return;
                     }
                     final decodedToken = json.decode(response.body);
-                  
-                        this.token = decodedToken["token"];
-                    
-                  
-                    final isTempPassword = decodedToken["isTempPassword"];
-                
+
+                    this.token = decodedToken["token"];
+
+                    bool isTempPassword = decodedToken["isTempPassword"].toString().toLowerCase() == 'true';
+                    print(isTempPassword ==  true);
+                    print("as");
                     if (this.token.length == 0) {
                       return;
                     }
@@ -248,13 +247,10 @@ class _EmailLoginPage extends State<EmailLoginPage> {
                         "password", passwordController!.text.toString());
                     await sharedPreferences!.setString("token", this.token);
 
-                    if(this.token.length != 0) {
-                       userController.updateUserInfo(
-                      emailController!.text.toString(),
-                      this.token
-                    );
+                    if (this.token.length != 0) {
+                      userController.updateUserInfo(
+                          emailController!.text.toString(), this.token);
                     }
-                   
 
                     Get.to(() => NearStoresPage());
                   },

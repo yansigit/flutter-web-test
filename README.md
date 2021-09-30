@@ -1,16 +1,13 @@
-# save_order
+9.30 
+남은 기능들
 
-A new Flutter project.
+개인 정보 수집 및 동의: 
+[o] ( 배경색 회색)으로 하기 너비 넓히기 , 체크표시 구현
 
-## Getting Started
-
-This project is a starting point for a Flutter application.
-
-A few resources to get you started if this is your first Flutter project:
-
-- [Lab: Write your first Flutter app](https://flutter.dev/docs/get-started/codelab)
-- [Cookbook: Useful Flutter samples](https://flutter.dev/docs/cookbook)
-
-For help getting started with Flutter, view our
-[online documentation](https://flutter.dev/docs), which offers tutorials,
-samples, guidance on mobile development, and a full API reference.
+[] 회원가입 후 토큰 저장하기.
+[] UserController 에서 isLoginedAtLeast 를 추가하기 
+[] 회원가입 후 로그인 한번도 안한 상테에서, 
+비번 바꿀때 토근 가져오기. 
+[] 회원가입할때 
+이메일, 폰번 중복 체크하기 
+[] 로그인 할 때 비밀번호 8자리 이상 입력하라는  표시 하기. 
