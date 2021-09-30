@@ -52,6 +52,7 @@ class OptionDialogController extends GetxController {
 class ShoppingCartController extends GetxController {
   final shoppingCart = RxList<CartItem>([]);
   final totalPrice = 0.obs;
+  final discountPrice = 0.obs;
 
   int updateTotalPrice(List<CartItem> shoppingCartList) {
     int prices = 0;
@@ -60,6 +61,21 @@ class ShoppingCartController extends GetxController {
     }
     this.totalPrice.value = prices;
     return this.totalPrice.value;
+  }
+
+  discountPricePercent(int precent) {
+    this.discountPrice.value = this.totalPrice.value * precent ~/ 100;
+    this.totalPrice.value -= this.discountPrice.value;
+  }
+
+  discountPriceMoney(int price) {
+    this.discountPrice.value = price;
+    this.totalPrice.value -= this.discountPrice.value;
+  }
+
+  resetPrice() {
+    this.totalPrice.value += this.discountPrice.value;
+    this.discountPrice.value = 0;
   }
 
   removeCartItem(int idx) {

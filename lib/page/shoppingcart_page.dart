@@ -621,7 +621,11 @@ class BottomWidget extends StatelessWidget {
             child: InkWell(
               onTap: (() {
                 if (cartListLength > 0) {
-                  Get.to(()=>BillingPage());
+                  ShoppingCartController s = Get.find();
+                  Get.to(() => BillingPage())!.whenComplete(() {
+                    s.resetPrice();
+                    Get.snackbar("알림", "쿠폰 사용이 취소되었습니다.");
+                  });
                   // Get.snackbar(
                   //   "오류",
                   //   "결제 시스템 오류로 인해 10월 4일부터 이용 가능합니다.",

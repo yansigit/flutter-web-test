@@ -12,7 +12,7 @@ import 'package:save_order/page/order_takeout.dart';
 import 'package:save_order/state/controllers.dart';
 import 'package:save_order/view/pages/login/login_page.dart';
 import 'package:save_order/widget/bottom_nav.dart';
-import '/consts/color.dart';
+import 'package:save_order/consts/color.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:geolocator/geolocator.dart';
 import "package:http/http.dart" as http;

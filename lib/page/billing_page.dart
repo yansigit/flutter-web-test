@@ -1,3 +1,5 @@
+import 'dart:convert';
+
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
@@ -5,14 +7,23 @@ import 'package:flutter_svg/flutter_svg.dart';
 import 'package:get/get.dart';
 import 'package:save_order/model/model.dart';
 import 'package:save_order/state/controllers.dart';
+import 'package:http/http.dart' as http;
+import 'package:save_order/page/card_page.dart';
 
-import 'card_page.dart';
+class BillingPage extends StatefulWidget {
+  bool isCouponChoosed;
+  BillingPage({
+    Key? key,
+    this.isCouponChoosed = false,
+  }) : super(key: key);
 
-class BillingPage extends StatelessWidget {
-  BillingPage({Key? key}) : super(key: key);
+  @override
+  State<BillingPage> createState() => _BillingPageState();
+}
+
+class _BillingPageState extends State<BillingPage> {
   ShoppingCartController s = Get.find();
 
-  String couponNumber = "";
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -86,24 +97,16 @@ class BillingPage extends StatelessWidget {
       ),
     );
   }
-}
 
-//TODO 쿠폰번호 구현
-class PaymentMethodWidget extends StatelessWidget {
-  final TextEditingController tc1 = new TextEditingController();
   final _formKey = GlobalKey<FormState>();
 
-  String couponNo = "";
-  PaymentMethodWidget({
-    Key? key,
-  }) : super(key: key);
+  Widget PaymentMethodWidget() {
+    final TextEditingController tc1 = new TextEditingController();
 
-  Future<bool> validationCouponNo(couponNo) async {
-    return false;
-  }
+    final UserController u = Get.find();
 
-  @override
-  Widget build(BuildContext context) {
+    String couponNo = "";
+
     return Container(
       color: Colors.white,
       child: Padding(
@@ -113,9 +116,7 @@ class PaymentMethodWidget extends StatelessWidget {
           children: [
             Container(height: 25.h, child: FittedBox(fit: BoxFit.fitHeight, child: Text("결제수단", style: TextStyle(fontWeight: FontWeight.w700)))),
             InkWell(
-              onTap: (() => print("aa")
-                  //Get.to(CardPage())
-                  ),
+              onTap: (() => Get.to(CardPage())),
               child: Container(
                 margin: EdgeInsets.symmetric(vertical: 5.h),
                 width: double.infinity,
@@ -163,82 +164,463 @@ class PaymentMethodWidget extends StatelessWidget {
             ),
             InkWell(
               onTap: (() {
-                Get.defaultDialog(
-                  title: "쿠폰 적용",
-                  content: Column(
-                    children: [
-                      Container(
-                        width: double.infinity,
-                        child: Row(
-                          mainAxisAlignment: MainAxisAlignment.center,
-                          children: [
-                            Form(
-                              key: _formKey,
-                              child: Container(
-                                width: 60.w,
-                                height: 60.h,
-                                child: TextFormField(
-                                  textAlign: TextAlign.center,
-                                  controller: tc1,
-                                  maxLength: 6,
-                                  autofocus: true,
-                                  textCapitalization: TextCapitalization.characters,
-                                  style: TextStyle(
-                                    color: Color(0xff00276b),
-                                    fontWeight: FontWeight.w700,
-                                    fontSize: 15.sp,
+                if (!widget.isCouponChoosed) {
+                  Get.defaultDialog(
+                    title: "쿠폰 적용",
+                    content: Column(
+                      children: [
+                        Container(
+                          width: double.infinity,
+                          child: Row(
+                            mainAxisAlignment: MainAxisAlignment.center,
+                            children: [
+                              Form(
+                                key: _formKey,
+                                child: Container(
+                                  width: 60.w,
+                                  height: 60.h,
+                                  child: TextFormField(
+                                    textAlign: TextAlign.center,
+                                    controller: tc1,
+                                    maxLength: 6,
+                                    autofocus: true,
+                                    textCapitalization: TextCapitalization.characters,
+                                    style: TextStyle(
+                                      color: Color(0xff00276b),
+                                      fontWeight: FontWeight.w700,
+                                      fontSize: 15.sp,
+                                    ),
+                                    decoration: InputDecoration(
+                                      counterText: '',
+                                      hintText: "쿠폰 번호",
+                                    ),
+                                    inputFormatters: [
+                                      UpperCaseTextFormatter(),
+                                      new FilteringTextInputFormatter.allow(RegExp("[A-Za-z0-9]")),
+                                    ],
+                                    validator: (val) {
+                                      int len = val?.length == null ? 0 : val!.length;
+                                      if (len < 6) {
+                                        return "6자리 입력";
+                                      } else {
+                                        return null;
+                                      }
+                                    },
                                   ),
-                                  decoration: InputDecoration(
-                                    counterText: '',
-                                    hintText: "쿠폰 번호",
-                                  ),
-                                  inputFormatters: [
-                                    UpperCaseTextFormatter(),
-                                  ],
-                                  validator: (val) {
-                                    int len = val?.length == null ? 0 : val!.length;
-                                    if (len < 6) {
-                                      return "6자리 입력";
-                                    } else {
-                                      return null;
-                                    }
-                                  },
                                 ),
                               ),
-                            ),
-                          ],
+                            ],
+                          ),
                         ),
-                      ),
-                      OutlinedButton(
-                        onPressed: () {
-                          print("validation");
-                          final couponVal = tc1.text;
-                          //TODO 쿠폰 검증
-                          if (_formKey.currentState?.validate() == null) {
-                            tc1.clear();
-                          }
-                        },
-                        child: Container(
-                          width: 70.w,
-                          height: 40.h,
-                          child: Center(
-                            child: Text(
-                              "적용하기",
-                              style: TextStyle(
-                                color: Color(0xff00276b),
-                                fontWeight: FontWeight.w700,
+                        OutlinedButton(
+                          onPressed: () async {
+                            print("validation");
+                            final couponVal = tc1.text;
+                            print(u.userToken.value);
+
+                            // 쿠폰 6자리 입력
+                            if (this._formKey.currentState!.validate()) {
+                              var res = await http.Client().get(Uri.parse('http://${devMode()}.dalbodre.me/api/CouponCheck/${couponVal}'),
+                                  headers: <String, String>{'token': '${u.userToken.value}'});
+
+                              if (res.statusCode == 200) {
+                                var decodedData = json.decode(utf8.decode(res.bodyBytes));
+
+                                if (decodedData["canUse"] as String == "True") {
+                                  ShoppingCartController c = Get.find();
+                                  ShopController s = Get.find();
+
+                                  switch (decodedData["couponType"] as String) {
+                                    case "manyang_20%":
+                                      if (s.shop.value.name == "카페마냥") {
+                                        c.discountPricePercent(20);
+                                        setState(() {
+                                          widget.isCouponChoosed = true;
+                                          Get.back();
+                                          Get.snackbar("알림", "20% 할인이 적용되었습니다.", backgroundColor: Colors.white);
+                                        });
+                                      } else {
+                                        Get.snackbar("경고", "카페마냥에서 사용 가능한 쿠폰입니다.");
+                                      }
+                                      break;
+                                    case "manyang_30%":
+                                      if (s.shop.value.name == "카페마냥") {
+                                        c.discountPricePercent(30);
+                                        setState(() {
+                                          widget.isCouponChoosed = true;
+                                          Get.back();
+                                          Get.snackbar("알림", "30% 할인이 적용되었습니다.", backgroundColor: Colors.white);
+                                        });
+                                      } else {
+                                        Get.snackbar("경고", "카페마냥에서 사용 가능한 쿠폰입니다.");
+                                      }
+                                      break;
+                                    case "manyang_50%":
+                                      if (s.shop.value.name == "카페마냥") {
+                                        c.discountPricePercent(50);
+                                        setState(() {
+                                          widget.isCouponChoosed = true;
+                                          Get.back();
+                                          Get.snackbar("알림", "50% 할인이 적용되었습니다.", backgroundColor: Colors.white);
+                                        });
+                                      } else {
+                                        Get.snackbar("경고", "카페마냥에서 사용 가능한 쿠폰입니다.");
+                                      }
+                                      break;
+                                    case "manyang_2000":
+                                      if (s.shop.value.name == "카페마냥") {
+                                        bool americano = false;
+                                        for (var cartItem in c.shoppingCart) {
+                                          if (cartItem.name == "아메리카노") {
+                                            americano = true;
+                                          }
+                                        }
+                                        if (americano) {
+                                          c.discountPriceMoney(2000);
+                                          setState(() {
+                                            widget.isCouponChoosed = true;
+                                            Get.back();
+                                            Get.snackbar("알림", "아메리카노 2000원 할인이 적용되었습니다.", backgroundColor: Colors.white);
+                                          });
+                                        } else {
+                                          Get.back();
+                                          Get.snackbar("경고", "아메리카노가 장바구니에 없습니다.");
+                                        }
+                                      } else {
+                                        Get.snackbar("경고", "카페마냥에서 사용 가능한 쿠폰입니다.");
+                                      }
+                                      break;
+                                    case "manyang_amer_free":
+                                      if (s.shop.value.name == "카페마냥") {
+                                        bool americano = false;
+                                        for (var cartItem in c.shoppingCart) {
+                                          if (cartItem.name == "아메리카노") {
+                                            americano = true;
+                                          }
+                                        }
+                                        if (americano) {
+                                          c.discountPriceMoney(3500);
+                                          setState(() {
+                                            widget.isCouponChoosed = true;
+                                            Get.back();
+                                            Get.snackbar("알림", "아메리카노 무료 쿠폰이 적용되었습니다.", backgroundColor: Colors.white);
+                                          });
+                                        } else {
+                                          Get.snackbar("경고", "아메리카노가 장바구니에 없습니다.");
+                                        }
+                                      } else {
+                                        Get.snackbar("경고", "카페마냥에서 사용 가능한 쿠폰입니다.");
+                                      }
+
+                                      break;
+                                    case "manyang_latte_free":
+                                      if (s.shop.value.name == "카페마냥") {
+                                        bool lowLatteFlag = false;
+                                        bool highLatteFlag = false;
+                                        for (var cartItem in c.shoppingCart) {
+                                          if (cartItem.name == "녹차라떼" ||
+                                              cartItem.name == "초코라떼" ||
+                                              cartItem.name == "딸기라떼" ||
+                                              cartItem.name == "흑당마블링라떼") {
+                                            lowLatteFlag = true;
+                                          }
+                                          if (cartItem.name == "고구마라떼" || cartItem.name == "펌킨라떼" || cartItem.name == "오곡통라떼") {
+                                            highLatteFlag = true;
+                                          }
+                                        }
+                                        if (highLatteFlag) {
+                                          c.discountPriceMoney(5500);
+                                          setState(() {
+                                            widget.isCouponChoosed = true;
+                                            Get.back();
+                                            Get.snackbar("알림", "라떼 무료 쿠폰이 적용되었습니다.", backgroundColor: Colors.white);
+                                          });
+                                        } else if (lowLatteFlag) {
+                                          c.discountPriceMoney(5000);
+                                          setState(() {
+                                            widget.isCouponChoosed = true;
+                                            Get.back();
+                                            Get.snackbar("알림", "라떼 무료 쿠폰이 적용되었습니다.", backgroundColor: Colors.white);
+                                          });
+                                        } else {
+                                          Get.back();
+                                          Get.snackbar("경고", "라떼 종류 음료가 장바구니에 없습니다.", backgroundColor: Colors.white);
+                                        }
+                                      } else {
+                                        Get.snackbar("경고", "카페마냥에서 사용 가능한 쿠폰입니다.");
+                                      }
+                                      break;
+                                    case "manyang_smoothe_free":
+                                      if (s.shop.value.name == "카페마냥") {
+                                        bool lowSmootheFlag = false;
+                                        bool highSmootheFlag = false;
+                                        for (var cartItem in c.shoppingCart) {
+                                          if (cartItem.name == "요거트스무디") {
+                                            lowSmootheFlag = true;
+                                          }
+                                          if (cartItem.name == "초코스무디" || cartItem.name == "딸기스무디") {
+                                            highSmootheFlag = true;
+                                          }
+                                        }
+                                        if (highSmootheFlag) {
+                                          c.discountPriceMoney(6000);
+                                          setState(() {
+                                            widget.isCouponChoosed = true;
+                                            Get.back();
+                                            Get.snackbar("알림", "스무디 무료 쿠폰이 적용되었습니다.", backgroundColor: Colors.white);
+                                          });
+                                        } else if (lowSmootheFlag) {
+                                          c.discountPriceMoney(5500);
+                                          setState(() {
+                                            widget.isCouponChoosed = true;
+                                            Get.back();
+                                            Get.snackbar("알림", "스무디 무료 쿠폰이 적용되었습니다.", backgroundColor: Colors.white);
+                                          });
+                                        } else {
+                                          Get.back();
+                                          Get.snackbar("경고", "스무디 종류 음료가 장바구니에 없습니다.", backgroundColor: Colors.white);
+                                        }
+                                      } else {
+                                        Get.snackbar("경고", "카페마냥에서 사용 가능한 쿠폰입니다.");
+                                      }
+                                      break;
+                                    case "manyang_free":
+                                      if (s.shop.value.name == "카페마냥") {
+                                        int maxPrice = 0;
+                                        for (var cartItem in c.shoppingCart) {
+                                          if (cartItem.price > maxPrice) {
+                                            maxPrice = cartItem.price;
+                                          }
+                                        }
+                                        setState(() {
+                                          c.discountPriceMoney(maxPrice);
+                                          Get.back();
+                                          Get.snackbar("알림", "무료 음료 한 잔 쿠폰이 적용되었습니다.\n(가장 비싼 음료)", backgroundColor: Colors.white);
+                                        });
+                                      } else {
+                                        Get.snackbar("경고", "카페마냥에서 사용 가능한 쿠폰입니다.");
+                                      }
+                                      break;
+                                    case "coltea_20%":
+                                      if (s.shop.value.name == "컬티") {
+                                        c.discountPricePercent(20);
+                                        setState(() {
+                                          widget.isCouponChoosed = true;
+                                          Get.back();
+                                          Get.snackbar("알림", "20% 할인이 적용되었습니다.", backgroundColor: Colors.white);
+                                        });
+                                      } else {
+                                        Get.snackbar("경고", "컬티에서 사용 가능한 쿠폰입니다.");
+                                      }
+                                      break;
+                                    case "coltea_30%":
+                                      if (s.shop.value.name == "컬티") {
+                                        c.discountPricePercent(30);
+                                        setState(() {
+                                          widget.isCouponChoosed = true;
+                                          Get.back();
+                                          Get.snackbar("알림", "30% 할인이 적용되었습니다.", backgroundColor: Colors.white);
+                                        });
+                                      } else {
+                                        Get.snackbar("경고", "컬티에서 사용 가능한 쿠폰입니다.");
+                                      }
+                                      break;
+                                    case "coltea_50%":
+                                      if (s.shop.value.name == "컬티") {
+                                        c.discountPricePercent(50);
+                                        setState(() {
+                                          widget.isCouponChoosed = true;
+                                          Get.back();
+                                          Get.snackbar("알림", "50% 할인이 적용되었습니다.", backgroundColor: Colors.white);
+                                        });
+                                      } else {
+                                        Get.snackbar("경고", "컬티에서 사용 가능한 쿠폰입니다.");
+                                      }
+                                      break;
+                                    case "coltea_2000":
+                                      if (s.shop.value.name == "컬티") {
+                                        bool americano = false;
+                                        for (var cartItem in c.shoppingCart) {
+                                          if (cartItem.name == "아메리카노") {
+                                            americano = true;
+                                          }
+                                        }
+                                        if (americano) {
+                                          c.discountPriceMoney(2000);
+                                          setState(() {
+                                            widget.isCouponChoosed = true;
+                                            Get.back();
+                                            Get.snackbar("알림", "아메리카노 2000원 할인이 적용되었습니다.", backgroundColor: Colors.white);
+                                          });
+                                        } else {
+                                          Get.back();
+                                          Get.snackbar("경고", "아메리카노가 장바구니에 없습니다.");
+                                        }
+                                      } else {
+                                        Get.snackbar("경고", "컬티에서 사용 가능한 쿠폰입니다.");
+                                      }
+                                      break;
+                                    case "coltea_amer_free":
+                                      if (s.shop.value.name == "컬티") {
+                                        bool coldAmericano = false;
+                                        bool hotAmericano = false;
+                                        for (var cartItem in c.shoppingCart) {
+                                          if (cartItem.name == "아메리카노") {
+                                            if (cartItem.cartOptions["temp"]!.name == "따뜻한")
+                                              hotAmericano = true;
+                                            else
+                                              coldAmericano = true;
+                                          }
+                                        }
+                                        if (coldAmericano) {
+                                          c.discountPriceMoney(4300);
+                                          setState(() {
+                                            widget.isCouponChoosed = true;
+                                            Get.back();
+                                            Get.snackbar("알림", "아메리카노 무료 쿠폰이 적용되었습니다.", backgroundColor: Colors.white);
+                                          });
+                                        } else if (hotAmericano) {
+                                          c.discountPriceMoney(3800);
+                                          setState(() {
+                                            widget.isCouponChoosed = true;
+                                            Get.back();
+                                            Get.snackbar("알림", "아메리카노 무료 쿠폰이 적용되었습니다.", backgroundColor: Colors.white);
+                                          });
+                                        } else {
+                                          Get.back();
+                                          Get.snackbar("경고", "아메리카노가 장바구니에 없습니다.");
+                                        }
+                                      } else {
+                                        Get.snackbar("경고", "컬티에서 사용 가능한 쿠폰입니다.");
+                                      }
+                                      break;
+                                    case "coltea_latte_free":
+                                      if (s.shop.value.name == "컬티") {
+                                        /*
+                                        카페라떼 4300, 4800
+                                        초코라떼 4500, 5000
+                                        고구마라떼 4800, 5300
+                                        녹차라떼 4800, 5300
+                                        오곡라떼 4800, 5300
+                                        생강라떼 5300, 5800
+                                        */
+                                        int price = 0;
+                                        bool latteExist = false;
+
+                                        for (var cartItem in c.shoppingCart) {
+                                          if (cartItem.name == "카페라떼" ||
+                                              cartItem.name == "초코라떼" ||
+                                              cartItem.name == "고구마라떼" ||
+                                              cartItem.name == "녹차라떼" ||
+                                              cartItem.name == "오곡라떼" ||
+                                              cartItem.name == "생강라떼") {
+                                            if (cartItem.price > price) {
+                                              price = cartItem.price;
+                                              latteExist = true;
+                                            }
+                                          }
+                                        }
+                                        if (latteExist) {
+                                          c.discountPriceMoney(price);
+                                          setState(() {
+                                            widget.isCouponChoosed = true;
+                                            Get.back();
+                                            Get.snackbar("알림", "라떼 무료 쿠폰이 적용되었습니다.", backgroundColor: Colors.white);
+                                          });
+                                        } else {
+                                          Get.back();
+                                          Get.snackbar("경고", "라떼 종류 음료가 장바구니에 없습니다.", backgroundColor: Colors.white);
+                                        }
+                                      } else {
+                                        Get.snackbar("경고", "컬티에서 사용 가능한 쿠폰입니다.");
+                                      }
+                                      break;
+                                    case "coltea_smoothe_free":
+                                      if (s.shop.value.name == "컬티") {
+                                        bool lowSmootheFlag = false;
+                                        bool highSmootheFlag = false;
+                                        for (var cartItem in c.shoppingCart) {
+                                          if (cartItem.name == "요거트스무디") {
+                                            lowSmootheFlag = true;
+                                          }
+                                          if (cartItem.name == "초코스무디" || cartItem.name == "딸기스무디") {
+                                            highSmootheFlag = true;
+                                          }
+                                        }
+                                        if (highSmootheFlag) {
+                                          c.discountPriceMoney(6000);
+                                          setState(() {
+                                            widget.isCouponChoosed = true;
+                                            Get.back();
+                                            Get.snackbar("알림", "스무디 무료 쿠폰이 적용되었습니다.", backgroundColor: Colors.white);
+                                          });
+                                        } else if (lowSmootheFlag) {
+                                          c.discountPriceMoney(5500);
+                                          setState(() {
+                                            widget.isCouponChoosed = true;
+                                            Get.back();
+                                            Get.snackbar("알림", "스무디 무료 쿠폰이 적용되었습니다.", backgroundColor: Colors.white);
+                                          });
+                                        } else {
+                                          Get.back();
+                                          Get.snackbar("경고", "스무디 종류 음료가 장바구니에 없습니다.", backgroundColor: Colors.white);
+                                        }
+                                      } else {
+                                        Get.snackbar("경고", "컬티에서 사용 가능한 쿠폰입니다.");
+                                      }
+                                      break;
+                                    case "coltea_free":
+                                      if (s.shop.value.name == "카페마냥") {
+                                        int maxPrice = 0;
+                                        for (var cartItem in c.shoppingCart) {
+                                          if (cartItem.price > maxPrice) {
+                                            maxPrice = cartItem.price;
+                                          }
+                                        }
+                                        setState(() {
+                                          c.discountPriceMoney(maxPrice);
+                                          Get.back();
+                                          Get.snackbar("알림", "무료 음료 한 잔 쿠폰이 적용되었습니다.\n(가장 비싼 음료)", backgroundColor: Colors.white);
+                                        });
+                                      } else {
+                                        Get.snackbar("경고", "컬티에서 사용 가능한 쿠폰입니다.");
+                                      }
+                                      break;
+                                  }
+                                } else if (decodedData["canUse"] as String == "False") {
+                                  Get.back();
+                                  Get.snackbar("경고", "이미 쿠폰을 사용하신 적 있습니다.\n사용한 적이 없는데 문구가 출력되면 문의 바랍니다.", backgroundColor: Colors.white);
+                                }
+                              } else {
+                                Get.snackbar("경고", "쿠폰 번호를 잘 못 입력하셨습니다.", backgroundColor: Colors.white);
+                                tc1.text = "";
+                              }
+                            }
+                          },
+                          child: Container(
+                            width: 70.w,
+                            height: 40.h,
+                            child: Center(
+                              child: Text(
+                                "적용하기",
+                                style: TextStyle(
+                                  color: Color(0xff00276b),
+                                  fontWeight: FontWeight.w700,
+                                ),
                               ),
                             ),
                           ),
                         ),
-                      ),
-                    ],
-                  ),
-                  titleStyle: TextStyle(
-                    color: Color(0xff00276b),
-                    fontWeight: FontWeight.w700,
-                  ),
-                );
+                      ],
+                    ),
+                    titleStyle: TextStyle(
+                      color: Color(0xff00276b),
+                      fontWeight: FontWeight.w700,
+                    ),
+                  );
+                } else {
+                  Get.snackbar("경고", "이미 쿠폰을 적용되었습니다.");
+                }
               }),
               child: Container(
                 margin: EdgeInsets.symmetric(vertical: 5.h),
