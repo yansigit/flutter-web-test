@@ -335,3 +335,14 @@ class UserController extends GetxController {
     this.userToken.value = userToken;
   }
 }
+
+class CouponController extends GetxController {
+  final userToken = "".obs;
+  final couponNo = "".obs;
+  final couponType = "".obs;
+
+  updateCoupon(couponNo, couponType) {
+    this.couponNo.value = couponNo;
+    this.couponType.value = couponType;
+  }
+}

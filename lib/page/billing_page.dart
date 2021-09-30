@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:get/get.dart';
@@ -90,13 +91,16 @@ class BillingPage extends StatelessWidget {
 //TODO 쿠폰번호 구현
 class PaymentMethodWidget extends StatelessWidget {
   final TextEditingController tc1 = new TextEditingController();
-  final TextEditingController tc2 = new TextEditingController();
-  final TextEditingController tc3 = new TextEditingController();
+  final _formKey = GlobalKey<FormState>();
 
   String couponNo = "";
   PaymentMethodWidget({
     Key? key,
   }) : super(key: key);
+
+  Future<bool> validationCouponNo(couponNo) async {
+    return false;
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -168,67 +172,37 @@ class PaymentMethodWidget extends StatelessWidget {
                         child: Row(
                           mainAxisAlignment: MainAxisAlignment.center,
                           children: [
-                            Container(
-                              width: 60.w,
-                              height: 60.h,
-                              child: TextField(
-                                textAlign: TextAlign.center,
-                                controller: tc1,
-                                autocorrect: false,
-                                maxLength: 4,
-                                style: TextStyle(color: Color(0xff00276b)),
-                                decoration: InputDecoration(
-                                  counterText: '',
-                                ),
-                              ),
-                            ),
-                            Container(
+                            Form(
+                              key: _formKey,
+                              child: Container(
+                                width: 60.w,
                                 height: 60.h,
-                                child: FittedBox(
-                                  fit: BoxFit.fitHeight,
-                                  child: Text(
-                                    "-",
-                                    style: TextStyle(
-                                      color: Color(0xff00276b),
-                                    ),
+                                child: TextFormField(
+                                  textAlign: TextAlign.center,
+                                  controller: tc1,
+                                  maxLength: 6,
+                                  autofocus: true,
+                                  textCapitalization: TextCapitalization.characters,
+                                  style: TextStyle(
+                                    color: Color(0xff00276b),
+                                    fontWeight: FontWeight.w700,
+                                    fontSize: 15.sp,
                                   ),
-                                )),
-                            Container(
-                              width: 60.w,
-                              height: 60.h,
-                              child: TextFormField(
-                                textAlign: TextAlign.center,
-                                controller: tc2,
-                                autocorrect: false,
-                                style: TextStyle(color: Color(0xff00276b)),
-                                maxLength: 4,
-                                decoration: InputDecoration(
-                                  counterText: '',
-                                ),
-                              ),
-                            ),
-                            Container(
-                                height: 60.h,
-                                child: FittedBox(
-                                  fit: BoxFit.fitHeight,
-                                  child: Text(
-                                    "-",
-                                    style: TextStyle(
-                                      color: Color(0xff00276b),
-                                    ),
+                                  decoration: InputDecoration(
+                                    counterText: '',
+                                    hintText: "쿠폰 번호",
                                   ),
-                                )),
-                            Container(
-                              width: 60.w,
-                              height: 60.h,
-                              child: TextFormField(
-                                textAlign: TextAlign.center,
-                                controller: tc3,
-                                autocorrect: false,
-                                maxLength: 4,
-                                style: TextStyle(color: Color(0xff00276b)),
-                                decoration: InputDecoration(
-                                  counterText: '',
+                                  inputFormatters: [
+                                    UpperCaseTextFormatter(),
+                                  ],
+                                  validator: (val) {
+                                    int len = val?.length == null ? 0 : val!.length;
+                                    if (len < 6) {
+                                      return "6자리 입력";
+                                    } else {
+                                      return null;
+                                    }
+                                  },
                                 ),
                               ),
                             ),
@@ -238,12 +212,11 @@ class PaymentMethodWidget extends StatelessWidget {
                       OutlinedButton(
                         onPressed: () {
                           print("validation");
-                          final couponVal = tc1.text + tc2.text + tc3.text;
+                          final couponVal = tc1.text;
                           //TODO 쿠폰 검증
-
-                          tc1.clear();
-                          tc2.clear();
-                          tc3.clear();
+                          if (_formKey.currentState?.validate() == null) {
+                            tc1.clear();
+                          }
                         },
                         child: Container(
                           width: 70.w,
@@ -312,27 +285,27 @@ class PaymentMethodWidget extends StatelessWidget {
                 ),
               ),
             ),
-            InkWell(
-              onTap: (() => print("모바일 결제")),
-              child: Container(
-                margin: EdgeInsets.symmetric(vertical: 5.h),
-                width: double.infinity,
-                height: 80.h,
-                decoration: BoxDecoration(
-                  border: Border.all(color: Color(0xffededed), width: 1),
-                  borderRadius: BorderRadius.all(Radius.circular(20.h)),
-                  boxShadow: [
-                    BoxShadow(
-                      color: Color(0x0d000000),
-                      offset: Offset(0, 3),
-                      blurRadius: 6,
-                      spreadRadius: 0,
-                    ),
-                  ],
-                  color: Color(0xffffffff),
-                ),
-              ),
-            ),
+            // InkWell(
+            //   onTap: (() => print("모바일 결제")),
+            //   child: Container(
+            //     margin: EdgeInsets.symmetric(vertical: 5.h),
+            //     width: double.infinity,
+            //     height: 80.h,
+            //     decoration: BoxDecoration(
+            //       border: Border.all(color: Color(0xffededed), width: 1),
+            //       borderRadius: BorderRadius.all(Radius.circular(20.h)),
+            //       boxShadow: [
+            //         BoxShadow(
+            //           color: Color(0x0d000000),
+            //           offset: Offset(0, 3),
+            //           blurRadius: 6,
+            //           spreadRadius: 0,
+            //         ),
+            //       ],
+            //       color: Color(0xffffffff),
+            //     ),
+            //   ),
+            // ),
           ],
         ),
       ),
@@ -433,7 +406,7 @@ class _ExpandableListState extends State<ExpandableList> {
     }
     if (options["etcOption"]?.name != null) {
       if (optionString == "") {
-        optionString += " / ${options["etcOption"]!.name}";
+        optionString += "\n${options["etcOption"]!.name}";
       } else {
         optionString += "${options["etcOption"]!.name}";
       }
@@ -454,53 +427,67 @@ class _ExpandableListState extends State<ExpandableList> {
             ),
             child: Image.network(i.thumbnail, fit: BoxFit.scaleDown),
           ),
-          Container(
-            margin: EdgeInsets.only(
-              left: 16.w,
-            ),
-            child: Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                Row(
-                  children: [
-                    Container(
-                      height: 21.h,
-                      child: FittedBox(
-                        fit: BoxFit.fitHeight,
-                        child: Text(
-                          i.name,
-                          style: TextStyle(fontWeight: FontWeight.w700),
+          Expanded(
+            child: Container(
+              margin: EdgeInsets.only(
+                left: 16.w,
+              ),
+              child: Column(
+                mainAxisSize: MainAxisSize.max,
+                crossAxisAlignment: CrossAxisAlignment.start,
+                mainAxisAlignment: MainAxisAlignment.start,
+                children: [
+                  Row(
+                    children: [
+                      Container(
+                        height: 21.h,
+                        child: FittedBox(
+                          fit: BoxFit.fitHeight,
+                          child: Text(
+                            i.name,
+                            style: TextStyle(fontWeight: FontWeight.w700),
+                          ),
                         ),
                       ),
-                    ),
-                    i.cartOptions["menuQuantity"]?.quantity != null
-                        ? Container(
-                            height: 21.h,
-                            child: FittedBox(
-                              fit: BoxFit.fitHeight,
-                              child: Text(
-                                "  ${i.cartOptions["menuQuantity"]!.quantity}잔",
-                                style: TextStyle(fontWeight: FontWeight.w700),
-                              ),
-                            ))
-                        : Container()
-                  ],
-                ),
-                Container(
-                  margin: EdgeInsets.only(top: 4.h),
-                  height: 19.h,
-                  child: Text(
-                    optionString,
-                    style: TextStyle(
-                      color: Color(0xff707070),
+                      i.cartOptions["menuQuantity"]?.quantity != null
+                          ? Container(
+                              height: 21.h,
+                              child: FittedBox(
+                                fit: BoxFit.fitHeight,
+                                child: Text(
+                                  "  ${i.cartOptions["menuQuantity"]!.quantity}잔",
+                                  style: TextStyle(fontWeight: FontWeight.w700),
+                                ),
+                              ))
+                          : Container()
+                    ],
+                  ),
+                  Container(
+                    margin: EdgeInsets.only(top: 4.h),
+                    height: 19.h,
+                    child: Text(
+                      optionString,
+                      style: TextStyle(
+                        color: Color(0xff707070),
+                      ),
                     ),
                   ),
-                ),
-              ],
+                ],
+              ),
             ),
           ),
         ],
       ),
+    );
+  }
+}
+
+class UpperCaseTextFormatter extends TextInputFormatter {
+  @override
+  TextEditingValue formatEditUpdate(TextEditingValue oldValue, TextEditingValue newValue) {
+    return TextEditingValue(
+      text: newValue.text.toUpperCase(),
+      selection: newValue.selection,
     );
   }
 }
