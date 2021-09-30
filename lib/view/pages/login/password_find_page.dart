@@ -18,9 +18,11 @@ class PasswordFindPage extends StatefulWidget {
 class _PasswordFindPage extends State<PasswordFindPage> {
   TextEditingController? emailController;
   TextEditingController? nameController;
+  bool isNextButtonDisabled = false;
 
   Future<bool> sendPasswordToUser() async {
     // 유저  이메일로 임시 비밀번호 보내는 api 불러오기.
+
     Map data = {
       "name": nameController!.text.toString().trim(),
       "email": emailController!.text.toString().trim()
@@ -108,22 +110,43 @@ class _PasswordFindPage extends State<PasswordFindPage> {
               inputUserInfoWidget(emailController!, "이메일"),
               inputUserInfoWidget(nameController!, "이름"),
               ElevatedButton(
-                  onPressed: () async {
-                    final isSuccess = await this.sendPasswordToUser();
-                    print("send email true");
-                    if (isSuccess) {
-                      ScaffoldMessenger.of(context).showSnackBar(SnackBar(
-                          duration: const Duration(milliseconds: 500),
-                          content: Text("입력하신 이메일로 임시 비밀번호를 보냈습니다.")));
-                      Get.to(LoginPage());
-                      // 로그인 페이지에서 로그인 후 임시 비밀번호인지 확인하고,
-                      // 임시 비밀번호면 변경 view 보여주기
-                    } else {
-                      ScaffoldMessenger.of(context).showSnackBar(SnackBar(
-                          duration: const Duration(milliseconds: 500),
-                          content: Text("입력하신 이메일에 해당하는 회원분은 존재하지 않습니다.")));
-                    }
-                  },
+                  onPressed: this.isNextButtonDisabled
+                      ? () {
+
+                      }
+                      : () async {
+                           ScaffoldMessenger.of(context).showSnackBar(SnackBar(
+                                duration: const Duration(milliseconds: 1500),
+                                content: Text("입력하신 이메일로 임시 비밀번호를 보내는 중입니다, 잠시만 기다려주세요.")));
+                          final isSuccess = await this.sendPasswordToUser();
+                          setState(() {
+                            this.isNextButtonDisabled = true;
+                          });
+                          print("send email true");
+                          if (isSuccess) {
+                            ScaffoldMessenger.of(context).showSnackBar(SnackBar(
+                                duration: const Duration(milliseconds: 1500),
+                                content: Text("입력하신 이메일로 임시 비밀번호를 보냈습니다.")));
+                              setState(() {
+                              this.isNextButtonDisabled = false;
+                            });
+                            Get.to(LoginPage());
+                         
+                             
+                            // 로그인 페이지에서 로그인 후 임시
+                            // 비밀번호인지 확인하고,
+                            // 임시 비밀번호면 변경 view 보여주기
+                          } else {
+                            ScaffoldMessenger.of(context).showSnackBar(SnackBar(
+                                duration: const Duration(milliseconds: 500),
+                                content:
+                                    Text("입력하신 이메일에 해당하는 회원분은 존재하지 않습니다.")));
+                              setState(() {
+                              this.isNextButtonDisabled = false;
+                            });
+                             
+                          }
+                        },
                   style: ButtonStyle(
                     side: MaterialStateProperty.all<BorderSide>(
                         BorderSide(color: const Color(0xff00276b), width: 1.w)),
