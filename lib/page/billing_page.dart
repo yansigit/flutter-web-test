@@ -23,6 +23,7 @@ class BillingPage extends StatefulWidget {
 
 class _BillingPageState extends State<BillingPage> {
   ShoppingCartController s = Get.find();
+  CouponController coupon = Get.find();
 
   @override
   Widget build(BuildContext context) {
@@ -236,8 +237,10 @@ class _BillingPageState extends State<BillingPage> {
                                         c.discountPricePercent(20);
                                         setState(() {
                                           widget.isCouponChoosed = true;
+
                                           Get.back();
                                           Get.snackbar("알림", "20% 할인이 적용되었습니다.", backgroundColor: Colors.white);
+                                          coupon.updateCoupon(couponVal, decodedData["couponType"] as String);
                                         });
                                       } else {
                                         Get.snackbar("경고", "카페마냥에서 사용 가능한 쿠폰입니다.");
@@ -250,6 +253,7 @@ class _BillingPageState extends State<BillingPage> {
                                           widget.isCouponChoosed = true;
                                           Get.back();
                                           Get.snackbar("알림", "30% 할인이 적용되었습니다.", backgroundColor: Colors.white);
+                                          coupon.updateCoupon(couponVal, decodedData["couponType"] as String);
                                         });
                                       } else {
                                         Get.snackbar("경고", "카페마냥에서 사용 가능한 쿠폰입니다.");
@@ -262,6 +266,7 @@ class _BillingPageState extends State<BillingPage> {
                                           widget.isCouponChoosed = true;
                                           Get.back();
                                           Get.snackbar("알림", "50% 할인이 적용되었습니다.", backgroundColor: Colors.white);
+                                          coupon.updateCoupon(couponVal, decodedData["couponType"] as String);
                                         });
                                       } else {
                                         Get.snackbar("경고", "카페마냥에서 사용 가능한 쿠폰입니다.");
@@ -281,6 +286,7 @@ class _BillingPageState extends State<BillingPage> {
                                             widget.isCouponChoosed = true;
                                             Get.back();
                                             Get.snackbar("알림", "아메리카노 2000원 할인이 적용되었습니다.", backgroundColor: Colors.white);
+                                            coupon.updateCoupon(couponVal, decodedData["couponType"] as String);
                                           });
                                         } else {
                                           Get.back();
@@ -304,6 +310,7 @@ class _BillingPageState extends State<BillingPage> {
                                             widget.isCouponChoosed = true;
                                             Get.back();
                                             Get.snackbar("알림", "아메리카노 무료 쿠폰이 적용되었습니다.", backgroundColor: Colors.white);
+                                            coupon.updateCoupon(couponVal, decodedData["couponType"] as String);
                                           });
                                         } else {
                                           Get.snackbar("경고", "아메리카노가 장바구니에 없습니다.");
@@ -334,6 +341,7 @@ class _BillingPageState extends State<BillingPage> {
                                             widget.isCouponChoosed = true;
                                             Get.back();
                                             Get.snackbar("알림", "라떼 무료 쿠폰이 적용되었습니다.", backgroundColor: Colors.white);
+                                            coupon.updateCoupon(couponVal, decodedData["couponType"] as String);
                                           });
                                         } else if (lowLatteFlag) {
                                           c.discountPriceMoney(5000);
@@ -341,6 +349,7 @@ class _BillingPageState extends State<BillingPage> {
                                             widget.isCouponChoosed = true;
                                             Get.back();
                                             Get.snackbar("알림", "라떼 무료 쿠폰이 적용되었습니다.", backgroundColor: Colors.white);
+                                            coupon.updateCoupon(couponVal, decodedData["couponType"] as String);
                                           });
                                         } else {
                                           Get.back();
@@ -368,6 +377,7 @@ class _BillingPageState extends State<BillingPage> {
                                             widget.isCouponChoosed = true;
                                             Get.back();
                                             Get.snackbar("알림", "스무디 무료 쿠폰이 적용되었습니다.", backgroundColor: Colors.white);
+                                            coupon.updateCoupon(couponVal, decodedData["couponType"] as String);
                                           });
                                         } else if (lowSmootheFlag) {
                                           c.discountPriceMoney(5500);
@@ -375,6 +385,7 @@ class _BillingPageState extends State<BillingPage> {
                                             widget.isCouponChoosed = true;
                                             Get.back();
                                             Get.snackbar("알림", "스무디 무료 쿠폰이 적용되었습니다.", backgroundColor: Colors.white);
+                                            coupon.updateCoupon(couponVal, decodedData["couponType"] as String);
                                           });
                                         } else {
                                           Get.back();
@@ -396,6 +407,7 @@ class _BillingPageState extends State<BillingPage> {
                                           c.discountPriceMoney(maxPrice);
                                           Get.back();
                                           Get.snackbar("알림", "무료 음료 한 잔 쿠폰이 적용되었습니다.\n(가장 비싼 음료)", backgroundColor: Colors.white);
+                                          coupon.updateCoupon(couponVal, decodedData["couponType"] as String);
                                         });
                                       } else {
                                         Get.snackbar("경고", "카페마냥에서 사용 가능한 쿠폰입니다.");
@@ -408,6 +420,7 @@ class _BillingPageState extends State<BillingPage> {
                                           widget.isCouponChoosed = true;
                                           Get.back();
                                           Get.snackbar("알림", "20% 할인이 적용되었습니다.", backgroundColor: Colors.white);
+                                          coupon.updateCoupon(couponVal, decodedData["couponType"] as String);
                                         });
                                       } else {
                                         Get.snackbar("경고", "컬티에서 사용 가능한 쿠폰입니다.");
@@ -420,6 +433,7 @@ class _BillingPageState extends State<BillingPage> {
                                           widget.isCouponChoosed = true;
                                           Get.back();
                                           Get.snackbar("알림", "30% 할인이 적용되었습니다.", backgroundColor: Colors.white);
+                                          coupon.updateCoupon(couponVal, decodedData["couponType"] as String);
                                         });
                                       } else {
                                         Get.snackbar("경고", "컬티에서 사용 가능한 쿠폰입니다.");
@@ -432,6 +446,7 @@ class _BillingPageState extends State<BillingPage> {
                                           widget.isCouponChoosed = true;
                                           Get.back();
                                           Get.snackbar("알림", "50% 할인이 적용되었습니다.", backgroundColor: Colors.white);
+                                          coupon.updateCoupon(couponVal, decodedData["couponType"] as String);
                                         });
                                       } else {
                                         Get.snackbar("경고", "컬티에서 사용 가능한 쿠폰입니다.");
@@ -451,6 +466,7 @@ class _BillingPageState extends State<BillingPage> {
                                             widget.isCouponChoosed = true;
                                             Get.back();
                                             Get.snackbar("알림", "아메리카노 2000원 할인이 적용되었습니다.", backgroundColor: Colors.white);
+                                            coupon.updateCoupon(couponVal, decodedData["couponType"] as String);
                                           });
                                         } else {
                                           Get.back();
@@ -478,6 +494,7 @@ class _BillingPageState extends State<BillingPage> {
                                             widget.isCouponChoosed = true;
                                             Get.back();
                                             Get.snackbar("알림", "아메리카노 무료 쿠폰이 적용되었습니다.", backgroundColor: Colors.white);
+                                            coupon.updateCoupon(couponVal, decodedData["couponType"] as String);
                                           });
                                         } else if (hotAmericano) {
                                           c.discountPriceMoney(3800);
@@ -485,6 +502,7 @@ class _BillingPageState extends State<BillingPage> {
                                             widget.isCouponChoosed = true;
                                             Get.back();
                                             Get.snackbar("알림", "아메리카노 무료 쿠폰이 적용되었습니다.", backgroundColor: Colors.white);
+                                            coupon.updateCoupon(couponVal, decodedData["couponType"] as String);
                                           });
                                         } else {
                                           Get.back();
@@ -526,6 +544,7 @@ class _BillingPageState extends State<BillingPage> {
                                             widget.isCouponChoosed = true;
                                             Get.back();
                                             Get.snackbar("알림", "라떼 무료 쿠폰이 적용되었습니다.", backgroundColor: Colors.white);
+                                            coupon.updateCoupon(couponVal, decodedData["couponType"] as String);
                                           });
                                         } else {
                                           Get.back();
@@ -553,6 +572,7 @@ class _BillingPageState extends State<BillingPage> {
                                             widget.isCouponChoosed = true;
                                             Get.back();
                                             Get.snackbar("알림", "스무디 무료 쿠폰이 적용되었습니다.", backgroundColor: Colors.white);
+                                            coupon.updateCoupon(couponVal, decodedData["couponType"] as String);
                                           });
                                         } else if (lowSmootheFlag) {
                                           c.discountPriceMoney(5500);
@@ -560,6 +580,7 @@ class _BillingPageState extends State<BillingPage> {
                                             widget.isCouponChoosed = true;
                                             Get.back();
                                             Get.snackbar("알림", "스무디 무료 쿠폰이 적용되었습니다.", backgroundColor: Colors.white);
+                                            coupon.updateCoupon(couponVal, decodedData["couponType"] as String);
                                           });
                                         } else {
                                           Get.back();
@@ -570,7 +591,7 @@ class _BillingPageState extends State<BillingPage> {
                                       }
                                       break;
                                     case "coltea_free":
-                                      if (s.shop.value.name == "카페마냥") {
+                                      if (s.shop.value.name == "컬티") {
                                         int maxPrice = 0;
                                         for (var cartItem in c.shoppingCart) {
                                           if (cartItem.price > maxPrice) {
@@ -581,6 +602,7 @@ class _BillingPageState extends State<BillingPage> {
                                           c.discountPriceMoney(maxPrice);
                                           Get.back();
                                           Get.snackbar("알림", "무료 음료 한 잔 쿠폰이 적용되었습니다.\n(가장 비싼 음료)", backgroundColor: Colors.white);
+                                          coupon.updateCoupon(couponVal, decodedData["couponType"] as String);
                                         });
                                       } else {
                                         Get.snackbar("경고", "컬티에서 사용 가능한 쿠폰입니다.");
@@ -589,7 +611,7 @@ class _BillingPageState extends State<BillingPage> {
                                   }
                                 } else if (decodedData["canUse"] as String == "False") {
                                   Get.back();
-                                  Get.snackbar("경고", "이미 쿠폰을 사용하신 적 있습니다.\n사용한 적이 없는데 문구가 출력되면 문의 바랍니다.", backgroundColor: Colors.white);
+                                  Get.snackbar("경고", "이미 쿠폰을 사용하신 적 있습니다.\n사용한 적이 없을 때 문구가 출력되면 문의 바랍니다.", backgroundColor: Colors.white);
                                 }
                               } else {
                                 Get.snackbar("경고", "쿠폰 번호를 잘 못 입력하셨습니다.", backgroundColor: Colors.white);
@@ -619,7 +641,7 @@ class _BillingPageState extends State<BillingPage> {
                     ),
                   );
                 } else {
-                  Get.snackbar("경고", "이미 쿠폰을 적용되었습니다.");
+                  Get.snackbar("경고", "이미 쿠폰이 적용되었습니다.");
                 }
               }),
               child: Container(

@@ -1,4 +1,4 @@
-import 'package:amplify_core/amplify_core.dart';
+
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
@@ -27,7 +27,7 @@ class MyApp extends StatefulWidget {
 }
 
 class _MyAppState extends State<MyApp> {
-  bool _amplifyConfigured = false;
+
 
   List<Shop> shopList = [];
 

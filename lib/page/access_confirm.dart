@@ -1,8 +1,11 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_screenutil/flutter_screenutil.dart';
-import 'package:get/get.dart';
-import 'package:permission_handler/permission_handler.dart';
+//import 'package:flutter_screenutil/flutter_screenutil.dart';
+//import 'package:get/get.dart';
 import 'package:save_order/view/pages/login/login_page.dart';
+
+//TODO this is for Web. Need to change for App.
+// import 'package:permission_handler/permission_handler.dart' if (dart.library.io) 'package:permission_handler/permission_handler.dart';
+
 
 class AccessPage extends StatefulWidget {
   AccessPage({Key? key}) : super(key: key);
@@ -13,8 +16,11 @@ class AccessPage extends StatefulWidget {
 
 class _AccessPageState extends State<AccessPage> {
   // 0번은 위치권한, 1번은 카메라권한.
-  List<bool> statusPermissions = [false, false];
+  //TODO this is for Web. Need to change [statusPermissions] for App.
+  List<bool> statusPermissions = [true, true];
 
+  //TODO this is for Web. Need to change [statusPermissions] for App.
+  /*
   Future getStatusPermissonList() async {
     var _statusLocation = await Permission.location.status.isGranted;
     var _statusCamera = await Permission.camera.status.isGranted;
@@ -23,30 +29,6 @@ class _AccessPageState extends State<AccessPage> {
       statusPermissions[1] = _statusCamera;
     });
   }
-
-  // Future<bool> requestLocationPermission() async {
-  //   PermissionStatus status = await Permission.location.request();
-
-  //   if (!status.isGranted) {
-  //     // 허용이 안된 경우
-  //     showDialog(
-  //         context: context,
-  //         builder: (BuildContext context) {
-  //           return AlertDialog(
-  //             content: Text("권한 설정을 확인해주세요."),
-  //             actions: [
-  //               ElevatedButton(
-  //                   onPressed: () {
-  //                     openAppSettings(); // 앱 설정으로 이동
-  //                   },
-  //                   child: Text('설정하기')),
-  //             ],
-  //           );
-  //         });
-  //     return false;
-  //   }
-  //   return true;
-  // }
 
   requestCameraPermission() async {
     Map<Permission, PermissionStatus> statuses = await [
@@ -86,21 +68,27 @@ class _AccessPageState extends State<AccessPage> {
           });
     }
   }
+  */
 
   @override
   void initState() {
-    // TODO: implement initState
     super.initState();
+    //TODO this is for Web. Need to change [statusPermissions] for App.
+    /*
     if (!GetPlatform.isWeb) {
       getStatusPermissonList();
     } else {
       statusPermissions[0] = true;
       statusPermissions[1] = true;
     }
+    */
   }
 
   @override
   Widget build(BuildContext context) {
+    return LoginPage();
+    //TODO this is for Web. Need to change [statusPermissions] for App.
+    /*
     return statusPermissions[0] == true && statusPermissions[1] == true
         ? LoginPage()
         : Scaffold(
@@ -220,5 +208,6 @@ class _AccessPageState extends State<AccessPage> {
               ),
             ),
           );
+          */
   }
 }

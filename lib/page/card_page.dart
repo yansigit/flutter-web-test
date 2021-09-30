@@ -1,5 +1,7 @@
 // import 'package:card_scanner/card_scanner.dart';
 // import 'package:card_scanner/models/card_details.dart';
+import 'dart:convert';
+
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter/widgets.dart';
@@ -8,7 +10,9 @@ import 'package:flutter_svg/flutter_svg.dart';
 import 'package:get/get.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:get/utils.dart';
+import 'package:save_order/model/model.dart';
 import 'package:save_order/state/controllers.dart';
+import 'package:http/http.dart' as http;
 
 class CardPage extends StatefulWidget {
   @override
@@ -17,18 +21,25 @@ class CardPage extends StatefulWidget {
 
 class _CardPageState extends State<CardPage> {
   List<FocusNode> cardFocusNodeList = List.generate(4, (index) => FocusNode());
-
   List<FocusNode> validationFocusNodeList = List.generate(2, (index) => FocusNode());
-
   FocusNode cvcFocusNode = FocusNode();
-
   List<TextEditingController> cardTextController = List.generate(4, (i) => TextEditingController());
-
   List<TextEditingController> validationTextController = List.generate(2, (i) => TextEditingController());
-
   TextEditingController cvcController = TextEditingController();
 
   final CardController cardController = Get.put(CardController());
+  final ShoppingCartController shoppingCartController = Get.find();
+  final ShopController shopController = Get.find();
+  final CouponController couponController = Get.find();
+  final TakeOutController takeOutController = Get.find();
+  final UserController userController = Get.find();
+
+  String errorMsg = "";
+
+  final _formCardKey0 = GlobalKey<FormState>();
+  final _formCardKey1 = GlobalKey<FormState>();
+  final _formCardKey2 = GlobalKey<FormState>();
+  final _formCardKey3 = GlobalKey<FormState>();
 
   // CardDetails _cardDetails = new CardDetails();
   // CardScanOptions scanOptions = CardScanOptions(
@@ -114,111 +125,161 @@ class _CardPageState extends State<CardPage> {
                                   Container(
                                     width: 40.w,
                                     height: 30.h,
-                                    child: TextField(
-                                      inputFormatters: [FilteringTextInputFormatter.allow(RegExp("[0-9]"))],
-                                      maxLength: 4,
-                                      textAlign: TextAlign.center,
-                                      decoration: InputDecoration(
-                                        counterText: "",
-                                        isDense: true,
-                                        focusedBorder: UnderlineInputBorder(
-                                          borderSide: BorderSide(
-                                            width: 1,
-                                            color: Color(0xff00276b),
+                                    child: Form(
+                                      key: _formCardKey0,
+                                      child: TextFormField(
+                                        inputFormatters: [FilteringTextInputFormatter.allow(RegExp("[0-9]"))],
+                                        maxLength: 4,
+                                        textAlign: TextAlign.center,
+                                        decoration: InputDecoration(
+                                          counterText: "",
+                                          isDense: true,
+                                          focusedBorder: UnderlineInputBorder(
+                                            borderSide: BorderSide(
+                                              width: 1,
+                                              color: Color(0xff00276b),
+                                            ),
                                           ),
                                         ),
+                                        style: TextStyle(fontWeight: FontWeight.w700, fontSize: 16.sp),
+                                        cursorColor: Color(0xff00277b),
+                                        keyboardType: TextInputType.number,
+                                        controller: cardTextController[0],
+                                        //focusnode
+                                        focusNode: cardFocusNodeList[0],
+                                        onChanged: (text) {
+                                          if (text.length == 4) {
+                                            cardFocusNodeList[0].nextFocus();
+                                          }
+                                        },
+                                        validator: (text) {
+                                          if (text!.length < 4) {
+                                            errorMsg += "카드 번호를 입력해주세요.";
+                                            return "";
+                                          } else {
+                                            return null;
+                                          }
+                                        },
                                       ),
-                                      style: TextStyle(fontWeight: FontWeight.w700, fontSize: 16.sp),
-                                      cursorColor: Color(0xff00277b),
-                                      keyboardType: TextInputType.number,
-                                      controller: cardTextController[0],
-                                      //focusnode
-                                      focusNode: cardFocusNodeList[0],
-                                      onChanged: (text) {
-                                        if (text.length == 4) {
-                                          cardFocusNodeList[0].nextFocus();
-                                        }
-                                      },
                                     ),
                                   ),
                                   Container(width: 30.w, alignment: Alignment.center, child: Text("-", style: TextStyle(fontSize: 24.sp))),
                                   Container(
                                     width: 40.w,
                                     height: 30.h,
-                                    child: TextField(
-                                      inputFormatters: [FilteringTextInputFormatter.allow(RegExp("[0-9]"))],
-                                      maxLength: 4,
-                                      textAlign: TextAlign.center,
-                                      decoration: InputDecoration(
-                                        counterText: "",
-                                        isDense: true,
-                                        focusedBorder: UnderlineInputBorder(borderSide: BorderSide(width: 1, color: Color(0xff00276b))),
+                                    child: Form(
+                                      key: _formCardKey1,
+                                      child: TextFormField(
+                                        inputFormatters: [FilteringTextInputFormatter.allow(RegExp("[0-9]"))],
+                                        maxLength: 4,
+                                        textAlign: TextAlign.center,
+                                        decoration: InputDecoration(
+                                          counterText: "",
+                                          isDense: true,
+                                          focusedBorder: UnderlineInputBorder(borderSide: BorderSide(width: 1, color: Color(0xff00276b))),
+                                        ),
+                                        cursorColor: Color(0xff00277b),
+                                        keyboardType: TextInputType.number,
+                                        style: TextStyle(fontWeight: FontWeight.w700, fontSize: 16.sp),
+                                        //focusnode
+                                        controller: cardTextController[1],
+                                        focusNode: cardFocusNodeList[1],
+                                        onChanged: (text) {
+                                          if (text.length == 4) {
+                                            cardFocusNodeList[1].nextFocus();
+                                          }
+                                        },
+                                        validator: (text) {
+                                          if (text!.length < 4) {
+                                            if (errorMsg == "") {
+                                              errorMsg += "카드 번호를 입력해주세요.";
+                                            }
+                                            return "";
+                                          } else {
+                                            return null;
+                                          }
+                                        },
                                       ),
-                                      cursorColor: Color(0xff00277b),
-                                      keyboardType: TextInputType.number,
-                                      style: TextStyle(fontWeight: FontWeight.w700, fontSize: 16.sp),
-                                      //focusnode
-                                      controller: cardTextController[1],
-                                      focusNode: cardFocusNodeList[1],
-                                      onChanged: (text) {
-                                        if (text.length == 4) {
-                                          cardFocusNodeList[1].nextFocus();
-                                        }
-                                      },
                                     ),
                                   ),
                                   Container(width: 30.w, alignment: Alignment.center, child: Text("-", style: TextStyle(fontSize: 24.sp))),
                                   Container(
                                     width: 40.w,
                                     height: 30.h,
-                                    child: TextField(
-                                      inputFormatters: [FilteringTextInputFormatter.allow(RegExp("[0-9]"))],
-                                      maxLength: 4,
-                                      textAlign: TextAlign.center,
-                                      decoration: InputDecoration(
-                                        counterText: "",
-                                        isDense: true,
-                                        focusedBorder: UnderlineInputBorder(borderSide: BorderSide(width: 1, color: Color(0xff00276b))),
+                                    child: Form(
+                                      key: _formCardKey2,
+                                      child: TextFormField(
+                                        inputFormatters: [FilteringTextInputFormatter.allow(RegExp("[0-9]"))],
+                                        maxLength: 4,
+                                        textAlign: TextAlign.center,
+                                        decoration: InputDecoration(
+                                          counterText: "",
+                                          isDense: true,
+                                          focusedBorder: UnderlineInputBorder(borderSide: BorderSide(width: 1, color: Color(0xff00276b))),
+                                        ),
+                                        style: TextStyle(fontWeight: FontWeight.w700, fontSize: 18.sp),
+                                        cursorColor: Color(0xff00277b),
+                                        obscureText: true,
+                                        keyboardType: TextInputType.number,
+                                        //focusnode
+                                        controller: cardTextController[2],
+                                        focusNode: cardFocusNodeList[2],
+                                        onChanged: (text) {
+                                          if (text.length == 4) {
+                                            cardFocusNodeList[2].nextFocus();
+                                          }
+                                        },
+                                        validator: (text) {
+                                          if (text!.length < 4) {
+                                            if (errorMsg == "") {
+                                              errorMsg += "카드 번호를 입력해주세요.";
+                                            }
+                                            return "";
+                                          } else {
+                                            return null;
+                                          }
+                                        },
                                       ),
-                                      style: TextStyle(fontWeight: FontWeight.w700, fontSize: 18.sp),
-                                      cursorColor: Color(0xff00277b),
-                                      obscureText: true,
-                                      keyboardType: TextInputType.number,
-                                      //focusnode
-                                      controller: cardTextController[2],
-                                      focusNode: cardFocusNodeList[2],
-                                      onChanged: (text) {
-                                        if (text.length == 4) {
-                                          cardFocusNodeList[2].nextFocus();
-                                        }
-                                      },
                                     ),
                                   ),
                                   Container(width: 30.w, alignment: Alignment.center, child: Text("-", style: TextStyle(fontSize: 24.sp))),
                                   Container(
                                     width: 40.w,
                                     height: 30.h,
-                                    child: TextField(
-                                      inputFormatters: [FilteringTextInputFormatter.allow(RegExp("[0-9]"))],
-                                      maxLength: 4,
-                                      textAlign: TextAlign.center,
-                                      decoration: InputDecoration(
-                                        counterText: "",
-                                        isDense: true,
-                                        focusedBorder: UnderlineInputBorder(borderSide: BorderSide(width: 1, color: Color(0xff00276b))),
+                                    child: Form(
+                                      key: _formCardKey3,
+                                      child: TextFormField(
+                                        inputFormatters: [FilteringTextInputFormatter.allow(RegExp("[0-9]"))],
+                                        maxLength: 4,
+                                        textAlign: TextAlign.center,
+                                        decoration: InputDecoration(
+                                          counterText: "",
+                                          isDense: true,
+                                          focusedBorder: UnderlineInputBorder(borderSide: BorderSide(width: 1, color: Color(0xff00276b))),
+                                        ),
+                                        style: TextStyle(fontWeight: FontWeight.w700, fontSize: 18.sp),
+                                        cursorColor: Color(0xff00277b),
+                                        keyboardType: TextInputType.number,
+                                        obscureText: true,
+                                        //focusnode
+                                        controller: cardTextController[3],
+                                        focusNode: cardFocusNodeList[3],
+                                        onChanged: (text) {
+                                          if (text.length == 4) {
+                                            cardFocusNodeList[3].unfocus();
+                                          }
+                                        },
+                                        validator: (text) {
+                                          if (text!.length < 4) {
+                                            if (errorMsg == "") {
+                                              errorMsg += "카드 번호를 입력해주세요.";
+                                            }
+                                            return "";
+                                          } else {
+                                            return null;
+                                          }
+                                        },
                                       ),
-                                      style: TextStyle(fontWeight: FontWeight.w700, fontSize: 18.sp),
-                                      cursorColor: Color(0xff00277b),
-                                      keyboardType: TextInputType.number,
-                                      obscureText: true,
-                                      //focusnode
-                                      controller: cardTextController[3],
-                                      focusNode: cardFocusNodeList[3],
-                                      onChanged: (text) {
-                                        if (text.length == 4) {
-                                          cardFocusNodeList[3].unfocus();
-                                        }
-                                      },
                                     ),
                                   ),
                                 ],
@@ -451,51 +512,51 @@ class _CardPageState extends State<CardPage> {
                                   ),
                                 ),
                               ),
-                              Flexible(
-                                child: Container(
-                                  width: double.infinity,
-                                  child: Column(
-                                    crossAxisAlignment: CrossAxisAlignment.start,
-                                    children: [
-                                      Container(
-                                        height: 23.h,
-                                        child: FittedBox(
-                                          fit: BoxFit.fitHeight,
-                                          child: Text(
-                                            "CVC",
-                                            style: TextStyle(color: Colors.black87),
-                                          ),
-                                        ),
-                                      ),
-                                      Container(
-                                        width: 40.w,
-                                        height: 30.h,
-                                        child: TextField(
-                                          inputFormatters: [FilteringTextInputFormatter.allow(RegExp("[0-9]"))],
-                                          maxLength: 3,
-                                          textAlign: TextAlign.center,
-                                          decoration: InputDecoration(
-                                            counterText: "",
-                                            isDense: true,
-                                            focusedBorder: UnderlineInputBorder(borderSide: BorderSide(width: 1, color: Color(0xff00276b))),
-                                          ),
-                                          style: TextStyle(fontWeight: FontWeight.w700, fontSize: 18.sp),
-                                          cursorColor: Color(0xff00277b),
-                                          obscureText: true,
-                                          keyboardType: TextInputType.number,
-                                          focusNode: cvcFocusNode,
-                                          controller: cvcController,
-                                          onChanged: (text) {
-                                            if (text.length == 3) {
-                                              cvcFocusNode.unfocus();
-                                            }
-                                          },
-                                        ),
-                                      ),
-                                    ],
-                                  ),
-                                ),
-                              ),
+                              // Flexible(
+                              //   child: Container(
+                              //     width: double.infinity,
+                              //     child: Column(
+                              //       crossAxisAlignment: CrossAxisAlignment.start,
+                              //       children: [
+                              //         Container(
+                              //           height: 23.h,
+                              //           child: FittedBox(
+                              //             fit: BoxFit.fitHeight,
+                              //             child: Text(
+                              //               "CVC",
+                              //               style: TextStyle(color: Colors.black87),
+                              //             ),
+                              //           ),
+                              //         ),
+                              //         Container(
+                              //           width: 40.w,
+                              //           height: 30.h,
+                              //           child: TextField(
+                              //             inputFormatters: [FilteringTextInputFormatter.allow(RegExp("[0-9]"))],
+                              //             maxLength: 3,
+                              //             textAlign: TextAlign.center,
+                              //             decoration: InputDecoration(
+                              //               counterText: "",
+                              //               isDense: true,
+                              //               focusedBorder: UnderlineInputBorder(borderSide: BorderSide(width: 1, color: Color(0xff00276b))),
+                              //             ),
+                              //             style: TextStyle(fontWeight: FontWeight.w700, fontSize: 18.sp),
+                              //             cursorColor: Color(0xff00277b),
+                              //             obscureText: true,
+                              //             keyboardType: TextInputType.number,
+                              //             focusNode: cvcFocusNode,
+                              //             controller: cvcController,
+                              //             onChanged: (text) {
+                              //               if (text.length == 3) {
+                              //                 cvcFocusNode.unfocus();
+                              //               }
+                              //             },
+                              //           ),
+                              //         ),
+                              //       ],
+                              //     ),
+                              //   ),
+                              // ),
                             ],
                           ),
                         ),
@@ -512,38 +573,70 @@ class _CardPageState extends State<CardPage> {
                       onPressed: () {
                         String cardNum = "";
                         String cardVal = "";
-                        for (int i = 0; i < cardTextController.length; i++) {
-                          if (cardTextController[i].text.isEmpty) {
-                            Get.defaultDialog(title: "카드 정보 오류", middleText: "카드번호를 확인하세요.");
-                            break;
+
+                        if (_formCardKey0.currentState!.validate() &&
+                            _formCardKey1.currentState!.validate() &&
+                            _formCardKey2.currentState!.validate() &&
+                            _formCardKey3.currentState!.validate() &&
+                            validationTextController[0].text.isNotEmpty &&
+                            validationTextController[1].text.isNotEmpty) {
+                          Get.snackbar("", "결제 진행");
+                          for (int i = 0; i < cardTextController.length; i++) {
+                            cardNum += cardTextController[i].text;
                           }
-                          cardNum += cardTextController[i].text;
-                        }
-                        if (validationTextController[0].text.isEmpty || validationTextController[1].text.isEmpty) {
-                          Get.defaultDialog(title: "카드 정보 오류", middleText: "유효기간을 확인하세요.");
-                        } else {
-                          cardVal += validationTextController[0].text;
-                          cardVal += validationTextController[1].text[2];
-                          cardVal += validationTextController[1].text[3];
-                        }
-                        if (cvcController.text.isEmpty) {
-                          Get.defaultDialog(title: "카드 정보 오류", middleText: "CVC 코드를 확인하세요.\nCVC 코드는 카드 뒷면 서명란에 있습니다.");
-                        } else if (cvcController.text.length != 3) {
-                          Get.defaultDialog(title: "카드 정보 오류", middleText: "CVC 코드를 확인하세요.\nCVC 코드는 카드 뒷면 서명란에 있습니다.");
-                        }
-                        if (cardNum.isNotEmpty && cardVal.isNotEmpty) {
+                          cardVal = validationTextController[0].text + validationTextController[1].text[2] + validationTextController[1].text[3];
+
+                          print(cardNum + "\n" + cardVal);
+
                           cardController.updateCardInfo(cardNum);
                           cardController.updateCardValidation(cardVal);
+
+                          requestOrder();
+                        } else if (errorMsg != "") {
+                          if (validationTextController[0].text.isEmpty || validationTextController[1].text.isEmpty) {
+                            errorMsg += "\n유효기간을 확인하세요.";
+                            Get.defaultDialog(title: "카드 정보 오류", middleText: errorMsg);
+                          } else {
+                            Get.defaultDialog(title: "카드 정보 오류", middleText: errorMsg);
+                          }
+                        } else {
+                          Get.defaultDialog(title: "카드 정보 오류", middleText: "유효기간을 확인하세요.");
                         }
-                        print(cardController.cardNum.value);
-                        print(cardController.cardValidation.value);
+                        // for (int i = 0; i < cardTextController.length; i++) {
+                        //   if (cardTextController[i].text.isEmpty) {
+                        //     Get.defaultDialog(title: "카드 정보 오류", middleText: "카드번호를 확인하세요.");
+                        //     break;
+                        //   }
+                        //   cardNum += cardTextController[i].text;
+                        // }
+                        // if (validationTextController[0].text.isEmpty || validationTextController[1].text.isEmpty) {
+                        //   Get.defaultDialog(title: "카드 정보 오류", middleText: "유효기간을 확인하세요.");
+                        // } else {
+                        //   cardVal += validationTextController[0].text;
+                        //   cardVal += validationTextController[1].text[2];
+                        //   cardVal += validationTextController[1].text[3];
+                        // }
+                        // // if (cvcController.text.isEmpty) {
+                        // //   Get.defaultDialog(title: "카드 정보 오류", middleText: "CVC 코드를 확인하세요.\nCVC 코드는 카드 뒷면 서명란에 있습니다.");
+                        // // } else if (cvcController.text.length != 3) {
+                        // //   Get.defaultDialog(title: "카드 정보 오류", middleText: "CVC 코드를 확인하세요.\nCVC 코드는 카드 뒷면 서명란에 있습니다.");
+                        // // }
+                        // if (cardNum.isNotEmpty && cardVal.isNotEmpty) {
+                        //   cardController.updateCardInfo(cardNum);
+                        //   cardController.updateCardValidation(cardVal);
+                        // }
+                        // print(cardController.cardNum.value);
+                        // print(cardController.cardValidation.value);
                       },
                       style: ButtonStyle(backgroundColor: MaterialStateProperty.all(Color(0xff00276b))),
                       child: Container(
                           width: 70.w,
                           height: 35.h,
-                          child: FittedBox(
-                              fit: BoxFit.fitHeight, child: Text("결제하기", style: TextStyle(color: Colors.white, fontWeight: FontWeight.w700))))),
+                          child: Padding(
+                            padding: EdgeInsets.symmetric(vertical: 5.h),
+                            child: FittedBox(
+                                fit: BoxFit.fitHeight, child: Text("결제하기", style: TextStyle(color: Colors.white, fontWeight: FontWeight.w700))),
+                          ))),
                   //SizedBox(width: 10.w),
                   // OutlinedButton(
                   //     onPressed: () async {
@@ -578,6 +671,105 @@ class _CardPageState extends State<CardPage> {
         ),
       ),
     );
+  }
+
+  requestOrder() async {
+    /*
+    {
+      "shopId": 1,
+      "totalPrice": 20000,
+      "discountPrice": 1000,
+      "menuList": [
+        {
+          "name": "메뉴 1",
+          "price": 20000,
+          "quantity": 3,
+          "imagePath": "https://imagepath/test.png",
+          "optionList": [
+            {
+              "name": "온도",
+              "data": "차가움"
+            },
+            {
+              "name": "샷 추가",
+              "quantity": 1
+            }
+          ] // 옵션 있을 경우
+        },
+        {
+          "name": "메뉴 2",
+          "price": 20000,
+          "quantity": 1,
+          "imagePath": "https://imagepath/test.png",
+          "optionList": [] // 옵션 없을 경우
+        }
+      ],
+      "cardNumber": "1111222233334444",
+      "cardExpire": "1212",
+      "isUsingStamp": false,
+      "CouponCode": "AAAA-BBBB-CCCC-DDDD"
+    }
+    */
+    Map<String, dynamic> data = {};
+    data["shopId"] = shopController.shop.value.id;
+    data["totalPrice"] = shoppingCartController.totalPrice.value;
+    data["discountPrice"] = shoppingCartController.discountPrice.value;
+    data["cardNumber"] = cardController.cardNum.value;
+    data["cardExpire"] = cardController.cardValidation.value;
+    data["isUsingStamp"] = false;
+    data["CouponCode"] = couponController.couponNo.value;
+    //data["menuList"] = menus;
+
+    List<Map<String, dynamic>> menuList = [];
+
+    for (CartItem cartItem in shoppingCartController.shoppingCart) {
+      Map<String, dynamic> menus = {};
+
+      menus["name"] = cartItem.name;
+      menus["price"] = 0;
+      menus["quantity"] = cartItem.quantity;
+      menus["imagePath"] = cartItem.thumbnail;
+
+      List<Map<String, dynamic>> optionList = [];
+      cartItem.cartOptions.forEach((key, value) {
+        Map<String, dynamic> options = {};
+        if (key == "temp") {
+          options["name"] = "온도";
+          options["body"] = value.name;
+        }
+        if (key == "addShot") {
+          options["name"] = "샷 추가";
+          options["quantity"] = value.quantity;
+        }
+        if (key == "syrup") {
+          options["name"] = "설탕시럽";
+          options["quantity"] = value.quantity;
+        }
+        if (key == "whipping") {
+          options["name"] = "휘핑크림";
+          options["body"] = value.quantity == 1 ? "추가" : "";
+        }
+        if (key != "menuQuantity") {
+          optionList.add(options);
+        }
+      });
+      menus["optionList"] = optionList;
+      menuList.add(menus);
+    }
+
+    data["menuList"] = menuList;
+
+    var body = json.encode(data);
+    var res = await http.Client().post(Uri.parse("http://${devMode()}.dalbodre.me/api/Order"),
+        body: body, headers: <String, String>{'token': '${userController.userToken.value}'});
+    if (res.statusCode == 200) {
+      print(body.toString);
+      print("WELL DONE dude");
+    } else {
+      print(body);
+      print("Order Failed");
+      print("statusCode: ${res.statusCode}");
+    }
   }
 }
 
@@ -617,7 +809,7 @@ class _PickerState extends State<Picker> {
         onSelectedItemChanged: (val) {
           setState(() {
             if (widget.mode == 0) {
-              _selectedVal = val / 10 < 1 ? "0" + (val + 1).toString() : (val + 1).toString();
+              _selectedVal = val ~/ 9 == 0 ? "0" + (val + 1).toString() : (val + 1).toString();
             } else {
               _selectedVal = (val + 2021).toString();
             }

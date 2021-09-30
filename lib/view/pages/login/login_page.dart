@@ -15,7 +15,9 @@ import 'package:save_order/consts/color.dart';
 import 'package:save_order/consts/login.dart';
 import 'package:save_order/consts/size.dart';
 import 'package:flutter_svg/flutter_svg.dart';
-import 'package:kakao_flutter_sdk/all.dart';
+
+//TODO this is for Web. Need to change for App.
+//import 'package:kakao_flutter_sdk/all.dart';
 
 class LoginPageState extends State<LoginPage> {
   @override
@@ -23,22 +25,27 @@ class LoginPageState extends State<LoginPage> {
 
   void initState() {
     super.initState();
-    _initKakaoTalkInstalled();
+    //TODO this is for Web. Need to change for App.
+    /*_initKakaoTalkInstalled();*/
   }
 
-  _initKakaoTalkInstalled() async {
+  //TODO this is for Web. Need to change for App.
+  /*_
+  initKakaoTalkInstalled() async {
     KakaoContext.clientId = "00805ee18d68cdbdd4eac842f5e6e391";
     final installed = await isKakaoTalkInstalled();
     setState(() {
       _isKakaoTalkInstalled = installed;
     });
   }
+  */
 
   @override
   void dispose() {
     super.dispose();
   }
-
+  //TODO this is for Web. Need to change for App.
+  /*
   bool _isKakaoTalkInstalled = true;
 
   _issueAccessToken(String authCode) async {
@@ -57,6 +64,7 @@ class LoginPageState extends State<LoginPage> {
       print("error on issuing access token: $e");
     }
   }
+  
 
   _loginWithKakao() async {
     try {
@@ -75,6 +83,7 @@ class LoginPageState extends State<LoginPage> {
       print(e);
     }
   }
+  */
 
   @override
   Widget build(BuildContext context) {

@@ -16,7 +16,8 @@ import 'package:save_order/consts/color.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:geolocator/geolocator.dart';
 import "package:http/http.dart" as http;
-import "package:permission_handler/permission_handler.dart";
+//TODO this is for Web. Need to change for App.
+//import "package:permission_handler/permission_handler.dart";
 
 class NearStoresPageState extends State<NearStoresPage> {
   Future<List<Shop>>? nearStoresFuture;
@@ -29,8 +30,7 @@ class NearStoresPageState extends State<NearStoresPage> {
   Future<Position> loadCurLocation() async {
     print("location");
     // setState(() async {
-    curPosition = await Geolocator.getCurrentPosition(
-        desiredAccuracy: LocationAccuracy.high);
+    curPosition = await Geolocator.getCurrentPosition(desiredAccuracy: LocationAccuracy.high);
     // });
 
     return curPosition;
@@ -38,6 +38,8 @@ class NearStoresPageState extends State<NearStoresPage> {
 
   List<bool> statusPermissions = [false, false];
 
+  //TODO this is for Web. Need to change for App.
+  /*
   Future getStatusPermissonList() async {
     var _statusLocation = await Permission.location.status.isGranted;
     var _statusCamera = await Permission.camera.status.isGranted;
@@ -47,6 +49,7 @@ class NearStoresPageState extends State<NearStoresPage> {
       statusPermissions[1] = _statusCamera;
     });
   }
+  */
 
   Future<List<Shop>> fetchNearStores() async {
     //await Future.delayed(Duration(seconds: 0));
@@ -64,8 +67,7 @@ class NearStoresPageState extends State<NearStoresPage> {
     // print("locationPermissionStatus:" + locationPermissionStatus.toString());
     // if (locationPermissionStatus == true) {
     if (statusPermissions[0] == true) {
-      shops =
-          await Shop.fetchShopsByLocation(http.Client(), N, this.curPosition);
+      shops = await Shop.fetchShopsByLocation(http.Client(), N, this.curPosition);
     } else {
       shops = await Shop.fetchShops(http.Client());
     }
@@ -85,10 +87,16 @@ class NearStoresPageState extends State<NearStoresPage> {
     print("ssssdsdsf");
     print(userController.userToken);
     WidgetsBinding.instance?.addPostFrameCallback((_) {
-      getStatusPermissonList();
+      //TODO this is for Web. Need to change for App.
+      //getStatusPermissonList();
       loadCurLocation().then((val) {
         curPosition = val;
       });
+      Get.snackbar(
+        "알림",
+        "웹에서는 거리 표시 기능이 지원되지 않습니다.",
+        backgroundColor: Colors.white,
+      );
     });
   }
 
@@ -103,9 +111,7 @@ class NearStoresPageState extends State<NearStoresPage> {
                 showDialog(
                     context: context,
                     builder: (BuildContext context) {
-                      return AlertDialog(
-                          content: Text(
-                              "아직 QR코드 스캔 기능이 구현되지 않았습니다. 베타 테스트 이후 기능 구현 예정입니다."));
+                      return AlertDialog(content: Text("아직 QR코드 스캔 기능이 구현되지 않았습니다. 베타 테스트 이후 기능 구현 예정입니다."));
                     });
               },
               icon: SvgPicture.asset(
@@ -113,18 +119,14 @@ class NearStoresPageState extends State<NearStoresPage> {
                 color: Color.fromRGBO(34, 34, 34, 1),
               )),
           centerTitle: true,
-          title: Text("아름 드림",
-              style:
-                  TextStyle(fontWeight: FontWeight.w700, color: Colors.black)),
+          title: Text("아름 드림", style: TextStyle(fontWeight: FontWeight.w700, color: Colors.black)),
           actions: [
             IconButton(
               onPressed: () {
                 showDialog(
                     context: context,
                     builder: (BuildContext context) {
-                      return AlertDialog(
-                          content: Text(
-                              "아직 검색 기능이 구현되지 않았습니다. 베타 테스트 이후 기능 구현 예정입니다."));
+                      return AlertDialog(content: Text("아직 검색 기능이 구현되지 않았습니다. 베타 테스트 이후 기능 구현 예정입니다."));
                     });
               },
               icon: SvgPicture.asset(
@@ -137,81 +139,59 @@ class NearStoresPageState extends State<NearStoresPage> {
           margin: EdgeInsets.only(top: 24.0.h, left: 20.w, right: 20.w),
           child: Column(children: [
             Flexible(
-                child: Row(
-                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                    children: [
-                  Container(
-                      height: 24.h,
-                      width: 95.w,
-                      margin: EdgeInsets.only(bottom: 14.h),
-                      child: FittedBox(
-                          fit: BoxFit.fitHeight,
-                          child: Text("내 주변 매장",
-                              style: TextStyle(
-                                  color: const Color(0xff222222),
-                                  fontWeight: FontWeight.w700,
-                                  fontFamily: "NotoSans",
-                                  fontSize: 18.0),
-                              textAlign: TextAlign.left))),
-                  InkWell(
-                    onTap: () => {this.loadCurLocation()},
-                    // style: ButtonStyle(
-                    //     backgroundColor:
-                    //         MaterialStateProperty.all<Color>(NEAR_WHITE),
-                    //     shape: MaterialStateProperty.all<RoundedRectangleBorder>(
-                    //         RoundedRectangleBorder(
-                    //             borderRadius: BorderRadius.circular(20.h))),
-                    //   ),
-                    child: Container(
-                      width: 122.w,
-                      height: 32.h,
-                      margin: EdgeInsets.only(bottom: 14.h),
-                      decoration: BoxDecoration(
-                        color: Colors.white,
-                        borderRadius: BorderRadius.all(Radius.circular(300.w)),
-                        border: Border.all(
-                            color: const Color(0xffe8e8e8), width: 1.w),
-                        boxShadow: [
-                          BoxShadow(
-                              color: const Color(0x0c000000),
-                              offset: Offset(0, 2),
-                              blurRadius: 4,
-                              spreadRadius: 0)
-                        ],
-                      ),
-                      child: Row(
-                          mainAxisAlignment: MainAxisAlignment.center,
-                          crossAxisAlignment: CrossAxisAlignment.center,
-                          children: <Widget>[
-                            Container(
-                                margin: EdgeInsets.only(
-                                    left: 0.w,
-                                    top: 3.h,
-                                    bottom: 3.h,
-                                    right: 2.w),
-                                width: 24.w,
-                                height: 26.h,
-                                child: SvgPicture.asset(
-                                    "assets/images/location.svg",
-                                    fit: BoxFit.fitHeight)),
-                            Container(
-                                width: 54.w,
-                                height: 20.h,
-                                margin: EdgeInsets.only(left: 2.w, right: 5.w),
-                                padding: EdgeInsets.only(top: 1.h, bottom: 1.h),
-                                child: FittedBox(
-                                    fit: BoxFit.fitHeight,
-                                    child: Text("현재 위치",
-                                        style: const TextStyle(
-                                            color: const Color(0xff00276b),
-                                            fontWeight: FontWeight.w400,
-                                            fontFamily: "NotoSans",
-                                            fontStyle: FontStyle.normal,
-                                            fontSize: 15.0))))
-                          ]),
-                    ),
+                child: Row(mainAxisAlignment: MainAxisAlignment.spaceBetween, children: [
+              Container(
+                  height: 24.h,
+                  width: 95.w,
+                  margin: EdgeInsets.only(bottom: 14.h),
+                  child: FittedBox(
+                      fit: BoxFit.fitHeight,
+                      child: Text("내 주변 매장",
+                          style: TextStyle(color: const Color(0xff222222), fontWeight: FontWeight.w700, fontFamily: "NotoSans", fontSize: 18.0),
+                          textAlign: TextAlign.left))),
+              InkWell(
+                onTap: () => {this.loadCurLocation()},
+                // style: ButtonStyle(
+                //     backgroundColor:
+                //         MaterialStateProperty.all<Color>(NEAR_WHITE),
+                //     shape: MaterialStateProperty.all<RoundedRectangleBorder>(
+                //         RoundedRectangleBorder(
+                //             borderRadius: BorderRadius.circular(20.h))),
+                //   ),
+                child: Container(
+                  width: 122.w,
+                  height: 32.h,
+                  margin: EdgeInsets.only(bottom: 14.h),
+                  decoration: BoxDecoration(
+                    color: Colors.white,
+                    borderRadius: BorderRadius.all(Radius.circular(300.w)),
+                    border: Border.all(color: const Color(0xffe8e8e8), width: 1.w),
+                    boxShadow: [BoxShadow(color: const Color(0x0c000000), offset: Offset(0, 2), blurRadius: 4, spreadRadius: 0)],
                   ),
-                ])),
+                  child: Row(mainAxisAlignment: MainAxisAlignment.center, crossAxisAlignment: CrossAxisAlignment.center, children: <Widget>[
+                    Container(
+                        margin: EdgeInsets.only(left: 0.w, top: 3.h, bottom: 3.h, right: 2.w),
+                        width: 24.w,
+                        height: 26.h,
+                        child: SvgPicture.asset("assets/images/location.svg", fit: BoxFit.fitHeight)),
+                    Container(
+                        width: 54.w,
+                        height: 20.h,
+                        margin: EdgeInsets.only(left: 2.w, right: 5.w),
+                        padding: EdgeInsets.only(top: 1.h, bottom: 1.h),
+                        child: FittedBox(
+                            fit: BoxFit.fitHeight,
+                            child: Text("현재 위치",
+                                style: const TextStyle(
+                                    color: const Color(0xff00276b),
+                                    fontWeight: FontWeight.w400,
+                                    fontFamily: "NotoSans",
+                                    fontStyle: FontStyle.normal,
+                                    fontSize: 15.0))))
+                  ]),
+                ),
+              ),
+            ])),
             Container(
               height: 1.h,
               margin: EdgeInsets.only(
@@ -282,8 +262,7 @@ class NearStoresPageState extends State<NearStoresPage> {
                                   right: 20.5.w,
                                 ),
                                 decoration: BoxDecoration(
-                                  color: Color(0xffd1d1d1)
-                                      .withOpacity(0.30000001192092896),
+                                  color: Color(0xffd1d1d1).withOpacity(0.30000001192092896),
                                 ),
                               );
                             },
@@ -308,11 +287,7 @@ class NearStoresPageState extends State<NearStoresPage> {
 
   Widget buildStoreView(BuildContext context, Shop store) {
     final ShopController shopController = Get.put(ShopController());
-    final Map<String, String> storeNameToAddress = {
-      "컬티": "울산광역시 남구 컬티",
-      "카페마냥": "울산광역시 남구 카페마냥",
-      "11호관 커피": "울산광역시 남구 대학로 93번길 11호관"
-    };
+    final Map<String, String> storeNameToAddress = {"컬티": "울산광역시 남구 컬티", "카페마냥": "울산광역시 남구 카페마냥", "11호관 커피": "울산광역시 남구 대학로 93번길 11호관"};
 
     // 각 가게 위치 데이터 넣기.  카페  이름이랑 비교
     //
@@ -333,16 +308,13 @@ class NearStoresPageState extends State<NearStoresPage> {
                     height: 75.h,
                     margin: EdgeInsets.only(bottom: 16.h),
                     decoration: BoxDecoration(
-                        borderRadius: BorderRadius.all(Radius.circular(20.w)),
-                        border: Border.all(
-                            color: const Color(0xffe8e8e8), width: 1.w)),
+                        borderRadius: BorderRadius.all(Radius.circular(20.w)), border: Border.all(color: const Color(0xffe8e8e8), width: 1.w)),
                     child: Image.asset("assets/images/thumbnail.png")),
                 Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
                     Container(
-                        margin:
-                            EdgeInsets.only(top: 12.h, left: 16.w, bottom: 8.h),
+                        margin: EdgeInsets.only(top: 12.h, left: 16.w, bottom: 8.h),
                         child: Text(store.name,
                             style: const TextStyle(
                                 color: const Color(0xff222222),
@@ -358,120 +330,93 @@ class NearStoresPageState extends State<NearStoresPage> {
                       child: Text(
                         storeNameToAddress[store.name].toString(),
                         style: TextStyle(
-                            color: Colors.grey,
-                            fontWeight: FontWeight.w400,
-                            fontFamily: "NotoSans",
-                            fontStyle: FontStyle.normal,
-                            fontSize: 12.0),
+                            color: Colors.grey, fontWeight: FontWeight.w400, fontFamily: "NotoSans", fontStyle: FontStyle.normal, fontSize: 12.0),
                       ),
                     ),
                     Container(
                       margin: EdgeInsets.only(bottom: 20.h),
-                      child: Row(
-                          mainAxisAlignment: MainAxisAlignment.center,
-                          crossAxisAlignment: CrossAxisAlignment.center,
-                          children: [
-                            Container(
-                                margin: EdgeInsets.only(left: 16.w),
-                                width: 12.7.w,
-                                height: 16.h,
-                                child: SvgPicture.asset(
-                                  "assets/icons/ic_placeholder.svg",
-                                )),
-                            Container(
-                                margin: EdgeInsets.only(left: 6.w),
-                                width: 80.w,
-                                height: 21.h,
-                                child: Text(
-                                    //store.distanceddddd
-                                    (store.distanceFromCurPosition / 1000)
-                                            .toStringAsFixed(3) +
-                                        " " +
-                                        "km",
-                                    style: const TextStyle(
-                                        color: const Color(0xffed6363),
-                                        fontWeight: FontWeight.w400,
-                                        fontFamily: "Roboto",
-                                        fontStyle: FontStyle.normal,
-                                        fontSize: 18.0))),
-                            Container(
-                                height: 22.h,
-                                width: 40.w,
-                                //margin: EdgeInsets.only(bottom: 24.h),
-                                child: ElevatedButton(
-                                    onPressed: () {
-                                      Get.to(() {
-                                        shopController.updateShop(store);
-                                        return OrderTakeOut(shop: store);
-                                      });
-                                    },
-                                    child: Container(
-                                        padding: EdgeInsets.only(
-                                            left: 4.w,
-                                            right: 4.w,
-                                            top: 2.h,
-                                            bottom: 2.h),
-                                        height: 18.h,
-                                        child: FittedBox(
-                                            fit: BoxFit.fitHeight,
-                                            child: Text("매장",
-                                                style: TextStyle(
-                                                    color: NEAR_WHITE,
-                                                    fontWeight: FontWeight.w400,
-                                                    fontFamily: "NotoSans",
-                                                    fontStyle: FontStyle.normal,
-                                                    fontSize: 17.0),
-                                                textAlign: TextAlign.left))),
-                                    style: ButtonStyle(
-                                      backgroundColor:
-                                          MaterialStateProperty.all(DARK_BLUE),
-                                      shape: MaterialStateProperty.all<
-                                              RoundedRectangleBorder>(
-                                          RoundedRectangleBorder(
-                                        borderRadius:
-                                            BorderRadius.circular(15.h),
-                                      )),
-                                    ))),
-                            Container(
-                                height: 22.h,
-                                width: 40.w,
-                                margin: EdgeInsets.only(left: 6.w),
-                                child: ElevatedButton(
-                                    onPressed: () {
-                                      Get.to(() {
-                                        shopController.updateShop(store);
-                                        return OrderTakeOut(shop: store);
-                                      });
-                                    },
-                                    child: Container(
-                                        padding: EdgeInsets.only(
-                                            left: 4.w,
-                                            right: 4.w,
-                                            top: 2.h,
-                                            bottom: 2.h),
-                                        height: 18.h,
-                                        child: FittedBox(
-                                            fit: BoxFit.fitHeight,
-                                            child: Text("포장",
-                                                style: TextStyle(
-                                                    color: NEAR_WHITE,
-                                                    fontWeight: FontWeight.w400,
-                                                    fontFamily: "NotoSans",
-                                                    fontStyle: FontStyle.normal,
-                                                    fontSize: 17.0),
-                                                textAlign: TextAlign.left))),
-                                    style: ButtonStyle(
-                                      backgroundColor:
-                                          MaterialStateProperty.all(
-                                              LIGHT_SKY_BLUE),
-                                      shape: MaterialStateProperty.all<
-                                              RoundedRectangleBorder>(
-                                          RoundedRectangleBorder(
-                                        borderRadius:
-                                            BorderRadius.circular(15.h),
-                                      )),
-                                    ))),
-                          ]),
+                      child: Row(mainAxisAlignment: MainAxisAlignment.center, crossAxisAlignment: CrossAxisAlignment.center, children: [
+                        Container(
+                            margin: EdgeInsets.only(left: 16.w),
+                            width: 12.7.w,
+                            height: 16.h,
+                            child: SvgPicture.asset(
+                              "assets/icons/ic_placeholder.svg",
+                            )),
+                        Container(
+                            margin: EdgeInsets.only(left: 6.w),
+                            width: 80.w,
+                            height: 21.h,
+                            child: Text(
+                                //store.distanceddddd
+                                (store.distanceFromCurPosition / 1000).toStringAsFixed(3) + " " + "km",
+                                style: const TextStyle(
+                                    color: const Color(0xffed6363),
+                                    fontWeight: FontWeight.w400,
+                                    fontFamily: "Roboto",
+                                    fontStyle: FontStyle.normal,
+                                    fontSize: 18.0))),
+                        Container(
+                            height: 22.h,
+                            width: 40.w,
+                            //margin: EdgeInsets.only(bottom: 24.h),
+                            child: ElevatedButton(
+                                onPressed: () {
+                                  Get.to(() {
+                                    shopController.updateShop(store);
+                                    return OrderTakeOut(shop: store);
+                                  });
+                                },
+                                child: Container(
+                                    padding: EdgeInsets.only(left: 4.w, right: 4.w, top: 2.h, bottom: 2.h),
+                                    height: 18.h,
+                                    child: FittedBox(
+                                        fit: BoxFit.fitHeight,
+                                        child: Text("매장",
+                                            style: TextStyle(
+                                                color: NEAR_WHITE,
+                                                fontWeight: FontWeight.w400,
+                                                fontFamily: "NotoSans",
+                                                fontStyle: FontStyle.normal,
+                                                fontSize: 17.0),
+                                            textAlign: TextAlign.left))),
+                                style: ButtonStyle(
+                                  backgroundColor: MaterialStateProperty.all(DARK_BLUE),
+                                  shape: MaterialStateProperty.all<RoundedRectangleBorder>(RoundedRectangleBorder(
+                                    borderRadius: BorderRadius.circular(15.h),
+                                  )),
+                                ))),
+                        Container(
+                            height: 22.h,
+                            width: 40.w,
+                            margin: EdgeInsets.only(left: 6.w),
+                            child: ElevatedButton(
+                                onPressed: () {
+                                  Get.to(() {
+                                    shopController.updateShop(store);
+                                    return OrderTakeOut(shop: store);
+                                  });
+                                },
+                                child: Container(
+                                    padding: EdgeInsets.only(left: 4.w, right: 4.w, top: 2.h, bottom: 2.h),
+                                    height: 18.h,
+                                    child: FittedBox(
+                                        fit: BoxFit.fitHeight,
+                                        child: Text("포장",
+                                            style: TextStyle(
+                                                color: NEAR_WHITE,
+                                                fontWeight: FontWeight.w400,
+                                                fontFamily: "NotoSans",
+                                                fontStyle: FontStyle.normal,
+                                                fontSize: 17.0),
+                                            textAlign: TextAlign.left))),
+                                style: ButtonStyle(
+                                  backgroundColor: MaterialStateProperty.all(LIGHT_SKY_BLUE),
+                                  shape: MaterialStateProperty.all<RoundedRectangleBorder>(RoundedRectangleBorder(
+                                    borderRadius: BorderRadius.circular(15.h),
+                                  )),
+                                ))),
+                      ]),
                     ),
                   ],
                 )
