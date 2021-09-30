@@ -383,7 +383,7 @@ class NearStoresPageState extends State<NearStoresPage> {
                                 width: 80.w,
                                 height: 21.h,
                                 child: Text(
-                                    //store.distance
+                                    //store.distanceddddd
                                     (store.distanceFromCurPosition / 1000)
                                             .toStringAsFixed(3) +
                                         " " +
