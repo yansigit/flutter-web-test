@@ -11,14 +11,12 @@ class OrderTab extends StatefulWidget {
   OrderTab({Key? key, this.categoryList = const []}) : super(key: key);
 
   @override
-  _OrderTabReState createState() =>
-      _OrderTabReState();
+  _OrderTabReState createState() => _OrderTabReState();
 }
 
-class _OrderTabReState extends State<OrderTab>
-    with SingleTickerProviderStateMixin {
+class _OrderTabReState extends State<OrderTab> with SingleTickerProviderStateMixin {
   late TabController _controller;
-  
+
   List<Tab> tabList = [];
 
   @override
@@ -61,6 +59,7 @@ class _OrderTabReState extends State<OrderTab>
         appBar: AppBar(
           backgroundColor: Colors.white,
           elevation: 2,
+          centerTitle: true,
           leading: IconButton(
             onPressed: () => Get.back(),
             icon: SvgPicture.asset(
@@ -102,14 +101,11 @@ class _OrderTabReState extends State<OrderTab>
               color: Colors.white,
               child: ListView.builder(
                 scrollDirection: Axis.vertical,
-                itemCount: widget.categoryList[_controller.index].menus.isNotEmpty
-                    ? widget.categoryList[_controller.index].menus.length
-                    : 1,
+                itemCount: widget.categoryList[_controller.index].menus.isNotEmpty ? widget.categoryList[_controller.index].menus.length : 1,
                 itemBuilder: (context, index) {
                   return Container(
                       child: widget.categoryList[_controller.index].menus.isNotEmpty
-                          ? ItemBoxContainer(
-                              widget.categoryList[_controller.index].menus[index])
+                          ? ItemBoxContainer(widget.categoryList[_controller.index].menus[index])
                           : Container(
                               child: Text("표시할 항목이 없습니다."),
                               height: 200.h,

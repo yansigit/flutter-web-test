@@ -26,15 +26,22 @@ class _BottomNavState extends State<BottomNav> {
     currentIdx = 0;
   }
 
-  BottomNavigationBarItem _bottomNavigationBarItem(String iconName, String label) {
+  BottomNavigationBarItem _bottomNavigationBarItem(
+      String iconName, String label) {
     return BottomNavigationBarItem(
       icon: SvgPicture.asset("assets/bottomNav/${iconName}.svg", width: 32.w),
       label: label,
-      activeIcon: SvgPicture.asset("assets/bottomNav/${iconName}Selected.svg", width: 32.w),
+      activeIcon: SvgPicture.asset("assets/bottomNav/${iconName}Selected.svg",
+          width: 32.w),
     );
   }
 
-  static List<String> appBarTitles = <String>["아름 드림", "단골 매장", "주문 내역", "아름 드림"];
+  static List<String> appBarTitles = <String>[
+    "아름 드림",
+    "단골 매장",
+    "주문 내역",
+    "아름 드림"
+  ];
   static List<StatefulWidget> _widgetOptions = <StatefulWidget>[
     NearStoresPage(),
     // FavoriteStoresPage(),
@@ -45,24 +52,31 @@ class _BottomNavState extends State<BottomNav> {
     return BottomNavigationBar(
       type: BottomNavigationBarType.fixed,
       selectedItemColor: ColorThemes().selectedColor,
-      selectedLabelStyle: TextStyle(color: ColorThemes().selectedColor, fontSize: 12.sp),
+      selectedLabelStyle:
+          TextStyle(color: ColorThemes().selectedColor, fontSize: 12.sp),
       onTap: (int idx) => setState(() {
         currentIdx = idx;
         if (idx == 0) {
           Get.to(() => _widgetOptions[currentIdx]);
         }
         if (idx == 1) {
-          ScaffoldMessenger.of(context).showSnackBar(
-              SnackBar(duration: const Duration(milliseconds: 500), content: Text("아직 단골 매장을 볼 수 있는 기능이 구현되지 않았습니다. 베타 테스트 이후에 기능 구현 예정입니다.")));
+          Get.snackbar(
+              "경고", "아직 단골 매장을 볼 수 있는 기능이 구현되지 않았습니다. 베타 테스트 이후에 기능 구현 예정입니다.",
+              backgroundColor: Colors.white);
           currentIdx = 0;
         }
         if (idx == 2) {
-          ScaffoldMessenger.of(context).showSnackBar(
-              SnackBar(duration: const Duration(milliseconds: 500), content: Text("아직 주문 내역을 볼 수 있는기능이 구현되지 않았습니다. 베타 테스트 이후에  기능 구현 예정입니다.")));
+          // "아직 주문 내역을 볼 수 있는기능이 구현되지 않았습니다. 베타 테스트 이후에  기능 구현 예정입니다."
+          Get.snackbar(
+              "경고", "아직 주문 내역을 볼 수 있는기능이 구현되지 않았습니다. 베타 테스트 이후에  기능 구현 예정입니다.",
+              backgroundColor: Colors.white);
           currentIdx = 0;
         }
+
         if (idx == 3) {
-          Get.snackbar("경고", "아직 내 정보를 볼 수 있는 기능이 구현되지 않았습니다. 베타테스트 이후에 기능 구현 예정입니다.", backgroundColor: Colors.white);
+          Get.snackbar(
+              "경고", "아직 내 정보를 볼 수 있는 기능이 구현되지 않았습니다. 베타테스트 이후에 기능 구현 예정입니다.",
+              backgroundColor: Colors.white);
           currentIdx = 0;
         }
       }),

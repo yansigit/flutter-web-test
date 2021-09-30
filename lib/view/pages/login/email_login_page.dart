@@ -9,11 +9,13 @@ import 'package:save_order/consts/color.dart';
 import 'package:save_order/consts/size.dart';
 import "package:http/http.dart" as http;
 import 'package:save_order/model/model.dart';
+import 'package:save_order/state/controllers.dart';
 import 'package:save_order/view/pages/UserPage.dart';
 import 'package:save_order/view/pages/bottomNavConnectPages/FavoriteStoresPageState.dart';
 import 'package:save_order/view/pages/bottomNavConnectPages/FindNearStore.dart';
 import 'package:save_order/view/pages/bottomNavConnectPages/MyOrderPage.dart';
 import 'package:save_order/view/pages/login/email_find_page.dart';
+import 'package:save_order/view/pages/login/password_chage_page.dart';
 import 'package:save_order/view/pages/login/password_find_page.dart';
 import 'package:save_order/widget/bottom_nav.dart';
 import 'package:shared_preferences/shared_preferences.dart';
@@ -26,10 +28,11 @@ class EmailLoginPage extends StatefulWidget {
 }
 
 class _EmailLoginPage extends State<EmailLoginPage> {
+  UserController userController = Get.put(UserController());
   TextEditingController? emailController;
   TextEditingController? passwordController;
   String? userInfo = ""; //user의 정보를 저장하기 위한 변수
-  String? token = "";
+  String token = "";
   static SharedPreferences? sharedPreferences;
   //flutter_secure_storage 사용을 위한 초기화 작업
   @override
@@ -53,8 +56,10 @@ class _EmailLoginPage extends State<EmailLoginPage> {
 
     //user의 정보가 있다면 바로 로그아웃 페이지로 넝어가게 합니다.
     if (token != null && token.length != 0) {
-      emailController!.text = sharedPreferences!.getString("email").toString();
-      passwordController!.text = sharedPreferences!.getString("password").toString();
+      emailController!.text =
+          sharedPreferences!.getString("email").toString().trim();
+      passwordController!.text =
+          sharedPreferences!.getString("password").toString().trim();
       this.token = token;
     }
   }
@@ -63,11 +68,19 @@ class _EmailLoginPage extends State<EmailLoginPage> {
   Widget build(BuildContext context) {
     return Scaffold(
       backgroundColor: Color(0xFFFFFF).withOpacity(1.0),
+      appBar: AppBar(
+        backgroundColor: Colors.white,
+        elevation: 1.3,
+        centerTitle: true,
+        title: Text("이메일로 로그인",
+            style: TextStyle(fontWeight: FontWeight.w700, color: Colors.black)),
+      ),
       body: Center(
         child: Container(
           width: 325.w,
           height: 300.h,
-          decoration: BoxDecoration(border: Border.all(color: Colors.blueAccent)),
+          decoration:
+              BoxDecoration(border: Border.all(color: Colors.blueAccent)),
           child: Column(
             mainAxisAlignment: MainAxisAlignment.center,
             crossAxisAlignment: CrossAxisAlignment.center,
@@ -85,24 +98,35 @@ class _EmailLoginPage extends State<EmailLoginPage> {
                         fit: BoxFit.fitWidth,
                         child: Text(
                           "이메일: ",
-                          style: TextStyle(color: const Color(0xff222222), fontFamily: "NotoSans", fontSize: 14.0),
+                          style: TextStyle(
+                              color: const Color(0xff222222),
+                              fontFamily: "NotoSans",
+                              fontSize: 14.0),
                         ),
                       )),
                   Container(
                       height: 30.h,
-                      width: 200.w,
+                      width: 240.w,
                       alignment: Alignment.center,
                       decoration: BoxDecoration(
                         color: Colors.white,
-                        border: Border.all(color: const Color(0xffe8e8e8), width: 1.w),
-                        boxShadow: [BoxShadow(color: const Color(0x0c000000), offset: Offset(0, 2), blurRadius: 4, spreadRadius: 0)],
+                        border: Border.all(
+                            color: const Color(0xffe8e8e8), width: 1.w),
+                        boxShadow: [
+                          BoxShadow(
+                              color: const Color(0x0c000000),
+                              offset: Offset(0, 2),
+                              blurRadius: 4,
+                              spreadRadius: 0)
+                        ],
                       ),
                       child: TextFormField(
                         textAlignVertical: TextAlignVertical.center,
                         inputFormatters: [
                           LengthLimitingTextInputFormatter(36),
                         ],
-                        style: TextStyle(fontFamily: "NotoSans", fontSize: 14.0),
+                        style:
+                            TextStyle(fontFamily: "NotoSans", fontSize: 14.0),
                         textAlign: TextAlign.center,
                         // textAlignVertical: TextAlignVertical.center,
                         controller: emailController,
@@ -126,16 +150,26 @@ class _EmailLoginPage extends State<EmailLoginPage> {
                               fit: BoxFit.fitWidth,
                               child: Text(
                                 "비밀번호: ",
-                                style: TextStyle(color: const Color(0xff222222), fontFamily: "NotoSans", fontSize: 14.0),
+                                style: TextStyle(
+                                    color: const Color(0xff222222),
+                                    fontFamily: "NotoSans",
+                                    fontSize: 14.0),
                               ))),
                       Container(
                           height: 30.h,
-                          width: 200.w,
+                          width: 240.w,
                           alignment: Alignment.center,
                           decoration: BoxDecoration(
                             color: Colors.white,
-                            border: Border.all(color: const Color(0xffe8e8e8), width: 1.w),
-                            boxShadow: [BoxShadow(color: const Color(0x0c000000), offset: Offset(0, 2), blurRadius: 4, spreadRadius: 0)],
+                            border: Border.all(
+                                color: const Color(0xffe8e8e8), width: 1.w),
+                            boxShadow: [
+                              BoxShadow(
+                                  color: const Color(0x0c000000),
+                                  offset: Offset(0, 2),
+                                  blurRadius: 4,
+                                  spreadRadius: 0)
+                            ],
                           ),
                           child: TextFormField(
                             obscureText: true,
@@ -143,9 +177,11 @@ class _EmailLoginPage extends State<EmailLoginPage> {
                             inputFormatters: [
                               LengthLimitingTextInputFormatter(20),
                             ],
-                            style: TextStyle(fontFamily: "NotoSans", fontSize: 14.0),
+                            style: TextStyle(
+                                fontFamily: "NotoSans", fontSize: 14.0),
                             textAlign: TextAlign.center,
                             // textAlignVertical: TextAlignVertical.center,
+                            // 비밀번호 입력할 때 스페이스바 지우기
                             controller: passwordController,
                             decoration: InputDecoration(
                               hintText: "비밀번호를 입력하세요.",
@@ -155,45 +191,71 @@ class _EmailLoginPage extends State<EmailLoginPage> {
                   )),
               ElevatedButton(
                   style: ButtonStyle(
-                    side: MaterialStateProperty.all<BorderSide>(BorderSide(color: const Color(0xff00276b), width: 1.w)),
+                    side: MaterialStateProperty.all<BorderSide>(
+                        BorderSide(color: const Color(0xff00276b), width: 1.w)),
                     backgroundColor: MaterialStateProperty.all(EMAIL_COLOR),
                     shape: MaterialStateProperty.all<RoundedRectangleBorder>(
-                        RoundedRectangleBorder(borderRadius: BorderRadius.circular(loginRaiusSize))),
+                        RoundedRectangleBorder(
+                            borderRadius:
+                                BorderRadius.circular(loginRaiusSize))),
                   ),
                   onPressed: () async {
-                    print(token!.length);
+                    print(token
+                  .length);
                     print("print");
-                    if (token!.length == 0 || token == null) {
-                      Map data = {"email": emailController!.text.toString(), "password": passwordController!.text.toString()};
-                      var body = json.encode(data);
-                      var response;
-                      if (!GetPlatform.isWeb) {
-                        response = await http.Client().post(Uri.parse("http://${devMode()}.dalbodre.me/api/User/Login"),
-                            headers: <String, String>{'Content-Type': 'application/json'}, body: body);
-                      } else {
-                        print("web");
-                        response = await http.Client().post(Uri.parse("http://${devMode()}.dalbodre.me/api/User/Login"),
-                            headers: <String, String>{
-                              'Content-Type': 'application/json',
-                              "Access-Control-Allow-Origin": "*",
-                              "Access-Control-Allow-Headers": "Origin,Content-Type,X-Amz-Date,Authorization,X-Api-Key,X-Amz-Security-Token"
-                            },
-                            body: body);
-                      }
 
-                      final decodedToken = json.decode(response.body);
-                      this.token = decodedToken["token"];
-                      print(this.token);
-                      if (this.token == null || this.token!.length == 0) {
-                        return;
-                      }
-                      print("ssad");
-                      print(emailController!.text.toString());
-                      await sharedPreferences!.setString("email", emailController!.text.toString());
+                    Map data = {
+                      "email": emailController!.text.toString().trim(),
+                      "password": passwordController!.text.toString().trim()
+                    };
+                    var body = json.encode(data);
+                    var response = await http.Client().post(
+                        Uri.parse(
+                            "http://${devMode()}.dalbodre.me/api/User/Login"),
+                        headers: <String, String>{
+                          'Content-Type': 'application/json'
+                        },
+                        body: body);
 
-                      await sharedPreferences!.setString("password", passwordController!.text.toString());
-                      await sharedPreferences!.setString("token", this.token!);
+                    if (response.statusCode != 200) {
+                      ScaffoldMessenger.of(context).showSnackBar(SnackBar(
+                          content: Text("이메일 혹은 비밀번호를 잘못 입력하셨습니다."),
+                          duration: const Duration(milliseconds: 1000)));
+                      return;
                     }
+                    final decodedToken = json.decode(response.body);
+                  
+                        this.token = decodedToken["token"];
+                    
+                  
+                    final isTempPassword = decodedToken["isTempPassword"];
+                
+                    if (this.token.length == 0) {
+                      return;
+                    }
+
+                    if (isTempPassword == true) {
+                      Get.to(() => PasswordChangePage());
+                      return;
+                    }
+
+                    print("ssad");
+                    print(emailController!.text.toString());
+                    await sharedPreferences!
+                        .setString("email", emailController!.text.toString());
+
+                    await sharedPreferences!.setString(
+                        "password", passwordController!.text.toString());
+                    await sharedPreferences!.setString("token", this.token);
+
+                    if(this.token.length != 0) {
+                       userController.updateUserInfo(
+                      emailController!.text.toString(),
+                      this.token
+                    );
+                    }
+                   
+
                     Get.to(() => NearStoresPage());
                   },
                   child: Container(
@@ -215,7 +277,7 @@ class _EmailLoginPage extends State<EmailLoginPage> {
                 children: [
                   Container(
                     width: 100.w,
-                    height: 20.h,
+                    height: 25.h,
                     child: GestureDetector(
                         onTap: () {
                           Get.to(EmailFindPage());
@@ -224,7 +286,7 @@ class _EmailLoginPage extends State<EmailLoginPage> {
                   ),
                   Container(
                     width: 100.w,
-                    height: 20.h,
+                    height: 25.h,
                     child: GestureDetector(
                         onTap: () {
                           Get.to(PasswordFindPage());

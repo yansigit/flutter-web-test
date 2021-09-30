@@ -21,9 +21,44 @@ class SignUpPage extends State<SignUp> {
   TextEditingController nameControlller = new TextEditingController();
   TextEditingController phoneNumberController = new TextEditingController();
 
+  RegExp emailRegExp = RegExp(
+      r"^[a-zA-Z0-9.a-zA-Z0-9.!#$%&'*+-/=?^_`{|}~]+@[a-zA-Z0-9]+\.[a-zA-Z]+");
+  RegExp passwordExp = RegExp(r'^(?=.*?[a-z])(?=.*?[0-9]).{8,}$');
+  RegExp phoneNumberExp = RegExp(r'^(0[12]0)([0-9]{3,4})([0-9]{4})$');
   @override
   void initState() {
     super.initState();
+  }
+
+  bool isValidFormat(
+      String email, String password, String name, String phoneNumber) {
+    if (email.length >= 31 || !emailRegExp.hasMatch(email)) {
+      ScaffoldMessenger.of(context).showSnackBar(SnackBar(
+          duration: const Duration(milliseconds: 1500),
+          content: Text("형식에 맞지 않는 이메일입니다. 다시 입력해 주세요.")));
+      return false;
+    }
+    if (password.length >= 101 || !passwordExp.hasMatch(password)) {
+      ScaffoldMessenger.of(context).showSnackBar(SnackBar(
+          duration: const Duration(milliseconds: 1500),
+          content: Text(
+              "형식에 맞지 않는 비밀번호입니다. 영어 소문자를 적어도 1개 이상, 숫자를 적어도 1개 이상 포함하는 8자리 글자를 입력해주세요.")));
+      return false;
+    }
+    if (name.length <= 1) {
+      ScaffoldMessenger.of(context).showSnackBar(SnackBar(
+          duration: const Duration(milliseconds: 1500),
+          content: Text("이름을 입력해주세요.")));
+      return false;
+    }
+    if (!phoneNumberExp.hasMatch(phoneNumber)) {
+      ScaffoldMessenger.of(context).showSnackBar(SnackBar(
+          duration: const Duration(milliseconds: 1500),
+          content: Text("형식에 맞지 않는 휴대폰 번호입니다.'-' 없이 숫자를 입력해주세요.")));
+      return false;
+    }
+
+    return true;
   }
 
   @override
@@ -32,19 +67,21 @@ class SignUpPage extends State<SignUp> {
         backgroundColor: Color(0xFFFFFF).withOpacity(1.0),
         body: Center(
           child: Container(
-            margin: EdgeInsets.only(top: 50.h, left: 10.w, right: 10.w),
+            width: 325.w,
+            height: 400.h,
             child: Column(children: <Widget>[
               inputUserInfoWidget(emailController, "이메일"),
-              inputUserInfoWidget(passwordController, "비밀번호", isSensitiveInfo: true),
+              inputUserInfoWidget(passwordController, "비밀번호",
+                  isSensitiveInfo: true),
               inputUserInfoWidget(nameControlller, "이름"),
               inputUserInfoWidget(phoneNumberController, "휴대폰 번호"),
               Container(
-                margin: EdgeInsets.only(top: 20.h, left: 30.w, right: 16.w),
+                margin: EdgeInsets.only(top: 20.h, left: 10.w, right: 10.w),
                 child: Row(
                   children: <Widget>[
                     Container(
                         height: 30.h,
-                        margin: EdgeInsets.only(left: 8.w, top: 8.h),
+                        margin: EdgeInsets.only(top: 8.h),
                         child: ElevatedButton(
                             style: ButtonStyle(
                               side: MaterialStateProperty.all<BorderSide>(
@@ -56,15 +93,21 @@ class SignUpPage extends State<SignUp> {
                               shape: MaterialStateProperty.all<
                                       RoundedRectangleBorder>(
                                   RoundedRectangleBorder(
-                                      borderRadius:
-                                          BorderRadius.circular(loginRaiusSize))),
+                                      borderRadius: BorderRadius.circular(
+                                          15.h))),
                             ),
                             onPressed: () async {
-                              var email = emailController.text.toString();
-                              var password = passwordController.text.toString();
-                              var name = nameControlller.text.toString();
+                              var email =
+                                  emailController.text.toString().trim();
+                              var password = passwordController.text.toString()
+                                ..trim();
+                              var name = nameControlller.text.toString().trim();
                               var phoneNumber =
-                                  phoneNumberController.text.toString();
+                                  phoneNumberController.text.toString().trim();
+                              if (!isValidFormat(
+                                  email, password, name, phoneNumber)) {
+                                return;
+                              }
                               print(email);
                               print(password);
                               Map data = {
@@ -83,10 +126,16 @@ class SignUpPage extends State<SignUp> {
                                   body: body);
                               print(response.statusCode);
                               print(json.decode(response.body));
-                              ScaffoldMessenger.of(context).showSnackBar(SnackBar(
-                        duration: const Duration(milliseconds: 1000),
-                        content: Text("회원가입이 완료되셨습니다."))
-                        );
+                              ScaffoldMessenger.of(context).showSnackBar(
+                                  SnackBar(
+                                      duration:
+                                          const Duration(milliseconds: 1000),
+                                      content: Text("회원가입이 완료되셨습니다.")));
+                              emailController.text = "";
+                              passwordController.text = "";
+                              phoneNumberController.text = "";
+                              nameControlller.text = "";
+
                               Get.to(() => LoginPage());
                             },
                             child: Container(
@@ -121,12 +170,12 @@ class SignUpPage extends State<SignUp> {
     return Row(children: <Widget>[
       Container(
           margin: EdgeInsets.only(right: 10.w, bottom: 8.h),
-          width: 100.w,
+          width: 60.w,
           height: 20.h,
           child: FittedBox(fit: BoxFit.fitHeight, child: Text(infoName))),
       Container(
           margin: EdgeInsets.only(right: 10.w, bottom: 8.h),
-          width: 230.w,
+          width: 240.w,
           height: 30.h,
           child: TextField(
             obscureText: isSensitiveInfo,
