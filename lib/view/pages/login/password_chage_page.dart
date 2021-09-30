@@ -114,7 +114,6 @@ class _PasswordChagePage extends State<PasswordChangePage> {
                         };
 
                         var body = json.encode(data);
-
                         var response = await http.Client().post(
                             Uri.parse(
                                 "http://${devMode()}.dalbodre.me/api/User/ChangePassword/Token"),
@@ -122,6 +121,8 @@ class _PasswordChagePage extends State<PasswordChangePage> {
                               'Content-Type': 'application/json'
                             },
                             body: body);
+                        print(response.body);
+                        print(response.statusCode);
                         final decodedToken = json.decode(response.body);
 
                         if (response.statusCode != 200 ||
