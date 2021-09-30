@@ -331,15 +331,13 @@ class PriceController extends GetxController {
 class UserController extends GetxController {
   final userId = "".obs;
   final userToken = "".obs;
-  RxBool isLoginedAtLeastOnce = false.obs;
+
 
   updateUserInfo(String userId, String userToken) {
     this.userId.value = userId;
     this.userToken.value = userToken;
   }
 
-  login() {
-    this.isLoginedAtLeastOnce = true.obs;
-  }
+
   
 }

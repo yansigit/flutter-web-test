@@ -35,6 +35,7 @@ class _EmailLoginPage extends State<EmailLoginPage> {
   String token = "";
   static SharedPreferences? sharedPreferences;
   //flutter_secure_storage 사용을 위한 초기화 작업
+
   @override
   void initState() {
     super.initState();
@@ -48,13 +49,12 @@ class _EmailLoginPage extends State<EmailLoginPage> {
   }
 
   _asyncMethod() async {
-    if (userController.isLoginedAtLeastOnce.isFalse) {
-      return;
-    }
-
+    print("bbb");
     sharedPreferences = await SharedPreferences.getInstance();
+
     //read 함수를 통하여 key값에 맞는 정보를 불러오게 됩니다. 이때 불러오는 결과의 타입은 String 타입임을 기억해야 합니다.
     //(데이터가 없을때는 null을 반환을 합니다.)
+
     String? token = await sharedPreferences!.getString("token");
     print(token);
 
@@ -247,8 +247,12 @@ class _EmailLoginPage extends State<EmailLoginPage> {
                       return;
                     }
 
-                    print("ssad");
                     print(emailController!.text.toString());
+
+                    if (sharedPreferences == null) {
+                      sharedPreferences = await SharedPreferences.getInstance();
+                    }
+
                     await sharedPreferences!
                         .setString("email", emailController!.text.toString());
 
@@ -259,8 +263,10 @@ class _EmailLoginPage extends State<EmailLoginPage> {
                     if (this.token.length != 0) {
                       userController.updateUserInfo(
                           emailController!.text.toString(), this.token);
-                      userController.login();
+                      ;
+                      print("Sdsdssdsd");
                     }
+
 
                     Get.to(() => NearStoresPage());
                   },
