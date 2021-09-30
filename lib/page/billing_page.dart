@@ -2,21 +2,25 @@ import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:get/get.dart';
+import 'package:save_order/model/model.dart';
+import 'package:save_order/state/controllers.dart';
 
 import 'card_page.dart';
 
 class BillingPage extends StatelessWidget {
   BillingPage({Key? key}) : super(key: key);
+  ShoppingCartController s = Get.find();
 
   String couponNumber = "";
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text("결제하기", style: TextStyle(fontWeight: FontWeight.w700)),
+        title: Text("결제하기", style: TextStyle(fontWeight: FontWeight.w700, color: Colors.black)),
         centerTitle: true,
         elevation: 5,
-  
+        backgroundColor: Colors.white,
+        leading: IconButton(onPressed: () => Get.back(), icon: SvgPicture.asset("assets/icons/backIcon.svg", color: Colors.black)),
       ),
       body: Container(
         color: Color(0xffffffff),
@@ -68,7 +72,7 @@ class BillingPage extends StatelessWidget {
                     fit: BoxFit.fitHeight,
                     child: Text(
                       //TODO 결제금액
-                      "23,000원",
+                      calcStringToWon(s.totalPrice.value),
                       style: TextStyle(
                         color: Color(0xff00276b),
                         fontWeight: FontWeight.w700,
@@ -105,10 +109,9 @@ class PaymentMethodWidget extends StatelessWidget {
           children: [
             Container(height: 25.h, child: FittedBox(fit: BoxFit.fitHeight, child: Text("결제수단", style: TextStyle(fontWeight: FontWeight.w700)))),
             InkWell(
-              onTap: (() => 
-              print("aa")
-              //Get.to(CardPage())
-              ),
+              onTap: (() => print("aa")
+                  //Get.to(CardPage())
+                  ),
               child: Container(
                 margin: EdgeInsets.symmetric(vertical: 5.h),
                 width: double.infinity,
@@ -338,14 +341,16 @@ class PaymentMethodWidget extends StatelessWidget {
 }
 
 class ExpandableList extends StatefulWidget {
-  const ExpandableList({Key? key}) : super(key: key);
+  ExpandableList({Key? key}) : super(key: key);
 
   @override
   _ExpandableListState createState() => _ExpandableListState();
 }
 
 class _ExpandableListState extends State<ExpandableList> {
-  bool expandFlag = false;
+  ShoppingCartController s = Get.find();
+  bool expandFlag = true;
+
   @override
   Widget build(BuildContext context) {
     return Container(
@@ -370,7 +375,7 @@ class _ExpandableListState extends State<ExpandableList> {
                     child: FittedBox(
                         fit: BoxFit.fitHeight,
                         //TODO 주문 내역 갯수구현
-                        child: Text("주문 내역{몇 개}", style: TextStyle(fontWeight: FontWeight.w700))),
+                        child: Text("주문 내역(${s.shoppingCart.length})", style: TextStyle(fontWeight: FontWeight.w700))),
                   ),
                   Container(
                     height: 24.h,
@@ -388,47 +393,54 @@ class _ExpandableListState extends State<ExpandableList> {
             height: 1,
             color: Color(0xffe8e8e8),
           ),
-          Container(
-              child: ExpandableContainer(
-            expanded: expandFlag,
-            expandedHeight: 400.h,
-          )),
+          AnimatedContainer(
+            duration: Duration(milliseconds: 350),
+            curve: Curves.easeInOut,
+            width: double.infinity,
+            height: !expandFlag ? 0 : s.shoppingCart.length * 90.h,
+            child: ListView.builder(
+              itemBuilder: ((context, index) {
+                return cartItemWidget(s.shoppingCart[index]);
+              }),
+              itemCount: s.shoppingCart.length,
+            ),
+          )
         ],
       ),
     );
   }
-}
 
-class ExpandableContainer extends StatelessWidget {
-  final bool expanded;
-  final double collapsedHeight;
-  final double expandedHeight;
-  ExpandableContainer({
-    Key? key,
-    required this.expanded,
-    this.collapsedHeight = 0.0,
-    this.expandedHeight = 420.0,
-  }) : super(key: key);
+  Widget cartItemWidget(CartItem i) {
+    String optionString = "";
+    Map<String, CartOption> options = i.cartOptions;
 
-  @override
-  Widget build(BuildContext context) {
-    return AnimatedContainer(
-      duration: Duration(milliseconds: 300),
-      width: double.infinity,
-      height: expanded ? expandedHeight : collapsedHeight,
-      color: Color(0x05000000),
-      child: ListView.builder(
-        itemBuilder: ((context, index) {
-          return cartItemWidget();
-        }),
-        itemCount: 6,
-      ),
-    );
-  }
+    if (options["temp"]?.name != null) {
+      optionString += options["temp"]!.name;
+    }
+    if (options["addShot"]?.name != null) {
+      if (optionString == "") {
+        optionString += " / ${options["addShot"]!.quantity}샷 추가";
+      } else {
+        optionString += "${options["addShot"]!.quantity}샷 추가";
+      }
+    }
+    if (options["whipping"]?.name != null) {
+      if (optionString == "") {
+        optionString += " / 휘핑크림";
+      } else {
+        optionString += "휘핑크림";
+      }
+    }
+    if (options["etcOption"]?.name != null) {
+      if (optionString == "") {
+        optionString += " / ${options["etcOption"]!.name}";
+      } else {
+        optionString += "${options["etcOption"]!.name}";
+      }
+    }
 
-  //TODO 내용수정
-  Widget cartItemWidget() {
     return Container(
+      color: Color(0xfff8f8f8),
       width: double.infinity,
       margin: EdgeInsets.symmetric(vertical: 8.h, horizontal: 20.w),
       child: Row(
@@ -438,35 +450,52 @@ class ExpandableContainer extends StatelessWidget {
             height: 70.h,
             decoration: BoxDecoration(
               borderRadius: BorderRadius.all(Radius.circular(90.h)),
-              color: Color(0xff815135),
+              color: Color(i.bgColor),
             ),
-            child: FittedBox(fit: BoxFit.scaleDown, child: Text("커피이미지")),
+            child: Image.network(i.thumbnail, fit: BoxFit.scaleDown),
           ),
           Container(
             margin: EdgeInsets.only(
               left: 16.w,
             ),
             child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
               children: [
+                Row(
+                  children: [
+                    Container(
+                      height: 21.h,
+                      child: FittedBox(
+                        fit: BoxFit.fitHeight,
+                        child: Text(
+                          i.name,
+                          style: TextStyle(fontWeight: FontWeight.w700),
+                        ),
+                      ),
+                    ),
+                    i.cartOptions["menuQuantity"]?.quantity != null
+                        ? Container(
+                            height: 21.h,
+                            child: FittedBox(
+                              fit: BoxFit.fitHeight,
+                              child: Text(
+                                "  ${i.cartOptions["menuQuantity"]!.quantity}잔",
+                                style: TextStyle(fontWeight: FontWeight.w700),
+                              ),
+                            ))
+                        : Container()
+                  ],
+                ),
                 Container(
-                  height: 21.h,
-                  child: FittedBox(
-                    fit: BoxFit.fitHeight,
-                    child: Text(
-                      "아메리카노",
-                      style: TextStyle(fontWeight: FontWeight.w700),
+                  margin: EdgeInsets.only(top: 4.h),
+                  height: 19.h,
+                  child: Text(
+                    optionString,
+                    style: TextStyle(
+                      color: Color(0xff707070),
                     ),
                   ),
                 ),
-                Container(
-                    margin: EdgeInsets.only(top: 4.h),
-                    height: 19.h,
-                    child: Text(
-                      "시원한 / 중간 사이즈",
-                      style: TextStyle(
-                        color: Color(0xff707070),
-                      ),
-                    )),
               ],
             ),
           ),

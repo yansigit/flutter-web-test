@@ -325,3 +325,13 @@ class PriceController extends GetxController {
     this.finalPrice.value *= _c.menuQuantity.value;
   }
 }
+
+class UserController extends GetxController {
+  final userId = "".obs;
+  final userToken = "".obs;
+
+  updateUserInfo(String userId, String userToken) {
+    this.userId.value = userId;
+    this.userToken.value = userToken;
+  }
+}

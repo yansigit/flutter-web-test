@@ -24,40 +24,54 @@ class NearStoresPageState extends State<NearStoresPage> {
   int nearStoreLength = 0;
   late Position curPosition;
   int N = 3;
+  UserController userController = Get.find();
 
   Future<Position> loadCurLocation() async {
     print("location");
-    Position position = await Geolocator.getCurrentPosition(
+    // setState(() async {
+    curPosition = await Geolocator.getCurrentPosition(
         desiredAccuracy: LocationAccuracy.high);
-    return position;
+    // });
+
+    return curPosition;
   }
 
   List<bool> statusPermissions = [false, false];
 
   Future getStatusPermissonList() async {
     var _statusLocation = await Permission.location.status.isGranted;
-    statusPermissions[0] = _statusLocation;
     var _statusCamera = await Permission.camera.status.isGranted;
-    statusPermissions[1] = _statusCamera;
+    setState(() {
+      print("a");
+      statusPermissions[0] = _statusLocation;
+      statusPermissions[1] = _statusCamera;
+    });
   }
 
   Future<List<Shop>> fetchNearStores() async {
     //await Future.delayed(Duration(seconds: 0));
-    await getStatusPermissonList();
     var shops;
-    var locationPermissionStatus = statusPermissions[0];
-    print(locationPermissionStatus);
-    if (locationPermissionStatus == true) {
-      await this.loadCurLocation().then((val) {
-        this.curPosition = val;
-      });
-      shops = await Shop.fetchShopsByLocation(http.Client(), N, this.curPosition);
+    if (GetPlatform.isWeb) {
+      //shops = await Shop.fetchShopsByLocation(http.Client(), N, this.curPosition);
+
+      shops = await Shop.fetchShops(http.Client());
+
+      return shops;
+    }
+
+    //var locationPermissionStatus = statusPermissions[0];
+    // var locationPermissionStatus = false;
+    // print("locationPermissionStatus:" + locationPermissionStatus.toString());
+    // if (locationPermissionStatus == true) {
+    if (statusPermissions[0] == true) {
+      shops =
+          await Shop.fetchShopsByLocation(http.Client(), N, this.curPosition);
     } else {
       shops = await Shop.fetchShops(http.Client());
     }
 
     return shops;
-   
+
     // return [
     //   // new Shop(id:1,  name: "컬티", latitude: 38.5, longtitude: 40.5, distanceFromCurPosition: 3.5),
     //   // new Shop(id:1,  name: "카페마냥", latitude: 38.5, longtitude: 40.5, distanceFromCurPosition: 4.5),
@@ -68,6 +82,14 @@ class NearStoresPageState extends State<NearStoresPage> {
   @override
   void initState() {
     super.initState();
+    print("ssssdsdsf");
+    print(userController.userToken);
+    WidgetsBinding.instance?.addPostFrameCallback((_) {
+      getStatusPermissonList();
+      loadCurLocation().then((val) {
+        curPosition = val;
+      });
+    });
   }
 
   @override
@@ -185,8 +207,7 @@ class NearStoresPageState extends State<NearStoresPage> {
                                             fontWeight: FontWeight.w400,
                                             fontFamily: "NotoSans",
                                             fontStyle: FontStyle.normal,
-                                            fontSize: 15.0)))
-                                            )
+                                            fontSize: 15.0))))
                           ]),
                     ),
                   ),
@@ -201,36 +222,82 @@ class NearStoresPageState extends State<NearStoresPage> {
                 color: Color(0xffd1d1d1).withOpacity(0.30000001192092896),
               ),
             ),
+            // FutureBuilder(
+            //   future: fetchNearStores(),
+            //   builder: (context, AsyncSnapshot projectSnap) {
+            //     if (projectSnap.hasData) {
+            //       return Container(
+            //           child: ListView.separated(
+            //         shrinkWrap: true,
+            //         scrollDirection: Axis.vertical,
+            //         itemCount: projectSnap.data.length,
+            //         itemBuilder: (BuildContext context, index) {
+            //           return buildStoreView(context, projectSnap.data[index]);
+            //         },
+            //         separatorBuilder: (context, index) {
+            //           return Container(
+            //             height: 1.h,
+            //             margin: EdgeInsets.only(
+            //               left: 20.5.w,
+            //               right: 20.5.w,
+            //             ),
+            //             decoration: BoxDecoration(
+            //               color: Color(0xffd1d1d1)
+            //                   .withOpacity(0.30000001192092896),
+            //             ),
+            //           );
+            //         },
+            //       ));
+            //     } else if (projectSnap.hasError) {
+            //       return Center(child: Text("주변 매장이 없습니다."));
+            //     } else {
+            //       return Center(child: CircularProgressIndicator());
+            //     }
+            //   },
+            // )
             FutureBuilder(
-              future: fetchNearStores(),
+              future: loadCurLocation(),
               builder: (context, AsyncSnapshot projectSnap) {
                 if (projectSnap.hasData) {
-                  return Container(
-                      child: ListView.separated(
-                    shrinkWrap: true,
-                    scrollDirection: Axis.vertical,
-                    itemCount: projectSnap.data.length,
-                    itemBuilder: (BuildContext context, index) {
-                      return buildStoreView(context, projectSnap.data[index]);
-                    },
-                    separatorBuilder: (context, index) {
-                      return Container(
-                        height: 1.h,
-                        margin: EdgeInsets.only(
-                          left: 20.5.w,
-                          right: 20.5.w,
-                        ),
-                        decoration: BoxDecoration(
-                          color: Color(0xffd1d1d1)
-                              .withOpacity(0.30000001192092896),
-                        ),
-                      );
-                    },
-                  ));
-                } else if (projectSnap.hasError) {
-                  return Center(child: Text("주변 매장이 없습니다."));
-                } else {
+                  curPosition = projectSnap.data;
+                  print(curPosition.latitude);
+                  print(curPosition.longitude);
+                  return FutureBuilder(
+                      future: fetchNearStores(),
+                      builder: (ctx, AsyncSnapshot snap) {
+                        if (snap.hasData) {
+                          return Container(
+                              child: ListView.separated(
+                            shrinkWrap: true,
+                            scrollDirection: Axis.vertical,
+                            itemCount: snap.data.length,
+                            itemBuilder: (BuildContext context, index) {
+                              return buildStoreView(context, snap.data[index]);
+                            },
+                            separatorBuilder: (context, index) {
+                              return Container(
+                                height: 1.h,
+                                margin: EdgeInsets.only(
+                                  left: 20.5.w,
+                                  right: 20.5.w,
+                                ),
+                                decoration: BoxDecoration(
+                                  color: Color(0xffd1d1d1)
+                                      .withOpacity(0.30000001192092896),
+                                ),
+                              );
+                            },
+                          ));
+                        } else if (!snap.hasData) {
+                          return Center(child: CircularProgressIndicator());
+                        } else {
+                          return Text("f");
+                        }
+                      });
+                } else if (!projectSnap.hasData) {
                   return Center(child: CircularProgressIndicator());
+                } else {
+                  return Text("현재 매장이 없다구");
                 }
               },
             )
@@ -317,10 +384,10 @@ class NearStoresPageState extends State<NearStoresPage> {
                                 height: 21.h,
                                 child: Text(
                                     //store.distance
-                                    (store.distanceFromCurPosition % 10)
-                                            .toStringAsFixed(1) +
-                                        " "
-                                            "km",
+                                    (store.distanceFromCurPosition)
+                                            .toStringAsFixed(3) +
+                                        " " +
+                                        "m",
                                     style: const TextStyle(
                                         color: const Color(0xffed6363),
                                         fontWeight: FontWeight.w400,

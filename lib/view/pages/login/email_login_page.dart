@@ -9,6 +9,7 @@ import 'package:save_order/consts/color.dart';
 import 'package:save_order/consts/size.dart';
 import "package:http/http.dart" as http;
 import 'package:save_order/model/model.dart';
+import 'package:save_order/state/controllers.dart';
 import 'package:save_order/view/pages/UserPage.dart';
 import 'package:save_order/view/pages/bottomNavConnectPages/FavoriteStoresPageState.dart';
 import 'package:save_order/view/pages/bottomNavConnectPages/FindNearStore.dart';
@@ -27,10 +28,11 @@ class EmailLoginPage extends StatefulWidget {
 }
 
 class _EmailLoginPage extends State<EmailLoginPage> {
+  UserController userController = Get.put(UserController());
   TextEditingController? emailController;
   TextEditingController? passwordController;
   String? userInfo = ""; //user의 정보를 저장하기 위한 변수
-  String? token = "";
+  String token = "";
   static SharedPreferences? sharedPreferences;
   //flutter_secure_storage 사용을 위한 초기화 작업
   @override
@@ -198,7 +200,8 @@ class _EmailLoginPage extends State<EmailLoginPage> {
                                 BorderRadius.circular(loginRaiusSize))),
                   ),
                   onPressed: () async {
-                    print(token!.length);
+                    print(token
+                  .length);
                     print("print");
 
                     Map data = {
@@ -221,11 +224,13 @@ class _EmailLoginPage extends State<EmailLoginPage> {
                       return;
                     }
                     final decodedToken = json.decode(response.body);
-                    this.token = decodedToken["token"];
+                  
+                        this.token = decodedToken["token"];
+                    
+                  
                     final isTempPassword = decodedToken["isTempPassword"];
-                    print(isTempPassword);
-                    print(this.token);
-                    if (this.token == null || this.token!.length == 0) {
+                
+                    if (this.token.length == 0) {
                       return;
                     }
 
@@ -241,7 +246,15 @@ class _EmailLoginPage extends State<EmailLoginPage> {
 
                     await sharedPreferences!.setString(
                         "password", passwordController!.text.toString());
-                    await sharedPreferences!.setString("token", this.token!);
+                    await sharedPreferences!.setString("token", this.token);
+
+                    if(this.token.length != 0) {
+                       userController.updateUserInfo(
+                      emailController!.text.toString(),
+                      this.token
+                    );
+                    }
+                   
 
                     Get.to(() => NearStoresPage());
                   },

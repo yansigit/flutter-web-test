@@ -91,7 +91,12 @@ class _AccessPageState extends State<AccessPage> {
   void initState() {
     // TODO: implement initState
     super.initState();
-    getStatusPermissonList();
+    if (!GetPlatform.isWeb) {
+      getStatusPermissonList();
+    } else {
+      statusPermissions[0] = true;
+      statusPermissions[1] = true;
+    }
   }
 
   @override

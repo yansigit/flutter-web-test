@@ -33,6 +33,7 @@ class _ShoppingCartPageState extends State<ShoppingCartPage> {
       });
     }
   }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -620,12 +621,12 @@ class BottomWidget extends StatelessWidget {
             child: InkWell(
               onTap: (() {
                 if (cartListLength > 0) {
-                  // Get.to(BillingPage());
-                  Get.snackbar(
-                    "오류",
-                    "결제 시스템 오류로 인해 10월 4일부터 이용 가능합니다.",
-                    backgroundColor: Colors.white,
-                  );
+                  Get.to(()=>BillingPage());
+                  // Get.snackbar(
+                  //   "오류",
+                  //   "결제 시스템 오류로 인해 10월 4일부터 이용 가능합니다.",
+                  //   backgroundColor: Colors.white,
+                  // );
                 } else {
                   Get.snackbar("경고", "장바구니에 담긴 내역이 없습니다.", backgroundColor: Colors.white);
                 }
