@@ -57,8 +57,8 @@ class _MyAppState extends State<MyApp> {
                       // UserPage("5857D43CE90E3B412D0A69D564764F0F4388B76A")
                       //FavoriteStoresPage(token: "5857D43CE90E3B412D0A69D564764F0F4388B76A")
                       //LoginPage()
-                      //AccessPage()
-                      PersonalInfoAgreePage()
+                      AccessPage()
+                      //PersonalInfoAgreePage()
                   //Home(shopList: shopList),
                   ));
         }
