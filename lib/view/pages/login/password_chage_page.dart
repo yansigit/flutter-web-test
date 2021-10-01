@@ -6,6 +6,7 @@ import 'package:flutter/services.dart';
 import 'package:get/get.dart';
 import "package:http/http.dart" as http;
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:save_order/consts/RegExp.dart';
 import 'package:save_order/consts/color.dart';
 import 'package:save_order/consts/size.dart';
 import 'package:save_order/model/model.dart';
@@ -53,6 +54,7 @@ class _PasswordChagePage extends State<PasswordChangePage> {
             obscureText: isSensitiveInfo,
             textAlignVertical: TextAlignVertical.center,
             inputFormatters: [
+              FilteringTextInputFormatter.deny(KOREAN_WORD_REGEXP),
               LengthLimitingTextInputFormatter(36),
             ],
             controller: textEditingController,

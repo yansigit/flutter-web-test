@@ -2,9 +2,11 @@ import 'dart:convert';
 
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:get/get.dart';
 import "package:http/http.dart" as http;
+import 'package:save_order/consts/RegExp.dart';
 import 'package:save_order/consts/color.dart';
 import 'package:save_order/consts/size.dart';
 import 'package:save_order/model/model.dart';
@@ -24,7 +26,7 @@ class SignUpPage extends State<SignUp> {
 
   RegExp emailRegExp = RegExp(
       r"^[a-zA-Z0-9.a-zA-Z0-9.!#$%&'*+-/=?^_`{|}~]+@[a-zA-Z0-9]+\.[a-zA-Z]+");
-  RegExp passwordExp = RegExp(r'^(?=.*?[a-z])(?=.*?[0-9]).{8,}$');
+  RegExp passwordExp = RegExp(r'^(?=.*?[a-z])([A-Z])*(?=.*?[0-9]).{8,}$');
   RegExp phoneNumberExp = RegExp(r'^(0[12]0)([0-9]{3,4})([0-9]{4})$');
   @override
   void initState() {
@@ -75,8 +77,46 @@ class SignUpPage extends State<SignUp> {
               inputUserInfoWidget(emailController, "이메일"),
               inputUserInfoWidget(passwordController, "비밀번호",
                   isSensitiveInfo: true),
-              inputUserInfoWidget(nameControlller, "이름"),
-              inputUserInfoWidget(phoneNumberController, "휴대폰 번호"),
+              Row(children: <Widget>[
+                Container(
+                    margin: EdgeInsets.only(right: 10.w, bottom: 8.h),
+                    width: 60.w,
+                    height: 20.h,
+                    child: FittedBox(fit: BoxFit.fitHeight, child: Text("이름"))),
+                Container(
+                    margin: EdgeInsets.only(right: 10.w, bottom: 8.h),
+                    width: 240.w,
+                    height: 40.h,
+                    child: TextField(
+                      controller: this.nameControlller,
+                      textAlign: TextAlign.left,
+                      decoration: InputDecoration(
+                          border: OutlineInputBorder(),
+                          hintText: "이름",
+                          hintStyle: TextStyle(fontSize: 14)),
+                    ))
+              ]),
+              Row(children: <Widget>[
+                Container(
+                    margin: EdgeInsets.only(right: 10.w, bottom: 8.h),
+                    width: 60.w,
+                    height: 20.h,
+                    child: FittedBox(
+                        fit: BoxFit.fitHeight, child: Text("휴대폰 번호"))),
+                Container(
+                    margin: EdgeInsets.only(right: 10.w, bottom: 8.h),
+                    width: 240.w,
+                    height: 40.h,
+                    child: TextField(
+                      inputFormatters: [FilteringTextInputFormatter.digitsOnly],
+                      controller: this.phoneNumberController,
+                      textAlign: TextAlign.left,
+                      decoration: InputDecoration(
+                          border: OutlineInputBorder(),
+                          hintText: "휴대폰 번호",
+                          hintStyle: TextStyle(fontSize: 14)),
+                    ))
+              ]),
               Container(
                 margin: EdgeInsets.only(top: 20.h, left: 10.w, right: 10.w),
                 child: Row(
@@ -102,10 +142,12 @@ class SignUpPage extends State<SignUp> {
                             ),
                             onPressed: () async {
                               var email =
-                                  emailController.text.toString().trim();
-                              var password = passwordController.text.toString()
-                                ..trim();
-                              var name = nameControlller.text.toString().trim();
+                                  emailController.text.toString().replaceAll(' ', '');
+                              var password =
+                                  passwordController.text.toString().replaceAll(' ', '');
+                              var name = nameControlller.text.toString().replaceAll(' ', '');
+                              print(name);
+                              print("nname");
                               var phoneNumber =
                                   phoneNumberController.text.toString().trim();
                               if (!isValidFormat(
@@ -136,7 +178,6 @@ class SignUpPage extends State<SignUp> {
                               print("response");
                               print(decodedData);
 
-              
                               if (!decodedData.containsKey("msg") ||
                                   decodedData["msg"] != SUCCESS_MESSAGE) {
                                 ScaffoldMessenger.of(context).showSnackBar(SnackBar(
@@ -199,6 +240,9 @@ class SignUpPage extends State<SignUp> {
           width: 240.w,
           height: 40.h,
           child: TextField(
+            inputFormatters: [
+              FilteringTextInputFormatter.deny(KOREAN_WORD_REGEXP)
+            ],
             obscureText: isSensitiveInfo,
             controller: textEditingController,
             textAlign: TextAlign.left,

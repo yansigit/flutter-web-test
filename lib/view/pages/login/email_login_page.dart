@@ -5,6 +5,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:get/get.dart';
+import 'package:save_order/consts/RegExp.dart';
 import 'package:save_order/consts/color.dart';
 import 'package:save_order/consts/size.dart';
 import "package:http/http.dart" as http;
@@ -127,6 +128,7 @@ class _EmailLoginPage extends State<EmailLoginPage> {
                       child: TextFormField(
                         textAlignVertical: TextAlignVertical.center,
                         inputFormatters: [
+                          FilteringTextInputFormatter.deny(KOREAN_WORD_REGEXP),
                           LengthLimitingTextInputFormatter(36),
                         ],
                         style:
@@ -180,6 +182,7 @@ class _EmailLoginPage extends State<EmailLoginPage> {
                             textAlignVertical: TextAlignVertical.center,
                             inputFormatters: [
                               LengthLimitingTextInputFormatter(20),
+                              FilteringTextInputFormatter.deny(KOREAN_WORD_REGEXP),
                             ],
                             style: TextStyle(
                                 fontFamily: "NotoSans", fontSize: 14.0),
@@ -263,8 +266,7 @@ class _EmailLoginPage extends State<EmailLoginPage> {
                     if (this.token.length != 0) {
                       userController.updateUserInfo(
                           emailController!.text.toString(), this.token);
-                      ;
-                      print("Sdsdssdsd");
+                      
                     }
 
 
