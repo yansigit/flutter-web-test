@@ -240,7 +240,7 @@ class SignUpPage extends State<SignUp> {
                       Container(
                           margin: EdgeInsets.only(right: 10.w, bottom: 8.h),
                           width: 200.w,
-                          height: 50.h,
+                          height: 60.h,
                           child: Form(
                             key: this._phoneNumberFormKey,
                             child: TextFormField(
@@ -269,7 +269,7 @@ class SignUpPage extends State<SignUp> {
                               controller: this.phoneNumberController,
                               textAlign: TextAlign.left,
                               decoration: InputDecoration(
-                                  errorMaxLines: 2,
+                                  errorMaxLines: 3,
                                   border: OutlineInputBorder(),
                                   hintText: "휴대폰 번호",
                                   hintStyle: TextStyle(fontSize: 14)),

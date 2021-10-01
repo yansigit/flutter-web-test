@@ -281,7 +281,7 @@ class _EmailLoginPage extends State<EmailLoginPage> {
                       userController.updateUserInfo(
                           emailController!.text.toString(), this.token);
                     }
-                    Get.off(() => NearStoresPage());
+                    Get.off(() => NearStoresPage(), transition: Transition.rightToLeft);
                   },
                   child: Container(
                       width: 200.w,

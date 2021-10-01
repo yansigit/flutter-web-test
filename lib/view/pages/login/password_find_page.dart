@@ -138,7 +138,7 @@ class _PasswordFindPage extends State<PasswordFindPage> {
                               setState(() {
                               this.isNextButtonDisabled = false;
                             });
-                            Get.to(LoginPage());
+                            Get.off(LoginPage(), transition: Transition.rightToLeft);
   
                           } else {
                             ScaffoldMessenger.of(context).showSnackBar(SnackBar(
