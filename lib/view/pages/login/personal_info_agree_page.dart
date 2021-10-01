@@ -68,8 +68,8 @@ class PersonalInfoAgree extends State<PersonalInfoAgreePage> {
               Container(
                 height: 25.h,
                 width: 280.w,
+                margin: EdgeInsets.only(left: 8.w),
                 child: Row(
-                  mainAxisAlignment: MainAxisAlignment.center,
                   children: [
                     Transform.scale(
                         scale: 1.4,
@@ -117,8 +117,8 @@ class PersonalInfoAgree extends State<PersonalInfoAgreePage> {
               Container(
                 height: 25.h,
                 width: 280.w,
+                margin: EdgeInsets.only(left: 8.w),
                 child: Row(
-                  mainAxisAlignment: MainAxisAlignment.center,
                   children: [
                     Transform.scale(
                         scale: 1.4,

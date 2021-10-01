@@ -12,10 +12,11 @@ import 'package:save_order/page/order_takeout.dart';
 import 'package:save_order/state/controllers.dart';
 import 'package:save_order/view/pages/login/login_page.dart';
 import 'package:save_order/widget/bottom_nav.dart';
-import '/consts/color.dart';
+import 'package:save_order/consts/color.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:geolocator/geolocator.dart';
 import "package:http/http.dart" as http;
+//TODO this is for Web. Need to change for App.
 import "package:permission_handler/permission_handler.dart";
 
 class NearStoresPageState extends State<NearStoresPage> {
@@ -38,6 +39,8 @@ class NearStoresPageState extends State<NearStoresPage> {
 
   List<bool> statusPermissions = [false, false];
 
+  //TODO this is for Web. Need to change for App.
+
   Future getStatusPermissonList() async {
     var _statusLocation = await Permission.location.status.isGranted;
     var _statusCamera = await Permission.camera.status.isGranted;
@@ -51,6 +54,8 @@ class NearStoresPageState extends State<NearStoresPage> {
   Future<List<Shop>> fetchNearStores() async {
     //await Future.delayed(Duration(seconds: 0));
     var shops;
+    print(GetPlatform.isWeb);
+    print("is web");
     if (GetPlatform.isWeb) {
       //shops = await Shop.fetchShopsByLocation(http.Client(), N, this.curPosition);
 
@@ -63,6 +68,7 @@ class NearStoresPageState extends State<NearStoresPage> {
     // var locationPermissionStatus = false;
     // print("locationPermissionStatus:" + locationPermissionStatus.toString());
     // if (locationPermissionStatus == true) {
+    print(statusPermissions);
     if (statusPermissions[0] == true) {
       shops =
           await Shop.fetchShopsByLocation(http.Client(), N, this.curPosition);
@@ -85,10 +91,16 @@ class NearStoresPageState extends State<NearStoresPage> {
     print("ssssdsdsf");
     print(userController.userToken);
     WidgetsBinding.instance?.addPostFrameCallback((_) {
+      //TODO this is for Web. Need to change for App.
       getStatusPermissonList();
       loadCurLocation().then((val) {
         curPosition = val;
       });
+      // Get.snackbar(
+      //   "알림",
+      //   "웹에서는 거리 표시 기능이 지원되지 않습니다.",
+      //   backgroundColor: Colors.white,
+      // );
     });
   }
 
@@ -100,13 +112,9 @@ class NearStoresPageState extends State<NearStoresPage> {
           elevation: 1.3,
           leading: IconButton(
               onPressed: () {
-                showDialog(
-                    context: context,
-                    builder: (BuildContext context) {
-                      return AlertDialog(
-                          content: Text(
-                              "아직 QR코드 스캔 기능이 구현되지 않았습니다. 베타 테스트 이후 기능 구현 예정입니다."));
-                    });
+           
+                  Get.snackbar("경고", "배타테스트 기간 동안에는 qr 코드 스캔 기능이 지원되지 않습니다. 배타 테스트 이후에 구현 될 예정입니다.", backgroundColor: Colors.white);
+                    
               },
               icon: SvgPicture.asset(
                 "assets/icons/ic_qrcode.svg",
@@ -119,13 +127,7 @@ class NearStoresPageState extends State<NearStoresPage> {
           actions: [
             IconButton(
               onPressed: () {
-                showDialog(
-                    context: context,
-                    builder: (BuildContext context) {
-                      return AlertDialog(
-                          content: Text(
-                              "아직 검색 기능이 구현되지 않았습니다. 베타 테스트 이후 기능 구현 예정입니다."));
-                    });
+                Get.snackbar("경고", "배타테스트 기간 동안에는 카페 검색 기능이 지원되지 않습니다. 배타 테스트 이후에 구현 될 예정입니다.", backgroundColor: Colors.white);
               },
               icon: SvgPicture.asset(
                 "assets/icons/searchIcon.svg",

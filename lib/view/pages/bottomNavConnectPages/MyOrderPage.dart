@@ -4,9 +4,9 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:save_order/model/model.dart';
-import '/consts/color.dart';
-import '/consts/size.dart';
-import '/model/Order.dart';
+import 'package:save_order/consts/color.dart';
+import 'package:save_order/consts/size.dart';
+import 'package:save_order/model/Order.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:http/http.dart' as http;
 

@@ -52,6 +52,7 @@ class OptionDialogController extends GetxController {
 class ShoppingCartController extends GetxController {
   final shoppingCart = RxList<CartItem>([]);
   final totalPrice = 0.obs;
+  final discountPrice = 0.obs;
 
   int updateTotalPrice(List<CartItem> shoppingCartList) {
     int prices = 0;
@@ -60,6 +61,21 @@ class ShoppingCartController extends GetxController {
     }
     this.totalPrice.value = prices;
     return this.totalPrice.value;
+  }
+
+  discountPricePercent(int precent) {
+    this.discountPrice.value = this.totalPrice.value * precent ~/ 100;
+    this.totalPrice.value -= this.discountPrice.value;
+  }
+
+  discountPriceMoney(int price) {
+    this.discountPrice.value = price;
+    this.totalPrice.value -= this.discountPrice.value;
+  }
+
+  resetPrice() {
+    this.totalPrice.value += this.discountPrice.value;
+    this.discountPrice.value = 0;
   }
 
   removeCartItem(int idx) {
@@ -262,13 +278,11 @@ class PriceController extends GetxController {
   }
 
   updateWhippingPrice() {
-    this.whippingPrice.value =
-        whippingController.whippingState.value == true ? 500 : 0;
+    this.whippingPrice.value = whippingController.whippingState.value == true ? 500 : 0;
   }
 
   migratePrice() {
-    this.optionPrice.value =
-        this.shotPrice.value + this.syrupPrice.value + this.whippingPrice.value;
+    this.optionPrice.value = this.shotPrice.value + this.syrupPrice.value + this.whippingPrice.value;
   }
 
   // increaseShotPrice() {
@@ -332,12 +346,23 @@ class UserController extends GetxController {
   final userId = "".obs;
   final userToken = "".obs;
 
-
   updateUserInfo(String userId, String userToken) {
     this.userId.value = userId;
     this.userToken.value = userToken;
   }
+}
 
+class CouponController extends GetxController {
+  final couponNo = "".obs;
+  final couponType = "".obs;
 
-  
+  updateCoupon(couponNo, couponType) {
+    this.couponNo.value = couponNo;
+    this.couponType.value = couponType;
+  }
+
+  reset() {
+    this.couponNo.value = "";
+    this.couponType.value = "";
+  }
 }

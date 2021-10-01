@@ -15,6 +15,7 @@ class ShoppingCartPage extends StatefulWidget {
 class _ShoppingCartPageState extends State<ShoppingCartPage> {
   final ShoppingCartController shoppingCartController = Get.find();
   final ShopController shopController = Get.find();
+  final CouponController c = Get.put(CouponController());
 
   final scaffoldKey = GlobalKey<ScaffoldState>();
   List<int> discountPrice = [];
@@ -22,7 +23,7 @@ class _ShoppingCartPageState extends State<ShoppingCartPage> {
   void initState() {
     // TODO: implement initState
     super.initState();
-    if (DateTime.now().hour >= 3 && shopController.shop.value.name == "11호관 커피") {
+    if (DateTime.now().hour >= 10 && shopController.shop.value.name == "11호관 커피") {
       ShoppingCartPage.discountFlag = true;
       for (int idx = 0; idx < shoppingCartController.shoppingCart.length; idx++) {
         shoppingCartController.update11stDiscount(idx);
@@ -30,6 +31,10 @@ class _ShoppingCartPageState extends State<ShoppingCartPage> {
 
       WidgetsBinding.instance?.addPostFrameCallback((_) {
         Get.snackbar("할인 행사", "11호관 커피에서 할인 행사가 진행되어 10% 할인이 적용되었습니다.");
+      });
+    } else if (DateTime.now().hour < 10 && shopController.shop.value.name == "11호관 커피") {
+      WidgetsBinding.instance?.addPostFrameCallback((_) {
+        Get.snackbar("굿즈 행사", "11호관 커피에서 굿즈 행사가 진행중입니다. 점원에게 문의하세요.");
       });
     }
   }
@@ -577,12 +582,15 @@ class BottomWidget extends StatelessWidget {
   final cartList;
   final cartListLength;
   final controller;
+
   BottomWidget({
     Key? key,
     required this.cartList,
     required this.cartListLength,
     required this.controller,
   }) : super(key: key);
+
+  CouponController c = Get.find();
 
   @override
   Widget build(BuildContext context) {
@@ -621,7 +629,14 @@ class BottomWidget extends StatelessWidget {
             child: InkWell(
               onTap: (() {
                 if (cartListLength > 0) {
-                  Get.to(()=>BillingPage());
+                  ShoppingCartController s = Get.find();
+                  Get.to(() => BillingPage())!.whenComplete(() {
+                    s.resetPrice();
+                    if (c.couponNo.value != "") {
+                      Get.snackbar("알림", "쿠폰 사용이 취소되었습니다.");
+                      c.reset();
+                    }
+                  });
                   // Get.snackbar(
                   //   "오류",
                   //   "결제 시스템 오류로 인해 10월 4일부터 이용 가능합니다.",
