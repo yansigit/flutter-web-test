@@ -1,4 +1,4 @@
-import 'dart:convert';
+//import 'dart:convert';
 
 import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
@@ -6,16 +6,17 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/rendering.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:get/get.dart';
-import 'package:save_order/model/Order.dart';
+//import 'package:save_order/model/Order.dart';
 import 'package:save_order/model/model.dart';
 import 'package:save_order/page/order_takeout.dart';
 import 'package:save_order/state/controllers.dart';
-import 'package:save_order/view/pages/login/login_page.dart';
+//import 'package:save_order/view/pages/login/login_page.dart';
 import 'package:save_order/widget/bottom_nav.dart';
 import 'package:save_order/consts/color.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:geolocator/geolocator.dart';
 import "package:http/http.dart" as http;
+import 'package:universal_html/html.dart' as html;
 //TODO this is for Web. Need to change for App.
 //import "package:permission_handler/permission_handler.dart";
 
@@ -36,7 +37,7 @@ class NearStoresPageState extends State<NearStoresPage> {
     return curPosition;
   }
 
-  List<bool> statusPermissions = [false, false];
+  //List<bool> statusPermissions = [false, false];
 
   //TODO this is for Web. Need to change for App.
   /*
@@ -55,9 +56,13 @@ class NearStoresPageState extends State<NearStoresPage> {
     //await Future.delayed(Duration(seconds: 0));
     var shops;
     if (GetPlatform.isWeb) {
-      //shops = await Shop.fetchShopsByLocation(http.Client(), N, this.curPosition);
-
-      shops = await Shop.fetchShops(http.Client());
+      await html.window.navigator.permissions?.query({"name": "geolocation"}).then((locationPermission) async {
+        if (locationPermission.state == "denied") {
+          shops = await Shop.fetchShops(http.Client());
+        } else {
+          shops = await Shop.fetchShopsByLocation(http.Client(), N, this.curPosition);
+        }
+      });
 
       return shops;
     }
@@ -66,11 +71,11 @@ class NearStoresPageState extends State<NearStoresPage> {
     // var locationPermissionStatus = false;
     // print("locationPermissionStatus:" + locationPermissionStatus.toString());
     // if (locationPermissionStatus == true) {
-    if (statusPermissions[0] == true) {
-      shops = await Shop.fetchShopsByLocation(http.Client(), N, this.curPosition);
-    } else {
-      shops = await Shop.fetchShops(http.Client());
-    }
+    // if (statusPermissions[0] == true) {
+    //   shops = await Shop.fetchShopsByLocation(http.Client(), N, this.curPosition);
+    // } else {
+    //   shops = await Shop.fetchShops(http.Client());
+    // }
 
     return shops;
 
@@ -84,19 +89,16 @@ class NearStoresPageState extends State<NearStoresPage> {
   @override
   void initState() {
     super.initState();
-    print("ssssdsdsf");
-    print(userController.userToken);
+    //print("ssssdsdsf");
+    //print(userController.userToken);
     WidgetsBinding.instance?.addPostFrameCallback((_) {
       //TODO this is for Web. Need to change for App.
       //getStatusPermissonList();
       loadCurLocation().then((val) {
-        curPosition = val;
+        setState(() {
+          curPosition = val;
+        });
       });
-      Get.snackbar(
-        "알림",
-        "웹에서는 거리 표시 기능이 지원되지 않습니다.",
-        backgroundColor: Colors.white,
-      );
     });
   }
 

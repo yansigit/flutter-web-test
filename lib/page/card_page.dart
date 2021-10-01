@@ -590,8 +590,16 @@ class _CardPageState extends State<CardPage> {
 
                           cardController.updateCardInfo(cardNum);
                           cardController.updateCardValidation(cardVal);
-
-                          requestOrder();
+                          requestCardValidation().then((status) {
+                            // 카드번호 검증이 성공했을 때.
+                            if (status == 1) {
+                              requestOrder();
+                            }
+                            //카드번호 검증 실패시.
+                            else {
+                              Get.snackbar("경고", status.toString());
+                            }
+                          });
                         } else if (errorMsg != "") {
                           if (validationTextController[0].text.isEmpty || validationTextController[1].text.isEmpty) {
                             errorMsg += "\n유효기간을 확인하세요.";
@@ -602,31 +610,6 @@ class _CardPageState extends State<CardPage> {
                         } else {
                           Get.defaultDialog(title: "카드 정보 오류", middleText: "유효기간을 확인하세요.");
                         }
-                        // for (int i = 0; i < cardTextController.length; i++) {
-                        //   if (cardTextController[i].text.isEmpty) {
-                        //     Get.defaultDialog(title: "카드 정보 오류", middleText: "카드번호를 확인하세요.");
-                        //     break;
-                        //   }
-                        //   cardNum += cardTextController[i].text;
-                        // }
-                        // if (validationTextController[0].text.isEmpty || validationTextController[1].text.isEmpty) {
-                        //   Get.defaultDialog(title: "카드 정보 오류", middleText: "유효기간을 확인하세요.");
-                        // } else {
-                        //   cardVal += validationTextController[0].text;
-                        //   cardVal += validationTextController[1].text[2];
-                        //   cardVal += validationTextController[1].text[3];
-                        // }
-                        // // if (cvcController.text.isEmpty) {
-                        // //   Get.defaultDialog(title: "카드 정보 오류", middleText: "CVC 코드를 확인하세요.\nCVC 코드는 카드 뒷면 서명란에 있습니다.");
-                        // // } else if (cvcController.text.length != 3) {
-                        // //   Get.defaultDialog(title: "카드 정보 오류", middleText: "CVC 코드를 확인하세요.\nCVC 코드는 카드 뒷면 서명란에 있습니다.");
-                        // // }
-                        // if (cardNum.isNotEmpty && cardVal.isNotEmpty) {
-                        //   cardController.updateCardInfo(cardNum);
-                        //   cardController.updateCardValidation(cardVal);
-                        // }
-                        // print(cardController.cardNum.value);
-                        // print(cardController.cardValidation.value);
                       },
                       style: ButtonStyle(backgroundColor: MaterialStateProperty.all(Color(0xff00276b))),
                       child: Container(
@@ -671,6 +654,23 @@ class _CardPageState extends State<CardPage> {
         ),
       ),
     );
+  }
+
+  Future<int> requestCardValidation() async {
+    Map<String, dynamic> data = {};
+    data["cardNumber"] = cardController.cardNum.value;
+    data["cardExpire"] = cardController.cardValidation.value;
+
+    var body = json.encode(data);
+    var res = await http.Client()
+        .post(Uri.parse("http://${devMode()}.dalbodre.me/api/Order"), body: body, headers: <String, String>{'Content-Type': 'application/json'});
+
+    if (res.statusCode == 200) {
+      return 1;
+    } else {
+      print(res.statusCode.toString());
+      return 0;
+    }
   }
 
   requestOrder() async {
@@ -805,7 +805,7 @@ class _PickerState extends State<Picker> {
   @override
   Widget build(BuildContext context) {
     return CupertinoPicker(
-        itemExtent: 27.h,
+        itemExtent: 30.h,
         onSelectedItemChanged: (val) {
           setState(() {
             if (widget.mode == 0) {
