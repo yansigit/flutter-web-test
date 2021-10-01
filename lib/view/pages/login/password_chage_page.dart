@@ -11,6 +11,7 @@ import 'package:save_order/consts/color.dart';
 import 'package:save_order/consts/size.dart';
 import 'package:save_order/model/model.dart';
 import 'package:save_order/state/controllers.dart';
+import 'package:save_order/view/pages/login/email_login_page.dart';
 import 'package:save_order/view/pages/login/login_page.dart';
 
 class PasswordChangePage extends StatefulWidget {
@@ -82,8 +83,9 @@ class _PasswordChagePage extends State<PasswordChangePage> {
             child: Container(
           width: 325.w,
           height: 300.h,
-          decoration:
-              BoxDecoration(border: Border.all(color: Colors.blueAccent)),
+          decoration: BoxDecoration(
+    border: Border.all(color: const Color(0xff00276b))
+  ),
           child: Column(
             mainAxisAlignment: MainAxisAlignment.center,
             crossAxisAlignment: CrossAxisAlignment.center,
@@ -134,7 +136,9 @@ class _PasswordChagePage extends State<PasswordChangePage> {
                               duration: const Duration(milliseconds: 1000)));
                         } else {
                           print('new password');
-                          Get.to(() => LoginPage());
+
+                          Get.to(() => EmailLoginPage(), 
+                          transition: Transition.rightToLeft);
                         }
                       },
                       child: Container(
@@ -148,7 +152,7 @@ class _PasswordChagePage extends State<PasswordChangePage> {
                                   style: TextStyle(
                                       backgroundColor: Colors.white,
                                       fontWeight: FontWeight.w400,
-                                      color: Colors.blue,
+                                       color: const Color(0xff00276b),
                                       fontFamily: "NotoSans",
                                       fontStyle: FontStyle.normal,
                                       fontSize: 14.0))))))

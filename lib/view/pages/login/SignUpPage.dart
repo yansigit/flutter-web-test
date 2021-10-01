@@ -10,6 +10,7 @@ import 'package:save_order/consts/RegExp.dart';
 import 'package:save_order/consts/color.dart';
 import 'package:save_order/consts/size.dart';
 import 'package:save_order/model/model.dart';
+import 'package:save_order/view/pages/login/email_login_page.dart';
 import 'package:save_order/view/pages/login/login_page.dart';
 
 class SignUp extends StatefulWidget {
@@ -71,9 +72,14 @@ class SignUpPage extends State<SignUp> {
         backgroundColor: Color(0xFFFFFF).withOpacity(1.0),
         body: Center(
           child: Container(
+             decoration: BoxDecoration(
+    border: Border.all(color: const Color(0xff00276b))
+  ),
             width: 325.w,
             height: 400.h,
-            child: Column(children: <Widget>[
+            child: Column(
+              mainAxisAlignment: MainAxisAlignment.center,
+              children: <Widget>[
               inputUserInfoWidget(emailController, "이메일"),
               inputUserInfoWidget(passwordController, "비밀번호",
                   isSensitiveInfo: true),
@@ -198,7 +204,7 @@ class SignUpPage extends State<SignUp> {
                               phoneNumberController.text = "";
                               nameControlller.text = "";
 
-                              Get.to(() => LoginPage());
+                              Get.off(() => EmailLoginPage(), transition: Transition.rightToLeft);
                             },
                             child: Container(
                                 margin: EdgeInsets.only(
@@ -214,7 +220,7 @@ class SignUpPage extends State<SignUp> {
                                         style: TextStyle(
                                             backgroundColor: Colors.white,
                                             fontWeight: FontWeight.w400,
-                                            color: Colors.blue,
+                                            color: const Color(0xff00276b),
                                             fontFamily: "NotoSans",
                                             fontStyle: FontStyle.normal,
                                             fontSize: 18.0))))))

@@ -28,3 +28,9 @@ app build 후에 테스트 해봐야 할 것.
 
 회원 가입 할 때 얻은 토큰은 sign_up_token key 에 넣기. 
 (비밀번호 찾기 할 때 쓰기)
+
+web: 거리 view 없애고, 매장 포장을 그 쪽 자리로 옮기기. 
+
+이메일 찾기, 비밀번호 찾기, space Around
+
+ 자동 로그인 한 후에 ,userController update 시켜주기. 

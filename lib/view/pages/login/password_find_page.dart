@@ -61,6 +61,9 @@ class _PasswordFindPage extends State<PasswordFindPage> {
           margin: EdgeInsets.only(right: 10.w),
           height: 16.h,
           width: 50.w,
+          decoration: BoxDecoration(
+    border: Border.all(color: const Color(0xff00276b))
+  ),
           child: FittedBox(
               fit: BoxFit.fitHeight,
               child: Text(
@@ -166,7 +169,7 @@ class _PasswordFindPage extends State<PasswordFindPage> {
                               style: TextStyle(
                                   backgroundColor: Colors.white,
                                   fontWeight: FontWeight.w400,
-                                  color: Colors.blue,
+                                  color: const Color(0xff00276b),
                                   fontFamily: "NotoSans",
                                   fontStyle: FontStyle.normal,
                                   fontSize: 10.0))))),

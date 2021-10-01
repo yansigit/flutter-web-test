@@ -29,11 +29,15 @@ class _BillingPageState extends State<BillingPage> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text("결제하기", style: TextStyle(fontWeight: FontWeight.w700, color: Colors.black)),
+        title: Text("결제하기",
+            style: TextStyle(fontWeight: FontWeight.w700, color: Colors.black)),
         centerTitle: true,
         elevation: 5,
         backgroundColor: Colors.white,
-        leading: IconButton(onPressed: () => Get.back(), icon: SvgPicture.asset("assets/icons/backIcon.svg", color: Colors.black)),
+        leading: IconButton(
+            onPressed: () => Get.back(),
+            icon: SvgPicture.asset("assets/icons/backIcon.svg",
+                color: Colors.black)),
       ),
       body: Container(
         color: Color(0xffffffff),
@@ -107,7 +111,9 @@ class _BillingPageState extends State<BillingPage> {
     final UserController u = Get.find();
 
     String couponNo = "";
-
+    print(u.userToken.toString());
+    print(u.userId.toString());
+    print("payments");
     return Container(
       color: Colors.white,
       child: Padding(
@@ -115,7 +121,12 @@ class _BillingPageState extends State<BillingPage> {
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-            Container(height: 25.h, child: FittedBox(fit: BoxFit.fitHeight, child: Text("결제수단", style: TextStyle(fontWeight: FontWeight.w700)))),
+            Container(
+                height: 25.h,
+                child: FittedBox(
+                    fit: BoxFit.fitHeight,
+                    child: Text("결제수단",
+                        style: TextStyle(fontWeight: FontWeight.w700)))),
             InkWell(
               onTap: (() => Get.to(CardPage())),
               child: Container(
@@ -185,7 +196,8 @@ class _BillingPageState extends State<BillingPage> {
                                     controller: tc1,
                                     maxLength: 6,
                                     autofocus: true,
-                                    textCapitalization: TextCapitalization.characters,
+                                    textCapitalization:
+                                        TextCapitalization.characters,
                                     style: TextStyle(
                                       color: Color(0xff00276b),
                                       fontWeight: FontWeight.w700,
@@ -197,10 +209,12 @@ class _BillingPageState extends State<BillingPage> {
                                     ),
                                     inputFormatters: [
                                       UpperCaseTextFormatter(),
-                                      new FilteringTextInputFormatter.allow(RegExp("[A-Za-z0-9]")),
+                                      new FilteringTextInputFormatter.allow(
+                                          RegExp("[A-Za-z0-9]")),
                                     ],
                                     validator: (val) {
-                                      int len = val?.length == null ? 0 : val!.length;
+                                      int len =
+                                          val?.length == null ? 0 : val!.length;
                                       if (len < 6) {
                                         return "6자리 입력";
                                       } else {
@@ -221,11 +235,16 @@ class _BillingPageState extends State<BillingPage> {
 
                             // 쿠폰 6자리 입력
                             if (this._formKey.currentState!.validate()) {
-                              var res = await http.Client().get(Uri.parse('http://${devMode()}.dalbodre.me/api/CouponCheck/${couponVal}'),
-                                  headers: <String, String>{'token': '${u.userToken.value}'});
+                              var res = await http.Client().get(
+                                  Uri.parse(
+                                      'http://${devMode()}.dalbodre.me/api/CouponCheck/${couponVal}'),
+                                  headers: <String, String>{
+                                    'token': '${u.userToken.value}'
+                                  });
 
                               if (res.statusCode == 200) {
-                                var decodedData = json.decode(utf8.decode(res.bodyBytes));
+                                var decodedData =
+                                    json.decode(utf8.decode(res.bodyBytes));
 
                                 if (decodedData["canUse"] as String == "True") {
                                   ShoppingCartController c = Get.find();
@@ -239,11 +258,16 @@ class _BillingPageState extends State<BillingPage> {
                                           widget.isCouponChoosed = true;
 
                                           Get.back();
-                                          Get.snackbar("알림", "20% 할인이 적용되었습니다.", backgroundColor: Colors.white);
-                                          coupon.updateCoupon(couponVal, decodedData["couponType"] as String);
+                                          Get.snackbar("알림", "20% 할인이 적용되었습니다.",
+                                              backgroundColor: Colors.white);
+                                          coupon.updateCoupon(
+                                              couponVal,
+                                              decodedData["couponType"]
+                                                  as String);
                                         });
                                       } else {
-                                        Get.snackbar("경고", "카페마냥에서 사용 가능한 쿠폰입니다.");
+                                        Get.snackbar(
+                                            "경고", "카페마냥에서 사용 가능한 쿠폰입니다.");
                                       }
                                       break;
                                     case "manyang_30%":
@@ -252,11 +276,16 @@ class _BillingPageState extends State<BillingPage> {
                                         setState(() {
                                           widget.isCouponChoosed = true;
                                           Get.back();
-                                          Get.snackbar("알림", "30% 할인이 적용되었습니다.", backgroundColor: Colors.white);
-                                          coupon.updateCoupon(couponVal, decodedData["couponType"] as String);
+                                          Get.snackbar("알림", "30% 할인이 적용되었습니다.",
+                                              backgroundColor: Colors.white);
+                                          coupon.updateCoupon(
+                                              couponVal,
+                                              decodedData["couponType"]
+                                                  as String);
                                         });
                                       } else {
-                                        Get.snackbar("경고", "카페마냥에서 사용 가능한 쿠폰입니다.");
+                                        Get.snackbar(
+                                            "경고", "카페마냥에서 사용 가능한 쿠폰입니다.");
                                       }
                                       break;
                                     case "manyang_50%":
@@ -265,11 +294,16 @@ class _BillingPageState extends State<BillingPage> {
                                         setState(() {
                                           widget.isCouponChoosed = true;
                                           Get.back();
-                                          Get.snackbar("알림", "50% 할인이 적용되었습니다.", backgroundColor: Colors.white);
-                                          coupon.updateCoupon(couponVal, decodedData["couponType"] as String);
+                                          Get.snackbar("알림", "50% 할인이 적용되었습니다.",
+                                              backgroundColor: Colors.white);
+                                          coupon.updateCoupon(
+                                              couponVal,
+                                              decodedData["couponType"]
+                                                  as String);
                                         });
                                       } else {
-                                        Get.snackbar("경고", "카페마냥에서 사용 가능한 쿠폰입니다.");
+                                        Get.snackbar(
+                                            "경고", "카페마냥에서 사용 가능한 쿠폰입니다.");
                                       }
                                       break;
                                     case "manyang_2000":
@@ -285,15 +319,22 @@ class _BillingPageState extends State<BillingPage> {
                                           setState(() {
                                             widget.isCouponChoosed = true;
                                             Get.back();
-                                            Get.snackbar("알림", "아메리카노 2000원 할인이 적용되었습니다.", backgroundColor: Colors.white);
-                                            coupon.updateCoupon(couponVal, decodedData["couponType"] as String);
+                                            Get.snackbar("알림",
+                                                "아메리카노 2000원 할인이 적용되었습니다.",
+                                                backgroundColor: Colors.white);
+                                            coupon.updateCoupon(
+                                                couponVal,
+                                                decodedData["couponType"]
+                                                    as String);
                                           });
                                         } else {
                                           Get.back();
-                                          Get.snackbar("경고", "아메리카노가 장바구니에 없습니다.");
+                                          Get.snackbar(
+                                              "경고", "아메리카노가 장바구니에 없습니다.");
                                         }
                                       } else {
-                                        Get.snackbar("경고", "카페마냥에서 사용 가능한 쿠폰입니다.");
+                                        Get.snackbar(
+                                            "경고", "카페마냥에서 사용 가능한 쿠폰입니다.");
                                       }
                                       break;
                                     case "manyang_amer_free":
@@ -309,14 +350,21 @@ class _BillingPageState extends State<BillingPage> {
                                           setState(() {
                                             widget.isCouponChoosed = true;
                                             Get.back();
-                                            Get.snackbar("알림", "아메리카노 무료 쿠폰이 적용되었습니다.", backgroundColor: Colors.white);
-                                            coupon.updateCoupon(couponVal, decodedData["couponType"] as String);
+                                            Get.snackbar(
+                                                "알림", "아메리카노 무료 쿠폰이 적용되었습니다.",
+                                                backgroundColor: Colors.white);
+                                            coupon.updateCoupon(
+                                                couponVal,
+                                                decodedData["couponType"]
+                                                    as String);
                                           });
                                         } else {
-                                          Get.snackbar("경고", "아메리카노가 장바구니에 없습니다.");
+                                          Get.snackbar(
+                                              "경고", "아메리카노가 장바구니에 없습니다.");
                                         }
                                       } else {
-                                        Get.snackbar("경고", "카페마냥에서 사용 가능한 쿠폰입니다.");
+                                        Get.snackbar(
+                                            "경고", "카페마냥에서 사용 가능한 쿠폰입니다.");
                                       }
 
                                       break;
@@ -331,7 +379,9 @@ class _BillingPageState extends State<BillingPage> {
                                               cartItem.name == "흑당마블링라떼") {
                                             lowLatteFlag = true;
                                           }
-                                          if (cartItem.name == "고구마라떼" || cartItem.name == "펌킨라떼" || cartItem.name == "오곡통라떼") {
+                                          if (cartItem.name == "고구마라떼" ||
+                                              cartItem.name == "펌킨라떼" ||
+                                              cartItem.name == "오곡통라떼") {
                                             highLatteFlag = true;
                                           }
                                         }
@@ -340,23 +390,36 @@ class _BillingPageState extends State<BillingPage> {
                                           setState(() {
                                             widget.isCouponChoosed = true;
                                             Get.back();
-                                            Get.snackbar("알림", "라떼 무료 쿠폰이 적용되었습니다.", backgroundColor: Colors.white);
-                                            coupon.updateCoupon(couponVal, decodedData["couponType"] as String);
+                                            Get.snackbar(
+                                                "알림", "라떼 무료 쿠폰이 적용되었습니다.",
+                                                backgroundColor: Colors.white);
+                                            coupon.updateCoupon(
+                                                couponVal,
+                                                decodedData["couponType"]
+                                                    as String);
                                           });
                                         } else if (lowLatteFlag) {
                                           c.discountPriceMoney(5000);
                                           setState(() {
                                             widget.isCouponChoosed = true;
                                             Get.back();
-                                            Get.snackbar("알림", "라떼 무료 쿠폰이 적용되었습니다.", backgroundColor: Colors.white);
-                                            coupon.updateCoupon(couponVal, decodedData["couponType"] as String);
+                                            Get.snackbar(
+                                                "알림", "라떼 무료 쿠폰이 적용되었습니다.",
+                                                backgroundColor: Colors.white);
+                                            coupon.updateCoupon(
+                                                couponVal,
+                                                decodedData["couponType"]
+                                                    as String);
                                           });
                                         } else {
                                           Get.back();
-                                          Get.snackbar("경고", "라떼 종류 음료가 장바구니에 없습니다.", backgroundColor: Colors.white);
+                                          Get.snackbar(
+                                              "경고", "라떼 종류 음료가 장바구니에 없습니다.",
+                                              backgroundColor: Colors.white);
                                         }
                                       } else {
-                                        Get.snackbar("경고", "카페마냥에서 사용 가능한 쿠폰입니다.");
+                                        Get.snackbar(
+                                            "경고", "카페마냥에서 사용 가능한 쿠폰입니다.");
                                       }
                                       break;
                                     case "manyang_smoothe_free":
@@ -367,7 +430,8 @@ class _BillingPageState extends State<BillingPage> {
                                           if (cartItem.name == "요거트스무디") {
                                             lowSmootheFlag = true;
                                           }
-                                          if (cartItem.name == "초코스무디" || cartItem.name == "딸기스무디") {
+                                          if (cartItem.name == "초코스무디" ||
+                                              cartItem.name == "딸기스무디") {
                                             highSmootheFlag = true;
                                           }
                                         }
@@ -376,23 +440,36 @@ class _BillingPageState extends State<BillingPage> {
                                           setState(() {
                                             widget.isCouponChoosed = true;
                                             Get.back();
-                                            Get.snackbar("알림", "스무디 무료 쿠폰이 적용되었습니다.", backgroundColor: Colors.white);
-                                            coupon.updateCoupon(couponVal, decodedData["couponType"] as String);
+                                            Get.snackbar(
+                                                "알림", "스무디 무료 쿠폰이 적용되었습니다.",
+                                                backgroundColor: Colors.white);
+                                            coupon.updateCoupon(
+                                                couponVal,
+                                                decodedData["couponType"]
+                                                    as String);
                                           });
                                         } else if (lowSmootheFlag) {
                                           c.discountPriceMoney(5500);
                                           setState(() {
                                             widget.isCouponChoosed = true;
                                             Get.back();
-                                            Get.snackbar("알림", "스무디 무료 쿠폰이 적용되었습니다.", backgroundColor: Colors.white);
-                                            coupon.updateCoupon(couponVal, decodedData["couponType"] as String);
+                                            Get.snackbar(
+                                                "알림", "스무디 무료 쿠폰이 적용되었습니다.",
+                                                backgroundColor: Colors.white);
+                                            coupon.updateCoupon(
+                                                couponVal,
+                                                decodedData["couponType"]
+                                                    as String);
                                           });
                                         } else {
                                           Get.back();
-                                          Get.snackbar("경고", "스무디 종류 음료가 장바구니에 없습니다.", backgroundColor: Colors.white);
+                                          Get.snackbar(
+                                              "경고", "스무디 종류 음료가 장바구니에 없습니다.",
+                                              backgroundColor: Colors.white);
                                         }
                                       } else {
-                                        Get.snackbar("경고", "카페마냥에서 사용 가능한 쿠폰입니다.");
+                                        Get.snackbar(
+                                            "경고", "카페마냥에서 사용 가능한 쿠폰입니다.");
                                       }
                                       break;
                                     case "manyang_free":
@@ -406,11 +483,17 @@ class _BillingPageState extends State<BillingPage> {
                                         setState(() {
                                           c.discountPriceMoney(maxPrice);
                                           Get.back();
-                                          Get.snackbar("알림", "무료 음료 한 잔 쿠폰이 적용되었습니다.\n(가장 비싼 음료)", backgroundColor: Colors.white);
-                                          coupon.updateCoupon(couponVal, decodedData["couponType"] as String);
+                                          Get.snackbar("알림",
+                                              "무료 음료 한 잔 쿠폰이 적용되었습니다.\n(가장 비싼 음료)",
+                                              backgroundColor: Colors.white);
+                                          coupon.updateCoupon(
+                                              couponVal,
+                                              decodedData["couponType"]
+                                                  as String);
                                         });
                                       } else {
-                                        Get.snackbar("경고", "카페마냥에서 사용 가능한 쿠폰입니다.");
+                                        Get.snackbar(
+                                            "경고", "카페마냥에서 사용 가능한 쿠폰입니다.");
                                       }
                                       break;
                                     case "coltea_20%":
@@ -419,11 +502,16 @@ class _BillingPageState extends State<BillingPage> {
                                         setState(() {
                                           widget.isCouponChoosed = true;
                                           Get.back();
-                                          Get.snackbar("알림", "20% 할인이 적용되었습니다.", backgroundColor: Colors.white);
-                                          coupon.updateCoupon(couponVal, decodedData["couponType"] as String);
+                                          Get.snackbar("알림", "20% 할인이 적용되었습니다.",
+                                              backgroundColor: Colors.white);
+                                          coupon.updateCoupon(
+                                              couponVal,
+                                              decodedData["couponType"]
+                                                  as String);
                                         });
                                       } else {
-                                        Get.snackbar("경고", "컬티에서 사용 가능한 쿠폰입니다.");
+                                        Get.snackbar(
+                                            "경고", "컬티에서 사용 가능한 쿠폰입니다.");
                                       }
                                       break;
                                     case "coltea_30%":
@@ -432,11 +520,16 @@ class _BillingPageState extends State<BillingPage> {
                                         setState(() {
                                           widget.isCouponChoosed = true;
                                           Get.back();
-                                          Get.snackbar("알림", "30% 할인이 적용되었습니다.", backgroundColor: Colors.white);
-                                          coupon.updateCoupon(couponVal, decodedData["couponType"] as String);
+                                          Get.snackbar("알림", "30% 할인이 적용되었습니다.",
+                                              backgroundColor: Colors.white);
+                                          coupon.updateCoupon(
+                                              couponVal,
+                                              decodedData["couponType"]
+                                                  as String);
                                         });
                                       } else {
-                                        Get.snackbar("경고", "컬티에서 사용 가능한 쿠폰입니다.");
+                                        Get.snackbar(
+                                            "경고", "컬티에서 사용 가능한 쿠폰입니다.");
                                       }
                                       break;
                                     case "coltea_50%":
@@ -445,11 +538,16 @@ class _BillingPageState extends State<BillingPage> {
                                         setState(() {
                                           widget.isCouponChoosed = true;
                                           Get.back();
-                                          Get.snackbar("알림", "50% 할인이 적용되었습니다.", backgroundColor: Colors.white);
-                                          coupon.updateCoupon(couponVal, decodedData["couponType"] as String);
+                                          Get.snackbar("알림", "50% 할인이 적용되었습니다.",
+                                              backgroundColor: Colors.white);
+                                          coupon.updateCoupon(
+                                              couponVal,
+                                              decodedData["couponType"]
+                                                  as String);
                                         });
                                       } else {
-                                        Get.snackbar("경고", "컬티에서 사용 가능한 쿠폰입니다.");
+                                        Get.snackbar(
+                                            "경고", "컬티에서 사용 가능한 쿠폰입니다.");
                                       }
                                       break;
                                     case "coltea_2000":
@@ -465,15 +563,22 @@ class _BillingPageState extends State<BillingPage> {
                                           setState(() {
                                             widget.isCouponChoosed = true;
                                             Get.back();
-                                            Get.snackbar("알림", "아메리카노 2000원 할인이 적용되었습니다.", backgroundColor: Colors.white);
-                                            coupon.updateCoupon(couponVal, decodedData["couponType"] as String);
+                                            Get.snackbar("알림",
+                                                "아메리카노 2000원 할인이 적용되었습니다.",
+                                                backgroundColor: Colors.white);
+                                            coupon.updateCoupon(
+                                                couponVal,
+                                                decodedData["couponType"]
+                                                    as String);
                                           });
                                         } else {
                                           Get.back();
-                                          Get.snackbar("경고", "아메리카노가 장바구니에 없습니다.");
+                                          Get.snackbar(
+                                              "경고", "아메리카노가 장바구니에 없습니다.");
                                         }
                                       } else {
-                                        Get.snackbar("경고", "컬티에서 사용 가능한 쿠폰입니다.");
+                                        Get.snackbar(
+                                            "경고", "컬티에서 사용 가능한 쿠폰입니다.");
                                       }
                                       break;
                                     case "coltea_amer_free":
@@ -482,7 +587,9 @@ class _BillingPageState extends State<BillingPage> {
                                         bool hotAmericano = false;
                                         for (var cartItem in c.shoppingCart) {
                                           if (cartItem.name == "아메리카노") {
-                                            if (cartItem.cartOptions["temp"]!.name == "따뜻한")
+                                            if (cartItem.cartOptions["temp"]!
+                                                    .name ==
+                                                "따뜻한")
                                               hotAmericano = true;
                                             else
                                               coldAmericano = true;
@@ -493,23 +600,35 @@ class _BillingPageState extends State<BillingPage> {
                                           setState(() {
                                             widget.isCouponChoosed = true;
                                             Get.back();
-                                            Get.snackbar("알림", "아메리카노 무료 쿠폰이 적용되었습니다.", backgroundColor: Colors.white);
-                                            coupon.updateCoupon(couponVal, decodedData["couponType"] as String);
+                                            Get.snackbar(
+                                                "알림", "아메리카노 무료 쿠폰이 적용되었습니다.",
+                                                backgroundColor: Colors.white);
+                                            coupon.updateCoupon(
+                                                couponVal,
+                                                decodedData["couponType"]
+                                                    as String);
                                           });
                                         } else if (hotAmericano) {
                                           c.discountPriceMoney(3800);
                                           setState(() {
                                             widget.isCouponChoosed = true;
                                             Get.back();
-                                            Get.snackbar("알림", "아메리카노 무료 쿠폰이 적용되었습니다.", backgroundColor: Colors.white);
-                                            coupon.updateCoupon(couponVal, decodedData["couponType"] as String);
+                                            Get.snackbar(
+                                                "알림", "아메리카노 무료 쿠폰이 적용되었습니다.",
+                                                backgroundColor: Colors.white);
+                                            coupon.updateCoupon(
+                                                couponVal,
+                                                decodedData["couponType"]
+                                                    as String);
                                           });
                                         } else {
                                           Get.back();
-                                          Get.snackbar("경고", "아메리카노가 장바구니에 없습니다.");
+                                          Get.snackbar(
+                                              "경고", "아메리카노가 장바구니에 없습니다.");
                                         }
                                       } else {
-                                        Get.snackbar("경고", "컬티에서 사용 가능한 쿠폰입니다.");
+                                        Get.snackbar(
+                                            "경고", "컬티에서 사용 가능한 쿠폰입니다.");
                                       }
                                       break;
                                     case "coltea_latte_free":
@@ -543,15 +662,23 @@ class _BillingPageState extends State<BillingPage> {
                                           setState(() {
                                             widget.isCouponChoosed = true;
                                             Get.back();
-                                            Get.snackbar("알림", "라떼 무료 쿠폰이 적용되었습니다.", backgroundColor: Colors.white);
-                                            coupon.updateCoupon(couponVal, decodedData["couponType"] as String);
+                                            Get.snackbar(
+                                                "알림", "라떼 무료 쿠폰이 적용되었습니다.",
+                                                backgroundColor: Colors.white);
+                                            coupon.updateCoupon(
+                                                couponVal,
+                                                decodedData["couponType"]
+                                                    as String);
                                           });
                                         } else {
                                           Get.back();
-                                          Get.snackbar("경고", "라떼 종류 음료가 장바구니에 없습니다.", backgroundColor: Colors.white);
+                                          Get.snackbar(
+                                              "경고", "라떼 종류 음료가 장바구니에 없습니다.",
+                                              backgroundColor: Colors.white);
                                         }
                                       } else {
-                                        Get.snackbar("경고", "컬티에서 사용 가능한 쿠폰입니다.");
+                                        Get.snackbar(
+                                            "경고", "컬티에서 사용 가능한 쿠폰입니다.");
                                       }
                                       break;
                                     case "coltea_smoothe_free":
@@ -562,7 +689,8 @@ class _BillingPageState extends State<BillingPage> {
                                           if (cartItem.name == "요거트스무디") {
                                             lowSmootheFlag = true;
                                           }
-                                          if (cartItem.name == "초코스무디" || cartItem.name == "딸기스무디") {
+                                          if (cartItem.name == "초코스무디" ||
+                                              cartItem.name == "딸기스무디") {
                                             highSmootheFlag = true;
                                           }
                                         }
@@ -571,23 +699,36 @@ class _BillingPageState extends State<BillingPage> {
                                           setState(() {
                                             widget.isCouponChoosed = true;
                                             Get.back();
-                                            Get.snackbar("알림", "스무디 무료 쿠폰이 적용되었습니다.", backgroundColor: Colors.white);
-                                            coupon.updateCoupon(couponVal, decodedData["couponType"] as String);
+                                            Get.snackbar(
+                                                "알림", "스무디 무료 쿠폰이 적용되었습니다.",
+                                                backgroundColor: Colors.white);
+                                            coupon.updateCoupon(
+                                                couponVal,
+                                                decodedData["couponType"]
+                                                    as String);
                                           });
                                         } else if (lowSmootheFlag) {
                                           c.discountPriceMoney(5500);
                                           setState(() {
                                             widget.isCouponChoosed = true;
                                             Get.back();
-                                            Get.snackbar("알림", "스무디 무료 쿠폰이 적용되었습니다.", backgroundColor: Colors.white);
-                                            coupon.updateCoupon(couponVal, decodedData["couponType"] as String);
+                                            Get.snackbar(
+                                                "알림", "스무디 무료 쿠폰이 적용되었습니다.",
+                                                backgroundColor: Colors.white);
+                                            coupon.updateCoupon(
+                                                couponVal,
+                                                decodedData["couponType"]
+                                                    as String);
                                           });
                                         } else {
                                           Get.back();
-                                          Get.snackbar("경고", "스무디 종류 음료가 장바구니에 없습니다.", backgroundColor: Colors.white);
+                                          Get.snackbar(
+                                              "경고", "스무디 종류 음료가 장바구니에 없습니다.",
+                                              backgroundColor: Colors.white);
                                         }
                                       } else {
-                                        Get.snackbar("경고", "컬티에서 사용 가능한 쿠폰입니다.");
+                                        Get.snackbar(
+                                            "경고", "컬티에서 사용 가능한 쿠폰입니다.");
                                       }
                                       break;
                                     case "coltea_free":
@@ -601,20 +742,30 @@ class _BillingPageState extends State<BillingPage> {
                                         setState(() {
                                           c.discountPriceMoney(maxPrice);
                                           Get.back();
-                                          Get.snackbar("알림", "무료 음료 한 잔 쿠폰이 적용되었습니다.\n(가장 비싼 음료)", backgroundColor: Colors.white);
-                                          coupon.updateCoupon(couponVal, decodedData["couponType"] as String);
+                                          Get.snackbar("알림",
+                                              "무료 음료 한 잔 쿠폰이 적용되었습니다.\n(가장 비싼 음료)",
+                                              backgroundColor: Colors.white);
+                                          coupon.updateCoupon(
+                                              couponVal,
+                                              decodedData["couponType"]
+                                                  as String);
                                         });
                                       } else {
-                                        Get.snackbar("경고", "컬티에서 사용 가능한 쿠폰입니다.");
+                                        Get.snackbar(
+                                            "경고", "컬티에서 사용 가능한 쿠폰입니다.");
                                       }
                                       break;
                                   }
-                                } else if (decodedData["canUse"] as String == "False") {
+                                } else if (decodedData["canUse"] as String ==
+                                    "False") {
                                   Get.back();
-                                  Get.snackbar("경고", "이미 쿠폰을 사용하신 적 있습니다.\n사용한 적이 없을 때 문구가 출력되면 문의 바랍니다.", backgroundColor: Colors.white);
+                                  Get.snackbar("경고",
+                                      "이미 쿠폰을 사용하신 적 있습니다.\n사용한 적이 없을 때 문구가 출력되면 문의 바랍니다.",
+                                      backgroundColor: Colors.white);
                                 }
                               } else {
-                                Get.snackbar("경고", "쿠폰 번호를 잘 못 입력하셨습니다.", backgroundColor: Colors.white);
+                                Get.snackbar("경고", "쿠폰 번호를 잘 못 입력하셨습니다.",
+                                    backgroundColor: Colors.white);
                                 tc1.text = "";
                               }
                             }
@@ -752,13 +903,16 @@ class _ExpandableListState extends State<ExpandableList> {
                     child: FittedBox(
                         fit: BoxFit.fitHeight,
                         //TODO 주문 내역 갯수구현
-                        child: Text("주문 내역(${s.shoppingCart.length})", style: TextStyle(fontWeight: FontWeight.w700))),
+                        child: Text("주문 내역(${s.shoppingCart.length})",
+                            style: TextStyle(fontWeight: FontWeight.w700))),
                   ),
                   Container(
                     height: 24.h,
                     width: 24.w,
                     child: Icon(
-                      !expandFlag ? Icons.keyboard_arrow_down : Icons.keyboard_arrow_up,
+                      !expandFlag
+                          ? Icons.keyboard_arrow_down
+                          : Icons.keyboard_arrow_up,
                       color: Color(0xff777777),
                     ),
                   ),
@@ -888,7 +1042,8 @@ class _ExpandableListState extends State<ExpandableList> {
 
 class UpperCaseTextFormatter extends TextInputFormatter {
   @override
-  TextEditingValue formatEditUpdate(TextEditingValue oldValue, TextEditingValue newValue) {
+  TextEditingValue formatEditUpdate(
+      TextEditingValue oldValue, TextEditingValue newValue) {
     return TextEditingValue(
       text: newValue.text.toUpperCase(),
       selection: newValue.selection,

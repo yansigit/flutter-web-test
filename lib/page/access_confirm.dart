@@ -1,10 +1,14 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:get/get.dart';
+import 'package:save_order/state/controllers.dart';
+import 'package:save_order/view/pages/bottomNavConnectPages/FindNearStore.dart';
 import 'package:save_order/view/pages/login/login_page.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
 //TODO this is for Web. Need to change for App.
-import 'package:permission_handler/permission_handler.dart' if (dart.library.io) 'package:permission_handler/permission_handler.dart';
+import 'package:permission_handler/permission_handler.dart'
+    if (dart.library.io) 'package:permission_handler/permission_handler.dart';
 
 class AccessPage extends StatefulWidget {
   AccessPage({Key? key}) : super(key: key);
@@ -18,6 +22,7 @@ class _AccessPageState extends State<AccessPage> {
   //TODO this is for Web. Need to change [statusPermissions] for App.
   //List<bool> statusPermissions = [true, true];
   List<bool> statusPermissions = [false, false];
+  String token = "";
 
   //TODO this is for Web. Need to change [statusPermissions] for App.
 
@@ -45,7 +50,8 @@ class _AccessPageState extends State<AccessPage> {
         statusPermissions[0] = true;
       });
     }
-    if (!statuses[Permission.camera]!.isGranted || !statuses[Permission.location]!.isGranted) {
+    if (!statuses[Permission.camera]!.isGranted ||
+        !statuses[Permission.location]!.isGranted) {
       // 허용이 안된 경우
       showDialog(
           context: context,
@@ -59,13 +65,43 @@ class _AccessPageState extends State<AccessPage> {
                     },
                     child: Text('설정하기')),
                 ElevatedButton(
-                    onPressed: () {
-                      Get.off(() => LoginPage());
+                    onPressed: () async {
+                      SharedPreferences sharedPreferences =
+                          await SharedPreferences.getInstance();
+                      String? token = sharedPreferences.getString("token");
+                      print(token);
+                      print("token");
+                      print("sldl");
+                      if (token == null || token.length == 0) {
+                        Get.off(() => LoginPage(),
+                            transition: Transition.rightToLeft);
+                      } else {
+                        Get.put(UserController());
+                        UserController userController = Get.find();
+                        userController.updateUserInfo(
+                            sharedPreferences.getString("email")!, token);
+                        Get.off(() => NearStoresPage(),
+                            transition: Transition.rightToLeft);
+                      }
                     },
                     child: Text('계속하기')),
               ],
             );
           });
+    }
+  }
+
+  void getTokenFromPrefeences() async {
+    SharedPreferences sharedPreferences = await SharedPreferences.getInstance();
+    String? token = sharedPreferences.getString("token");
+    print(token!);
+    print("tosksdsdsdsd");
+    if (token != null && token.length != 0) {
+        Get.put(UserController());
+      UserController userController = Get.find();
+      userController.updateUserInfo(
+          sharedPreferences.getString("email")!, token);
+      this.token = token;
     }
   }
 
@@ -80,6 +116,10 @@ class _AccessPageState extends State<AccessPage> {
       statusPermissions[0] = true;
       statusPermissions[1] = true;
     }
+
+    WidgetsBinding.instance!.addPostFrameCallback((_) {
+      getTokenFromPrefeences();
+    });
   }
 
   @override
@@ -88,7 +128,7 @@ class _AccessPageState extends State<AccessPage> {
     //TODO this is for Web. Need to change [statusPermissions] for App.
 
     return statusPermissions[0] == true && statusPermissions[1] == true
-        ? LoginPage()
+        ? (this.token.length == 0 ? LoginPage() : NearStoresPage())
         : Scaffold(
             body: Container(
               color: Colors.white,
@@ -116,16 +156,21 @@ class _AccessPageState extends State<AccessPage> {
                               child: Column(
                                 children: [
                                   Container(
-                                    margin: EdgeInsets.symmetric(vertical: 10.h),
+                                    margin:
+                                        EdgeInsets.symmetric(vertical: 10.h),
                                     child: Row(
-                                      mainAxisAlignment: MainAxisAlignment.spaceAround,
+                                      mainAxisAlignment:
+                                          MainAxisAlignment.spaceAround,
                                       children: <Widget>[
                                         Flexible(
                                           flex: 1,
                                           fit: FlexFit.tight,
                                           child: Container(
                                             height: 59.h,
-                                            child: Image.asset("assets/access/ic_gps.png", color: Colors.black54, fit: BoxFit.scaleDown),
+                                            child: Image.asset(
+                                                "assets/access/ic_gps.png",
+                                                color: Colors.black54,
+                                                fit: BoxFit.scaleDown),
                                           ),
                                         ),
                                         Flexible(
@@ -146,9 +191,11 @@ class _AccessPageState extends State<AccessPage> {
                                     ),
                                   ),
                                   Container(
-                                    margin: EdgeInsets.symmetric(vertical: 10.h),
+                                    margin:
+                                        EdgeInsets.symmetric(vertical: 10.h),
                                     child: Row(
-                                      mainAxisAlignment: MainAxisAlignment.spaceAround,
+                                      mainAxisAlignment:
+                                          MainAxisAlignment.spaceAround,
                                       children: <Widget>[
                                         Flexible(
                                           flex: 1,

@@ -33,8 +33,9 @@ class _ShowForgatEmailPage extends State<ShowForgatEmailPage> {
           child: Container(
             height: 130.h,
             width: 320.w,
-            decoration:
-                BoxDecoration(border: Border.all(color: Colors.blueAccent)),
+             decoration: BoxDecoration(
+    border: Border.all(color: const Color(0xff00276b))
+  ),
             child: Column(
               mainAxisAlignment: MainAxisAlignment.center,
               crossAxisAlignment: CrossAxisAlignment.center,
@@ -116,7 +117,7 @@ class _ShowForgatEmailPage extends State<ShowForgatEmailPage> {
                                   style: TextStyle(
                                       backgroundColor: Colors.white,
                                       fontWeight: FontWeight.w400,
-                                      color: Colors.blue,
+                                      color: const Color(0xff00276b),
                                       fontFamily: "NotoSans",
                                       fontStyle: FontStyle.normal,
                                       fontSize: 16.0))))),

@@ -73,6 +73,9 @@ class _EmailFindPage extends State<EmailFindPage> {
         backgroundColor: Color(0xFFFFFF).withOpacity(1.0),
         body: Center(
             child: Container(
+               decoration: BoxDecoration(
+    border: Border.all(color: const Color(0xff00276b))
+  ),
           child: Column(
             mainAxisAlignment: MainAxisAlignment.center,
             crossAxisAlignment: CrossAxisAlignment.center,
@@ -86,7 +89,7 @@ class _EmailFindPage extends State<EmailFindPage> {
                           alignment: Alignment.center,
                           margin: EdgeInsets.only(right: 10.w),
                           height: 30.h,
-                          width: 50.w,
+                          width: 70.w,
                           child: FittedBox(
                             fit: BoxFit.fitWidth,
                             child: Text(
@@ -139,7 +142,7 @@ class _EmailFindPage extends State<EmailFindPage> {
                           margin: EdgeInsets.only(right: 10.w),
                           alignment: Alignment.center,
                           height: 30.h,
-                          width: 50.w,
+                          width: 70.w,
                           child: FittedBox(
                             fit: BoxFit.fitWidth,
                             child: Text(
@@ -169,6 +172,8 @@ class _EmailFindPage extends State<EmailFindPage> {
                           child: Form(
                               key: this._phoneNumberFormKey,
                               child: TextFormField(
+                                 inputFormatters: [FilteringTextInputFormatter.digitsOnly,
+                                 LengthLimitingTextInputFormatter(14),],
                                 validator: (value) {
                                   RegExp regExp = new RegExp(
                                     "\d{10, 12}",
@@ -187,9 +192,7 @@ class _EmailFindPage extends State<EmailFindPage> {
                                     fontFamily: "NotoSans", fontSize: 14.0),
                                 textAlign: TextAlign.center,
                                 controller: phoneNumberController,
-                                inputFormatters: [
-                                  LengthLimitingTextInputFormatter(14),
-                                ],
+                           
                                 decoration: InputDecoration(
                                   hintText: "휴대폰 번호를 입력하세요.",
                                 ),
@@ -300,7 +303,7 @@ class _EmailFindPage extends State<EmailFindPage> {
                               style: TextStyle(
                                   backgroundColor: Colors.white,
                                   fontWeight: FontWeight.w400,
-                                  color: Colors.blue,
+                                  color: const Color(0xff00276b),
                                   fontFamily: "NotoSans",
                                   fontStyle: FontStyle.normal,
                                   fontSize: 10.0))))),
@@ -308,8 +311,6 @@ class _EmailFindPage extends State<EmailFindPage> {
           ),
           width: 325.w,
           height: 300.h,
-          decoration:
-              BoxDecoration(border: Border.all(color: Colors.blueAccent)),
         )));
   }
 }

@@ -4,6 +4,7 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:flutter_svg/flutter_svg.dart';
 import 'package:get/get.dart';
 import 'package:save_order/consts/RegExp.dart';
 import 'package:save_order/consts/color.dart';
@@ -61,10 +62,10 @@ class _EmailLoginPage extends State<EmailLoginPage> {
 
     //user의 정보가 있다면 바로 로그아웃 페이지로 넝어가게 합니다.
     if (token != null && token.length != 0) {
-      emailController!.text =
-          sharedPreferences!.getString("email").toString().trim();
-      passwordController!.text =
-          sharedPreferences!.getString("password").toString().trim();
+      // emailController!.text =
+      //     sharedPreferences!.getString("email").toString().trim();
+      // passwordController!.text =
+      //     sharedPreferences!.getString("password").toString().trim();
       this.token = token;
     }
   }
@@ -74,6 +75,15 @@ class _EmailLoginPage extends State<EmailLoginPage> {
     return Scaffold(
       backgroundColor: Color(0xFFFFFF).withOpacity(1.0),
       appBar: AppBar(
+        leading: IconButton(
+          icon: SvgPicture.asset(
+            "assets/icons/backIcon.svg",
+            color: Colors.black,
+          ),
+          onPressed: () {
+            Get.back();
+          },
+        ),
         backgroundColor: Colors.white,
         elevation: 1.3,
         centerTitle: true,
@@ -84,65 +94,67 @@ class _EmailLoginPage extends State<EmailLoginPage> {
         child: Container(
           width: 325.w,
           height: 300.h,
-          decoration:
-              BoxDecoration(border: Border.all(color: Colors.blueAccent)),
+       decoration: BoxDecoration(
+    border: Border.all(color: const Color(0xff00276b))
+  ),
           child: Column(
             mainAxisAlignment: MainAxisAlignment.center,
             crossAxisAlignment: CrossAxisAlignment.center,
             children: <Widget>[
               Container(
-                margin: EdgeInsets.only(bottom: 5.h),
+                  margin: EdgeInsets.only(bottom: 5.h),
                   child: Row(
-                mainAxisAlignment: MainAxisAlignment.center,
-                children: [
-                  Container(
-                      alignment: Alignment.center,
-                      margin: EdgeInsets.only(right: 10.w),
-                      height: 30.h,
-                      width: 50.w,
-                      child: FittedBox(
-                        fit: BoxFit.fitHeight,
-                        child: Text(
-                          "이메일: ",
-                          style: TextStyle(
-                              color: const Color(0xff222222),
-                              fontFamily: "NotoSans",
-                              fontSize: 14.0),
-                        ),
-                      )),
-                  Container(
-                      height: 30.h,
-                      width: 240.w,
-                      alignment: Alignment.center,
-                      decoration: BoxDecoration(
-                        color: Colors.white,
-                        border: Border.all(
-                            color: const Color(0xffe8e8e8), width: 1.w),
-                        boxShadow: [
-                          BoxShadow(
-                              color: const Color(0x0c000000),
-                              offset: Offset(0, 2),
-                              blurRadius: 4,
-                              spreadRadius: 0)
-                        ],
-                      ),
-                      child: TextFormField(
-                        textAlignVertical: TextAlignVertical.center,
-                        inputFormatters: [
-                          FilteringTextInputFormatter.deny(KOREAN_WORD_REGEXP),
-                          LengthLimitingTextInputFormatter(36),
-                        ],
-                        style:
-                            TextStyle(fontFamily: "NotoSans", fontSize: 14.0),
-                        textAlign: TextAlign.center,
-                        // textAlignVertical: TextAlignVertical.center,
-                        controller: emailController,
-                        decoration: InputDecoration(
-                          hintText: "이메일을 입력하세요.",
-                        ),
-                      )),
-                ],
-              )),
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    children: [
+                      Container(
+                          alignment: Alignment.center,
+                          margin: EdgeInsets.only(right: 10.w),
+                          height: 30.h,
+                          width: 50.w,
+                          child: FittedBox(
+                            fit: BoxFit.fitHeight,
+                            child: Text(
+                              "이메일: ",
+                              style: TextStyle(
+                                  color: const Color(0xff222222),
+                                  fontFamily: "NotoSans",
+                                  fontSize: 14.0),
+                            ),
+                          )),
+                      Container(
+                          height: 30.h,
+                          width: 240.w,
+                          alignment: Alignment.center,
+                          decoration: BoxDecoration(
+                            color: Colors.white,
+                            border: Border.all(
+                                color: const Color(0xffe8e8e8), width: 1.w),
+                            boxShadow: [
+                              BoxShadow(
+                                  color: const Color(0x0c000000),
+                                  offset: Offset(0, 2),
+                                  blurRadius: 4,
+                                  spreadRadius: 0)
+                            ],
+                          ),
+                          child: TextFormField(
+                            textAlignVertical: TextAlignVertical.center,
+                            inputFormatters: [
+                              FilteringTextInputFormatter.deny(
+                                  KOREAN_WORD_REGEXP),
+                              LengthLimitingTextInputFormatter(36),
+                            ],
+                            style: TextStyle(
+                                fontFamily: "NotoSans", fontSize: 14.0),
+                            textAlign: TextAlign.center,
+                            // textAlignVertical: TextAlignVertical.center,
+                            controller: emailController,
+                            decoration: InputDecoration(
+                              hintText: "이메일을 입력하세요.",
+                            ),
+                          )),
+                    ],
+                  )),
               Container(
                   margin: EdgeInsets.only(bottom: 15.h),
                   child: Row(
@@ -183,7 +195,8 @@ class _EmailLoginPage extends State<EmailLoginPage> {
                             textAlignVertical: TextAlignVertical.center,
                             inputFormatters: [
                               LengthLimitingTextInputFormatter(20),
-                              FilteringTextInputFormatter.deny(KOREAN_WORD_REGEXP),
+                              FilteringTextInputFormatter.deny(
+                                  KOREAN_WORD_REGEXP),
                             ],
                             style: TextStyle(
                                 fontFamily: "NotoSans", fontSize: 14.0),
@@ -242,9 +255,6 @@ class _EmailLoginPage extends State<EmailLoginPage> {
                         'true';
                     print(isTempPassword == true);
                     print("as");
-                    if (this.token.length == 0) {
-                      return;
-                    }
 
                     if (isTempPassword == true) {
                       Get.to(() => PasswordChangePage());
@@ -256,22 +266,21 @@ class _EmailLoginPage extends State<EmailLoginPage> {
                     if (sharedPreferences == null) {
                       sharedPreferences = await SharedPreferences.getInstance();
                     }
+                    print("Aaas");
 
                     await sharedPreferences!
-                        .setString("email", emailController!.text.toString());
+                        .setString("email", emailController!.text.toString().replaceAll(" ", ""));
 
-                    await sharedPreferences!.setString(
-                        "password", passwordController!.text.toString());
+                    // await sharedPreferences!.setString(
+                    //     "password", passwordController!.text.toString());
                     await sharedPreferences!.setString("token", this.token);
-
+                    print(this.token);
+                    print("token");
                     if (this.token.length != 0) {
                       userController.updateUserInfo(
                           emailController!.text.toString(), this.token);
-                      
                     }
-
-
-                    Get.to(() => NearStoresPage());
+                    Get.off(() => NearStoresPage());
                   },
                   child: Container(
                       width: 200.w,
@@ -282,33 +291,38 @@ class _EmailLoginPage extends State<EmailLoginPage> {
                               style: TextStyle(
                                   backgroundColor: Colors.white,
                                   fontWeight: FontWeight.w400,
-                                  color: Colors.blue,
+                                  color: const Color(0xff00276b),
                                   fontFamily: "NotoSans",
                                   fontStyle: FontStyle.normal,
                                   fontSize: 10.0))))),
-              Row(
-                mainAxisAlignment: MainAxisAlignment.center,
-                crossAxisAlignment: CrossAxisAlignment.center,
-                children: [
-                  Container(
-                    width: 100.w,
-                    height: 25.h,
-                    child: GestureDetector(
-                        onTap: () {
-                          Get.to(EmailFindPage());
-                        },
-                        child: Text("이메일 찾기")),
+              Container(
+                margin: EdgeInsets.only(top: 10.h),
+                child: Padding(
+                  padding: EdgeInsets.symmetric(horizontal: 70.w),
+                  child: Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                    crossAxisAlignment: CrossAxisAlignment.center,
+                    children: [
+                      Container(
+                        height: 25.h,
+                        child: GestureDetector(
+                            onTap: () {
+                              Get.to(EmailFindPage());
+                            },
+                            child: Text("이메일 찾기")),
+                      ),
+                      Container(height: 25.h, child: Text("|")),
+                      Container(
+                        height: 25.h,
+                        child: GestureDetector(
+                            onTap: () {
+                              Get.to(PasswordFindPage());
+                            },
+                            child: Text("비밀번호 찾기")),
+                      ),
+                    ],
                   ),
-                  Container(
-                    width: 100.w,
-                    height: 25.h,
-                    child: GestureDetector(
-                        onTap: () {
-                          Get.to(PasswordFindPage());
-                        },
-                        child: Text("비밀번호 찾기")),
-                  ),
-                ],
+                ),
               )
             ],
           ),

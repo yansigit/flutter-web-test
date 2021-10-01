@@ -156,9 +156,8 @@ class LoginPageState extends State<LoginPage> {
                               ))
                         ])),
                     onPressed: () {
-                      Get.to(() => EmailLoginPage());
+                      Get.to(() => EmailLoginPage(), transition: Transition.rightToLeft);
                     }, // 이메일 로그인 api 불러오기
-
                     style: ButtonStyle(
                       side: MaterialStateProperty.all<BorderSide>(BorderSide(color: const Color(0xff00276b), width: 1.w)),
                       backgroundColor: MaterialStateProperty.all(EMAIL_COLOR),
@@ -289,7 +288,7 @@ class LoginPageState extends State<LoginPage> {
                                 style: TextStyle(
                                     backgroundColor: Colors.white,
                                     fontWeight: FontWeight.w400,
-                                    color: Colors.blue,
+                                      color: const Color(0xff00276b),
                                     fontFamily: "NotoSans",
                                     fontStyle: FontStyle.normal,
                                     fontSize: 16.0)))

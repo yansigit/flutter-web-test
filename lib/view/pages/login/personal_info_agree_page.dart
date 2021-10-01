@@ -60,8 +60,9 @@ class PersonalInfoAgree extends State<PersonalInfoAgreePage> {
         child: Container(
           width: 325.w,
           height: 700.h,
-          decoration:
-              BoxDecoration(border: Border.all(color: Colors.blueAccent)),
+          decoration: BoxDecoration(
+    border: Border.all(color: const Color(0xff00276b))
+  ),
           child: Column(
             mainAxisAlignment: MainAxisAlignment.center,
             children: [
