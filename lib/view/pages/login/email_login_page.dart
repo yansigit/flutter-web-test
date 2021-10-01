@@ -91,6 +91,7 @@ class _EmailLoginPage extends State<EmailLoginPage> {
             crossAxisAlignment: CrossAxisAlignment.center,
             children: <Widget>[
               Container(
+                margin: EdgeInsets.only(bottom: 5.h),
                   child: Row(
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: [
@@ -100,7 +101,7 @@ class _EmailLoginPage extends State<EmailLoginPage> {
                       height: 30.h,
                       width: 50.w,
                       child: FittedBox(
-                        fit: BoxFit.fitWidth,
+                        fit: BoxFit.fitHeight,
                         child: Text(
                           "이메일: ",
                           style: TextStyle(
@@ -151,9 +152,9 @@ class _EmailLoginPage extends State<EmailLoginPage> {
                           alignment: Alignment.center,
                           margin: EdgeInsets.only(right: 10.w),
                           height: 30.h,
-                          width: 50.w,
+                          width: 60.w,
                           child: FittedBox(
-                              fit: BoxFit.fitWidth,
+                              fit: BoxFit.fitHeight,
                               child: Text(
                                 "비밀번호: ",
                                 style: TextStyle(
