@@ -239,7 +239,7 @@ class SignUpPage extends State<SignUp> {
                               fit: BoxFit.fitHeight, child: Text("휴대폰 번호"))),
                       Container(
                           margin: EdgeInsets.only(right: 10.w, bottom: 8.h),
-                          width: 240.w,
+                          width: 200.w,
                           height: 50.h,
                           child: Form(
                             key: this._phoneNumberFormKey,
