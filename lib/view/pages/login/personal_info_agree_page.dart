@@ -33,7 +33,7 @@ class PersonalInfoAgree extends State<PersonalInfoAgreePage> {
  이용자가 베타 테스트 기간동안 달보드레를 이용하기 위해 회원가입을 할 경우, 달보드레는 서비스 이용을 위해 필요한 최소한의 개인정보를 수집합니다.
 
 회원가입 시점에 달보드레가 이용자로부터 수집하는 개인정보는 아래와 같습니다.
-- 회원 가입 시에 ‘아이디, 비밀번호, 이름, 휴대전화번호’를 필수항목으로 수집합니다.  그
+- 회원 가입 시에 ‘아이디, 비밀번호, 이름, 휴대전화번호’를 필수항목으로 수집합니다. 이
 서비스 이용 과정에서 이용자로부터 수집하는 개인정보는 아래와 같습니다.
 아름드림 내의 카페에서 메뉴 선택 결제를 했을 때의 정보가 들어가야 합니다. 
 서비스 이용 과정에서 위치정보, 카메라 정보가 생성되어 수집될 수 있습니다. 
@@ -58,10 +58,12 @@ class PersonalInfoAgree extends State<PersonalInfoAgreePage> {
       backgroundColor: Colors.white,
       body: Center(
         child: Container(
+          
           width: 325.w,
           height: 700.h,
           decoration: BoxDecoration(
-    border: Border.all(color: const Color(0xff00276b))
+    border: Border.all(color: const Color(0xff00276b)),
+    borderRadius: BorderRadius.all(Radius.circular(15.w))
   ),
           child: Column(
             mainAxisAlignment: MainAxisAlignment.center,
@@ -102,6 +104,7 @@ class PersonalInfoAgree extends State<PersonalInfoAgreePage> {
                   height: 200.h,
                   decoration: BoxDecoration(
                       border: Border.all(color: Colors.black),
+                       borderRadius: BorderRadius.all(Radius.circular(15.w)),
                       color: const Color.fromRGBO(226, 226, 226, 10)),
                   child: Scrollbar(
                     isAlwaysShown: true,
@@ -150,6 +153,7 @@ class PersonalInfoAgree extends State<PersonalInfoAgreePage> {
                   width: 250.w,
                   height: 200.h,
                   decoration: BoxDecoration(
+                     borderRadius: BorderRadius.all(Radius.circular(15.w)),
                       border: Border.all(color: Colors.black),
                       color: const Color.fromRGBO(226, 226, 226, 10)),
                   child: Scrollbar(
@@ -168,9 +172,9 @@ class PersonalInfoAgree extends State<PersonalInfoAgreePage> {
                   onPressed: () {
                     if (isAgreedForPersonalInfo && isAgreedForTermsOfUse) {
                       print(isAgreedForPersonalInfo);
-                      this.setState(() {
-                        this.emailColor = Colors.white;
-                      });
+                      // this.setState(() {
+                      //   this.emailColor = Colors.white;
+                      // });
                       Get.to(() => SignUp());
                     } else {
                       setState(() {
@@ -186,7 +190,7 @@ class PersonalInfoAgree extends State<PersonalInfoAgreePage> {
                   style: ButtonStyle(
                     side: MaterialStateProperty.all<BorderSide>(
                         BorderSide(color: const Color(0xff00276b), width: 1.w)),
-                    backgroundColor: MaterialStateProperty.all(this.emailColor),
+                    backgroundColor: MaterialStateProperty.all(isAgreedForPersonalInfo && isAgreedForTermsOfUse? Colors.grey : Colors.white),
                     shape: MaterialStateProperty.all<RoundedRectangleBorder>(
                         RoundedRectangleBorder(
                             borderRadius: BorderRadius.circular(10.w))),
@@ -200,7 +204,7 @@ class PersonalInfoAgree extends State<PersonalInfoAgreePage> {
                           fit: BoxFit.fitHeight,
                           child: Text("다음",
                               style: TextStyle(
-                                  backgroundColor: this.emailColor,
+                              
                                   fontWeight: FontWeight.w400,
                                   color: Colors.orange,
                                   fontFamily: "NotoSans",

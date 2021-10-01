@@ -95,7 +95,8 @@ class _EmailLoginPage extends State<EmailLoginPage> {
           width: 325.w,
           height: 300.h,
        decoration: BoxDecoration(
-    border: Border.all(color: const Color(0xff00276b))
+    border: Border.all(color: const Color(0xff00276b)),
+     borderRadius: BorderRadius.all(Radius.circular(15.w))
   ),
           child: Column(
             mainAxisAlignment: MainAxisAlignment.center,

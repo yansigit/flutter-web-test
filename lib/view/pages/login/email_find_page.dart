@@ -74,7 +74,8 @@ class _EmailFindPage extends State<EmailFindPage> {
         body: Center(
             child: Container(
                decoration: BoxDecoration(
-    border: Border.all(color: const Color(0xff00276b))
+    border: Border.all(color: const Color(0xff00276b)),
+     borderRadius: BorderRadius.all(Radius.circular(15.w))
   ),
           child: Column(
             mainAxisAlignment: MainAxisAlignment.center,

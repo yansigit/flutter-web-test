@@ -61,9 +61,10 @@ class _PasswordFindPage extends State<PasswordFindPage> {
           margin: EdgeInsets.only(right: 10.w),
           height: 16.h,
           width: 50.w,
-          decoration: BoxDecoration(
-    border: Border.all(color: const Color(0xff00276b))
-  ),
+  //         decoration: BoxDecoration(
+  //   border: Border.all(color: const Color(0xff00276b)),
+    
+  // ),
           child: FittedBox(
               fit: BoxFit.fitHeight,
               child: Text(
@@ -106,6 +107,10 @@ class _PasswordFindPage extends State<PasswordFindPage> {
         backgroundColor: Color(0xFFFFFF).withOpacity(1.0),
         body: Center(
             child: Container(
+                  decoration: BoxDecoration(
+    border: Border.all(color: const Color(0xff00276b)),
+     borderRadius: BorderRadius.all(Radius.circular(15.w))
+  ),
           child: Column(
             mainAxisAlignment: MainAxisAlignment.center,
             crossAxisAlignment: CrossAxisAlignment.center,
@@ -177,8 +182,7 @@ class _PasswordFindPage extends State<PasswordFindPage> {
           ),
           width: 325.w,
           height: 300.h,
-          decoration:
-              BoxDecoration(border: Border.all(color: Colors.blueAccent)),
+         
         )));
   }
 }

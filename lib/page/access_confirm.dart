@@ -94,7 +94,7 @@ class _AccessPageState extends State<AccessPage> {
   void getTokenFromPrefeences() async {
     SharedPreferences sharedPreferences = await SharedPreferences.getInstance();
     String? token = sharedPreferences.getString("token");
-    print(token!);
+
     print("tosksdsdsdsd");
     if (token != null && token.length != 0) {
         Get.put(UserController());
