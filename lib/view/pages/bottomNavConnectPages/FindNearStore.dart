@@ -51,17 +51,27 @@ class NearStoresPageState extends State<NearStoresPage> {
     });
   }
 
+  List<Shop> filterOpenedStores(List<Shop> shops) {
+    List<Shop> opendShops = [];
+
+    for (int i = 0; i < shops.length; i++) {
+      if (shops[i].isOpened == true) {
+        opendShops.add(shops[i]);
+      }
+    }
+
+    return opendShops;
+  }
+
   Future<List<Shop>> fetchNearStores() async {
     //await Future.delayed(Duration(seconds: 0));
-    var shops;
+    List<Shop> shops = [];
     print(GetPlatform.isWeb);
     print("is web");
     if (GetPlatform.isWeb) {
-      //shops = await Shop.fetchShopsByLocation(http.Client(), N, this.curPosition);
-
       shops = await Shop.fetchShops(http.Client());
       // shops = shops.where((shop) => (shop.isOpened == 1)).toList();
-      return shops;
+      return this.filterOpenedStores(shops);
     }
 
     //var locationPermissionStatus = statusPermissions[0];
@@ -69,6 +79,7 @@ class NearStoresPageState extends State<NearStoresPage> {
     // print("locationPermissionStatus:" + locationPermissionStatus.toString());
     // if (locationPermissionStatus == true) {
     print(statusPermissions);
+    print("status");
     if (statusPermissions[0] == true) {
       shops =
           await Shop.fetchShopsByLocation(http.Client(), N, this.curPosition);
@@ -76,9 +87,9 @@ class NearStoresPageState extends State<NearStoresPage> {
       shops = await Shop.fetchShops(http.Client());
     }
 
-      //  shops = shops.where((shop) => (shop.isOpened == 1)).toList();
+    //  shops = shops.where((shop) => (shop.isOpened == 1)).toList();
 
-    return shops;
+    return this.filterOpenedStores(shops);
 
     // return [
     //   // new Shop(id:1,  name: "컬티", latitude: 38.5, longtitude: 40.5, distanceFromCurPosition: 3.5),
@@ -271,7 +282,7 @@ class NearStoresPageState extends State<NearStoresPage> {
                   return FutureBuilder(
                       future: fetchNearStores(),
                       builder: (ctx, AsyncSnapshot snap) {
-                        if (snap.hasData) {
+                        if (snap.hasData &&  snap.data.length> 0) {
                           return Container(
                               child: ListView.separated(
                             shrinkWrap: true,
@@ -297,7 +308,7 @@ class NearStoresPageState extends State<NearStoresPage> {
                         } else if (!snap.hasData) {
                           return Center(child: CircularProgressIndicator());
                         } else {
-                          return Text("f");
+                          return Center(child: Text("주변 매장이 없습니다."));
                         }
                       });
                 } else if (!projectSnap.hasData) {
@@ -317,7 +328,7 @@ class NearStoresPageState extends State<NearStoresPage> {
     final Map<String, String> storeNameToAddress = {
       "컬티": "울산광역시 남구 컬티",
       "카페마냥": "울산광역시 남구 카페마냥",
-      "11호관 커피": "울산광역시 남구 대학로 93번길 11호관"
+      "11호관 커피숍": "울산광역시 남구 대학로 93번길 11호관"
     };
 
     // 각 가게 위치 데이터 넣기.  카페  이름이랑 비교

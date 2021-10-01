@@ -142,14 +142,14 @@ class SignUpPage extends State<SignUp> {
                     Row(children: <Widget>[
                       Container(
                           margin: EdgeInsets.only(right: 10.w, bottom: 8.h),
-                          width: 200.w,
+                          width: 60.w,
                           height: 20.h,
                           child: FittedBox(
                               fit: BoxFit.fitHeight, child: Text("비밀번호"))),
                       Container(
                           margin: EdgeInsets.only(right: 10.w, bottom: 8.h),
                           width: 200.w,
-                          height: 50.h,
+                          height: 70.h,
                           child: Form(
                             key: this._passwordFormKey,
                             child: TextFormField(
@@ -168,7 +168,7 @@ class SignUpPage extends State<SignUp> {
                               validator: (password) {
                                 if (password!.length > 30 ||
                                     !passwordExp.hasMatch(password)) {
-                                  return "형식에 맞지 않는 비밀번호입니다. 영어 소문자를 적어도 1개 이상, 숫자를 적어도 1개 이상 포함하는 8자리 글자를 입력해주세요.";
+                                  return " 영어 소문자 1개 이상, 숫자 1개 이상 포함하는 8자리 이상의 글자를 입력해주세요.";
                                 } else {
                                   return null;
                                 }
@@ -181,6 +181,7 @@ class SignUpPage extends State<SignUp> {
                               controller: this.passwordController,
                               textAlign: TextAlign.left,
                               decoration: InputDecoration(
+                                errorMaxLines: 3,
                                   border: OutlineInputBorder(),
                                   hintText: "비밀번호",
                                   hintStyle: TextStyle(fontSize: 14)),
@@ -369,7 +370,7 @@ class SignUpPage extends State<SignUp> {
                                   await SharedPreferences.getInstance();
                               sharedPreferences.setString(
                                   "signUpToken", decodedData["token"]);
-                                  
+
                               ScaffoldMessenger.of(context).showSnackBar(
                                   SnackBar(
                                       duration:

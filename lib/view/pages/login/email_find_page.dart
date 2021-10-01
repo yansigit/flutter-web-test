@@ -208,7 +208,7 @@ class _EmailFindPage extends State<EmailFindPage> {
                           duration: const Duration(milliseconds: 1000),
                           content: Text("이름과 휴대폰 번호에 걸맞는 이메일이 존재하지 않습니다.")));
                     } else {
-                      Get.to(() => ShowForgatEmailPage(email));
+                      Get.off(() => ShowForgatEmailPage(email), transition: Transition.rightToLeft);
                     }
                   },
                   style: ButtonStyle(

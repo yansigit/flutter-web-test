@@ -85,7 +85,10 @@ class _PasswordChagePage extends State<PasswordChangePage> {
           width: 325.w,
           height: 300.h,
           decoration:
-              BoxDecoration(border: Border.all(color: const Color(0xff00276b))),
+              BoxDecoration(border: Border.all(color: const Color(0xff00276b)),
+                borderRadius:
+                        BorderRadius.circular(15.h)
+              ),
           child: Column(
             mainAxisAlignment: MainAxisAlignment.center,
             crossAxisAlignment: CrossAxisAlignment.center,
@@ -118,7 +121,7 @@ class _PasswordChagePage extends State<PasswordChangePage> {
                           token = sharedPreferences.getString("signUpToken");
                          
                         }
-                        
+
                         Map data = {
                           "token": token,
                           "password": passwordController!.text.toString().trim()
@@ -143,8 +146,10 @@ class _PasswordChagePage extends State<PasswordChangePage> {
                               duration: const Duration(milliseconds: 1000)));
                         } else {
                           print('new password');
-
-                          Get.to(() => EmailLoginPage(),
+                         ScaffoldMessenger.of(context).showSnackBar(SnackBar(
+                              content: Text("비밀번호 변경이 완료되었습니다."),
+                              duration: const Duration(milliseconds: 1000)));
+                          Get.off(() => LoginPage(),
                               transition: Transition.rightToLeft);
                         }
                       },

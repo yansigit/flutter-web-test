@@ -20,17 +20,16 @@ class Shop {
   double latitude;
   double longtitude;
   double distanceFromCurPosition;
-  int isOpened;
+  bool isOpened;
 
-  Shop({
-    this.id = 0,
-    this.name = "",
-    this.carouselImages = const [],
-    this.latitude = 0,
-    this.longtitude = 0,
-    this.distanceFromCurPosition = 0,
-    this.isOpened = 0
-  });
+  Shop(
+      {this.id = 0,
+      this.name = "",
+      this.carouselImages = const [],
+      this.latitude = 0,
+      this.longtitude = 0,
+      this.distanceFromCurPosition = 0,
+      this.isOpened = false});
 
   static Future<List<Shop>> fetchShops(http.Client client) async {
     final response = await client
@@ -75,8 +74,7 @@ class Shop {
         carouselImages:
             json['carouselImages'] != null ? json['carouselImages'] : [],
         latitude: json['latitude'] as double,
-        longtitude: json['longitude'] as double,
-        isOpened: json['isOpened'] as int);
+        longtitude: json['longitude'] as double);
   }
 
   static double calculateDistance(latitude, longitude, curPosition) {
@@ -86,6 +84,7 @@ class Shop {
     print(longitude);
     double d = Geolocator.distanceBetween(
         curPosition.latitude, curPosition.longitude, latitude, longitude);
+
     return d;
   }
 
@@ -93,7 +92,9 @@ class Shop {
       Map<String, dynamic> json, Position curPosition) {
     double distance =
         calculateDistance(json['latitude'], json['longitude'], curPosition);
-
+    print("jsonnnnn");
+    print(json['isOpened']);
+    print(json['isOpened'].runtimeType);
     return Shop(
         id: json['id'] as int,
         name: json['name'] as String,
@@ -102,12 +103,13 @@ class Shop {
         latitude: json['latitude'] as double,
         longtitude: json['longitude'] as double,
         distanceFromCurPosition: distance,
-        isOpened: json['isOpened'] as int);
+        isOpened: json['isOpened']);
   }
 
   static List<Shop> parseShopIncludeDistance(
       String responseBody, Position curPosition) {
     final parsed = json.decode(responseBody).cast<Map<String, dynamic>>();
+
     var elem = parsed
         .map<Shop>((json) => Shop.fromJsonIncludeDistance(json, curPosition));
 
@@ -119,6 +121,7 @@ class Shop {
 
   static List<Shop> parseShop(String responseBody) {
     final parsed = json.decode(responseBody).cast<Map<String, dynamic>>();
+
     return parsed.map<Shop>((json) => Shop.fromJson(json)).toList();
   }
 }

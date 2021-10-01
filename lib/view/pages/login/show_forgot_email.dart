@@ -95,7 +95,7 @@ class _ShowForgatEmailPage extends State<ShowForgatEmailPage> {
                   width: 160.w,
                   child: ElevatedButton(
                       onPressed: () {
-                        Get.to(() => LoginPage());
+                        Get.off(() => LoginPage(), transition: Transition.rightToLeft);
                       },
                       style: ButtonStyle(
                         side: MaterialStateProperty.all<BorderSide>(BorderSide(
