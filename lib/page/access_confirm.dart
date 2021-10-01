@@ -1,11 +1,10 @@
 import 'package:flutter/material.dart';
-//import 'package:flutter_screenutil/flutter_screenutil.dart';
-//import 'package:get/get.dart';
+import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:get/get.dart';
 import 'package:save_order/view/pages/login/login_page.dart';
 
 //TODO this is for Web. Need to change for App.
-// import 'package:permission_handler/permission_handler.dart' if (dart.library.io) 'package:permission_handler/permission_handler.dart';
-
+import 'package:permission_handler/permission_handler.dart' if (dart.library.io) 'package:permission_handler/permission_handler.dart';
 
 class AccessPage extends StatefulWidget {
   AccessPage({Key? key}) : super(key: key);
@@ -17,10 +16,11 @@ class AccessPage extends StatefulWidget {
 class _AccessPageState extends State<AccessPage> {
   // 0번은 위치권한, 1번은 카메라권한.
   //TODO this is for Web. Need to change [statusPermissions] for App.
-  List<bool> statusPermissions = [true, true];
+  //List<bool> statusPermissions = [true, true];
+  List<bool> statusPermissions = [false, false];
 
   //TODO this is for Web. Need to change [statusPermissions] for App.
-  /*
+
   Future getStatusPermissonList() async {
     var _statusLocation = await Permission.location.status.isGranted;
     var _statusCamera = await Permission.camera.status.isGranted;
@@ -68,27 +68,25 @@ class _AccessPageState extends State<AccessPage> {
           });
     }
   }
-  */
 
   @override
   void initState() {
     super.initState();
     //TODO this is for Web. Need to change [statusPermissions] for App.
-    /*
+
     if (!GetPlatform.isWeb) {
       getStatusPermissonList();
     } else {
       statusPermissions[0] = true;
       statusPermissions[1] = true;
     }
-    */
   }
 
   @override
   Widget build(BuildContext context) {
-    return LoginPage();
+    //return LoginPage();
     //TODO this is for Web. Need to change [statusPermissions] for App.
-    /*
+
     return statusPermissions[0] == true && statusPermissions[1] == true
         ? LoginPage()
         : Scaffold(
@@ -208,6 +206,5 @@ class _AccessPageState extends State<AccessPage> {
               ),
             ),
           );
-          */
   }
 }

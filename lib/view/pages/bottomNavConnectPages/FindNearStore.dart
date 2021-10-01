@@ -17,7 +17,7 @@ import 'package:flutter_svg/flutter_svg.dart';
 import 'package:geolocator/geolocator.dart';
 import "package:http/http.dart" as http;
 //TODO this is for Web. Need to change for App.
-//import "package:permission_handler/permission_handler.dart";
+import "package:permission_handler/permission_handler.dart";
 
 class NearStoresPageState extends State<NearStoresPage> {
   Future<List<Shop>>? nearStoresFuture;
@@ -39,7 +39,7 @@ class NearStoresPageState extends State<NearStoresPage> {
   List<bool> statusPermissions = [false, false];
 
   //TODO this is for Web. Need to change for App.
-  /*
+
   Future getStatusPermissonList() async {
     var _statusLocation = await Permission.location.status.isGranted;
     var _statusCamera = await Permission.camera.status.isGranted;
@@ -49,7 +49,6 @@ class NearStoresPageState extends State<NearStoresPage> {
       statusPermissions[1] = _statusCamera;
     });
   }
-  */
 
   Future<List<Shop>> fetchNearStores() async {
     //await Future.delayed(Duration(seconds: 0));
