@@ -761,7 +761,7 @@ class _CardPageState extends State<CardPage> {
 
     var body = json.encode(data);
     var res = await http.Client().post(Uri.parse("http://${devMode()}.dalbodre.me/api/Order"),
-        body: body, headers: <String, String>{'token': '${userController.userToken.value}'});
+        body: body, headers: <String, String>{'token': '${userController.userToken.value}', 'Content-Type': 'application/json'});
     if (res.statusCode == 200) {
       print(body.toString);
       print("WELL DONE dude");
