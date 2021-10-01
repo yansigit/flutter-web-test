@@ -55,8 +55,8 @@ class SignUpPage extends State<SignUp> {
     if (!phoneNumberExp.hasMatch(phoneNumber)) {
       ScaffoldMessenger.of(context).showSnackBar(SnackBar(
           duration: const Duration(milliseconds: 1500),
-          content:
-              Text("형식에 맞지 않는 휴대폰 번호입니다.'-' 없이 010 혹은 020 로 시작하는 숫자 11자리 혹은 12자리를 입력해주세요.")));
+          content: Text(
+              "형식에 맞지 않는 휴대폰 번호입니다.'-' 없이 010 혹은 020 로 시작하는 숫자 11자리 혹은 12자리를 입력해주세요.")));
       return false;
     }
 
@@ -130,13 +130,15 @@ class SignUpPage extends State<SignUp> {
                                   body: body);
 
                               print(response.statusCode);
-                              final decodedData = json.decode(response.body);
+                              Map<String, dynamic> decodedData =
+                                  json.decode(response.body);
+
                               print("response");
                               print(decodedData);
-                              String message = decodedData["msg"];
 
-                              print(message);
-                              if (message !=  SUCCESS_MESSAGE) {
+              
+                              if (!decodedData.containsKey("msg") ||
+                                  decodedData["msg"] != SUCCESS_MESSAGE) {
                                 ScaffoldMessenger.of(context).showSnackBar(SnackBar(
                                     duration:
                                         const Duration(milliseconds: 1000),
