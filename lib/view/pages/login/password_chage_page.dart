@@ -13,6 +13,7 @@ import 'package:save_order/model/model.dart';
 import 'package:save_order/state/controllers.dart';
 import 'package:save_order/view/pages/login/email_login_page.dart';
 import 'package:save_order/view/pages/login/login_page.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
 class PasswordChangePage extends StatefulWidget {
   @override
@@ -83,9 +84,8 @@ class _PasswordChagePage extends State<PasswordChangePage> {
             child: Container(
           width: 325.w,
           height: 300.h,
-          decoration: BoxDecoration(
-    border: Border.all(color: const Color(0xff00276b))
-  ),
+          decoration:
+              BoxDecoration(border: Border.all(color: const Color(0xff00276b))),
           child: Column(
             mainAxisAlignment: MainAxisAlignment.center,
             crossAxisAlignment: CrossAxisAlignment.center,
@@ -110,10 +110,17 @@ class _PasswordChagePage extends State<PasswordChangePage> {
                         // /api/User/ChangePassword/Token
                         // token 과 password 입력받음.
                         UserController userController = Get.find();
-                        print("llllllll");
-                        print(userController.userToken);
+
+                        String? token = userController.userToken.toString();
+                        if (token == "") {
+                          SharedPreferences sharedPreferences =
+                              await SharedPreferences.getInstance();
+                          token = sharedPreferences.getString("signUpToken");
+                         
+                        }
+                        
                         Map data = {
-                          "token": userController.userToken.toString(),
+                          "token": token,
                           "password": passwordController!.text.toString().trim()
                         };
 
@@ -137,8 +144,8 @@ class _PasswordChagePage extends State<PasswordChangePage> {
                         } else {
                           print('new password');
 
-                          Get.to(() => EmailLoginPage(), 
-                          transition: Transition.rightToLeft);
+                          Get.to(() => EmailLoginPage(),
+                              transition: Transition.rightToLeft);
                         }
                       },
                       child: Container(
@@ -152,7 +159,7 @@ class _PasswordChagePage extends State<PasswordChangePage> {
                                   style: TextStyle(
                                       backgroundColor: Colors.white,
                                       fontWeight: FontWeight.w400,
-                                       color: const Color(0xff00276b),
+                                      color: const Color(0xff00276b),
                                       fontFamily: "NotoSans",
                                       fontStyle: FontStyle.normal,
                                       fontSize: 14.0))))))

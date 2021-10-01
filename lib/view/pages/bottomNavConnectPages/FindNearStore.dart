@@ -60,7 +60,7 @@ class NearStoresPageState extends State<NearStoresPage> {
       //shops = await Shop.fetchShopsByLocation(http.Client(), N, this.curPosition);
 
       shops = await Shop.fetchShops(http.Client());
-
+      // shops = shops.where((shop) => (shop.isOpened == 1)).toList();
       return shops;
     }
 
@@ -75,6 +75,8 @@ class NearStoresPageState extends State<NearStoresPage> {
     } else {
       shops = await Shop.fetchShops(http.Client());
     }
+
+      //  shops = shops.where((shop) => (shop.isOpened == 1)).toList();
 
     return shops;
 
@@ -112,9 +114,9 @@ class NearStoresPageState extends State<NearStoresPage> {
           elevation: 1.3,
           leading: IconButton(
               onPressed: () {
-           
-                  Get.snackbar("경고", "배타테스트 기간 동안에는 qr 코드 스캔 기능이 지원되지 않습니다. 배타 테스트 이후에 구현 될 예정입니다.", backgroundColor: Colors.white);
-                    
+                Get.snackbar("경고",
+                    "배타테스트 기간 동안에는 qr 코드 스캔 기능이 지원되지 않습니다. 배타 테스트 이후에 구현 될 예정입니다.",
+                    backgroundColor: Colors.white);
               },
               icon: SvgPicture.asset(
                 "assets/icons/ic_qrcode.svg",
@@ -127,7 +129,9 @@ class NearStoresPageState extends State<NearStoresPage> {
           actions: [
             IconButton(
               onPressed: () {
-                Get.snackbar("경고", "배타테스트 기간 동안에는 카페 검색 기능이 지원되지 않습니다. 배타 테스트 이후에 구현 될 예정입니다.", backgroundColor: Colors.white);
+                Get.snackbar("경고",
+                    "배타테스트 기간 동안에는 카페 검색 기능이 지원되지 않습니다. 배타 테스트 이후에 구현 될 예정입니다.",
+                    backgroundColor: Colors.white);
               },
               icon: SvgPicture.asset(
                 "assets/icons/searchIcon.svg",

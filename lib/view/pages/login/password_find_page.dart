@@ -139,11 +139,7 @@ class _PasswordFindPage extends State<PasswordFindPage> {
                               this.isNextButtonDisabled = false;
                             });
                             Get.to(LoginPage());
-                         
-                             
-                            // 로그인 페이지에서 로그인 후 임시
-                            // 비밀번호인지 확인하고,
-                            // 임시 비밀번호면 변경 view 보여주기
+  
                           } else {
                             ScaffoldMessenger.of(context).showSnackBar(SnackBar(
                                 duration: const Duration(milliseconds: 500),
