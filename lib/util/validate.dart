@@ -1,7 +1,7 @@
 RegExp KOREAN_WORD_REGEXP = RegExp(r"[ㄱ-ㅎ|ㅏ-ㅣ|ㆍ|가-힣]");
 RegExp emailRegExp = RegExp(
     r"^[a-zA-Z0-9.a-zA-Z0-9.!#$%&'*+-/=?^_`{|}~]+@[a-zA-Z0-9]+\.[a-zA-Z]+");
-RegExp passwordExp = RegExp(r'^(?=.*?[a-z])([A-Z])*(?=.*?[0-9]).{8,}$');
+RegExp passwordExp = RegExp(r'^(?=.*?[a-zA-Z])(?=.*?[0-9]).{8,}$');
 RegExp phoneNumberExp = RegExp(r'^(0[12]0)([0-9]{3,4})([0-9]{4})$');
 
 String? emailValidate(String? email) {
@@ -14,7 +14,7 @@ String? emailValidate(String? email) {
 
 String? passwordValidate(String? password) {
   if (password!.length > 20 || !passwordExp.hasMatch(password)) {
-    return " 영어 소문자 1개 이상, 숫자 1개 이상 포함하는 8자리 이상의 글자를 입력해주세요.";
+    return " 영어 소문자 혹은 대문자 1개 이상, 숫자 1개 이상 포함하는 8자리 이상의 글자를 입력해주세요.";
   } else {
     return null;
   }

@@ -141,7 +141,7 @@ class SignUpPage extends State<SignUp> {
                               validator: (password) {
                                 if (password!.length > 30 ||
                                     !passwordExp.hasMatch(password)) {
-                                  return " 영어 소문자 1개 이상, 숫자 1개 이상 포함하는 8자리 이상의 글자를 입력해주세요.";
+                                  return " 영어 소문자  혹은 대문자 1개 이상, 숫자 1개 이상 포함하는 8자리 이상의 글자를 입력해주세요.";
                                 } else {
                                   return null;
                                 }

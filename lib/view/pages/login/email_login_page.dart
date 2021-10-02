@@ -157,6 +157,7 @@ class _EmailLoginPage extends State<EmailLoginPage> {
                               // textAlignVertical: TextAlignVertical.center,
                               controller: emailController,
                               decoration: InputDecoration(
+                                errorMaxLines: 2,
                                 hintText: "이메일을 입력하세요.",
                               ),
                             ),
@@ -183,7 +184,7 @@ class _EmailLoginPage extends State<EmailLoginPage> {
                                     fontSize: 14.0),
                               ))),
                       Container(
-                          height: 50.h,
+                          height: 60.h,
                           width: 240.w,
                           alignment: Alignment.center,
                           decoration: BoxDecoration(
@@ -216,6 +217,7 @@ class _EmailLoginPage extends State<EmailLoginPage> {
                               // 비밀번호 입력할 때 스페이스바 지우기
                               controller: passwordController,
                               decoration: InputDecoration(
+                                errorMaxLines: 2,
                                 hintText: "비밀번호를 입력하세요.",
                               ),
                             ),
