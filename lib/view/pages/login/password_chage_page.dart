@@ -124,7 +124,7 @@ class _PasswordChagePage extends State<PasswordChangePage> {
                       onPressed: () async {
                         // /api/User/ChangePassword/Token
                         // token 과 password 입력받음.
-                        if (!this.emailFormKey.currentState!.validate()) {
+                        if (!this.emailFormKey.currentState!.validate() || !this.passwordFormKey.currentState!.validate()) {
                           return;
                         }
                         UserController userController = Get.find();

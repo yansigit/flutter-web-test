@@ -28,6 +28,7 @@ class SignUpPage extends State<SignUp> {
   bool isPasswordValid = false;
   bool isNameValid = false;
   bool isPhoneNumberValid = false;
+
   String SUCCESS_MESSAGE = "성공적으로 일반 가입되었습니다";
  
   String errorMsg = "";
@@ -126,7 +127,7 @@ class SignUpPage extends State<SignUp> {
                             key: this._passwordFormKey,
                             child: TextFormField(
                               onChanged: (password) {
-                                if (password.length <= 30 &&
+                                if (password.length <=20 &&
                                     passwordExp.hasMatch(password)) {
                                   setState(() {
                                     this.isPasswordValid = true;
@@ -251,12 +252,7 @@ class SignUpPage extends State<SignUp> {
                     Container(
                         height: 60.h,
                         width: 200.w,
-                        // : isEmailValid &&
-                        //                               isPasswordValid &&
-                        //                               isNameValid &&
-                        //                               isPhoneNumberValid
-                        //                           ? Colors.grey
-                        //                           : Colors.white,
+                       
                         margin: EdgeInsets.only(top: 8.h),
                         child: ElevatedButton(
                             style: ButtonStyle(
@@ -305,8 +301,7 @@ class SignUpPage extends State<SignUp> {
                                       .validate()) {
                                 return;
                               }
-                              print(email);
-                              print(password);
+                           
                               Map data = {
                                 "email": email,
                                 "password": password,
@@ -322,12 +317,9 @@ class SignUpPage extends State<SignUp> {
                                   },
                                   body: body);
 
-                              print(response.statusCode);
+                              
                               Map<String, dynamic> decodedData =
                                   json.decode(response.body);
-
-                              print("response");
-                              print(decodedData);
 
                               if (!decodedData.containsKey("msg") ||
                                   decodedData["msg"] != SUCCESS_MESSAGE) {
