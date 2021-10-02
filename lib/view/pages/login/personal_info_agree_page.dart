@@ -254,7 +254,7 @@ class PersonalInfoAgree extends State<PersonalInfoAgreePage> {
                                 setState(() {
                                   this.firstAgreed = value!;
                                   this.secondAgreed = value;
-                                  
+              
                                 });
                               },
                             )),
