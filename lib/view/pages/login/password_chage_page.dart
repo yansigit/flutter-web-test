@@ -6,7 +6,6 @@ import 'package:flutter/services.dart';
 import 'package:get/get.dart';
 import "package:http/http.dart" as http;
 import 'package:flutter_screenutil/flutter_screenutil.dart';
-import 'package:save_order/consts/RegExp.dart';
 import 'package:save_order/consts/color.dart';
 import 'package:save_order/consts/size.dart';
 import 'package:save_order/model/model.dart';
@@ -14,6 +13,7 @@ import 'package:save_order/state/controllers.dart';
 import 'package:save_order/view/pages/login/email_login_page.dart';
 import 'package:save_order/view/pages/login/login_page.dart';
 import 'package:shared_preferences/shared_preferences.dart';
+import 'package:save_order/util/validate.dart';
 
 class PasswordChangePage extends StatefulWidget {
   @override
@@ -23,6 +23,8 @@ class PasswordChangePage extends StatefulWidget {
 class _PasswordChagePage extends State<PasswordChangePage> {
   TextEditingController? emailController;
   TextEditingController? passwordController;
+  final emailFormKey = GlobalKey<FormState>();
+  final passwordFormKey = GlobalKey<FormState>();
 
   @override
   void initState() {
@@ -32,7 +34,10 @@ class _PasswordChagePage extends State<PasswordChangePage> {
   }
 
   Widget inputUserInfoWidget(
-      TextEditingController textEditingController, String infoName,
+      TextEditingController textEditingController,
+      String infoName,
+      String? Function(String?)? validatorFunction,
+      GlobalKey<FormState> key,
       {isSensitiveInfo: false}) {
     return Row(mainAxisAlignment: MainAxisAlignment.center, children: <Widget>[
       Container(
@@ -52,22 +57,28 @@ class _PasswordChagePage extends State<PasswordChangePage> {
           margin: EdgeInsets.only(right: 10.w, bottom: 8.h),
           width: 240.w,
           height: 30.h,
-          child: TextFormField(
-            obscureText: isSensitiveInfo,
-            textAlignVertical: TextAlignVertical.center,
-            inputFormatters: [
-              FilteringTextInputFormatter.deny(KOREAN_WORD_REGEXP),
-              LengthLimitingTextInputFormatter(36),
-            ],
-            controller: textEditingController,
-            textAlign: TextAlign.left,
-            decoration: InputDecoration(
-                border: OutlineInputBorder(),
-                hintText: infoName,
-                hintStyle: TextStyle(fontSize: 14)),
+          child: Form(
+            key: key,
+            child: TextFormField(
+              validator: validatorFunction,
+              obscureText: isSensitiveInfo,
+              textAlignVertical: TextAlignVertical.center,
+              inputFormatters: [
+                FilteringTextInputFormatter.deny(KOREAN_WORD_REGEXP),
+                LengthLimitingTextInputFormatter(36),
+              ],
+              controller: textEditingController,
+              textAlign: TextAlign.left,
+              decoration: InputDecoration(
+                  border: OutlineInputBorder(),
+                  hintText: infoName,
+                  hintStyle: TextStyle(fontSize: 14)),
+            ),
           ))
     ]);
   }
+
+  
 
   Widget build(BuildContext context) {
     return Scaffold(
@@ -84,18 +95,19 @@ class _PasswordChagePage extends State<PasswordChangePage> {
             child: Container(
           width: 325.w,
           height: 300.h,
-          decoration:
-              BoxDecoration(border: Border.all(color: const Color(0xff00276b)),
-                borderRadius:
-                        BorderRadius.circular(15.h)
-              ),
+          decoration: BoxDecoration(
+              border: Border.all(color: const Color(0xff00276b)),
+              borderRadius: BorderRadius.circular(15.h)),
           child: Column(
             mainAxisAlignment: MainAxisAlignment.center,
             crossAxisAlignment: CrossAxisAlignment.center,
             children: [
-              inputUserInfoWidget(emailController!, "이메일"),
-              inputUserInfoWidget(passwordController!, "비밀번호",
-                  isSensitiveInfo: true),
+              inputUserInfoWidget(
+                  emailController!, "이메일", emailValidate, emailFormKey),
+              inputUserInfoWidget(passwordController!, 
+              "비밀번호", passwordValidate, passwordFormKey),
+              // inputUserInfoWidget(passwordController, "비밀번호", passwordValidate,)
+              //inputUserInfoWidget(passwordController!, "비밀번호", isSensitiveInfo: true),
               Container(
                   height: 30.h,
                   margin: EdgeInsets.only(top: 8.h),
@@ -112,6 +124,9 @@ class _PasswordChagePage extends State<PasswordChangePage> {
                       onPressed: () async {
                         // /api/User/ChangePassword/Token
                         // token 과 password 입력받음.
+                        if (!this.emailFormKey.currentState!.validate()) {
+                          return;
+                        }
                         UserController userController = Get.find();
 
                         String? token = userController.userToken.toString();
@@ -119,7 +134,6 @@ class _PasswordChagePage extends State<PasswordChangePage> {
                           SharedPreferences sharedPreferences =
                               await SharedPreferences.getInstance();
                           token = sharedPreferences.getString("signUpToken");
-                         
                         }
 
                         Map data = {
@@ -146,7 +160,7 @@ class _PasswordChagePage extends State<PasswordChangePage> {
                               duration: const Duration(milliseconds: 1000)));
                         } else {
                           print('new password');
-                         ScaffoldMessenger.of(context).showSnackBar(SnackBar(
+                          ScaffoldMessenger.of(context).showSnackBar(SnackBar(
                               content: Text("비밀번호 변경이 완료되었습니다."),
                               duration: const Duration(milliseconds: 1000)));
                           Get.off(() => LoginPage(),

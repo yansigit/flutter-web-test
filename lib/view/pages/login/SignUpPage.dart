@@ -6,7 +6,7 @@ import 'package:flutter/services.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:get/get.dart';
 import "package:http/http.dart" as http;
-import 'package:save_order/consts/RegExp.dart';
+import 'package:save_order/util/validate.dart';
 import 'package:save_order/consts/color.dart';
 import 'package:save_order/consts/size.dart';
 import 'package:save_order/model/model.dart';
@@ -29,10 +29,7 @@ class SignUpPage extends State<SignUp> {
   bool isNameValid = false;
   bool isPhoneNumberValid = false;
   String SUCCESS_MESSAGE = "성공적으로 일반 가입되었습니다";
-  RegExp emailRegExp = RegExp(
-      r"^[a-zA-Z0-9.a-zA-Z0-9.!#$%&'*+-/=?^_`{|}~]+@[a-zA-Z0-9]+\.[a-zA-Z]+");
-  RegExp passwordExp = RegExp(r'^(?=.*?[a-z])([A-Z])*(?=.*?[0-9]).{8,}$');
-  RegExp phoneNumberExp = RegExp(r'^(0[12]0)([0-9]{3,4})([0-9]{4})$');
+ 
   String errorMsg = "";
   final _emailFormKey = GlobalKey<FormState>();
   final _passwordFormKey = GlobalKey<FormState>();
@@ -46,32 +43,7 @@ class SignUpPage extends State<SignUp> {
 
   bool isValidFormat(
       String email, String password, String name, String phoneNumber) {
-    // if (email.length >= 31 || !emailRegExp.hasMatch(email)) {
-    //   ScaffoldMessenger.of(context).showSnackBar(SnackBar(
-    //       duration: const Duration(milliseconds: 1500),
-    //       content: Text("형식에 맞지 않는 이메일입니다. 다시 입력해 주세요.")));
-    //   return false;
-    // }
-    // if (password.length >= 101 || !passwordExp.hasMatch(password)) {
-    //   ScaffoldMessenger.of(context).showSnackBar(SnackBar(
-    //       duration: const Duration(milliseconds: 1500),
-    //       content: Text(
-    //           "형식에 맞지 않는 비밀번호입니다. 영어 소문자를 적어도 1개 이상, 숫자를 적어도 1개 이상 포함하는 8자리 글자를 입력해주세요.")));
-    //   return false;
-    // }
-    // if (name.length < 1) {
-    //   ScaffoldMessenger.of(context).showSnackBar(SnackBar(
-    //       duration: const Duration(milliseconds: 1500),
-    //       content: Text("이름을 입력해주세요.")));
-    //   return false;
-    // }
-    // if (!phoneNumberExp.hasMatch(phoneNumber)) {
-    //   ScaffoldMessenger.of(context).showSnackBar(SnackBar(
-    //       duration: const Duration(milliseconds: 1500),
-    //       content: Text(
-    //           "형식에 맞지 않는 휴대폰 번호입니다.'-' 없이 010 혹은 020 로 시작하는 숫자 11자리 혹은 12자리를 입력해주세요.")));
-    //   return false;
-    // }
+    
     if (errorMsg != "") {
       return false;
     }

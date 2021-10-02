@@ -6,12 +6,12 @@ import 'package:flutter/services.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:get/get.dart';
-import 'package:save_order/consts/RegExp.dart';
 import 'package:save_order/consts/color.dart';
 import 'package:save_order/consts/size.dart';
 import "package:http/http.dart" as http;
 import 'package:save_order/model/model.dart';
 import 'package:save_order/state/controllers.dart';
+import 'package:save_order/util/validate.dart';
 import 'package:save_order/view/pages/UserPage.dart';
 import 'package:save_order/view/pages/bottomNavConnectPages/FavoriteStoresPageState.dart';
 import 'package:save_order/view/pages/bottomNavConnectPages/FindNearStore.dart';
@@ -139,6 +139,7 @@ class _EmailLoginPage extends State<EmailLoginPage> {
                             ],
                           ),
                           child: TextFormField(
+                            validator: emailValidate,
                             textAlignVertical: TextAlignVertical.center,
                             inputFormatters: [
                               FilteringTextInputFormatter.deny(
@@ -192,6 +193,7 @@ class _EmailLoginPage extends State<EmailLoginPage> {
                             ],
                           ),
                           child: TextFormField(
+                            validator: passwordValidate,
                             obscureText: true,
                             textAlignVertical: TextAlignVertical.center,
                             inputFormatters: [
