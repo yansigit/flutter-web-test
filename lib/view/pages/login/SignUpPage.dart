@@ -74,11 +74,12 @@ class SignUpPage extends State<SignUp> {
                               fit: BoxFit.fitHeight, child: Text("이메일"))),
                       Container(
                           margin: EdgeInsets.only(right: 10.w, bottom: 8.h),
-                          width: 200.w,
-                          height: 50.h,
+                          width: 242.5.w,
+                          height: 70.h,
                           child: Form(
                             key: this._emailFormKey,
                             child: TextFormField(
+                              maxLines: 2,
                               validator: (email) {
                                 if (email!.length > 30 ||
                                     !emailRegExp.hasMatch(email)) {
@@ -121,7 +122,7 @@ class SignUpPage extends State<SignUp> {
                               fit: BoxFit.fitHeight, child: Text("비밀번호"))),
                       Container(
                           margin: EdgeInsets.only(right: 10.w, bottom: 8.h),
-                          width: 200.w,
+                           width: 242.5.w,
                           height: 70.h,
                           child: Form(
                             key: this._passwordFormKey,
@@ -170,7 +171,7 @@ class SignUpPage extends State<SignUp> {
                               fit: BoxFit.fitHeight, child: Text("이름"))),
                       Container(
                           margin: EdgeInsets.only(right: 10.w, bottom: 8.h),
-                          width: 200.w,
+                         width: 242.5.w,
                           height: 50.h,
                           child: Form(
                             key: this._nameFormKey,
@@ -205,14 +206,14 @@ class SignUpPage extends State<SignUp> {
                     Row(children: <Widget>[
                       Container(
                           margin: EdgeInsets.only(
-                              right: 10.w, bottom: 8.h, left: 3.w),
+                              right: 8.w, bottom: 8.h, left: 3.w),
                           width: 60.w,
                           height: 20.h,
                           child: FittedBox(
                               fit: BoxFit.fitHeight, child: Text("휴대폰 번호"))),
                       Container(
                           margin: EdgeInsets.only(right: 10.w, bottom: 8.h),
-                          width: 200.w,
+                            width: 242.w,
                           height: 60.h,
                           child: Form(
                             key: this._phoneNumberFormKey,
@@ -356,8 +357,7 @@ class SignUpPage extends State<SignUp> {
                                     left: 10.w),
                                 width: 250.w,
                                 height: 30.h,
-                                 decoration: BoxDecoration(
-                  border: Border.all(color: const Color(0xff00276b))),
+                                
                                 child: FittedBox(
                                     fit: BoxFit.fitHeight,
                                     child: Text("회원 가입 완료",
