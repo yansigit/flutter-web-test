@@ -366,3 +366,11 @@ class CouponController extends GetxController {
     this.couponType.value = "";
   }
 }
+
+class OrderController extends GetxController {
+  final orderNum = 0.obs;
+
+  updateOrderNum(int num) {
+    this.orderNum.value = num;
+  }
+}

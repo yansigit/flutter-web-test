@@ -21,17 +21,10 @@ class Shop {
   double longtitude;
   double distanceFromCurPosition;
 
-  Shop(
-      {this.id = 0,
-      this.name = "",
-      this.carouselImages = const [],
-      this.latitude = 0,
-      this.longtitude = 0,
-      this.distanceFromCurPosition = 0});
+  Shop({this.id = 0, this.name = "", this.carouselImages = const [], this.latitude = 0, this.longtitude = 0, this.distanceFromCurPosition = 0});
 
   static Future<List<Shop>> fetchShops(http.Client client) async {
-    final response = await client
-        .get(Uri.parse("http://${devMode()}.dalbodre.me/api/Shop/"));
+    final response = await client.get(Uri.parse("http://${devMode()}.dalbodre.me/api/Shop/"));
     final decodedData = utf8.decode(response.bodyBytes);
 
     final parsedShop = parseShop(decodedData);
@@ -48,19 +41,17 @@ class Shop {
     };
   }
 
-  static Future<List<Shop>> fetchShopsByLocation(
-      http.Client client, int N, Position curPosition) async {
+  static Future<List<Shop>> fetchShopsByLocation(http.Client client, int N, Position curPosition) async {
     // ("latitude");
     // (latitude.toString());
     // ("longtitued");
     // (longtitude.toString());
-    final response = await client.get(Uri.parse(
-        "http://${devMode()}.dalbodre.me/api/Shop/NearBy/$N/${curPosition.latitude}/${curPosition.longitude}"));
+    final response =
+        await client.get(Uri.parse("http://${devMode()}.dalbodre.me/api/Shop/NearBy/$N/${curPosition.latitude}/${curPosition.longitude}"));
 
     final decodedData = utf8.decode(response.bodyBytes);
 
-    final parsedShop =
-        await Shop.parseShopIncludeDistance(decodedData, curPosition);
+    final parsedShop = await Shop.parseShopIncludeDistance(decodedData, curPosition);
 
     return parsedShop;
   }
@@ -69,8 +60,7 @@ class Shop {
     return Shop(
         id: json['id'] as int,
         name: json['name'] as String,
-        carouselImages:
-            json['carouselImages'] != null ? json['carouselImages'] : [],
+        carouselImages: json['carouselImages'] != null ? json['carouselImages'] : [],
         latitude: json['latitude'] as double,
         longtitude: json['longitude'] as double);
   }
@@ -80,33 +70,27 @@ class Shop {
     print(curPosition.longitude);
     print(latitude);
     print(longitude);
-    double d = Geolocator.distanceBetween(
-        curPosition.latitude, curPosition.longitude, latitude, longitude);
+    double d = Geolocator.distanceBetween(curPosition.latitude, curPosition.longitude, latitude, longitude);
 
     return d;
   }
 
-  factory Shop.fromJsonIncludeDistance(
-      Map<String, dynamic> json, Position curPosition) {
-    double distance =
-        calculateDistance(json['latitude'], json['longitude'], curPosition);
+  factory Shop.fromJsonIncludeDistance(Map<String, dynamic> json, Position curPosition) {
+    double distance = calculateDistance(json['latitude'], json['longitude'], curPosition);
 
     return Shop(
         id: json['id'] as int,
         name: json['name'] as String,
-        carouselImages:
-            json['carouselImages'] != null ? json['carouselImages'] : [],
+        carouselImages: json['carouselImages'] != null ? json['carouselImages'] : [],
         latitude: json['latitude'] as double,
         longtitude: json['longitude'] as double,
         distanceFromCurPosition: distance);
   }
 
-  static List<Shop> parseShopIncludeDistance(
-      String responseBody, Position curPosition) {
+  static List<Shop> parseShopIncludeDistance(String responseBody, Position curPosition) {
     final parsed = json.decode(responseBody).cast<Map<String, dynamic>>();
 
-    var elem = parsed
-        .map<Shop>((json) => Shop.fromJsonIncludeDistance(json, curPosition));
+    var elem = parsed.map<Shop>((json) => Shop.fromJsonIncludeDistance(json, curPosition));
 
     return elem.toList();
 
@@ -147,8 +131,7 @@ class Category {
 
   static Future<List<Category>> fetchCategories(int shopId) async {
     print(shopId);
-    var url = Uri.parse(
-        'http://${devMode()}.dalbodre.me/api/Shop/${shopId}/getAllMenus');
+    var url = Uri.parse('http://${devMode()}.dalbodre.me/api/Shop/${shopId}/getAllMenus');
     var response = await http.get(url);
     final decodedData = utf8.decode(response.bodyBytes);
     if (decodedData.isEmpty) {
@@ -197,9 +180,7 @@ class Menu {
           id: _menu["id"] as int,
           name: _menu["name"] as String,
           thumbnail: _menu["imagePath"] as String,
-          bgColor: _menu["backgroundColor"] == null
-              ? _menu["backgroundColor"] as int
-              : 0XFFFF0000,
+          bgColor: _menu["backgroundColor"] == null ? _menu["backgroundColor"] as int : 0XFFFF0000,
           hotPrice: _menu["hotPrice"] as int,
           coldPrice: _menu["coldPrice"] as int,
           isHot: _menu["hotPrice"] as int == 0 ? false : true,
@@ -272,13 +253,7 @@ class CartItem {
   int quantity;
   Map<String, CartOption> cartOptions;
 
-  CartItem(
-      {this.name = "",
-      this.price = 0,
-      this.thumbnail = "",
-      this.bgColor = 0xffffffff,
-      this.quantity = 1,
-      this.cartOptions = const {}});
+  CartItem({this.name = "", this.price = 0, this.thumbnail = "", this.bgColor = 0xffffffff, this.quantity = 1, this.cartOptions = const {}});
 }
 
 class CartOption {
@@ -299,9 +274,35 @@ class Card {
   int cardCRC;
   int cardValidationDate;
 
-  Card(
-      {this.cardBank = "",
-      required this.cardNum,
-      required this.cardCRC,
-      required this.cardValidationDate});
+  Card({this.cardBank = "", required this.cardNum, required this.cardCRC, required this.cardValidationDate});
+}
+
+class OrderMenu {
+  String name;
+  int quantity;
+  String thumbnail;
+  int bgColor;
+  List<OrderOption> optionList;
+
+  OrderMenu({this.name = "", this.quantity = 0, this.thumbnail = "", this.optionList = const [], this.bgColor = 0xffff0000});
+}
+
+class OrderOption {
+  String name;
+  String body;
+  String quantity;
+  OrderOption({this.name = "", this.body = "", this.quantity = ""});
+
+  static getOptionList(data) {
+    List<OrderOption> list = [];
+
+    for (var option in data) {
+      final _option = option as Map;
+      list.add(new OrderOption(
+        name: data!["name"] as String,
+        body: data?["body"] != null ? data!["body"] as String : "",
+        quantity: data?["quantity"] != null ? data!["quantity"] as String : ""
+      ));
+    }
+  }
 }

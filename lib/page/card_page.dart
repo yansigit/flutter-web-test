@@ -11,8 +11,10 @@ import 'package:get/get.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:get/utils.dart';
 import 'package:save_order/model/model.dart';
+import 'package:save_order/page/orderstatus_page.dart';
 import 'package:save_order/state/controllers.dart';
 import 'package:http/http.dart' as http;
+import 'package:save_order/view/pages/bottomNavConnectPages/FindNearStore.dart';
 
 class CardPage extends StatefulWidget {
   @override
@@ -33,6 +35,7 @@ class _CardPageState extends State<CardPage> {
   final CouponController couponController = Get.find();
   final TakeOutController takeOutController = Get.find();
   final UserController userController = Get.find();
+  final OrderController orderController = Get.find();
 
   String errorMsg = "";
 
@@ -584,7 +587,7 @@ class _CardPageState extends State<CardPage> {
                           for (int i = 0; i < cardTextController.length; i++) {
                             cardNum += cardTextController[i].text;
                           }
-                          cardVal = validationTextController[0].text + validationTextController[1].text[2] + validationTextController[1].text[3];
+                          cardVal = validationTextController[1].text[2] + validationTextController[1].text[3] + validationTextController[0].text;
 
                           print(cardNum + "\n" + cardVal);
 
@@ -592,13 +595,32 @@ class _CardPageState extends State<CardPage> {
                           cardController.updateCardValidation(cardVal);
                           requestCardValidation().then((status) {
                             // 카드번호 검증이 성공했을 때.
-                            if (status == 1) {
-                              requestOrder();
+                            switch (status) {
+                              case 1:
+                                // requestOrder().then((status) {
+                                //   Get.offAll(() => NearStoresPage());
+                                //   Get.to(() => OrderStatusPage());
+                                // });
+                                Get.offAll(() => NearStoresPage());
+                                Get.to(() => OrderStatusPage());
+                                break;
+                              case 2:
+                                Get.snackbar("경고", "카드번호를 잘 못 입력하셨습니다.", backgroundColor: Colors.white);
+                                break;
+                              case 3:
+                                Get.snackbar("경고", "카드번호를 잘 못 입력하셨습니다.", backgroundColor: Colors.white);
+                                break;
+                              case 4:
+                                Get.snackbar("경고", "유효기간을 잘 못 입력하셨습니다.", backgroundColor: Colors.white);
+                                break;
+                              case 0:
+                                Get.snackbar("경고", "결제 오류가 발생하였습니다.\n다른 카드를 이용해주세요.", backgroundColor: Colors.white);
+                                break;
+                              default:
+                                Get.snackbar("경고", "카드번호를 잘 못 입력하셨습니다.", backgroundColor: Colors.white);
+                                break;
                             }
                             //카드번호 검증 실패시.
-                            else {
-                              Get.snackbar("경고", status.toString());
-                            }
                           });
                         } else if (errorMsg != "") {
                           if (validationTextController[0].text.isEmpty || validationTextController[1].text.isEmpty) {
@@ -657,23 +679,35 @@ class _CardPageState extends State<CardPage> {
   }
 
   Future<int> requestCardValidation() async {
+    Get.snackbar("알림", "카드 유효성 검사를 위해 100원이 결제됩니다.\n확인 후 취소처리 됩니다.", backgroundColor: Colors.white);
     Map<String, dynamic> data = {};
     data["cardNumber"] = cardController.cardNum.value;
     data["cardExpire"] = cardController.cardValidation.value;
 
     var body = json.encode(data);
-    var res = await http.Client()
-        .post(Uri.parse("http://${devMode()}.dalbodre.me/api/Order"), body: body, headers: <String, String>{'Content-Type': 'application/json'});
+    var res = await http.Client().post(Uri.parse("http://${devMode()}.dalbodre.me/api/CardNumberTest/"),
+        body: body, headers: <String, String>{'Content-Type': 'application/json'});
 
     if (res.statusCode == 200) {
-      return 1;
+      final data = json.decode(res.body);
+      if (data["success"] == "True") {
+        return 1;
+      } else if (data["error"] == "카드번호 오류   카드사전화요망") {
+        return 2;
+      } else if (data["error"] == "카드사코드 미입력오류") {
+        return 3;
+      } else if (data["error"] == "유효기간 오류") {
+        return 4;
+      } else {
+        return -1;
+      }
     } else {
       print(res.statusCode.toString());
       return 0;
     }
   }
 
-  requestOrder() async {
+  Future<int> requestOrder() async {
     /*
     {
       "shopId": 1,
@@ -718,7 +752,8 @@ class _CardPageState extends State<CardPage> {
     data["cardExpire"] = cardController.cardValidation.value;
     data["isUsingStamp"] = false;
     data["CouponCode"] = couponController.couponNo.value;
-    //data["menuList"] = menus;
+
+    // data["shopName"] = shopController.shop.value.name;
 
     List<Map<String, dynamic>> menuList = [];
 
@@ -729,6 +764,7 @@ class _CardPageState extends State<CardPage> {
       menus["price"] = 0;
       menus["quantity"] = cartItem.quantity;
       menus["imagePath"] = cartItem.thumbnail;
+      menus["backgroundColor"] = cartItem.bgColor;
 
       List<Map<String, dynamic>> optionList = [];
       cartItem.cartOptions.forEach((key, value) {
@@ -764,11 +800,19 @@ class _CardPageState extends State<CardPage> {
         body: body, headers: <String, String>{'token': '${userController.userToken.value}', 'Content-Type': 'application/json'});
     if (res.statusCode == 200) {
       print(body.toString);
-      print("WELL DONE dude");
+      print("WELL DONE");
+      final data = jsonDecode(res.body);
+      if (data["status"] == "succeed") {
+        orderController.updateOrderNum(data["orderId"]);
+        return 1;
+      } else {
+        return 0;
+      }
     } else {
       print(body);
       print("Order Failed");
       print("statusCode: ${res.statusCode}");
+      return -1;
     }
   }
 }

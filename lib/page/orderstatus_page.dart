@@ -1,17 +1,22 @@
+import 'dart:convert';
+import 'package:save_order/model/model.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:get/get.dart';
+import 'package:save_order/state/controllers.dart';
+import 'package:http/http.dart' as http;
 
 class OrderStatusPage extends StatefulWidget {
-  OrderStatusPage({Key? key}) : super(key: key);
-
   @override
   _OrderStatusPageState createState() => _OrderStatusPageState();
 }
 
 class _OrderStatusPageState extends State<OrderStatusPage> {
+  late OrderController orderController;
+
   int orderStatusPointer = 0;
+  bool missingController = false;
 
   @override
   void initState() {
@@ -19,38 +24,169 @@ class _OrderStatusPageState extends State<OrderStatusPage> {
     super.initState();
     // 뷰에 그릴 때 받아오기.
     this.orderStatusPointer = 1;
+
+    try {
+      orderController = Get.find();
+    } catch (e) {
+      missingController = true;
+    }
+  }
+
+  Future requestNowStatus() async {
+    var res = await http.Client().get(Uri.parse("http://${devMode()}.dalbodre.me/api/Order/${orderController.orderNum}/Status"));
+    if (res.statusCode == 200) {
+      setState(() {
+        this.orderStatusPointer = jsonDecode(res.body)["status"] as int;
+      });
+    }
   }
 
   @override
   Widget build(BuildContext context) {
-    return Container(
-      height: ScreenUtil().screenHeight * 0.95,
-      decoration: BoxDecoration(
-        color: Color(0xffffffff),
-        borderRadius: BorderRadius.only(topLeft: Radius.circular(30.h), topRight: Radius.circular(30.h)),
-      ),
-      child: Column(
-        crossAxisAlignment: CrossAxisAlignment.start,
-        children: [
-          Container(
-            margin: EdgeInsets.only(
-              left: 11.w,
-              top: 11.h,
-            ),
-            width: 32.w,
-            height: 32.h,
-            child: IconButton(
-              icon: Icon(
-                Icons.close,
+    return missingController
+        ? Scaffold(body: Center(child: Text("주문 정보를 찾을 수 없습니다.")))
+        : Scaffold(
+            backgroundColor: Colors.white,
+            body: Container(
+              decoration: BoxDecoration(
+                color: Color(0xffffffff),
+                borderRadius: BorderRadius.only(topLeft: Radius.circular(30.h), topRight: Radius.circular(30.h)),
               ),
-              onPressed: (() => Get.back()),
+              child: FutureBuilder<Map<String, dynamic>>(
+                  future: getOrderInfo(),
+                  builder: (ctx, AsyncSnapshot<Map<String, dynamic>> data) {
+                    if (data.hasData) {
+                      if (data.data?["내용 없음"] == null) {
+                        return Column(
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          children: [
+                            Container(
+                              margin: EdgeInsets.only(
+                                left: 11.w,
+                                top: 11.h,
+                              ),
+                              width: 32.w,
+                              height: 32.h,
+                              child: IconButton(
+                                icon: Icon(
+                                  Icons.close,
+                                ),
+                                onPressed: (() => Get.back()),
+                              ),
+                            ),
+                            orderNumAppBar(orderController.orderNum.value),
+                            CafeNameContainer(shopName: data.data!["shopName"] as String),
+                            StatusContainer(statusPointer: orderStatusPointer),
+                            ExpandableList(menuList: data.data!["menuList"] as List),
+                            PriceContainer(price: data.data!["totalPrice"] as int),
+                          ],
+                        );
+                      } else {
+                        return Center(child: Text("데이터가 없습니다.\n개발팀에게 문의하세요.", textAlign: TextAlign.center));
+                      }
+                    } else if (!data.hasData) {
+                      return Center(child: CircularProgressIndicator());
+                    } else {
+                      return Center(child: Text("데이터가 없습니다.\n개발팀에게 문의하세요.", textAlign: TextAlign.center));
+                    }
+                  }),
             ),
+          );
+  }
+
+  Future<Map<String, dynamic>> getOrderInfo() async {
+    var res = await http.Client().get(Uri.parse("http://${devMode()}.dalbodre.me/api/Order/${orderController.orderNum}"));
+    var orderStatusRes = await http.Client().get(Uri.parse("http://${devMode()}.dalbodre.me/api/Order/${orderController.orderNum}/Status"));
+
+    if (res.statusCode == 200 && orderStatusRes.statusCode == 200) {
+      final data = json.decode(res.body);
+      data["status"] = json.decode(orderStatusRes.body)["status"];
+
+      var shopRes = await http.Client().get(Uri.parse("http://${devMode()}.dalbodre.me/api/Shop/${data["shopId"]}"));
+
+      if (shopRes.statusCode == 200) {
+        data["shopName"] = json.decode(shopRes.body)["name"];
+      } else {
+        data["shopName"] = "";
+      }
+      return data;
+    } else {
+      return {"내용 없음": "No data"};
+    }
+  }
+
+  Widget orderNumAppBar(int num) {
+    return Container(
+      margin: EdgeInsets.only(top: 18.h, left: 20.w, right: 20.w),
+      height: 33.h,
+      child: Row(
+        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+        children: [
+          Row(
+            mainAxisSize: MainAxisSize.max,
+            children: [
+              Container(
+                height: 33.h,
+                child: FittedBox(
+                  fit: BoxFit.fill,
+                  child: Text(
+                    "주문 번호  ",
+                    style: TextStyle(fontWeight: FontWeight.w700),
+                  ),
+                ),
+              ),
+              Container(
+                height: 33.h,
+                child: FittedBox(
+                  fit: BoxFit.fitHeight,
+                  child: Text(
+                    num.toString(),
+                    style: TextStyle(fontWeight: FontWeight.w700, color: Color(0xffed6363)),
+                  ),
+                ),
+              ),
+            ],
           ),
-          OrderNumAppBar(),
-          CafeNameContainer(),
-          StatusContainer(statusPointer: orderStatusPointer),
-          ExpandableList(),
-          PriceContainer(),
+          InkWell(
+            child: Container(
+              width: 92.w,
+              height: 32.h,
+              decoration: BoxDecoration(
+                color: Color(0xffffffff),
+                border: Border.all(color: Color(0xffe8e8e8)),
+                borderRadius: BorderRadius.all(Radius.circular(90.h)),
+                boxShadow: [
+                  BoxShadow(
+                    color: Color(0x0d000000),
+                    offset: Offset(0, 2),
+                    blurRadius: 4,
+                  ),
+                ],
+              ),
+              child: Row(
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: [
+                  Container(
+                    color: Colors.blue,
+                    width: 24.w,
+                    height: 24.h,
+                    margin: EdgeInsets.only(right: 2.w),
+                  ),
+                  Container(
+                    height: 20.h,
+                    child: FittedBox(
+                      fit: BoxFit.fitHeight,
+                      child: Text(
+                        "새로고침",
+                        style: TextStyle(color: Color(0xff666666)),
+                      ),
+                    ),
+                  ),
+                ],
+              ),
+            ),
+            onTap: (() => requestNowStatus()),
+          ),
         ],
       ),
     );
@@ -58,8 +194,10 @@ class _OrderStatusPageState extends State<OrderStatusPage> {
 }
 
 class PriceContainer extends StatelessWidget {
-  const PriceContainer({
+  final price;
+  PriceContainer({
     Key? key,
+    this.price = 0,
   }) : super(key: key);
 
   @override
@@ -108,8 +246,10 @@ class PriceContainer extends StatelessWidget {
 }
 
 class CafeNameContainer extends StatelessWidget {
-  const CafeNameContainer({
+  final shopName;
+  CafeNameContainer({
     Key? key,
+    this.shopName = "",
   }) : super(key: key);
 
   @override
@@ -127,7 +267,7 @@ class CafeNameContainer extends StatelessWidget {
             child: FittedBox(
               fit: BoxFit.fitHeight,
               child: Text(
-                "달보드레 잠실점",
+                shopName,
                 style: TextStyle(
                   color: Color(0xff00276b),
                   fontWeight: FontWeight.w700,
@@ -141,88 +281,16 @@ class CafeNameContainer extends StatelessWidget {
   }
 }
 
-class OrderNumAppBar extends StatelessWidget {
-  const OrderNumAppBar({
-    Key? key,
-  }) : super(key: key);
+// class orderNumAppBar extends StatelessWidget {
+//   orderNumAppBar({
+//     Key? key,
+//   }) : super(key: key);
 
-  @override
-  Widget build(BuildContext context) {
-    return Container(
-      margin: EdgeInsets.only(top: 18.h, left: 20.w, right: 20.w),
-      height: 33.h,
-      child: Row(
-        mainAxisAlignment: MainAxisAlignment.spaceBetween,
-        children: [
-          Row(
-            mainAxisSize: MainAxisSize.max,
-            children: [
-              Container(
-                height: 33.h,
-                child: FittedBox(
-                  fit: BoxFit.fill,
-                  child: Text(
-                    "주문 번호  ",
-                    style: TextStyle(fontWeight: FontWeight.w700),
-                  ),
-                ),
-              ),
-              Container(
-                height: 33.h,
-                child: FittedBox(
-                  fit: BoxFit.fitHeight,
-                  child: Text(
-                    "01",
-                    style: TextStyle(fontWeight: FontWeight.w700, color: Color(0xffed6363)),
-                  ),
-                ),
-              ),
-            ],
-          ),
-          InkWell(
-              child: Container(
-                width: 92.w,
-                height: 32.h,
-                decoration: BoxDecoration(
-                  color: Color(0xffffffff),
-                  border: Border.all(color: Color(0xffe8e8e8)),
-                  borderRadius: BorderRadius.all(Radius.circular(90.h)),
-                  boxShadow: [
-                    BoxShadow(
-                      color: Color(0x0d000000),
-                      offset: Offset(0, 2),
-                      blurRadius: 4,
-                    ),
-                  ],
-                ),
-                child: Row(
-                  mainAxisAlignment: MainAxisAlignment.center,
-                  children: [
-                    Container(
-                      color: Colors.blue,
-                      width: 24.w,
-                      height: 24.h,
-                      margin: EdgeInsets.only(right: 2.w),
-                    ),
-                    Container(
-                      height: 20.h,
-                      child: FittedBox(
-                        fit: BoxFit.fitHeight,
-                        child: Text(
-                          "새로고침",
-                          style: TextStyle(color: Color(0xff666666)),
-                        ),
-                      ),
-                    ),
-                  ],
-                ),
-              ),
-              onTap: (() => print("refresh"))),
-        ],
-      ),
-    );
-  }
-}
+//   @override
+//   Widget build(BuildContext context) {
+
+//   }
+// }
 
 class StatusContainer extends StatelessWidget {
   final statusPointer;
@@ -294,8 +362,10 @@ class StatusContainer extends StatelessWidget {
 }
 
 class ExpandableList extends StatefulWidget {
-  const ExpandableList({
+  final menuList;
+  ExpandableList({
     Key? key,
+    required this.menuList,
   }) : super(key: key);
 
   @override
@@ -328,7 +398,7 @@ class _ExpandableListState extends State<ExpandableList> {
                       child: FittedBox(
                         fit: BoxFit.fitHeight,
                         child: Text(
-                          "주문 내역 (6)",
+                          "주문 내역 (${widget.menuList.length})",
                           style: TextStyle(
                             fontWeight: FontWeight.w700,
                           ),
@@ -351,45 +421,70 @@ class _ExpandableListState extends State<ExpandableList> {
               height: 1,
               color: Color(0xffe8e8e8),
             ),
-            Container(
-              child: ExpandableContainer(
-                expanded: expandFlag,
-                expandedHeight: 360.h,
+            AnimatedContainer(
+              duration: Duration(milliseconds: 300),
+              width: double.infinity,
+              height: expandFlag ? widget.menuList.length * 90.h : 0,
+              color: Color(0x05000000),
+              child: ListView.builder(
+                itemBuilder: ((context, index) {
+                  return cartItemWidget(widget.menuList[index]);
+                }),
+                itemCount: widget.menuList.legnth,
               ),
             ),
           ],
         ));
   }
-}
 
-class ExpandableContainer extends StatelessWidget {
-  final expanded;
-  final collaspedHeight;
-  final expandedHeight;
-  ExpandableContainer({
-    Key? key,
-    required this.expanded,
-    this.collaspedHeight = 0.0,
-    this.expandedHeight = 420.0,
-  }) : super(key: key);
+  Widget cartItemWidget(Map<String, dynamic> menu) {
+    String menuNameString = menu["name"];
+    if (menu["quantity"] as int > 1) {
+      menuNameString += " ${menu["quantity"]}잔";
+    }
 
-  @override
-  Widget build(BuildContext context) {
-    return AnimatedContainer(
-      duration: Duration(milliseconds: 300),
-      width: double.infinity,
-      height: expanded ? expandedHeight : collaspedHeight,
-      color: Color(0x05000000),
-      child: ListView.builder(
-        itemBuilder: ((context, index) {
-          return cartItemWidget();
-        }),
-        itemCount: 6,
+    List<Widget> widgetList = [
+      Container(
+        height: 21.h,
+        child: FittedBox(
+          fit: BoxFit.fitHeight,
+          child: Text(
+            menuNameString,
+            style: TextStyle(fontWeight: FontWeight.w700),
+          ),
+        ),
       ),
-    );
-  }
+    ];
 
-  Widget cartItemWidget() {
+    for (Map<String, dynamic> option in menu["optionList"] as List) {
+      String optionString = "";
+      if (option["name"] == "온도") {
+        optionString += option["body"];
+      }
+      if (option["name"] == "샷 추가") {
+        optionString += option["quantity"] + "샷 추가";
+      }
+      if (option["name"] == "설탕시럽") {
+        optionString += option["quantity"] + " 설탕시럽";
+      }
+      if (option["name"] == "휘핑크림") {
+        optionString += "휘핑크림 O";
+      }
+
+      widgetList.add(Container(
+          margin: EdgeInsets.only(top: 4.h),
+          height: 19.h,
+          child: FittedBox(
+            fit: BoxFit.fitHeight,
+            child: Text(
+              optionString,
+              style: TextStyle(
+                color: Color(0xff707070),
+              ),
+            ),
+          )));
+    }
+
     return Container(
       width: double.infinity,
       margin: EdgeInsets.symmetric(vertical: 8.h, horizontal: 20.w),
@@ -400,40 +495,29 @@ class ExpandableContainer extends StatelessWidget {
             height: 70.h,
             decoration: BoxDecoration(
               borderRadius: BorderRadius.all(Radius.circular(90.h)),
-              color: Color(0xff815135),
+              color: Color(menu["bgColor"] as int),
             ),
-            child: FittedBox(
-              fit: BoxFit.scaleDown,
-              child: Text("커피이미지"),
-            ),
+            child: Image.network(menu["thumbnail"], fit: BoxFit.scaleDown),
           ),
           Container(
             margin: EdgeInsets.only(left: 16.w),
             child: Column(
-              children: [
-                Container(
-                  height: 21.h,
-                  child: FittedBox(
-                    fit: BoxFit.fitHeight,
-                    child: Text(
-                      "아메리카노 2잔",
-                      style: TextStyle(fontWeight: FontWeight.w700),
-                    ),
-                  ),
-                ),
-                Container(
-                    margin: EdgeInsets.only(top: 4.h),
-                    height: 19.h,
-                    child: FittedBox(
-                      fit: BoxFit.fitHeight,
-                      child: Text(
-                        "시원한 / 중간 사이즈",
-                        style: TextStyle(
-                          color: Color(0xff707070),
-                        ),
-                      ),
-                    )),
-              ],
+              children: widgetList,
+              // [
+
+              //   Container(
+              //       margin: EdgeInsets.only(top: 4.h),
+              //       height: 19.h,
+              //       child: FittedBox(
+              //         fit: BoxFit.fitHeight,
+              //         child: Text(
+              //           "시원한 / 중간 사이즈",
+              //           style: TextStyle(
+              //             color: Color(0xff707070),
+              //           ),
+              //         ),
+              //       )),
+              // ],
             ),
           ),
         ],
