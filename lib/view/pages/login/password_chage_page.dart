@@ -102,8 +102,9 @@ class _PasswordChagePage extends State<PasswordChangePage> {
             children: [
               inputUserInfoWidget(
                   emailController!, "이메일", emailValidate, emailFormKey),
-              inputUserInfoWidget(passwordController!, 
-              "비밀번호", passwordValidate, passwordFormKey, isSensitiveInfo: true),
+              inputUserInfoWidget(passwordController!, "비밀번호", passwordValidate,
+                  passwordFormKey,
+                  isSensitiveInfo: true),
               // inputUserInfoWidget(passwordController, "비밀번호", passwordValidate,)
               //inputUserInfoWidget(passwordController!, "비밀번호", isSensitiveInfo: true),
               Container(
@@ -122,7 +123,8 @@ class _PasswordChagePage extends State<PasswordChangePage> {
                       onPressed: () async {
                         // /api/User/ChangePassword/Token
                         // token 과 password 입력받음.
-                        if (!this.emailFormKey.currentState!.validate() || !this.passwordFormKey.currentState!.validate()) {
+                        if (!this.emailFormKey.currentState!.validate() ||
+                            !this.passwordFormKey.currentState!.validate()) {
                           return;
                         }
                         UserController userController = Get.find();

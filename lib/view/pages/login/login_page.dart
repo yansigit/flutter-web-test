@@ -280,6 +280,8 @@ class LoginPageState extends State<LoginPage> {
                   onTap: () => Get.to(PersonalInfoAgreePage()),
                   child: Container(
                       margin: EdgeInsets.only(left: 8.w, top: 27.h),
+                         decoration: BoxDecoration(
+                  border: Border.all(color: const Color(0xff00276b))),
                       height: 20.h,
                       child: Row(mainAxisAlignment: MainAxisAlignment.center, crossAxisAlignment: CrossAxisAlignment.center, children: <Widget>[
                         FittedBox(

@@ -356,6 +356,8 @@ class SignUpPage extends State<SignUp> {
                                     left: 10.w),
                                 width: 250.w,
                                 height: 30.h,
+                                 decoration: BoxDecoration(
+                  border: Border.all(color: const Color(0xff00276b))),
                                 child: FittedBox(
                                     fit: BoxFit.fitHeight,
                                     child: Text("회원 가입 완료",
