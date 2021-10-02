@@ -1,7 +1,7 @@
 import 'package:save_order/model/Shop.dart';
 import 'package:save_order/model/model.dart';
 
-import 'Order.dart';
+import 'package:save_order/model/Order.dart';
 
 class StoreAndCoupon {
   int couponNumber;

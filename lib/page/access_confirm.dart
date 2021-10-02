@@ -69,9 +69,7 @@ class _AccessPageState extends State<AccessPage> {
                       SharedPreferences sharedPreferences =
                           await SharedPreferences.getInstance();
                       String? token = sharedPreferences.getString("token");
-                      print(token);
-                      print("token");
-                      print("sldl");
+               
                       if (token == null || token.length == 0) {
                         Get.off(() => LoginPage(),
                             transition: Transition.rightToLeft);
@@ -95,7 +93,7 @@ class _AccessPageState extends State<AccessPage> {
     SharedPreferences sharedPreferences = await SharedPreferences.getInstance();
     String? token = sharedPreferences.getString("token");
 
-    print("tosksdsdsdsd");
+    
     if (token != null && token.length != 0) {
         Get.put(UserController());
       UserController userController = Get.find();

@@ -74,14 +74,12 @@ class Shop {
         carouselImages:
             json['carouselImages'] != null ? json['carouselImages'] : [],
         latitude: json['latitude'] as double,
-        longtitude: json['longitude'] as double);
+        longtitude: json['longitude'] as double,
+        isOpened: json['isOpened']);
   }
 
   static double calculateDistance(latitude, longitude, curPosition) {
-    print(curPosition.latitude);
-    print(curPosition.longitude);
-    print(latitude);
-    print(longitude);
+ 
     double d = Geolocator.distanceBetween(
         curPosition.latitude, curPosition.longitude, latitude, longitude);
 
@@ -92,9 +90,7 @@ class Shop {
       Map<String, dynamic> json, Position curPosition) {
     double distance =
         calculateDistance(json['latitude'], json['longitude'], curPosition);
-    print("jsonnnnn");
-    print(json['isOpened']);
-    print(json['isOpened'].runtimeType);
+   
     return Shop(
         id: json['id'] as int,
         name: json['name'] as String,
@@ -142,7 +138,7 @@ class Category {
     );
   }
   static List<Category> parseCategory(String responseBody) {
-    print(responseBody.toString());
+
     final parsed = json.decode(responseBody);
     final categories = parsed["categories"].cast<Map<String, dynamic>>();
     //final parsed = json.decode(responseBody).cast<Map<String, dynamic>>();
@@ -151,7 +147,7 @@ class Category {
   }
 
   static Future<List<Category>> fetchCategories(int shopId) async {
-    print(shopId);
+ 
     var url = Uri.parse(
         'http://${devMode()}.dalbodre.me/api/Shop/${shopId}/getAllMenus');
     var response = await http.get(url);

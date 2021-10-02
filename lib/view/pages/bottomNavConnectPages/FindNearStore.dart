@@ -1,4 +1,4 @@
-import 'dart:convert';
+//import 'dart:convert';
 
 import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
@@ -6,11 +6,11 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/rendering.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:get/get.dart';
-import 'package:save_order/model/Order.dart';
+//import 'package:save_order/model/Order.dart';
 import 'package:save_order/model/model.dart';
 import 'package:save_order/page/order_takeout.dart';
 import 'package:save_order/state/controllers.dart';
-import 'package:save_order/view/pages/login/login_page.dart';
+//import 'package:save_order/view/pages/login/login_page.dart';
 import 'package:save_order/widget/bottom_nav.dart';
 import 'package:save_order/consts/color.dart';
 import 'package:flutter_svg/flutter_svg.dart';
@@ -45,7 +45,7 @@ class NearStoresPageState extends State<NearStoresPage> {
     var _statusLocation = await Permission.location.status.isGranted;
     var _statusCamera = await Permission.camera.status.isGranted;
     setState(() {
-      print("a");
+ 
       statusPermissions[0] = _statusLocation;
       statusPermissions[1] = _statusCamera;
     });
@@ -101,13 +101,15 @@ class NearStoresPageState extends State<NearStoresPage> {
   @override
   void initState() {
     super.initState();
-    print("ssssdsdsf");
-    print(userController.userToken);
+    //print("ssssdsdsf");
+    //print(userController.userToken);
     WidgetsBinding.instance?.addPostFrameCallback((_) {
       //TODO this is for Web. Need to change for App.
       getStatusPermissonList();
       loadCurLocation().then((val) {
-        curPosition = val;
+        setState(() {
+          curPosition = val;
+        });
       });
       // Get.snackbar(
       //   "알림",

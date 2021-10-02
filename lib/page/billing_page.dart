@@ -111,9 +111,9 @@ class _BillingPageState extends State<BillingPage> {
     final UserController u = Get.find();
 
     String couponNo = "";
-    print(u.userToken.toString());
-    print(u.userId.toString());
-    print("payments");
+    // print(u.userToken.toString());
+    // print(u.userId.toString());
+    // print("payments");
     return Container(
       color: Colors.white,
       child: Padding(

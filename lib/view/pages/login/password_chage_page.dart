@@ -78,8 +78,6 @@ class _PasswordChagePage extends State<PasswordChangePage> {
     ]);
   }
 
-  
-
   Widget build(BuildContext context) {
     return Scaffold(
         backgroundColor: Color(0xFFFFFF).withOpacity(1.0),
@@ -105,7 +103,7 @@ class _PasswordChagePage extends State<PasswordChangePage> {
               inputUserInfoWidget(
                   emailController!, "이메일", emailValidate, emailFormKey),
               inputUserInfoWidget(passwordController!, 
-              "비밀번호", passwordValidate, passwordFormKey),
+              "비밀번호", passwordValidate, passwordFormKey, isSensitiveInfo: true),
               // inputUserInfoWidget(passwordController, "비밀번호", passwordValidate,)
               //inputUserInfoWidget(passwordController!, "비밀번호", isSensitiveInfo: true),
               Container(
