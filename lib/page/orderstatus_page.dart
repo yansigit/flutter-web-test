@@ -13,105 +13,112 @@ class OrderStatusPage extends StatefulWidget {
 }
 
 class _OrderStatusPageState extends State<OrderStatusPage> {
-  late OrderController orderController;
-
   int orderStatusPointer = 0;
-  bool missingController = false;
+  late int orderId;
+  late String shopName;
 
   @override
   void initState() {
     // TODO: implement initState
     super.initState();
     // 뷰에 그릴 때 받아오기.
-    this.orderStatusPointer = 1;
-
-    try {
-      orderController = Get.find();
-    } catch (e) {
-      missingController = true;
-    }
+    this.orderStatusPointer = 2;
+    orderId = box.read('orderId') as int;
+    print(orderId);
+    shopName = "";
   }
 
   Future requestNowStatus() async {
-    var res = await http.Client().get(Uri.parse("http://${devMode()}.dalbodre.me/api/Order/${orderController.orderNum}/Status"));
+    var res = await http.Client().get(Uri.parse("http://${devMode()}.dalbodre.me/api/Order/${orderId}/Status"));
     if (res.statusCode == 200) {
       setState(() {
-        this.orderStatusPointer = jsonDecode(res.body)["status"] as int;
+        this.orderStatusPointer = (jsonDecode(res.body)["status"] as int) + 2;
       });
     }
   }
 
   @override
   Widget build(BuildContext context) {
-    return missingController
-        ? Scaffold(body: Center(child: Text("주문 정보를 찾을 수 없습니다.")))
-        : Scaffold(
-            backgroundColor: Colors.white,
-            body: Container(
-              decoration: BoxDecoration(
-                color: Color(0xffffffff),
-                borderRadius: BorderRadius.only(topLeft: Radius.circular(30.h), topRight: Radius.circular(30.h)),
-              ),
-              child: FutureBuilder<Map<String, dynamic>>(
-                  future: getOrderInfo(),
-                  builder: (ctx, AsyncSnapshot<Map<String, dynamic>> data) {
-                    if (data.hasData) {
-                      if (data.data?["내용 없음"] == null) {
-                        return Column(
-                          crossAxisAlignment: CrossAxisAlignment.start,
-                          children: [
-                            Container(
-                              margin: EdgeInsets.only(
-                                left: 11.w,
-                                top: 11.h,
-                              ),
-                              width: 32.w,
-                              height: 32.h,
-                              child: IconButton(
-                                icon: Icon(
-                                  Icons.close,
-                                ),
-                                onPressed: (() => Get.back()),
-                              ),
-                            ),
-                            orderNumAppBar(orderController.orderNum.value),
-                            CafeNameContainer(shopName: data.data!["shopName"] as String),
-                            StatusContainer(statusPointer: orderStatusPointer),
-                            ExpandableList(menuList: data.data!["menuList"] as List),
-                            PriceContainer(price: data.data!["totalPrice"] as int),
-                          ],
-                        );
-                      } else {
-                        return Center(child: Text("데이터가 없습니다.\n개발팀에게 문의하세요.", textAlign: TextAlign.center));
-                      }
-                    } else if (!data.hasData) {
-                      return Center(child: CircularProgressIndicator());
-                    } else {
-                      return Center(child: Text("데이터가 없습니다.\n개발팀에게 문의하세요.", textAlign: TextAlign.center));
-                    }
-                  }),
-            ),
-          );
+    return
+        // missingController
+        //     ? Scaffold(body: Center(child: Text("주문 정보를 찾을 수 없습니다.")))
+        //     : Scaffold(
+        Scaffold(
+      backgroundColor: Colors.white,
+      body: Container(
+        decoration: BoxDecoration(
+          color: Color(0xffffffff),
+          borderRadius: BorderRadius.only(topLeft: Radius.circular(30.h), topRight: Radius.circular(30.h)),
+        ),
+        child: FutureBuilder(
+            future: getOrderInfo(),
+            builder: (ctx, AsyncSnapshot<OrderInfo> data) {
+              if (data.hasData) {
+                // 내용이 비지 않았을 때.
+                if (data.data!.orderId != 0) {
+                  return Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      Container(
+                        margin: EdgeInsets.only(
+                          left: 11.w,
+                          top: 11.h,
+                        ),
+                        width: 32.w,
+                        height: 32.h,
+                        child: IconButton(
+                          icon: Icon(
+                            Icons.close,
+                          ),
+                          onPressed: (() => Get.back()),
+                        ),
+                      ),
+                      orderNumAppBar(orderId),
+                      CafeNameContainer(shopName: shopName),
+                      StatusContainer(statusPointer: orderStatusPointer),
+                      ExpandableList(menuList: data.data!.menuList!),
+                      PriceContainer(price: data.data!.totalPrice!),
+                    ],
+                  );
+                } else {
+                  return Center(child: Text("데이터가 없습니다.\n개발팀에게 문의하세요.", textAlign: TextAlign.center));
+                }
+              } else if (!data.hasData) {
+                return Center(child: CircularProgressIndicator());
+              } else {
+                return Center(child: Text("데이터가 없습니다.\n개발팀에게 문의하세요.", textAlign: TextAlign.center));
+              }
+            }),
+      ),
+    );
   }
 
-  Future<Map<String, dynamic>> getOrderInfo() async {
-    var res = await http.Client().get(Uri.parse("http://${devMode()}.dalbodre.me/api/Order/${orderController.orderNum}"));
-    var orderStatusRes = await http.Client().get(Uri.parse("http://${devMode()}.dalbodre.me/api/Order/${orderController.orderNum}/Status"));
+  Future<OrderInfo> getOrderInfo() async {
+    var res = await http.Client().get(Uri.parse("http://${devMode()}.dalbodre.me/api/Order/${orderId}"));
+    var orderStatusRes = await http.Client().get(Uri.parse("http://${devMode()}.dalbodre.me/api/Order/${orderId}/Status"));
 
     if (res.statusCode == 200 && orderStatusRes.statusCode == 200) {
       final data = json.decode(res.body);
+      //print(data);
       data["status"] = json.decode(orderStatusRes.body)["status"];
 
       var shopRes = await http.Client().get(Uri.parse("http://${devMode()}.dalbodre.me/api/Shop/${data["shopId"]}"));
 
       if (shopRes.statusCode == 200) {
-        data["shopName"] = json.decode(shopRes.body)["name"];
+        setState(() {
+          shopName = json.decode(shopRes.body)["name"];
+        });
       } else {
-        data["shopName"] = "";
+        setState(() {
+          shopName = "";
+        });
       }
-      return data;
+
+      var dataFromJson = OrderInfo.fromJson(data);
+
+      return dataFromJson;
     } else {
-      return {"내용 없음": "No data"};
+      return OrderInfo();
     }
   }
 
@@ -167,10 +174,10 @@ class _OrderStatusPageState extends State<OrderStatusPage> {
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: [
                   Container(
-                    color: Colors.blue,
                     width: 24.w,
                     height: 24.h,
                     margin: EdgeInsets.only(right: 2.w),
+                    child: SvgPicture.asset("assets/icons/ic_refresh.svg", fit: BoxFit.fitHeight),
                   ),
                   Container(
                     height: 20.h,
@@ -194,7 +201,7 @@ class _OrderStatusPageState extends State<OrderStatusPage> {
 }
 
 class PriceContainer extends StatelessWidget {
-  final price;
+  final int price;
   PriceContainer({
     Key? key,
     this.price = 0,
@@ -230,7 +237,7 @@ class PriceContainer extends StatelessWidget {
               child: FittedBox(
                 fit: BoxFit.fitHeight,
                 child: Text(
-                  "4,000원",
+                  calcStringToWon(price),
                   style: TextStyle(
                     color: Color(0xff00276b),
                     fontWeight: FontWeight.w700,
@@ -260,7 +267,7 @@ class CafeNameContainer extends StatelessWidget {
       child: Row(
         crossAxisAlignment: CrossAxisAlignment.center,
         children: [
-          Container(color: Colors.blue, width: 29.w, height: 22.h),
+          Container(width: 29.w, height: 22.h, child: SvgPicture.asset("assets/icons/ic_nowShop.svg", fit: BoxFit.fill)),
           Container(
             margin: EdgeInsets.only(left: 6.w),
             height: 31.h,
@@ -362,7 +369,7 @@ class StatusContainer extends StatelessWidget {
 }
 
 class ExpandableList extends StatefulWidget {
-  final menuList;
+  final List<OrderMenu> menuList;
   ExpandableList({
     Key? key,
     required this.menuList,
@@ -430,17 +437,17 @@ class _ExpandableListState extends State<ExpandableList> {
                 itemBuilder: ((context, index) {
                   return cartItemWidget(widget.menuList[index]);
                 }),
-                itemCount: widget.menuList.legnth,
+                itemCount: widget.menuList.length,
               ),
             ),
           ],
         ));
   }
 
-  Widget cartItemWidget(Map<String, dynamic> menu) {
-    String menuNameString = menu["name"];
-    if (menu["quantity"] as int > 1) {
-      menuNameString += " ${menu["quantity"]}잔";
+  Widget cartItemWidget(OrderMenu menu) {
+    String menuNameString = menu.name!;
+    if (menu.quantity! > 1) {
+      menuNameString += " ${menu.quantity!}잔";
     }
 
     List<Widget> widgetList = [
@@ -456,19 +463,37 @@ class _ExpandableListState extends State<ExpandableList> {
       ),
     ];
 
-    for (Map<String, dynamic> option in menu["optionList"] as List) {
+    // for (Map<String, dynamic> option in menu["optionList"] as List) {
+    //   String optionString = "";
+    //   if (option["name"] == "온도") {
+    //     optionString += option["body"];
+    //   }
+    //   if (option["name"] == "샷 추가") {
+    //     optionString += option["quantity"] + "샷 추가";
+    //   }
+    //   if (option["name"] == "설탕시럽") {
+    //     optionString += option["quantity"] + " 설탕시럽";
+    //   }
+    //   if (option["name"] == "휘핑크림") {
+    //     optionString += "휘핑크림 O";
+    //   }
+    for (OrderOption option in menu.optionList!) {
       String optionString = "";
-      if (option["name"] == "온도") {
-        optionString += option["body"];
+
+      if (option.name! == "온도") {
+        optionString += option.body!;
       }
-      if (option["name"] == "샷 추가") {
-        optionString += option["quantity"] + "샷 추가";
+      if (option.name! == "샷 추가") {
+        optionString += option.quantity!.toString() + "샷 추가";
       }
-      if (option["name"] == "설탕시럽") {
-        optionString += option["quantity"] + " 설탕시럽";
+      if (option.name! == "설탕시럽") {
+        optionString += option.quantity!.toString() + " 설탕시럽";
       }
-      if (option["name"] == "휘핑크림") {
+      if (option.name! == "휘핑크림") {
         optionString += "휘핑크림 O";
+      }
+      if (option.name! == "기타옵션") {
+        optionString += option.body!;
       }
 
       widgetList.add(Container(
@@ -495,12 +520,11 @@ class _ExpandableListState extends State<ExpandableList> {
             height: 70.h,
             decoration: BoxDecoration(
               borderRadius: BorderRadius.all(Radius.circular(90.h)),
-              color: Color(menu["bgColor"] as int),
+              color: Color(int.parse(menu.bgColor!)),
             ),
-            child: Image.network(menu["thumbnail"], fit: BoxFit.scaleDown),
+            child: Image.network(menu.thumbnail!, fit: BoxFit.scaleDown),
           ),
           Container(
-            margin: EdgeInsets.only(left: 16.w),
             child: Column(
               children: widgetList,
               // [

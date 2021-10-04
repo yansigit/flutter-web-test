@@ -35,7 +35,7 @@ class _CardPageState extends State<CardPage> {
   final CouponController couponController = Get.find();
   final TakeOutController takeOutController = Get.find();
   final UserController userController = Get.find();
-  final OrderController orderController = Get.find();
+  final OrderController orderController = Get.put(OrderController());
 
   String errorMsg = "";
 
@@ -597,12 +597,12 @@ class _CardPageState extends State<CardPage> {
                             // 카드번호 검증이 성공했을 때.
                             switch (status) {
                               case 1:
-                                // requestOrder().then((status) {
-                                //   Get.offAll(() => NearStoresPage());
-                                //   Get.to(() => OrderStatusPage());
-                                // });
-                                Get.offAll(() => NearStoresPage());
-                                Get.to(() => OrderStatusPage());
+                                requestOrder().then((status) {
+                                  Get.offAll(() => NearStoresPage());
+                                  Get.to(() => OrderStatusPage());
+                                });
+                                // Get.offAll(() => NearStoresPage());
+                                // Get.to(() => OrderStatusPage());
                                 break;
                               case 2:
                                 Get.snackbar("경고", "카드번호를 잘 못 입력하셨습니다.", backgroundColor: Colors.white);
@@ -685,26 +685,27 @@ class _CardPageState extends State<CardPage> {
     data["cardExpire"] = cardController.cardValidation.value;
 
     var body = json.encode(data);
-    var res = await http.Client().post(Uri.parse("http://${devMode()}.dalbodre.me/api/CardNumberTest/"),
+    var res = await http.Client().post(Uri.parse("http://${devMode()}.dalbodre.me/api/Order/CardNumberTest/"),
         body: body, headers: <String, String>{'Content-Type': 'application/json'});
 
-    if (res.statusCode == 200) {
-      final data = json.decode(res.body);
-      if (data["success"] == "True") {
-        return 1;
-      } else if (data["error"] == "카드번호 오류   카드사전화요망") {
-        return 2;
-      } else if (data["error"] == "카드사코드 미입력오류") {
-        return 3;
-      } else if (data["error"] == "유효기간 오류") {
-        return 4;
-      } else {
-        return -1;
-      }
-    } else {
-      print(res.statusCode.toString());
-      return 0;
-    }
+    return 1;
+    // if (res.statusCode == 200) {
+    //   final data = json.decode(res.body);
+    //   if (data["success"] == "True") {
+    //     return 1;
+    //   } else if (data["error"] == "카드번호 오류   카드사전화요망") {
+    //     return 2;
+    //   } else if (data["error"] == "카드사코드 미입력오류") {
+    //     return 3;
+    //   } else if (data["error"] == "유효기간 오류") {
+    //     return 4;
+    //   } else {
+    //     return -1;
+    //   }
+    // } else {
+    //   print(res.statusCode.toString());
+    //   return 0;
+    // }
   }
 
   Future<int> requestOrder() async {
@@ -785,6 +786,10 @@ class _CardPageState extends State<CardPage> {
           options["name"] = "휘핑크림";
           options["body"] = value.quantity == 1 ? "추가" : "";
         }
+        if (key == "etcOption") {
+          options["name"] = "기타옵션";
+          options["body"] = value.name;
+        }
         if (key != "menuQuantity") {
           optionList.add(options);
         }
@@ -794,16 +799,19 @@ class _CardPageState extends State<CardPage> {
     }
 
     data["menuList"] = menuList;
+    print(data);
 
     var body = json.encode(data);
     var res = await http.Client().post(Uri.parse("http://${devMode()}.dalbodre.me/api/Order"),
         body: body, headers: <String, String>{'token': '${userController.userToken.value}', 'Content-Type': 'application/json'});
     if (res.statusCode == 200) {
-      print(body.toString);
+      print(res.body);
       print("WELL DONE");
       final data = jsonDecode(res.body);
       if (data["status"] == "succeed") {
-        orderController.updateOrderNum(data["orderId"]);
+        print(data["orderId"]);
+        //final int orderId = data["orderId"] as int;
+        orderController.updateOrderNum(data["orderId"] as int);
         return 1;
       } else {
         return 0;

@@ -277,32 +277,75 @@ class Card {
   Card({this.cardBank = "", required this.cardNum, required this.cardCRC, required this.cardValidationDate});
 }
 
-class OrderMenu {
-  String name;
-  int quantity;
-  String thumbnail;
-  int bgColor;
-  List<OrderOption> optionList;
+class OrderInfo {
+  int? totalPrice;
+  int? discountPrice;
+  List<OrderMenu>? menuList;
+  int? shopId;
+  bool? isCanceled;
+  int? orderId;
 
-  OrderMenu({this.name = "", this.quantity = 0, this.thumbnail = "", this.optionList = const [], this.bgColor = 0xffff0000});
+  OrderInfo({this.shopId = 0, this.totalPrice = 0, this.discountPrice = 0, this.menuList = const [], this.isCanceled = false, this.orderId = 0});
+
+  OrderInfo.fromJson(Map<String, dynamic> json) {
+    shopId = json["shopId"] as int;
+
+    totalPrice = json["totalPrice"] as int;
+
+    discountPrice = json["discountPrice"] as int;
+
+    isCanceled = json["isCanceled"] as bool;
+
+    orderId = json["id"] as int;
+
+    if (json['menuList'] != null) {
+      print("yes");
+      menuList = [];
+      json['menuList'].forEach((v) {
+        menuList!.add(new OrderMenu.fromJson(v));
+      });
+    } else {
+      print("menuList is null");
+    }
+  }
+}
+
+class OrderMenu {
+  String? name;
+  int? quantity;
+  String? thumbnail;
+  String? bgColor;
+  List<OrderOption>? optionList;
+
+  OrderMenu({this.name = "", this.quantity = 0, this.thumbnail = "", this.optionList = const [], this.bgColor = "0xffff0000"});
+
+  OrderMenu.fromJson(Map<String, dynamic> json) {
+    print("oo");
+    name = json["name"] as String;
+    quantity = json["quantity"] as int;
+    thumbnail = json["imagePath"] as String;
+    bgColor = json["backgroundColor"] as String;
+
+    if (json["optionList"] != null) {
+      optionList = [];
+      json["optionList"].forEach((v) {
+        optionList!.add(new OrderOption.fromJson(v));
+      });
+    }
+  }
 }
 
 class OrderOption {
-  String name;
-  String body;
-  String quantity;
-  OrderOption({this.name = "", this.body = "", this.quantity = ""});
+  String? name;
+  String? body;
+  int? quantity;
+  OrderOption({this.name = "", this.body = "", this.quantity = 0});
 
-  static getOptionList(data) {
-    List<OrderOption> list = [];
-
-    for (var option in data) {
-      final _option = option as Map;
-      list.add(new OrderOption(
-        name: data!["name"] as String,
-        body: data?["body"] != null ? data!["body"] as String : "",
-        quantity: data?["quantity"] != null ? data!["quantity"] as String : ""
-      ));
-    }
+  OrderOption.fromJson(Map<String, dynamic> json) {
+    print(json);
+    print("옵션 파싱중");
+    name = json["name"] as String;
+    body = json["body"] as String;
+    quantity = json["quantity"] as int;
   }
 }

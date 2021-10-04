@@ -1,6 +1,9 @@
 import 'package:get/get.dart';
 import 'package:intl/intl.dart';
 import 'package:save_order/model/model.dart';
+import 'package:get_storage/get_storage.dart';
+
+final box = GetStorage();
 
 class TakeOutController extends GetxController {
   final isTakeOut = false.obs;
@@ -368,9 +371,7 @@ class CouponController extends GetxController {
 }
 
 class OrderController extends GetxController {
-  final orderNum = 0.obs;
-
   updateOrderNum(int num) {
-    this.orderNum.value = num;
+    box.write('orderId', num);
   }
 }

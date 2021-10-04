@@ -11,8 +11,8 @@ List<Category> categories = [
         thumbnail: "https://arumdream.s3.ap-northeast-2.amazonaws.com/uploads/1/menus/%EC%95%84%EB%A9%94%EB%A6%AC%EC%B9%B4%EB%85%B8.png",
         name: "아메리카노",
         bgColor: 0xff815135,
-        hotPrice: 2200,
-        coldPrice: 2200,
+        hotPrice: 200,
+        coldPrice: 200,
         isHot: true,
         isCold: true,
         ingredients: <Ingredient>[
