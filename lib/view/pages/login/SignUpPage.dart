@@ -2,13 +2,17 @@ import 'dart:convert';
 
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:get/get.dart';
 import "package:http/http.dart" as http;
+import 'package:save_order/util/validate.dart';
 import 'package:save_order/consts/color.dart';
 import 'package:save_order/consts/size.dart';
 import 'package:save_order/model/model.dart';
+import 'package:save_order/view/pages/login/email_login_page.dart';
 import 'package:save_order/view/pages/login/login_page.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
 class SignUp extends StatefulWidget {
   @override
@@ -20,12 +24,19 @@ class SignUpPage extends State<SignUp> {
   TextEditingController passwordController = new TextEditingController();
   TextEditingController nameControlller = new TextEditingController();
   TextEditingController phoneNumberController = new TextEditingController();
-  String SUCCESS_MESSAGE = "성공적으로 일반 가입되었습니다";
+  bool isEmailValid = false;
+  bool isPasswordValid = false;
+  bool isNameValid = false;
+  bool isPhoneNumberValid = false;
 
-  RegExp emailRegExp = RegExp(
-      r"^[a-zA-Z0-9.a-zA-Z0-9.!#$%&'*+-/=?^_`{|}~]+@[a-zA-Z0-9]+\.[a-zA-Z]+");
-  RegExp passwordExp = RegExp(r'^(?=.*?[a-z])(?=.*?[0-9]).{8,}$');
-  RegExp phoneNumberExp = RegExp(r'^(0[12]0)([0-9]{3,4})([0-9]{4})$');
+  String SUCCESS_MESSAGE = "성공적으로 일반 가입되었습니다";
+ 
+  String errorMsg = "";
+  final _emailFormKey = GlobalKey<FormState>();
+  final _passwordFormKey = GlobalKey<FormState>();
+  final _nameFormKey = GlobalKey<FormState>();
+  final _phoneNumberFormKey = GlobalKey<FormState>();
+
   @override
   void initState() {
     super.initState();
@@ -33,33 +44,10 @@ class SignUpPage extends State<SignUp> {
 
   bool isValidFormat(
       String email, String password, String name, String phoneNumber) {
-    if (email.length >= 31 || !emailRegExp.hasMatch(email)) {
-      ScaffoldMessenger.of(context).showSnackBar(SnackBar(
-          duration: const Duration(milliseconds: 1500),
-          content: Text("형식에 맞지 않는 이메일입니다. 다시 입력해 주세요.")));
+    
+    if (errorMsg != "") {
       return false;
     }
-    if (password.length >= 101 || !passwordExp.hasMatch(password)) {
-      ScaffoldMessenger.of(context).showSnackBar(SnackBar(
-          duration: const Duration(milliseconds: 1500),
-          content: Text(
-              "형식에 맞지 않는 비밀번호입니다. 영어 소문자를 적어도 1개 이상, 숫자를 적어도 1개 이상 포함하는 8자리 글자를 입력해주세요.")));
-      return false;
-    }
-    if (name.length < 1) {
-      ScaffoldMessenger.of(context).showSnackBar(SnackBar(
-          duration: const Duration(milliseconds: 1500),
-          content: Text("이름을 입력해주세요.")));
-      return false;
-    }
-    if (!phoneNumberExp.hasMatch(phoneNumber)) {
-      ScaffoldMessenger.of(context).showSnackBar(SnackBar(
-          duration: const Duration(milliseconds: 1500),
-          content:
-              Text("형식에 맞지 않는 휴대폰 번호입니다.'-' 없이 010 혹은 020 로 시작하는 숫자 11자리 혹은 12자리를 입력해주세요.")));
-      return false;
-    }
-
     return true;
   }
 
@@ -68,32 +56,217 @@ class SignUpPage extends State<SignUp> {
     return Scaffold(
         backgroundColor: Color(0xFFFFFF).withOpacity(1.0),
         body: Center(
-          child: Container(
-            width: 325.w,
-            height: 400.h,
-            child: Column(children: <Widget>[
-              inputUserInfoWidget(emailController, "이메일"),
-              inputUserInfoWidget(passwordController, "비밀번호",
-                  isSensitiveInfo: true),
-              inputUserInfoWidget(nameControlller, "이름"),
-              inputUserInfoWidget(phoneNumberController, "휴대폰 번호"),
-              Container(
-                margin: EdgeInsets.only(top: 20.h, left: 10.w, right: 10.w),
-                child: Row(
+          child: SingleChildScrollView(
+            child: Container(
+              decoration: BoxDecoration(
+                  border: Border.all(color: const Color(0xff00276b))),
+              width: 325.w,
+              height: 400.h,
+              child: Column(
                   mainAxisAlignment: MainAxisAlignment.center,
                   children: <Widget>[
+                    Row(children: <Widget>[
+                      Container(
+                          margin: EdgeInsets.only(right: 10.w, bottom: 8.h),
+                          width: 60.w,
+                          height: 20.h,
+                          child: FittedBox(
+                              fit: BoxFit.fitHeight, child: Text("이메일"))),
+                      Container(
+                          margin: EdgeInsets.only(right: 10.w, bottom: 8.h),
+                          width: 242.5.w,
+                          height: 70.h,
+                          child: Form(
+                            key: this._emailFormKey,
+                            child: TextFormField(
+                              maxLines: 2,
+                              validator: (email) {
+                                if (email!.length > 30 ||
+                                    !emailRegExp.hasMatch(email)) {
+                                  return "이메일 형식이 잘못되었습니다.";
+                                } else {
+                                  return null;
+                                }
+                              },
+                              onChanged: (email) {
+                                if (email.length <= 30 &&
+                                    emailRegExp.hasMatch(email)) {
+                                  setState(() {
+                                    this.isEmailValid = true;
+                                  });
+                                } else {
+                                  setState(() {
+                                    this.isEmailValid = false;
+                                  });
+                                }
+                              },
+                              inputFormatters: [
+                                FilteringTextInputFormatter.deny(
+                                    KOREAN_WORD_REGEXP)
+                              ],
+                              controller: this.emailController,
+                              textAlign: TextAlign.left,
+                              decoration: InputDecoration(
+                                  border: OutlineInputBorder(),
+                                  hintText: "이메일",
+                                  hintStyle: TextStyle(fontSize: 14)),
+                            ),
+                          ))
+                    ]),
+                    Row(children: <Widget>[
+                      Container(
+                          margin: EdgeInsets.only(right: 10.w, bottom: 8.h),
+                          width: 60.w,
+                          height: 20.h,
+                          child: FittedBox(
+                              fit: BoxFit.fitHeight, child: Text("비밀번호"))),
+                      Container(
+                          margin: EdgeInsets.only(right: 10.w, bottom: 8.h),
+                           width: 242.5.w,
+                          height: 70.h,
+                          child: Form(
+                            key: this._passwordFormKey,
+                            child: TextFormField(
+                              onChanged: (password) {
+                                if (password.length <=20 &&
+                                    passwordExp.hasMatch(password)) {
+                                  setState(() {
+                                    this.isPasswordValid = true;
+                                  });
+                                } else {
+                                  setState(() {
+                                    this.isPasswordValid = false;
+                                  });
+                                }
+                              },
+                              validator: (password) {
+                                if (password!.length > 30 ||
+                                    !passwordExp.hasMatch(password)) {
+                                  return " 영어 소문자  혹은 대문자 1개 이상, 숫자 1개 이상 포함하는 8자리 이상의 글자를 입력해주세요.";
+                                } else {
+                                  return null;
+                                }
+                              },
+                              inputFormatters: [
+                                FilteringTextInputFormatter.deny(
+                                    KOREAN_WORD_REGEXP)
+                              ],
+                              obscureText: true,
+                              controller: this.passwordController,
+                              textAlign: TextAlign.left,
+                              decoration: InputDecoration(
+                                errorMaxLines: 3,
+                                  border: OutlineInputBorder(),
+                                  hintText: "비밀번호",
+                                  hintStyle: TextStyle(fontSize: 14)),
+                            ),
+                          ))
+                    ]),
+                    Row(children: <Widget>[
+                      Container(
+                          margin: EdgeInsets.only(right: 10.w, bottom: 8.h),
+                          width: 60.w,
+                          height: 20.h,
+                          child: FittedBox(
+                              fit: BoxFit.fitHeight, child: Text("이름"))),
+                      Container(
+                          margin: EdgeInsets.only(right: 10.w, bottom: 8.h),
+                         width: 242.5.w,
+                          height: 50.h,
+                          child: Form(
+                            key: this._nameFormKey,
+                            child: TextFormField(
+                              onChanged: (name) {
+                                if (name.length <= 30) {
+                                  setState(() {
+                                    this.isNameValid = true;
+                                  });
+                                } else {
+                                  setState(() {
+                                    this.isNameValid = false;
+                                  });
+                                }
+                              },
+                              validator: (name) {
+                                if (name!.length < 1) {
+                                  return "이름을 한 글자 이상 적어주세요.";
+                                } else {
+                                  return null;
+                                }
+                              },
+                              controller: this.nameControlller,
+                              textAlign: TextAlign.left,
+                              decoration: InputDecoration(
+                                  border: OutlineInputBorder(),
+                                  hintText: "이름",
+                                  hintStyle: TextStyle(fontSize: 14)),
+                            ),
+                          ))
+                    ]),
+                    Row(children: <Widget>[
+                      Container(
+                          margin: EdgeInsets.only(
+                              right: 8.w, bottom: 8.h, left: 3.w),
+                          width: 60.w,
+                          height: 20.h,
+                          child: FittedBox(
+                              fit: BoxFit.fitHeight, child: Text("휴대폰 번호"))),
+                      Container(
+                          margin: EdgeInsets.only(right: 10.w, bottom: 8.h),
+                            width: 242.w,
+                          height: 60.h,
+                          child: Form(
+                            key: this._phoneNumberFormKey,
+                            child: TextFormField(
+                              validator: (phoneNumber) {
+                                if (!phoneNumberExp.hasMatch(phoneNumber!)) {
+                                  return '"-" 없이 010 혹은 020 으로 시작하는 숫자 11자리 혹은 12자리를 입력해주세요';
+                                } else {
+                                  return null;
+                                }
+                              },
+                              onChanged: (phoneNumber) {
+                                if (phoneNumber.length <= 30 &&
+                                    phoneNumberExp.hasMatch(phoneNumber)) {
+                                  setState(() {
+                                    this.isPhoneNumberValid = true;
+                                  });
+                                } else {
+                                  setState(() {
+                                    this.isPhoneNumberValid = false;
+                                  });
+                                }
+                              },
+                              inputFormatters: [
+                                FilteringTextInputFormatter.digitsOnly
+                              ],
+                              controller: this.phoneNumberController,
+                              textAlign: TextAlign.left,
+                              decoration: InputDecoration(
+                                  errorMaxLines: 3,
+                                  border: OutlineInputBorder(),
+                                  hintText: "휴대폰 번호",
+                                  hintStyle: TextStyle(fontSize: 14)),
+                            ),
+                          ))
+                    ]),
                     Container(
                         height: 60.h,
                         width: 200.w,
+                       
                         margin: EdgeInsets.only(top: 8.h),
                         child: ElevatedButton(
                             style: ButtonStyle(
                               side: MaterialStateProperty.all<BorderSide>(
-                                  BorderSide(
-                                      color: const Color(0xff00276b),
-                                      width: 1.w)),
-                              backgroundColor:
-                                  MaterialStateProperty.all(EMAIL_COLOR),
+                                  BorderSide(width: 1.w)),
+                              backgroundColor: MaterialStateProperty.all(
+                                isEmailValid &&
+                                        isPasswordValid &&
+                                        isNameValid &&
+                                        isPhoneNumberValid
+                                    ? Colors.grey
+                                    : Colors.white,
+                              ),
                               shape: MaterialStateProperty.all<
                                       RoundedRectangleBorder>(
                                   RoundedRectangleBorder(
@@ -101,19 +274,35 @@ class SignUpPage extends State<SignUp> {
                                           BorderRadius.circular(15.h))),
                             ),
                             onPressed: () async {
-                              var email =
-                                  emailController.text.toString().trim();
-                              var password = passwordController.text.toString()
-                                ..trim();
-                              var name = nameControlller.text.toString().trim();
+                              var email = emailController.text
+                                  .toString()
+                                  .replaceAll(' ', '');
+                              var password = passwordController.text
+                                  .toString()
+                                  .replaceAll(' ', '');
+                              var name = nameControlller.text
+                                  .toString()
+                                  .replaceAll(' ', '');
+                              print(name);
+                              print("nname");
                               var phoneNumber =
                                   phoneNumberController.text.toString().trim();
-                              if (!isValidFormat(
-                                  email, password, name, phoneNumber)) {
+                              if (!this
+                                      ._emailFormKey
+                                      .currentState!
+                                      .validate() ||
+                                  !this
+                                      ._passwordFormKey
+                                      .currentState!
+                                      .validate() ||
+                                  !this._nameFormKey.currentState!.validate() ||
+                                  !this
+                                      ._phoneNumberFormKey
+                                      .currentState!
+                                      .validate()) {
                                 return;
                               }
-                              print(email);
-                              print(password);
+                           
                               Map data = {
                                 "email": email,
                                 "password": password,
@@ -129,14 +318,12 @@ class SignUpPage extends State<SignUp> {
                                   },
                                   body: body);
 
-                              print(response.statusCode);
-                              final decodedData = json.decode(response.body);
-                              print("response");
-                              print(decodedData);
-                              String message = decodedData["msg"];
+                              
+                              Map<String, dynamic> decodedData =
+                                  json.decode(response.body);
 
-                              print(message);
-                              if (message !=  SUCCESS_MESSAGE) {
+                              if (!decodedData.containsKey("msg") ||
+                                  decodedData["msg"] != SUCCESS_MESSAGE) {
                                 ScaffoldMessenger.of(context).showSnackBar(SnackBar(
                                     duration:
                                         const Duration(milliseconds: 1000),
@@ -144,7 +331,11 @@ class SignUpPage extends State<SignUp> {
                                         "이미 회원 가입이 된 이메일 혹은 휴대전화입니다. 다시 입력해주세요.")));
                                 return;
                               }
-                              print(json.decode(response.body));
+                              SharedPreferences sharedPreferences =
+                                  await SharedPreferences.getInstance();
+                              sharedPreferences.setString(
+                                  "signUpToken", decodedData["token"]);
+
                               ScaffoldMessenger.of(context).showSnackBar(
                                   SnackBar(
                                       duration:
@@ -155,7 +346,8 @@ class SignUpPage extends State<SignUp> {
                               phoneNumberController.text = "";
                               nameControlller.text = "";
 
-                              Get.to(() => LoginPage());
+                              Get.off(() => EmailLoginPage(),
+                                  transition: Transition.rightToLeft);
                             },
                             child: Container(
                                 margin: EdgeInsets.only(
@@ -165,46 +357,19 @@ class SignUpPage extends State<SignUp> {
                                     left: 10.w),
                                 width: 250.w,
                                 height: 30.h,
+                                
                                 child: FittedBox(
                                     fit: BoxFit.fitHeight,
                                     child: Text("회원 가입 완료",
                                         style: TextStyle(
-                                            backgroundColor: Colors.white,
                                             fontWeight: FontWeight.w400,
-                                            color: Colors.blue,
+                                            color: const Color(0xff00276b),
                                             fontFamily: "NotoSans",
                                             fontStyle: FontStyle.normal,
                                             fontSize: 18.0))))))
-                  ],
-                ),
-              )
-            ]),
+                  ]),
+            ),
           ),
         ));
-  }
-
-  Widget inputUserInfoWidget(
-      TextEditingController textEditingController, String infoName,
-      {isSensitiveInfo: false}) {
-    return Row(children: <Widget>[
-      Container(
-          margin: EdgeInsets.only(right: 10.w, bottom: 8.h),
-          width: 60.w,
-          height: 20.h,
-          child: FittedBox(fit: BoxFit.fitHeight, child: Text(infoName))),
-      Container(
-          margin: EdgeInsets.only(right: 10.w, bottom: 8.h),
-          width: 240.w,
-          height: 40.h,
-          child: TextField(
-            obscureText: isSensitiveInfo,
-            controller: textEditingController,
-            textAlign: TextAlign.left,
-            decoration: InputDecoration(
-                border: OutlineInputBorder(),
-                hintText: infoName,
-                hintStyle: TextStyle(fontSize: 14)),
-          ))
-    ]);
   }
 }

@@ -37,25 +37,38 @@ class NearStoresPageState extends State<NearStoresPage> {
     return curPosition;
   }
 
-  //List<bool> statusPermissions = [false, false];
+  List<bool> statusPermissions = [false, false];
 
   //TODO this is for Web. Need to change for App.
-  /*
-  Future getStatusPermissonList() async {
-    var _statusLocation = await Permission.location.status.isGranted;
-    var _statusCamera = await Permission.camera.status.isGranted;
-    setState(() {
-      print("a");
-      statusPermissions[0] = _statusLocation;
-      statusPermissions[1] = _statusCamera;
-    });
+
+  // Future getStatusPermissonList() async {
+  //   var _statusLocation = await Permission.location.status.isGranted;
+  //   var _statusCamera = await Permission.camera.status.isGranted;
+  //   setState(() {
+
+  //     statusPermissions[0] = _statusLocation;
+  //     statusPermissions[1] = _statusCamera;
+  //   });
+  // }
+
+  List<Shop> filterOpenedStores(List<Shop> shops) {
+    List<Shop> opendShops = [];
+
+    for (int i = 0; i < shops.length; i++) {
+      if (shops[i].isOpened == true) {
+        opendShops.add(shops[i]);
+      }
+    }
+
+    return opendShops;
   }
-  */
 
   Future<List<Shop>> fetchNearStores() async {
     //await Future.delayed(Duration(seconds: 0));
-    var shops;
+    List<Shop> shops = [];
     if (GetPlatform.isWeb) {
+      //shops = await Shop.fetchShops(http.Client());
+      //shops = shops.where((shop) => (shop.isOpened == 1)).toList();
       await html.window.navigator.permissions?.query({"name": "geolocation"}).then((locationPermission) async {
         if (locationPermission.state == "denied") {
           shops = await Shop.fetchShops(http.Client());
@@ -63,21 +76,25 @@ class NearStoresPageState extends State<NearStoresPage> {
           shops = await Shop.fetchShopsByLocation(http.Client(), N, this.curPosition);
         }
       });
-
-      return shops;
+      shops = shops.where((shop) => (shop.isOpened == 1)).toList();
+      return this.filterOpenedStores(shops);
     }
 
     //var locationPermissionStatus = statusPermissions[0];
     // var locationPermissionStatus = false;
     // print("locationPermissionStatus:" + locationPermissionStatus.toString());
     // if (locationPermissionStatus == true) {
-    // if (statusPermissions[0] == true) {
-    //   shops = await Shop.fetchShopsByLocation(http.Client(), N, this.curPosition);
-    // } else {
-    //   shops = await Shop.fetchShops(http.Client());
-    // }
+    print(statusPermissions);
+    print("status");
+    if (statusPermissions[0] == true) {
+      shops = await Shop.fetchShopsByLocation(http.Client(), N, this.curPosition);
+    } else {
+      shops = await Shop.fetchShops(http.Client());
+    }
 
-    return shops;
+    //  shops = shops.where((shop) => (shop.isOpened == 1)).toList();
+
+    return this.filterOpenedStores(shops);
 
     // return [
     //   // new Shop(id:1,  name: "컬티", latitude: 38.5, longtitude: 40.5, distanceFromCurPosition: 3.5),
@@ -99,6 +116,11 @@ class NearStoresPageState extends State<NearStoresPage> {
           curPosition = val;
         });
       });
+      // Get.snackbar(
+      //   "알림",
+      //   "웹에서는 거리 표시 기능이 지원되지 않습니다.",
+      //   backgroundColor: Colors.white,
+      // );
     });
   }
 
@@ -110,11 +132,7 @@ class NearStoresPageState extends State<NearStoresPage> {
           elevation: 1.3,
           leading: IconButton(
               onPressed: () {
-                showDialog(
-                    context: context,
-                    builder: (BuildContext context) {
-                      return AlertDialog(content: Text("아직 QR코드 스캔 기능이 구현되지 않았습니다. 베타 테스트 이후 기능 구현 예정입니다."));
-                    });
+                Get.snackbar("경고", "배타테스트 기간 동안에는 QR 코드 스캔 기능이 지원되지 않습니다. 배타 테스트 이후에 구현 될 예정입니다.", backgroundColor: Colors.white);
               },
               icon: SvgPicture.asset(
                 "assets/icons/ic_qrcode.svg",
@@ -125,11 +143,7 @@ class NearStoresPageState extends State<NearStoresPage> {
           actions: [
             IconButton(
               onPressed: () {
-                showDialog(
-                    context: context,
-                    builder: (BuildContext context) {
-                      return AlertDialog(content: Text("아직 검색 기능이 구현되지 않았습니다. 베타 테스트 이후 기능 구현 예정입니다."));
-                    });
+                Get.snackbar("경고", "배타테스트 기간 동안에는 카페 검색 기능이 지원되지 않습니다. 배타 테스트 이후에 구현 될 예정입니다.", backgroundColor: Colors.white);
               },
               icon: SvgPicture.asset(
                 "assets/icons/searchIcon.svg",
@@ -247,7 +261,7 @@ class NearStoresPageState extends State<NearStoresPage> {
                   return FutureBuilder(
                       future: fetchNearStores(),
                       builder: (ctx, AsyncSnapshot snap) {
-                        if (snap.hasData) {
+                        if (snap.hasData && snap.data.length > 0) {
                           return Container(
                               child: ListView.separated(
                             shrinkWrap: true,
@@ -272,7 +286,7 @@ class NearStoresPageState extends State<NearStoresPage> {
                         } else if (!snap.hasData) {
                           return Center(child: CircularProgressIndicator());
                         } else {
-                          return Text("f");
+                          return Center(child: Text("주변 매장이 없습니다."));
                         }
                       });
                 } else if (!projectSnap.hasData) {
@@ -289,7 +303,7 @@ class NearStoresPageState extends State<NearStoresPage> {
 
   Widget buildStoreView(BuildContext context, Shop store) {
     final ShopController shopController = Get.put(ShopController());
-    final Map<String, String> storeNameToAddress = {"컬티": "울산광역시 남구 컬티", "카페마냥": "울산광역시 남구 카페마냥", "11호관 커피": "울산광역시 남구 대학로 93번길 11호관"};
+    final Map<String, String> storeNameToAddress = {"컬티": "울산광역시 남구 컬티", "카페마냥": "울산광역시 남구 카페마냥", "11호관 커피숍": "울산광역시 남구 대학로 93번길 11호관"};
 
     // 각 가게 위치 데이터 넣기.  카페  이름이랑 비교
     //

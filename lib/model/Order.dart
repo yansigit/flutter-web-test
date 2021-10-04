@@ -52,11 +52,11 @@ class MyOrder {
     List<OrderedMenu> orders = [];
 
     for (int i = 0; i < json["menuList"].length; i++) {
-      print("for looop");
+      
       Map<String, dynamic> menu =
           Map<String, dynamic>.from(json["menuList"][i]);
       List<String> options = [];
-      print(menu["optionList"].runtimeType);
+     
       for (var option in menu["optionList"]) {
         options.add(option["name"]);
       }
@@ -71,7 +71,7 @@ class MyOrder {
   }
   static List<MyOrder> parseMyMenu(String responseBody) {
     final parsed = json.decode(responseBody).cast<Map<String, dynamic>>();
-    print(parsed);
+ 
     return parsed.map<MyOrder>((json) => MyOrder.fromJson(json)).toList();
   }
 }

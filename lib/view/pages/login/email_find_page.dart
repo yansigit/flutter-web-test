@@ -38,10 +38,16 @@ class _EmailFindPage extends State<EmailFindPage> {
 
   Future<String> getEmail() async {
     // 유저 휴대폰으로 보낸 인증번호 저장해서, 인증 번호가 유저가 입력한 것과 같으면 이메일 알려주기
-    String name = nameController!.text.toString();
-    String phoneNumber = phoneNumberController!.text.toString();
+    String name = nameController!.text.toString().replaceAll(" ", "");
+    String phoneNumber =
+        phoneNumberController!.text.toString().replaceAll(" ", "");
+    print(name);
+    print(phoneNumber);
+    print("phoneNumber");
     final response = await http.Client().get(Uri.parse(
         "http://${devMode()}.dalbodre.me/api/User/FindEmail/${name}/${phoneNumber}"));
+    print(response.statusCode);
+    print("sss");
     if (response.statusCode != 200) {
       return NO_SUCH_EMAIL;
     }
@@ -62,17 +68,20 @@ class _EmailFindPage extends State<EmailFindPage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-       appBar: AppBar(
+        appBar: AppBar(
           backgroundColor: Colors.white,
           elevation: 1.3,
           centerTitle: true,
           title: Text("이메일 찾기",
               style:
                   TextStyle(fontWeight: FontWeight.w700, color: Colors.black)),
-      ),
+        ),
         backgroundColor: Color(0xFFFFFF).withOpacity(1.0),
         body: Center(
             child: Container(
+          decoration: BoxDecoration(
+              border: Border.all(color: const Color(0xff00276b)),
+              borderRadius: BorderRadius.all(Radius.circular(15.w))),
           child: Column(
             mainAxisAlignment: MainAxisAlignment.center,
             crossAxisAlignment: CrossAxisAlignment.center,
@@ -86,7 +95,7 @@ class _EmailFindPage extends State<EmailFindPage> {
                           alignment: Alignment.center,
                           margin: EdgeInsets.only(right: 10.w),
                           height: 30.h,
-                          width: 50.w,
+                          width: 70.w,
                           child: FittedBox(
                             fit: BoxFit.fitWidth,
                             child: Text(
@@ -139,7 +148,7 @@ class _EmailFindPage extends State<EmailFindPage> {
                           margin: EdgeInsets.only(right: 10.w),
                           alignment: Alignment.center,
                           height: 30.h,
-                          width: 50.w,
+                          width: 70.w,
                           child: FittedBox(
                             fit: BoxFit.fitWidth,
                             child: Text(
@@ -169,6 +178,10 @@ class _EmailFindPage extends State<EmailFindPage> {
                           child: Form(
                               key: this._phoneNumberFormKey,
                               child: TextFormField(
+                                inputFormatters: [
+                                  FilteringTextInputFormatter.digitsOnly,
+                                  LengthLimitingTextInputFormatter(14),
+                                ],
                                 validator: (value) {
                                   RegExp regExp = new RegExp(
                                     "\d{10, 12}",
@@ -187,89 +200,12 @@ class _EmailFindPage extends State<EmailFindPage> {
                                     fontFamily: "NotoSans", fontSize: 14.0),
                                 textAlign: TextAlign.center,
                                 controller: phoneNumberController,
-                                inputFormatters: [
-                                  LengthLimitingTextInputFormatter(14),
-                                ],
                                 decoration: InputDecoration(
                                   hintText: "휴대폰 번호를 입력하세요.",
                                 ),
                               )))
                     ],
                   )),
-              // Container(
-              //     height: 30.h,
-              //     width: 200.w,
-              //     alignment: Alignment.center,
-              //     decoration: BoxDecoration(
-              //       color: Colors.white,
-              //       border:
-              //           Border.all(color: const Color(0xffe8e8e8), width: 1.w),
-              //       boxShadow: [
-              //         BoxShadow(
-              //             color: const Color(0x0c000000),
-              //             offset: Offset(0, 2),
-              //             blurRadius: 4,
-              //             spreadRadius: 0)
-              //       ],
-              //     ),
-              //     child: Form(
-              //         key: this._certificationNumberFormKey,
-              //         child: TextFormField(
-              //           textAlignVertical: TextAlignVertical.center,
-              //           style:
-              //               TextStyle(fontFamily: "NotoSans", fontSize: 14.0),
-              //           textAlign: TextAlign.center,
-              //           // textAlignVertical: TextAlignVertical.center,
-              //           controller: certificationNumberController,
-              //           decoration: InputDecoration(
-              //             hintText: "인증번호 6자리 숫자",
-              //           ),
-              //         ))),
-              // GestureDetector(
-              //   onTap: () async {
-              //     if (!this._phoneNumberFormKey.currentState!.validate()) {
-              //       return;
-              //     }
-
-              //     bool isSuccess = await this.sendCertificationNumberToUser();
-              //     if (isSuccess) {
-              //       ScaffoldMessenger.of(context).showSnackBar(SnackBar(
-              //           duration: const Duration(milliseconds: 1000),
-              //           content: Text("입력하신 이메일입니다.")));
-              //     } else {
-              //       ScaffoldMessenger.of(context).showSnackBar(SnackBar(
-              //           duration: const Duration(milliseconds: 1000),
-              //           content: Text("이름 혹은 휴대폰 번호를 잘못 입력하셨습니다."))
-              //           );
-              //     }
-              //   },
-              //   child: Container(
-              //       decoration: BoxDecoration(
-              //         color: Colors.white,
-              //         border: Border.all(
-              //             color: const Color(0xffe8e8e8), width: 1.w),
-              //         boxShadow: [
-              //           BoxShadow(
-              //               color: const Color(0x0c000000),
-              //               offset: Offset(0, 2),
-              //               blurRadius: 4,
-              //               spreadRadius: 0)
-              //         ],
-              //       ),
-              //       margin: EdgeInsets.only(top: 10.h, bottom: 10.h),
-              //       height: 25.h,
-              //       width: 160.w,
-              //       child: FittedBox(
-              //           fit: BoxFit.fitHeight,
-              //           child: Text("인증 번호 받기",
-              //               style: TextStyle(
-              //                   backgroundColor: Colors.white,
-              //                   fontWeight: FontWeight.w400,
-              //                   color: Colors.black,
-              //                   fontFamily: "NotoSans",
-              //                   fontStyle: FontStyle.normal,
-              //                   fontSize: 15.0)))),
-              // ),
               ElevatedButton(
                   onPressed: () async {
                     String email = await this.getEmail();
@@ -278,7 +214,8 @@ class _EmailFindPage extends State<EmailFindPage> {
                           duration: const Duration(milliseconds: 1000),
                           content: Text("이름과 휴대폰 번호에 걸맞는 이메일이 존재하지 않습니다.")));
                     } else {
-                      Get.to(() => ShowForgatEmailPage(email));
+                      Get.off(() => ShowForgatEmailPage(email),
+                          transition: Transition.rightToLeft);
                     }
                   },
                   style: ButtonStyle(
@@ -300,7 +237,7 @@ class _EmailFindPage extends State<EmailFindPage> {
                               style: TextStyle(
                                   backgroundColor: Colors.white,
                                   fontWeight: FontWeight.w400,
-                                  color: Colors.blue,
+                                  color: const Color(0xff00276b),
                                   fontFamily: "NotoSans",
                                   fontStyle: FontStyle.normal,
                                   fontSize: 10.0))))),
@@ -308,8 +245,6 @@ class _EmailFindPage extends State<EmailFindPage> {
           ),
           width: 325.w,
           height: 300.h,
-          decoration:
-              BoxDecoration(border: Border.all(color: Colors.blueAccent)),
         )));
   }
 }
