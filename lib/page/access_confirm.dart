@@ -7,8 +7,8 @@ import 'package:save_order/view/pages/login/login_page.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 //TODO this is for Web. Need to change for App.
-import 'package:permission_handler/permission_handler.dart'
-    if (dart.library.io) 'package:permission_handler/permission_handler.dart';
+// import 'package:permission_handler/permission_handler.dart'
+//     if (dart.library.io) 'package:permission_handler/permission_handler.dart';
 
 class AccessPage extends StatefulWidget {
   AccessPage({Key? key}) : super(key: key);
@@ -26,68 +26,68 @@ class _AccessPageState extends State<AccessPage> {
 
   //TODO this is for Web. Need to change [statusPermissions] for App.
 
-  Future getStatusPermissonList() async {
-    var _statusLocation = await Permission.location.status.isGranted;
-    var _statusCamera = await Permission.camera.status.isGranted;
-    setState(() {
-      statusPermissions[0] = _statusLocation;
-      statusPermissions[1] = _statusCamera;
-    });
-  }
+  // Future getStatusPermissonList() async {
+  //   var _statusLocation = await Permission.location.status.isGranted;
+  //   var _statusCamera = await Permission.camera.status.isGranted;
+  //   setState(() {
+  //     statusPermissions[0] = _statusLocation;
+  //     statusPermissions[1] = _statusCamera;
+  //   });
+  // }
 
-  requestCameraPermission() async {
-    Map<Permission, PermissionStatus> statuses = await [
-      Permission.location,
-      Permission.camera,
-    ].request();
-    if (statuses[Permission.camera]!.isGranted) {
-      setState(() {
-        statusPermissions[1] = true;
-      });
-    }
-    if (statuses[Permission.location]!.isGranted) {
-      setState(() {
-        statusPermissions[0] = true;
-      });
-    }
-    if (!statuses[Permission.camera]!.isGranted ||
-        !statuses[Permission.location]!.isGranted) {
-      // 허용이 안된 경우
-      showDialog(
-          context: context,
-          builder: (BuildContext context) {
-            return AlertDialog(
-              content: Text("권한 설정을 확인해주세요."),
-              actions: [
-                ElevatedButton(
-                    onPressed: () {
-                      openAppSettings(); // 앱 설정으로 이동
-                    },
-                    child: Text('설정하기')),
-                ElevatedButton(
-                    onPressed: () async {
-                      SharedPreferences sharedPreferences =
-                          await SharedPreferences.getInstance();
-                      String? token = sharedPreferences.getString("token");
+  // requestCameraPermission() async {
+  //   Map<Permission, PermissionStatus> statuses = await [
+  //     Permission.location,
+  //     Permission.camera,
+  //   ].request();
+  //   if (statuses[Permission.camera]!.isGranted) {
+  //     setState(() {
+  //       statusPermissions[1] = true;
+  //     });
+  //   }
+  //   if (statuses[Permission.location]!.isGranted) {
+  //     setState(() {
+  //       statusPermissions[0] = true;
+  //     });
+  //   }
+  //   if (!statuses[Permission.camera]!.isGranted ||
+  //       !statuses[Permission.location]!.isGranted) {
+  //     // 허용이 안된 경우
+  //     showDialog(
+  //         context: context,
+  //         builder: (BuildContext context) {
+  //           return AlertDialog(
+  //             content: Text("권한 설정을 확인해주세요."),
+  //             actions: [
+  //               ElevatedButton(
+  //                   onPressed: () {
+  //                     openAppSettings(); // 앱 설정으로 이동
+  //                   },
+  //                   child: Text('설정하기')),
+  //               ElevatedButton(
+  //                   onPressed: () async {
+  //                     SharedPreferences sharedPreferences =
+  //                         await SharedPreferences.getInstance();
+  //                     String? token = sharedPreferences.getString("token");
                
-                      if (token == null || token.length == 0) {
-                        Get.off(() => LoginPage(),
-                            transition: Transition.rightToLeft);
-                      } else {
-                        Get.put(UserController());
-                        UserController userController = Get.find();
-                        userController.updateUserInfo(
-                            sharedPreferences.getString("email")!, token);
-                        Get.off(() => NearStoresPage(),
-                            transition: Transition.rightToLeft);
-                      }
-                    },
-                    child: Text('계속하기')),
-              ],
-            );
-          });
-    }
-  }
+  //                     if (token == null || token.length == 0) {
+  //                       Get.off(() => LoginPage(),
+  //                           transition: Transition.rightToLeft);
+  //                     } else {
+  //                       Get.put(UserController());
+  //                       UserController userController = Get.find();
+  //                       userController.updateUserInfo(
+  //                           sharedPreferences.getString("email")!, token);
+  //                       Get.off(() => NearStoresPage(),
+  //                           transition: Transition.rightToLeft);
+  //                     }
+  //                   },
+  //                   child: Text('계속하기')),
+  //             ],
+  //           );
+  //         });
+  //   }
+  // }
 
   void getTokenFromPrefeences() async {
     SharedPreferences sharedPreferences = await SharedPreferences.getInstance();
@@ -108,12 +108,12 @@ class _AccessPageState extends State<AccessPage> {
     super.initState();
     //TODO this is for Web. Need to change [statusPermissions] for App.
 
-    if (!GetPlatform.isWeb) {
-      getStatusPermissonList();
-    } else {
-      statusPermissions[0] = true;
-      statusPermissions[1] = true;
-    }
+    // if (!GetPlatform.isWeb) {
+    //   getStatusPermissonList();
+    // } else {
+    //   statusPermissions[0] = true;
+    //   statusPermissions[1] = true;
+    // }
 
     WidgetsBinding.instance!.addPostFrameCallback((_) {
       getTokenFromPrefeences();
@@ -124,8 +124,8 @@ class _AccessPageState extends State<AccessPage> {
   Widget build(BuildContext context) {
     //return LoginPage();
     //TODO this is for Web. Need to change [statusPermissions] for App.
-
-    return statusPermissions[0] == true && statusPermissions[1] == true
+    //for Web
+    return statusPermissions[0] == false && statusPermissions[1] == false
         ? (this.token.length == 0 ? LoginPage() : NearStoresPage())
         : Scaffold(
             body: Container(
@@ -236,7 +236,7 @@ class _AccessPageState extends State<AccessPage> {
                                   onPrimary: Colors.white,
                                 ),
                                 onPressed: () {
-                                  requestCameraPermission();
+                                  //requestCameraPermission();
                                   //Get.off(() => LoginPage());
                                 },
                                 child: Text("권한 요청"),

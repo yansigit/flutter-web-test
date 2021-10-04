@@ -250,7 +250,7 @@ class _EmailLoginPage extends State<EmailLoginPage> {
                     var body = json.encode(data);
                     var response = await http.Client().post(
                         Uri.parse(
-                            "http://${devMode()}.dalbodre.me/api/User/Login"),
+                            "https://${devMode()}.dalbodre.me/api/User/Login"),
                         headers: <String, String>{
                           'Content-Type': 'application/json'
                         },

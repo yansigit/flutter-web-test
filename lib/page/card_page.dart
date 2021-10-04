@@ -685,7 +685,7 @@ class _CardPageState extends State<CardPage> {
     data["cardExpire"] = cardController.cardValidation.value;
 
     var body = json.encode(data);
-    var res = await http.Client().post(Uri.parse("http://${devMode()}.dalbodre.me/api/Order/CardNumberTest/"),
+    var res = await http.Client().post(Uri.parse("https://${devMode()}.dalbodre.me/api/Order/CardNumberTest/"),
         body: body, headers: <String, String>{'Content-Type': 'application/json'});
 
     if (res.statusCode == 200) {
@@ -801,7 +801,7 @@ class _CardPageState extends State<CardPage> {
     print(data);
 
     var body = json.encode(data);
-    var res = await http.Client().post(Uri.parse("http://${devMode()}.dalbodre.me/api/Order"),
+    var res = await http.Client().post(Uri.parse("https://${devMode()}.dalbodre.me/api/Order"),
         body: body, headers: <String, String>{'token': '${userController.userToken.value}', 'Content-Type': 'application/json'});
     if (res.statusCode == 200) {
       print(res.body);

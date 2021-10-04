@@ -32,7 +32,7 @@ class Shop {
       this.isOpened = false});
 
   static Future<List<Shop>> fetchShops(http.Client client) async {
-    final response = await client.get(Uri.parse("http://${devMode()}.dalbodre.me/api/Shop/"));
+    final response = await client.get(Uri.parse("https://${devMode()}.dalbodre.me/api/Shop/"));
     final decodedData = utf8.decode(response.bodyBytes);
 
     final parsedShop = parseShop(decodedData);
@@ -55,7 +55,7 @@ class Shop {
     // ("longtitued");
     // (longtitude.toString());
     final response =
-        await client.get(Uri.parse("http://${devMode()}.dalbodre.me/api/Shop/NearBy/$N/${curPosition.latitude}/${curPosition.longitude}"));
+        await client.get(Uri.parse("https://${devMode()}.dalbodre.me/api/Shop/NearBy/$N/${curPosition.latitude}/${curPosition.longitude}"));
 
     final decodedData = utf8.decode(response.bodyBytes);
 
@@ -135,7 +135,7 @@ class Category {
   }
 
   static Future<List<Category>> fetchCategories(int shopId) async {
-    var url = Uri.parse('http://${devMode()}.dalbodre.me/api/Shop/${shopId}/getAllMenus');
+    var url = Uri.parse('https://${devMode()}.dalbodre.me/api/Shop/${shopId}/getAllMenus');
     var response = await http.get(url);
     final decodedData = utf8.decode(response.bodyBytes);
     if (decodedData.isEmpty) {

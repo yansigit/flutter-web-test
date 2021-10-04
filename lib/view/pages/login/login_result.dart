@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
-import 'package:kakao_flutter_sdk/user.dart';
-import 'package:kakao_flutter_sdk/all.dart';
+// import 'package:kakao_flutter_sdk/user.dart';
+// import 'package:kakao_flutter_sdk/all.dart';
 
 class LoginResult extends StatefulWidget {
   @override
@@ -16,23 +16,23 @@ class _LoginResultState extends State<LoginResult> {
   @override
   void initState() {
     super.initState();
-    _initTexts();
+    // _initTexts();
   }
 
-  _initTexts() async {
-    final User user = await UserApi.instance.me();
-    print(user);
-    print(
-        "=========================[kakao account]=================================");
-    print(user.kakaoAccount.toString());
-    print(
-        "=========================[kakao account]=================================");
-    setState(() {
-      _accountEmail = user.kakaoAccount!.email;
-      _ageRange = user.kakaoAccount!.ageRange.toString();
-      _gender = user.kakaoAccount!.gender.toString();
-    });
-  }
+  // _initTexts() async {
+  //   final User user = await UserApi.instance.me();
+  //   print(user);
+  //   print(
+  //       "=========================[kakao account]=================================");
+  //   print(user.kakaoAccount.toString());
+  //   print(
+  //       "=========================[kakao account]=================================");
+  //   setState(() {
+  //     _accountEmail = user.kakaoAccount!.email;
+  //     _ageRange = user.kakaoAccount!.ageRange.toString();
+  //     _gender = user.kakaoAccount!.gender.toString();
+  //   });
+  // }
 
   String? _accountEmail = 'None';
   String? _ageRange = 'None';

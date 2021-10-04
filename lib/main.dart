@@ -89,12 +89,12 @@ class Init {
   Init._();
   static final instance = Init._();
 
-  Future<List<Shop>> initialize() async {
+  Future initialize() async {
     // This is where you can initialsize the resources needed by your app while
     // the splash screen is displayed.  Remove the following example because
     // delaying the user experience is a bad design practice!
 
     await Future.delayed(Duration(seconds: 1));
-    return await Shop.fetchShops(http.Client());
+    //return await Shop.fetchShops(http.Client());
   }
 }

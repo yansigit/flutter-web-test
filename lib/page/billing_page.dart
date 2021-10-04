@@ -237,7 +237,7 @@ class _BillingPageState extends State<BillingPage> {
                             if (this._formKey.currentState!.validate()) {
                               var res = await http.Client().get(
                                   Uri.parse(
-                                      'http://${devMode()}.dalbodre.me/api/CouponCheck/${couponVal}'),
+                                      'https://${devMode()}.dalbodre.me/api/CouponCheck/${couponVal}'),
                                   headers: <String, String>{
                                     'token': '${u.userToken.value}'
                                   });

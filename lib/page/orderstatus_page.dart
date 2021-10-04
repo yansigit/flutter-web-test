@@ -29,7 +29,7 @@ class _OrderStatusPageState extends State<OrderStatusPage> {
   }
 
   Future requestNowStatus() async {
-    var res = await http.Client().get(Uri.parse("http://${devMode()}.dalbodre.me/api/Order/${orderId}/Status"));
+    var res = await http.Client().get(Uri.parse("https://${devMode()}.dalbodre.me/api/Order/${orderId}/Status"));
     if (res.statusCode == 200) {
       setState(() {
         this.orderStatusPointer = (jsonDecode(res.body)["status"] as int) + 2;
@@ -94,15 +94,15 @@ class _OrderStatusPageState extends State<OrderStatusPage> {
   }
 
   Future<OrderInfo> getOrderInfo() async {
-    var res = await http.Client().get(Uri.parse("http://${devMode()}.dalbodre.me/api/Order/${orderId}"));
-    var orderStatusRes = await http.Client().get(Uri.parse("http://${devMode()}.dalbodre.me/api/Order/${orderId}/Status"));
+    var res = await http.Client().get(Uri.parse("https://${devMode()}.dalbodre.me/api/Order/${orderId}"));
+    var orderStatusRes = await http.Client().get(Uri.parse("https://${devMode()}.dalbodre.me/api/Order/${orderId}/Status"));
 
     if (res.statusCode == 200 && orderStatusRes.statusCode == 200) {
       final data = json.decode(res.body);
       //print(data);
       data["status"] = json.decode(orderStatusRes.body)["status"];
 
-      var shopRes = await http.Client().get(Uri.parse("http://${devMode()}.dalbodre.me/api/Shop/${data["shopId"]}"));
+      var shopRes = await http.Client().get(Uri.parse("https://${devMode()}.dalbodre.me/api/Shop/${data["shopId"]}"));
 
       if (shopRes.statusCode == 200) {
         setState(() {

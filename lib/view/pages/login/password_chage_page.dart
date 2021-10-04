@@ -144,7 +144,7 @@ class _PasswordChagePage extends State<PasswordChangePage> {
                         var body = json.encode(data);
                         var response = await http.Client().post(
                             Uri.parse(
-                                "http://${devMode()}.dalbodre.me/api/User/ChangePassword/Token"),
+                                "https://${devMode()}.dalbodre.me/api/User/ChangePassword/Token"),
                             headers: <String, String>{
                               'Content-Type': 'application/json'
                             },

@@ -45,7 +45,7 @@ class _EmailFindPage extends State<EmailFindPage> {
     print(phoneNumber);
     print("phoneNumber");
     final response = await http.Client().get(Uri.parse(
-        "http://${devMode()}.dalbodre.me/api/User/FindEmail/${name}/${phoneNumber}"));
+        "https://${devMode()}.dalbodre.me/api/User/FindEmail/${name}/${phoneNumber}"));
     print(response.statusCode);
     print("sss");
     if (response.statusCode != 200) {

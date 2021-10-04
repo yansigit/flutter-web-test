@@ -51,7 +51,7 @@ class MyOrderPageState extends State<MyOrderPage> {
   Future<List<MyOrder>> fetchRecentOrders() async {
     http.Client client = http.Client();
     final userResponse = await client.get(Uri.parse(
-        "http://${devMode()}.dalbodre.me/api/user/${this.userAccessToken}"));
+        "https://${devMode()}.dalbodre.me/api/user/${this.userAccessToken}"));
 
     final decodedUser = json.decode(userResponse.body);
 
@@ -59,7 +59,7 @@ class MyOrderPageState extends State<MyOrderPage> {
     print(decodedUser);
     print(userId);
     final recentOrdersResponse = await client.get(Uri.parse(
-        "http://${devMode()}.dalbodre.me/api/Order/Recent/${userId}/1"));
+        "https://${devMode()}.dalbodre.me/api/Order/Recent/${userId}/1"));
 
     final decodeOrderData = utf8.decode(recentOrdersResponse.bodyBytes);
     print(decodeOrderData);
@@ -68,7 +68,7 @@ class MyOrderPageState extends State<MyOrderPage> {
 
     for (var i = 0; i < myOrders.length; i++) {
       final storeResponse = await client.get(Uri.parse(
-          "http://${devMode()}.dalbodre.me/api/Shop/${myOrders[i].shopId}"));
+          "https://${devMode()}.dalbodre.me/api/Shop/${myOrders[i].shopId}"));
       final decodedStoreData = json.decode(storeResponse.body);
       myOrders[i].storeName = decodedStoreData["name"];
       myOrders[i].storeThumbnail = decodedStoreData["thumbImage"];
