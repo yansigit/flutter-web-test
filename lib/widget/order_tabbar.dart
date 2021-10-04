@@ -18,12 +18,19 @@ class _OrderTabReState extends State<OrderTab> with SingleTickerProviderStateMix
   late TabController _controller;
 
   List<Tab> tabList = [];
+  int itemLength = 1;
 
   @override
   void initState() {
     super.initState();
     tabList = getTabs(widget.categoryList);
     _controller = new TabController(length: tabList.length, vsync: this);
+    itemLength = widget.categoryList[_controller.index].menus.isNotEmpty ? widget.categoryList[_controller.index].menus.length : 1;
+    _controller.addListener(() {
+      setState(() {
+        itemLength = widget.categoryList[_controller.index].menus.isNotEmpty ? widget.categoryList[_controller.index].menus.length : 1;
+      });
+    });
   }
 
   @override
@@ -96,14 +103,18 @@ class _OrderTabReState extends State<OrderTab> with SingleTickerProviderStateMix
         ),
         body: TabBarView(
           controller: _controller,
+          physics: NeverScrollableScrollPhysics(),
           children: tabList.map((Tab tab) {
             return Container(
               color: Colors.white,
+              width: double.infinity,
               child: ListView.builder(
                 scrollDirection: Axis.vertical,
-                itemCount: widget.categoryList[_controller.index].menus.isNotEmpty ? widget.categoryList[_controller.index].menus.length : 1,
+                // itemCount: widget.categoryList[_controller.index].menus.isNotEmpty ? widget.categoryList[_controller.index].menus.length : 1,
+                itemCount: itemLength,
                 itemBuilder: (context, index) {
                   return Container(
+                      width: double.infinity,
                       child: widget.categoryList[_controller.index].menus.isNotEmpty
                           ? ItemBoxContainer(widget.categoryList[_controller.index].menus[index])
                           : Container(

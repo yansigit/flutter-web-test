@@ -184,7 +184,7 @@ class Menu {
           id: _menu["id"] as int,
           name: _menu["name"] as String,
           thumbnail: _menu["imagePath"] as String,
-          bgColor: int.parse(_menu["backgroundColor"] as String),
+          bgColor: int.parse(_menu["backgroundColor"] as String, radix: 16),
           hotPrice: _menu["hotPrice"] as int,
           coldPrice: _menu["coldPrice"] as int,
           isHot: _menu["hotPrice"] as int == 0 ? false : true,

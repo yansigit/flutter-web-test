@@ -688,24 +688,23 @@ class _CardPageState extends State<CardPage> {
     var res = await http.Client().post(Uri.parse("http://${devMode()}.dalbodre.me/api/Order/CardNumberTest/"),
         body: body, headers: <String, String>{'Content-Type': 'application/json'});
 
-    return 1;
-    // if (res.statusCode == 200) {
-    //   final data = json.decode(res.body);
-    //   if (data["success"] == "True") {
-    //     return 1;
-    //   } else if (data["error"] == "카드번호 오류   카드사전화요망") {
-    //     return 2;
-    //   } else if (data["error"] == "카드사코드 미입력오류") {
-    //     return 3;
-    //   } else if (data["error"] == "유효기간 오류") {
-    //     return 4;
-    //   } else {
-    //     return -1;
-    //   }
-    // } else {
-    //   print(res.statusCode.toString());
-    //   return 0;
-    // }
+    if (res.statusCode == 200) {
+      final data = json.decode(res.body);
+      if (data["success"] == "True") {
+        return 1;
+      } else if (data["error"] == "카드번호 오류   카드사전화요망") {
+        return 2;
+      } else if (data["error"] == "카드사코드 미입력오류") {
+        return 3;
+      } else if (data["error"] == "유효기간 오류") {
+        return 4;
+      } else {
+        return -1;
+      }
+    } else {
+      print(res.statusCode.toString());
+      return 0;
+    }
   }
 
   Future<int> requestOrder() async {

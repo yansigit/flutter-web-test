@@ -31,65 +31,75 @@ class ItemBoxContainer extends StatelessWidget {
         ignoreSafeArea: true,
       ).whenComplete(() => OptionDialog.destoryAllController()),
       child: Container(
-        padding: EdgeInsets.symmetric(horizontal: 20.w, vertical: 11.h),
+        padding: EdgeInsets.only(
+          top: 11.h,
+          bottom: 11.h,
+          left: 20.w,
+        ),
         width: double.infinity,
-        child: Row(
-          mainAxisAlignment: MainAxisAlignment.start,
-          children: [
-            Container(
-              decoration: BoxDecoration(
-                borderRadius: BorderRadius.all(Radius.circular(90)),
-                color: Color(menu.bgColor),
-              ),
-              width: 90.w,
-              height: 154.h,
-              child: Column(
-                //TODO 수정
-                mainAxisAlignment: MainAxisAlignment.spaceAround,
-                children: [
-                  Expanded(
-                    flex: 52,
-                    child: Container(
-                      child: hotIceIconBox(menu.isHot, menu.isCold),
-                      //TODO 아이스, 핫 둘 다 가능할 경우 고치기 22x22 -> 57 x 22
-                      width: menu.isHot == true && menu.isCold == true ? 57.w : 22.w,
-                      height: 22.h,
-                      alignment: Alignment.bottomCenter,
-                    ),
-                  ),
-                  Expanded(
-                    flex: 102,
-                    child: Center(
-                      child: Image.network(menu.thumbnail), //SvgPicture.asset("assets/icons/iceOnlyIcon.svg"),
-                    ),
-                  )
-                ],
-              ),
-            ),
-            Container(
-              alignment: Alignment.centerLeft,
-              margin: EdgeInsets.only(left: 16.w),
-              child: Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                  Container(
-                    height: 27.h,
-                    child: FittedBox(
-                      child: Text(
-                        menu.name,
-                        style: TextStyle(fontWeight: FontWeight.w700),
+        child: SingleChildScrollView(
+          scrollDirection: Axis.horizontal,
+          child: Row(
+            mainAxisAlignment: MainAxisAlignment.start,
+            children: [
+              Container(
+                decoration: BoxDecoration(
+                  borderRadius: BorderRadius.all(Radius.circular(90)),
+                  color: Color(menu.bgColor),
+                ),
+                width: 90.w,
+                height: 154.h,
+                child: Column(
+                  //TODO 수정
+                  mainAxisAlignment: MainAxisAlignment.spaceAround,
+                  children: [
+                    Expanded(
+                      flex: 52,
+                      child: Container(
+                        child: hotIceIconBox(menu.isHot, menu.isCold),
+                        //TODO 아이스, 핫 둘 다 가능할 경우 고치기 22x22 -> 57 x 22
+                        width: menu.isHot == true && menu.isCold == true ? 57.w : 22.w,
+                        height: 22.h,
+                        alignment: Alignment.bottomCenter,
                       ),
                     ),
-                  ),
-                  Container(margin: EdgeInsets.only(top: 4.h), child: priceBoxWidget(menu)),
-                  Container(
-                    margin: EdgeInsets.only(top: 11.h),
-                    child: ingredientBox(menu.ingredients),
-                  ),
-                ],
+                    Expanded(
+                      flex: 102,
+                      child: Center(
+                        child: Image.network(menu.thumbnail), //SvgPicture.asset("assets/icons/iceOnlyIcon.svg"),
+                      ),
+                    )
+                  ],
+                ),
               ),
-            )
-          ],
+              Container(
+                alignment: Alignment.centerLeft,
+                margin: EdgeInsets.only(left: 16.w),
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    Container(
+                      height: 27.h,
+                      child: FittedBox(
+                        child: Text(
+                          menu.name,
+                          style: TextStyle(fontWeight: FontWeight.w700),
+                        ),
+                      ),
+                    ),
+                    Container(margin: EdgeInsets.only(top: 4.h), child: priceBoxWidget(menu)),
+                    SingleChildScrollView(
+                      scrollDirection: Axis.horizontal,
+                      child: Container(
+                        margin: EdgeInsets.only(top: 11.h),
+                        child: ingredientBox(menu.ingredients),
+                      ),
+                    ),
+                  ],
+                ),
+              )
+            ],
+          ),
         ),
       ),
     );
@@ -101,7 +111,7 @@ class ItemBoxContainer extends StatelessWidget {
     } else if (hotFlag == true && iceFlag == false) {
       return SvgPicture.asset("assets/icons/ic_hotIcon.svg", color: Colors.white);
     } else if (hotFlag == false && iceFlag == true) {
-      return SvgPicture.asset("assets/icons/ic_iceIcon.svg", color: Colors.white);
+      return SvgPicture.asset("assets/icons/iceOnlyIcon.svg", color: Colors.white);
     } else {
       return Container();
     }

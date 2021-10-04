@@ -55,15 +55,17 @@ class OptionDialog extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    priceController.updateTempPrice(menu.hotPrice);
     print(priceController.finalPrice.value.toString());
     int getHasHotCold(Menu menu) {
       if (menu.isHot == true && menu.isCold == true) {
+        priceController.updateTempPrice(menu.hotPrice);
         return 3;
       } else if (menu.isHot == true && menu.isCold == false) {
+        priceController.updateTempPrice(menu.hotPrice);
         optionController.selectHotColdOption(1);
         return 2;
       } else if (menu.isHot == false && menu.isCold == true) {
+        priceController.updateTempPrice(menu.coldPrice);
         optionController.selectHotColdOption(2);
         return 1;
       } else {
@@ -1359,7 +1361,7 @@ class AppBarBody extends StatelessWidget {
                   menu.name,
                   textAlign: TextAlign.center,
                   style: TextStyle(
-                    color: Colors.white,
+                    color: menu.bgColor == 1099511627775 ? Colors.black87 : Colors.white,
                     fontWeight: FontWeight.w700,
                   ),
                 ),
