@@ -56,20 +56,31 @@ class SignUpPage extends State<SignUp> {
         body: Center(
           child: SingleChildScrollView(
             child: Container(
-              decoration: BoxDecoration(border: Border.all(color: const Color(0xff00276b))),
+              decoration:  BoxDecoration(
+                      border: Border.all(color: Color(0xffe6e6e6), width: 1),
+                      borderRadius: BorderRadius.all(
+                        Radius.circular(15.w),
+                      ),
+                    ),
               width: 325.w,
               height: 400.h,
               child: Column(mainAxisAlignment: MainAxisAlignment.center, children: <Widget>[
                 Row(children: <Widget>[
+                  Column(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    children: [
+                      Container(
+                          margin: EdgeInsets.only(right: 10.w),
+                          width: 60.w,
+                          height: 30.h,
+                          padding: EdgeInsets.only(bottom: 8.h),
+                          child: FittedBox(fit: BoxFit.fitHeight, child: Text("이메일",))),
+                    ],
+                  ),
                   Container(
-                      margin: EdgeInsets.only(right: 10.w, bottom: 8.h),
-                      width: 60.w,
-                      height: 20.h,
-                      child: FittedBox(fit: BoxFit.fitHeight, child: Text("이메일"))),
-                  Container(
-                      margin: EdgeInsets.only(right: 10.w, bottom: 8.h),
+                      margin: EdgeInsets.only(right: 10.w),
                       width: 242.5.w,
-                      height:70.h,
+                      height: 60.h,
                       child: Form(
                         key: this._emailFormKey,
                         child: TextFormField(
@@ -101,14 +112,14 @@ class SignUpPage extends State<SignUp> {
                 ]),
                 Row(children: <Widget>[
                   Container(
-                      margin: EdgeInsets.only(right: 10.w, bottom: 8.h),
+                      margin: EdgeInsets.only(right: 10.w),
                       width: 60.w,
                       height: 20.h,
                       child: FittedBox(fit: BoxFit.fitHeight, child: Text("비밀번호"))),
                   Container(
-                      margin: EdgeInsets.only(right: 10.w, bottom: 8.h),
+                      margin: EdgeInsets.only(right: 10.w),
                       width: 242.5.w,
-                      height: 70.h,
+                      height: 60.h,
                       child: Form(
                         key: this._passwordFormKey,
                         child: TextFormField(
@@ -148,7 +159,7 @@ class SignUpPage extends State<SignUp> {
                   Container(
                       margin: EdgeInsets.only(right: 10.w, bottom: 8.h),
                       width: 242.5.w,
-                      height: 70.h,
+                      height: 60.h,
                       child: Form(
                         key: this._nameFormKey,
                         child: TextFormField(
@@ -185,7 +196,7 @@ class SignUpPage extends State<SignUp> {
                   Container(
                       margin: EdgeInsets.only(right: 10.w, bottom: 8.h),
                       width: 242.w,
-                      height: 70.h,
+                      height: 60.h,
                       child: Form(
                         key: this._phoneNumberFormKey,
                         child: TextFormField(
