@@ -97,7 +97,7 @@ class _EmailFindPage extends State<EmailFindPage> {
                           height: 30.h,
                           width: 70.w,
                           child: FittedBox(
-                            fit: BoxFit.fitWidth,
+                            fit: BoxFit.fitHeight,
                             child: Text(
                               "이름: ",
                               style: TextStyle(
@@ -150,7 +150,7 @@ class _EmailFindPage extends State<EmailFindPage> {
                           height: 30.h,
                           width: 70.w,
                           child: FittedBox(
-                            fit: BoxFit.fitWidth,
+                            fit: BoxFit.fitHeight,
                             child: Text(
                               "휴대폰 번호: ",
                               style: TextStyle(

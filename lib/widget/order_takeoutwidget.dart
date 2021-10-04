@@ -125,7 +125,7 @@ class OrderTakeOutWidget extends StatelessWidget {
                             fontWeight: FontWeight.w700,
                           ),
                         ),
-                        fit: BoxFit.fill,
+                        fit: BoxFit.fitHeight,
                       ),
                     ),
                   ],

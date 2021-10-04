@@ -69,11 +69,11 @@ class SignUpPage extends State<SignUp> {
                   Container(
                       margin: EdgeInsets.only(right: 10.w, bottom: 8.h),
                       width: 242.5.w,
-                      height: 70.h,
+                      height:70.h,
                       child: Form(
                         key: this._emailFormKey,
                         child: TextFormField(
-                          maxLines: 2,
+                    
                           validator: (email) {
                             if (email!.length > 30 || !emailRegExp.hasMatch(email)) {
                               return "이메일 형식이 잘못되었습니다.";
@@ -148,7 +148,7 @@ class SignUpPage extends State<SignUp> {
                   Container(
                       margin: EdgeInsets.only(right: 10.w, bottom: 8.h),
                       width: 242.5.w,
-                      height: 50.h,
+                      height: 70.h,
                       child: Form(
                         key: this._nameFormKey,
                         child: TextFormField(
@@ -185,7 +185,7 @@ class SignUpPage extends State<SignUp> {
                   Container(
                       margin: EdgeInsets.only(right: 10.w, bottom: 8.h),
                       width: 242.w,
-                      height: 60.h,
+                      height: 70.h,
                       child: Form(
                         key: this._phoneNumberFormKey,
                         child: TextFormField(

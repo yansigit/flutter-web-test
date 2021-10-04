@@ -126,7 +126,7 @@ class LoginPageState extends State<LoginPage> {
                   margin: EdgeInsets.only(bottom: 24.5.h, top: 10.9.h),
                   height: 291.5.h,
                   width: 325.8.w,
-                  child: FittedBox(fit: BoxFit.fill, child: SvgPicture.asset("assets/icons/arumDreamLogo.svg")),
+                  child: FittedBox(fit: BoxFit.fitHeight, child: SvgPicture.asset("assets/icons/arumDreamLogo.svg")),
                 ),
                 ElevatedButton(
                     child: Container(
@@ -206,7 +206,7 @@ class LoginPageState extends State<LoginPage> {
                             Container(
                               height: 16.h,
                               width: 16.w,
-                              child: FittedBox(fit: BoxFit.fill, child: SvgPicture.asset("assets/icons/kakaoIcon.svg")),
+                              child: FittedBox(fit: BoxFit.fitHeight, child: SvgPicture.asset("assets/icons/kakaoIcon.svg")),
                             ),
                             Container(
                               margin: EdgeInsets.only(left: 8.4.w),
