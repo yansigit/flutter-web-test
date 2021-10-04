@@ -76,8 +76,9 @@ class NearStoresPageState extends State<NearStoresPage> {
           shops = await Shop.fetchShopsByLocation(http.Client(), N, this.curPosition);
         }
       });
-      shops = shops.where((shop) => (shop.isOpened == 1)).toList();
+      // shops = shops.where((shop) => (shop.isOpened == 1)).toList();
       return this.filterOpenedStores(shops);
+      //return shops;
     }
 
     //var locationPermissionStatus = statusPermissions[0];
@@ -303,7 +304,11 @@ class NearStoresPageState extends State<NearStoresPage> {
 
   Widget buildStoreView(BuildContext context, Shop store) {
     final ShopController shopController = Get.put(ShopController());
-    final Map<String, String> storeNameToAddress = {"컬티": "울산광역시 남구 컬티", "카페마냥": "울산광역시 남구 카페마냥", "11호관 커피숍": "울산광역시 남구 대학로 93번길 11호관"};
+    final Map<String, String> storeNameToAddress = {
+      "컬티": "울산광역시 남구 삼산동 화합로194번길 12-1 2층",
+      "카페마냥": "울산광역시 남구 카페마냥",
+      "11호관 커피숍": "울산광역시 남구 대학로 93번길 11호관"
+    };
 
     // 각 가게 위치 데이터 넣기.  카페  이름이랑 비교
     //

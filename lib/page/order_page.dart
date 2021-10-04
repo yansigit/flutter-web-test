@@ -23,8 +23,8 @@ class OrderPage extends StatelessWidget {
             future: Category.fetchCategories(controller.shop.value.id),
             builder: (context, snapshot) {
               if (snapshot.hasData) {
-                categories = categories;
-                //final categories = snapshot.data as List<Category>;
+                //categories = categories;
+                final categories = snapshot.data as List<Category>;
 
                 return OrderTab(categoryList: categories);
               } else {

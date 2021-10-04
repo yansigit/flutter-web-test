@@ -61,8 +61,10 @@ class OptionDialog extends StatelessWidget {
       if (menu.isHot == true && menu.isCold == true) {
         return 3;
       } else if (menu.isHot == true && menu.isCold == false) {
+        optionController.selectHotColdOption(1);
         return 2;
       } else if (menu.isHot == false && menu.isCold == true) {
+        optionController.selectHotColdOption(2);
         return 1;
       } else {
         return 0;
@@ -1100,7 +1102,43 @@ class SelectTempWidget extends StatelessWidget {
         //controller.updateHotColdOption(1);
         return Expanded(
           child: Container(
-            decoration: BoxDecoration(borderRadius: BorderRadius.all(Radius.circular(30)), color: Color(0xffed6363)),
+            decoration: BoxDecoration(
+              borderRadius: BorderRadius.all(Radius.circular(30)),
+              color: Color(0xffed6363),
+            ),
+            child: Row(
+              mainAxisAlignment: MainAxisAlignment.center,
+              crossAxisAlignment: CrossAxisAlignment.center,
+              children: [
+                Container(
+                  width: 22.w,
+                  height: 22.h,
+                  child: SvgPicture.asset(
+                    "assets/icons/ic_hotIcon.svg",
+                    fit: BoxFit.fill,
+                    color: selected == 1 ? Color(0xffffffff) : Color(0xff666666),
+                  ),
+                ),
+                Container(
+                  margin: EdgeInsets.only(left: 6.w),
+                  height: 24.h,
+                  child: FittedBox(
+                    fit: BoxFit.fitHeight,
+                    child: Text(
+                      "따뜻한",
+                      style: selected == 1
+                          ? TextStyle(
+                              color: Color(0xffffffff),
+                              fontWeight: FontWeight.w700,
+                            )
+                          : TextStyle(
+                              color: Color(0xff666666),
+                            ),
+                    ),
+                  ),
+                ),
+              ],
+            ),
           ),
         );
       case 1:
@@ -1112,6 +1150,33 @@ class SelectTempWidget extends StatelessWidget {
             decoration: BoxDecoration(
               borderRadius: BorderRadius.all(Radius.circular(30)),
               color: Color(0xff6288c9),
+            ),
+            child: Row(
+              mainAxisAlignment: MainAxisAlignment.center,
+              crossAxisAlignment: CrossAxisAlignment.center,
+              children: [
+                Container(
+                  width: 22.w,
+                  height: 22.h,
+                  child: SvgPicture.asset(
+                    "assets/icons/ic_coldIcon.svg",
+                    fit: BoxFit.fill,
+                    color: Color(0xffffffff),
+                  ),
+                ),
+                Container(
+                  margin: EdgeInsets.only(left: 6.w),
+                  height: 24.h,
+                  child: FittedBox(
+                    fit: BoxFit.fitHeight,
+                    child: Text("시원한",
+                        style: TextStyle(
+                          color: Color(0xffffffff),
+                          fontWeight: FontWeight.w700,
+                        )),
+                  ),
+                ),
+              ],
             ),
           ),
         );

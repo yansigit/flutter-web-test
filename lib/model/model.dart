@@ -75,18 +75,14 @@ class Shop {
   }
 
   static double calculateDistance(latitude, longitude, curPosition) {
- 
-    double d = Geolocator.distanceBetween(
-        curPosition.latitude, curPosition.longitude, latitude, longitude);
+    double d = Geolocator.distanceBetween(curPosition.latitude, curPosition.longitude, latitude, longitude);
 
     return d;
   }
 
-  factory Shop.fromJsonIncludeDistance(
-      Map<String, dynamic> json, Position curPosition) {
-    double distance =
-        calculateDistance(json['latitude'], json['longitude'], curPosition);
-   
+  factory Shop.fromJsonIncludeDistance(Map<String, dynamic> json, Position curPosition) {
+    double distance = calculateDistance(json['latitude'], json['longitude'], curPosition);
+
     return Shop(
         id: json['id'] as int,
         name: json['name'] as String,
@@ -131,7 +127,6 @@ class Category {
     );
   }
   static List<Category> parseCategory(String responseBody) {
-
     final parsed = json.decode(responseBody);
     final categories = parsed["categories"].cast<Map<String, dynamic>>();
     //final parsed = json.decode(responseBody).cast<Map<String, dynamic>>();
@@ -140,9 +135,7 @@ class Category {
   }
 
   static Future<List<Category>> fetchCategories(int shopId) async {
- 
-    var url = Uri.parse(
-        'http://${devMode()}.dalbodre.me/api/Shop/${shopId}/getAllMenus');
+    var url = Uri.parse('http://${devMode()}.dalbodre.me/api/Shop/${shopId}/getAllMenus');
     var response = await http.get(url);
     final decodedData = utf8.decode(response.bodyBytes);
     if (decodedData.isEmpty) {
@@ -191,7 +184,7 @@ class Menu {
           id: _menu["id"] as int,
           name: _menu["name"] as String,
           thumbnail: _menu["imagePath"] as String,
-          bgColor: _menu["backgroundColor"] == null ? _menu["backgroundColor"] as int : 0XFFFF0000,
+          bgColor: int.parse(_menu["backgroundColor"] as String),
           hotPrice: _menu["hotPrice"] as int,
           coldPrice: _menu["coldPrice"] as int,
           isHot: _menu["hotPrice"] as int == 0 ? false : true,

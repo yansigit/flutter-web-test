@@ -280,8 +280,6 @@ class LoginPageState extends State<LoginPage> {
                   onTap: () => Get.to(PersonalInfoAgreePage()),
                   child: Container(
                       margin: EdgeInsets.only(left: 8.w, top: 27.h),
-                         decoration: BoxDecoration(
-                  border: Border.all(color: const Color(0xff00276b))),
                       height: 30.h,
                       child: Row(mainAxisAlignment: MainAxisAlignment.center, crossAxisAlignment: CrossAxisAlignment.center, children: <Widget>[
                         FittedBox(
@@ -290,7 +288,7 @@ class LoginPageState extends State<LoginPage> {
                                 style: TextStyle(
                                     backgroundColor: Colors.white,
                                     fontWeight: FontWeight.w400,
-                                      color: const Color(0xff00276b),
+                                    color: const Color(0xff00276b),
                                     fontFamily: "NotoSans",
                                     fontStyle: FontStyle.normal,
                                     fontSize: 16.0)))
