@@ -111,7 +111,7 @@ class OrderTakeOutWidget extends StatelessWidget {
                           ),
                           onPressed: null,
                         ),
-                        fit: BoxFit.fill,
+                        fit: BoxFit.fitHeight,
                       ),
                       width: 80.w,
                     ),
