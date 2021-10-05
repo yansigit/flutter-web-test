@@ -30,7 +30,7 @@ class EmailLoginPage extends StatefulWidget {
 }
 
 class _EmailLoginPage extends State<EmailLoginPage> {
-  UserController userController = Get.put(UserController());
+  UserController userController = Get.find();
   TextEditingController? emailController;
   TextEditingController? passwordController;
   bool isEmailValid = false;

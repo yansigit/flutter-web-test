@@ -107,7 +107,7 @@ class _BillingPageState extends State<BillingPage> {
 
   Widget PaymentMethodWidget() {
     final TextEditingController tc1 = new TextEditingController();
-    Get.put(UserController());
+    // Get.put(UserController());
     final UserController u = Get.find();
 
     String couponNo = "";

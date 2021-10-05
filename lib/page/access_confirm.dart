@@ -23,6 +23,7 @@ class _AccessPageState extends State<AccessPage> {
   //List<bool> statusPermissions = [true, true];
   List<bool> statusPermissions = [false, false];
   String token = "";
+  UserController userController = Get.put(UserController());
 
   //TODO this is for Web. Need to change [statusPermissions] for App.
 
