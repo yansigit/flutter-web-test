@@ -135,7 +135,7 @@ class _OrderStatusPageState extends State<OrderStatusPage> {
               Container(
                 height: 33.h,
                 child: FittedBox(
-                  fit: BoxFit.fill,
+                  fit: BoxFit.fitHeight,
                   child: Text(
                     "주문 번호  ",
                     style: TextStyle(fontWeight: FontWeight.w700),
@@ -267,7 +267,7 @@ class CafeNameContainer extends StatelessWidget {
       child: Row(
         crossAxisAlignment: CrossAxisAlignment.center,
         children: [
-          Container(width: 29.w, height: 22.h, child: SvgPicture.asset("assets/icons/ic_nowShop.svg", fit: BoxFit.fill)),
+          Container(width: 29.w, height: 22.h, child: SvgPicture.asset("assets/icons/ic_nowShop.svg", fit:BoxFit.fitHeight)),
           Container(
             margin: EdgeInsets.only(left: 6.w),
             height: 31.h,

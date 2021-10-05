@@ -109,7 +109,7 @@ class ItemBoxContainer extends StatelessWidget {
     if (hotFlag == true && iceFlag == true) {
       return SvgPicture.asset("assets/icons/ic_hotAndice.svg", color: Colors.white);
     } else if (hotFlag == true && iceFlag == false) {
-      return SvgPicture.asset("assets/icons/ic_hotIcon.svg", color: Colors.white);
+      return SvgPicture.asset("assets/icons/hotOnlyIcon.svg", color: Colors.white);
     } else if (hotFlag == false && iceFlag == true) {
       return SvgPicture.asset("assets/icons/iceOnlyIcon.svg", color: Colors.white);
     } else {
@@ -127,7 +127,7 @@ class ItemBoxContainer extends StatelessWidget {
             height: 16.h,
             child: FittedBox(
               child: SvgPicture.asset(
-                "assets/icons/hotOnlyIcon.svg",
+                "assets/icons/ic_hotIcon.svg",
                 color: Color.fromRGBO(177, 3, 3, 1),
               ),
             ),
@@ -148,7 +148,7 @@ class ItemBoxContainer extends StatelessWidget {
             height: 16.h,
             child: FittedBox(
               child: SvgPicture.asset(
-                "assets/icons/iceOnlyIcon.svg",
+                "assets/icons/ic_coldIcon.svg",
                 color: Color.fromRGBO(0, 39, 107, 1),
               ),
             ),
@@ -174,7 +174,7 @@ class ItemBoxContainer extends StatelessWidget {
             height: 16.h,
             child: FittedBox(
               child: SvgPicture.asset(
-                "assets/icons/hotOnlyIcon.svg",
+                "assets/icons/ic_hotIcon.svg",
                 color: Color.fromRGBO(177, 3, 3, 1),
               ),
             ),
@@ -200,7 +200,7 @@ class ItemBoxContainer extends StatelessWidget {
             height: 16.h,
             child: FittedBox(
               child: SvgPicture.asset(
-                "assets/icons/iceOnlyIcon.svg",
+                "assets/icons/ic_coldIcon.svg",
                 color: Color.fromRGBO(0, 39, 107, 1),
               ),
             ),

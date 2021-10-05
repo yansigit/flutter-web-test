@@ -383,7 +383,7 @@ class EtcWidget extends StatelessWidget {
                     height: 24.h,
                     child: SvgPicture.asset(
                       "assets/icons/ic_whipping.svg",
-                      fit: BoxFit.fill,
+                      fit: BoxFit.fitHeight,
                       color: _c.whippingState.value ? Color(0xff00276b) : Color(0x59000000),
                     ),
                   ),
@@ -428,7 +428,7 @@ class EtcWidget extends StatelessWidget {
                     height: 24.h,
                     child: SvgPicture.asset(
                       "assets/icons/ic_syrup.svg",
-                      fit: BoxFit.fill,
+                      fit: BoxFit.fitHeight,
                       color: _c.syrupCount.value > 0 ? Color(0xff00276b) : Color(0x59000000),
                     ),
                   ),
@@ -678,7 +678,7 @@ class AddShotWidget extends StatelessWidget {
                   width: 26.w,
                   height: 24.w,
                   child: FittedBox(
-                    fit: BoxFit.fill,
+                    fit: BoxFit.fitHeight,
                     child: Text(
                       controller.shotCount.value.toString() + "샷",
                       style: TextStyle(color: Color(0xff00276b), fontWeight: FontWeight.w500),
@@ -788,7 +788,7 @@ class IceSizeWidget extends StatelessWidget {
                 height: 60.h,
                 child: SvgPicture.asset(
                   "assets/icons/${name}IceSize.svg",
-                  fit: BoxFit.fill,
+                  fit: BoxFit.fitHeight,
                   color: id == selected ? Color(0xff00276b) : Color(0xff999999),
                 ),
               ),
@@ -1118,7 +1118,7 @@ class SelectTempWidget extends StatelessWidget {
                 height: 22.h,
                 child: SvgPicture.asset(
                   "assets/icons/ic_hotIcon.svg",
-                  fit: BoxFit.fill,
+                  fit: BoxFit.fitHeight,
                   color: Color(0xffffffff),
                 ),
               ),
@@ -1157,7 +1157,7 @@ class SelectTempWidget extends StatelessWidget {
                 height: 22.h,
                 child: SvgPicture.asset(
                   "assets/icons/ic_coldIcon.svg",
-                  fit: BoxFit.fill,
+                  fit: BoxFit.fitHeight,
                   color: Color(0xffffffff),
                 ),
               ),
@@ -1198,7 +1198,7 @@ class SelectTempWidget extends StatelessWidget {
                       height: 22.h,
                       child: SvgPicture.asset(
                         "assets/icons/ic_hotIcon.svg",
-                        fit: BoxFit.fill,
+                        fit: BoxFit.fitHeight,
                         color: selected == 1 ? Color(0xffffffff) : Color(0xff666666),
                       ),
                     ),
@@ -1257,7 +1257,7 @@ class SelectTempWidget extends StatelessWidget {
                       height: 22.h,
                       child: SvgPicture.asset(
                         "assets/icons/ic_coldIcon.svg",
-                        fit: BoxFit.fill,
+                        fit: BoxFit.fitHeight,
                         color: selected == 2 ? Color(0xffffffff) : Color(0xff666666),
                       ),
                     ),
@@ -1500,7 +1500,7 @@ class OptionBottomBar extends StatelessWidget {
                           padding: EdgeInsets.symmetric(horizontal: 17.w, vertical: 3.h),
                           child: Container(
                             width: 31.w,
-                            height: 31.w,
+                            height: 24.w,
                             child: FittedBox(
                               fit: BoxFit.fitHeight,
                               child: Text(
@@ -1545,7 +1545,7 @@ class OptionBottomBar extends StatelessWidget {
                       child: Container(
                         height: 34.h,
                         child: FittedBox(
-                          fit: BoxFit.fill,
+                          fit: BoxFit.fitHeight,
                           child: GetX<PriceController>(
                               init: PriceController(),
                               builder: (_c) {
@@ -1622,7 +1622,7 @@ class OptionBottomBar extends StatelessWidget {
                                 margin: EdgeInsets.only(left: 8.5.w),
                                 height: 24.h,
                                 child: FittedBox(
-                                  fit: BoxFit.fill,
+                                  fit: BoxFit.fitHeight,
                                   child: Text(
                                     "담기",
                                     textAlign: TextAlign.center,
@@ -1694,7 +1694,7 @@ class OptionBottomBar extends StatelessWidget {
                                 margin: EdgeInsets.only(left: 8.0.w),
                                 height: 24.h,
                                 child: FittedBox(
-                                  fit: BoxFit.fill,
+                                  fit: BoxFit.fitHeight,
                                   child: Text(
                                     "바로 주문",
                                     textAlign: TextAlign.center,

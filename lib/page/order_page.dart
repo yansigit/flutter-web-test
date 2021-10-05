@@ -33,8 +33,10 @@ class OrderPage extends StatelessWidget {
             }),
         floatingActionButton: InkWell(
           onTap: () => Get.to(() => ShoppingCartPage())?.whenComplete(() {
-            for (int idx = 0; idx < s.shoppingCart.length; idx++) {
-              s.reset11stDiscount(idx);
+            if (DateTime.now().hour >= 10 && controller.shop.value.name == "11호관 커피숍") {
+              for (int idx = 0; idx < s.shoppingCart.length; idx++) {
+                s.reset11stDiscount(idx);
+              }
             }
           }),
           child: Container(
@@ -56,7 +58,7 @@ class OrderPage extends StatelessWidget {
               () => Stack(
                 children: [
                   Center(
-                    child: SvgPicture.asset("assets/icons/orderCartIcon.svg", fit: BoxFit.fill, color: Color(0xffffffff)),
+                    child: SvgPicture.asset("assets/icons/ic_shoppingCart_white.svg", fit: BoxFit.fitHeight, color: Color(0xffffffff)),
                   ),
                   s.shoppingCart.length > 0
                       ? Positioned(

@@ -15,6 +15,7 @@ import 'package:save_order/consts/color.dart';
 import 'package:save_order/consts/login.dart';
 import 'package:save_order/consts/size.dart';
 import 'package:flutter_svg/flutter_svg.dart';
+import 'package:url_launcher/url_launcher.dart';
 
 //TODO this is for Web. Need to change for App.
 //import 'package:kakao_flutter_sdk/all.dart';
@@ -85,6 +86,8 @@ class LoginPageState extends State<LoginPage> {
   }
   */
 
+  
+
   @override
   Widget build(BuildContext context) {
     // 	KakaoContext.clientId = "${put your native app key here}"
@@ -117,7 +120,7 @@ class LoginPageState extends State<LoginPage> {
                         style: const TextStyle(
                           color: PHRASE_COLOR,
                           fontWeight: FontWeight.w400,
-                          fontFamily: "NotoSans",
+                          fontFamily: "Noto Sans",
                           fontStyle: FontStyle.normal,
                         )),
                   ),
@@ -150,13 +153,14 @@ class LoginPageState extends State<LoginPage> {
                                 child: Text(EMAIL_LOGIN,
                                     style: TextStyle(
                                         // fontSize: 14,
-                                        fontFamily: "NotoSans",
+                                        fontFamily: "Noto Sans",
                                         fontWeight: FontWeight.w700,
                                         color: const Color(0xff00276b))),
                               ))
                         ])),
                     onPressed: () {
                       Get.to(() => EmailLoginPage(), transition: Transition.rightToLeft);
+                     
                     }, // 이메일 로그인 api 불러오기
                     style: ButtonStyle(
                       side: MaterialStateProperty.all<BorderSide>(BorderSide(color: const Color(0xff00276b), width: 1.w)),
@@ -189,7 +193,9 @@ class LoginPageState extends State<LoginPage> {
                     child: new Container(
                         margin: EdgeInsets.only(left: 16.5.w, right: 15.w, top: 26.h, bottom: 26.h),
                         child: Divider(
-                          color: Color(0xffd1d1d1),
+                          color: Color(
+                            0xffd1d1d1,
+                          ),
                           height: 10.h,
                         )),
                   ),

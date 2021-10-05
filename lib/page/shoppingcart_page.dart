@@ -23,7 +23,7 @@ class _ShoppingCartPageState extends State<ShoppingCartPage> {
   void initState() {
     // TODO: implement initState
     super.initState();
-    if (DateTime.now().hour >= 10 && shopController.shop.value.name == "11호관 커피") {
+    if (DateTime.now().hour >= 10 && shopController.shop.value.name == "11호관 커피숍") {
       ShoppingCartPage.discountFlag = true;
       for (int idx = 0; idx < shoppingCartController.shoppingCart.length; idx++) {
         shoppingCartController.update11stDiscount(idx);
@@ -32,7 +32,7 @@ class _ShoppingCartPageState extends State<ShoppingCartPage> {
       WidgetsBinding.instance?.addPostFrameCallback((_) {
         Get.snackbar("할인 행사", "11호관 커피에서 할인 행사가 진행되어 10% 할인이 적용되었습니다.");
       });
-    } else if (DateTime.now().hour < 10 && shopController.shop.value.name == "11호관 커피") {
+    } else if (DateTime.now().hour < 10 && shopController.shop.value.name == "11호관 커피숍") {
       WidgetsBinding.instance?.addPostFrameCallback((_) {
         Get.snackbar("굿즈 행사", "11호관 커피에서 굿즈 행사가 진행중입니다. 점원에게 문의하세요.");
       });
@@ -112,7 +112,7 @@ class _ShoppingCartPageState extends State<ShoppingCartPage> {
                                 height: 22.h,
                                 child: SvgPicture.asset(
                                   "assets/icons/ic_nowShop.svg",
-                                  fit: BoxFit.fill,
+                                  fit: BoxFit.fitHeight,
                                   color: Color(0xff00276b),
                                 ),
                               ),
@@ -177,7 +177,7 @@ class _ShoppingCartPageState extends State<ShoppingCartPage> {
                               Container(
                                 width: 20.w,
                                 height: 18.3.h,
-                                child: SvgPicture.asset("assets/icons/orderCartIcon.svg", fit: BoxFit.fill, color: Color(0xff00276b)),
+                                child: SvgPicture.asset("assets/icons/orderCartIcon.svg", fit: BoxFit.fitHeight, color: Color(0xff00276b)),
                               ),
                               Container(
                                 height: 24.h,
@@ -219,7 +219,7 @@ class _ShoppingCartPageState extends State<ShoppingCartPage> {
                                 height: 22.h,
                                 child: SvgPicture.asset(
                                   "assets/icons/ic_nowShop.svg",
-                                  fit: BoxFit.fill,
+                                  fit: BoxFit.fitHeight,
                                   color: Color(0xff00276b),
                                 ),
                               ),
@@ -260,7 +260,7 @@ class _ShoppingCartPageState extends State<ShoppingCartPage> {
                               Container(
                                   width: 20.w,
                                   height: 18.3.h,
-                                  child: SvgPicture.asset("assets/icons/orderCartIcon.svg", fit: BoxFit.fill, color: Color(0xff00276b))),
+                                  child: SvgPicture.asset("assets/icons/orderCartIcon.svg", fit: BoxFit.fitHeight, color: Color(0xff00276b))),
                               Container(
                                 height: 24.h,
                                 margin: EdgeInsets.only(left: 10.w),
@@ -292,7 +292,7 @@ class _ShoppingCartPageState extends State<ShoppingCartPage> {
                               height: 60.h,
                               child: SvgPicture.asset(
                                 "assets/icons/ic_nonCart.svg",
-                                fit: BoxFit.fill,
+                                fit: BoxFit.fitHeight,
                                 color: Color(0xff999999),
                               ),
                             ),
@@ -361,11 +361,12 @@ class _ShoppingCartPageState extends State<ShoppingCartPage> {
                 Expanded(
                   flex: 52,
                   child: Container(
-                    margin: EdgeInsets.only(top: 20.h),
+                    margin: EdgeInsets.only(top: 18.h),
                     child: SvgPicture.asset(
-                        c.shoppingCart[idx].cartOptions["temp"]!.name == "따뜻한" ? "assets/icons/ic_hotIcon.svg" : "assets/icons/ic_coldIcon.svg",
-                        color: Colors.white,
-                        fit: BoxFit.fitWidth),
+                      c.shoppingCart[idx].cartOptions["temp"]!.name == "따뜻한" ? "assets/icons/hotOnlyIcon.svg" : "assets/icons/iceOnlyIcon.svg",
+                      color: Colors.white,
+                      fit: BoxFit.fitHeight,
+                    ),
                     //TODO 아이스, 핫 둘 다 가능할 경우 고치기 22x22 -> 57 x 22
                     width: 22.w,
                     height: 22.h,
@@ -403,7 +404,7 @@ class _ShoppingCartPageState extends State<ShoppingCartPage> {
                         child: Container(
                           width: 24.w,
                           height: 24.h,
-                          child: SvgPicture.asset("assets/icons/ic_delete.svg", fit: BoxFit.fill),
+                          child: SvgPicture.asset("assets/icons/ic_delete.svg", fit: BoxFit.fitHeight),
                         ),
                       ),
                     ],
@@ -713,7 +714,7 @@ class CartMenuWidget extends StatelessWidget {
                     child: SvgPicture.asset(
                         cartItem.cartOptions["temp"]!.name == "따뜻한" ? "assets/icons/ic_hotIcon.svg" : "assets/icons/ic_coldIcon.svg",
                         color: Colors.white,
-                        fit: BoxFit.fill),
+                        fit: BoxFit.fitHeight),
                     //TODO 아이스, 핫 둘 다 가능할 경우 고치기 22x22 -> 57 x 22
                     width: 22.w,
                     height: 22.h,

@@ -155,7 +155,7 @@ class _BillingPageState extends State<BillingPage> {
                         height: 40.h,
                         child: SvgPicture.asset(
                           "assets/icons/ic_card.svg",
-                          fit: BoxFit.fill,
+                          fit: BoxFit.fitHeight,
                         )),
                     Container(
                         margin: EdgeInsets.only(left: 8.w),
@@ -821,7 +821,7 @@ class _BillingPageState extends State<BillingPage> {
                         height: 40.h,
                         child: SvgPicture.asset(
                           "assets/icons/ic_coin.svg",
-                          fit: BoxFit.fill,
+                          fit: BoxFit.fitHeight,
                         )),
                     Container(
                         margin: EdgeInsets.only(left: 8.w),

@@ -4,7 +4,7 @@ import 'package:flutter/widgets.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:get/get.dart';
 
-import 'package:flutter/services.dart';
+// import 'package:flutter/services.dart';
 import 'package:http/http.dart' as http;
 //import 'package:save_order/amplifyconfiguration.dart';
 import 'package:save_order/home.dart';
@@ -38,8 +38,8 @@ class _MyAppState extends State<MyApp> {
 
   @override
   Widget build(BuildContext context) {
-    SystemChrome.setSystemUIOverlayStyle(SystemUiOverlayStyle(statusBarBrightness: Brightness.light) //Or Brightness.dark
-        );
+    // SystemChrome.setSystemUIOverlayStyle(SystemUiOverlayStyle(statusBarBrightness: Brightness.light) //Or Brightness.dark
+    //     );
     return FutureBuilder(
       future: Init.instance.initialize(),
       builder: (context, AsyncSnapshot snapshot) {

@@ -296,7 +296,7 @@ class _EmailLoginPage extends State<EmailLoginPage> {
                   },
                   child: Container(
                       width: 200.w,
-                      height: 20.h,
+                      height: 24.h,
                       child: FittedBox(
                           fit: BoxFit.fitHeight,
                           child: Text("로그인",
@@ -304,7 +304,7 @@ class _EmailLoginPage extends State<EmailLoginPage> {
                                   backgroundColor: Colors.white,
                                   fontWeight: FontWeight.w400,
                                   color: const Color(0xff00276b),
-                                  fontFamily: "NotoSans",
+                                  fontFamily: "Noto Sans",
                                   fontStyle: FontStyle.normal,
                                   fontSize: 10.0))))),
               Container(

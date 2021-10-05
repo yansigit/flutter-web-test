@@ -69,14 +69,16 @@ class NearStoresPageState extends State<NearStoresPage> {
     if (GetPlatform.isWeb) {
       //shops = await Shop.fetchShops(http.Client());
       //shops = shops.where((shop) => (shop.isOpened == 1)).toList();
-      await html.window.navigator.permissions?.query({"name": "geolocation"}).then((locationPermission) async {
-        if (locationPermission.state == "denied") {
-          shops = await Shop.fetchShops(http.Client());
-        } else {
-          shops = await Shop.fetchShopsByLocation(http.Client(), N, this.curPosition);
-        }
-      });
+      // await html.window.navigator.permissions?.query({"name": "geolocation"}).then((locationPermission) async {
+      //   if (locationPermission.state == "denied") {
+
+      //     shops = await Shop.fetchShops(http.Client());
+      //   } else {
+      //     shops = await Shop.fetchShopsByLocation(http.Client(), N, this.curPosition);
+      //   }
+      // });
       // shops = shops.where((shop) => (shop.isOpened == 1)).toList();
+      shops = await Shop.fetchShops(http.Client());
       return this.filterOpenedStores(shops);
       //return shops;
     }
