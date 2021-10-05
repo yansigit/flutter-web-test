@@ -69,7 +69,7 @@ class _AccessPageState extends State<AccessPage> {
   //                     SharedPreferences sharedPreferences =
   //                         await SharedPreferences.getInstance();
   //                     String? token = sharedPreferences.getString("token");
-               
+
   //                     if (token == null || token.length == 0) {
   //                       Get.off(() => LoginPage(),
   //                           transition: Transition.rightToLeft);
@@ -93,13 +93,12 @@ class _AccessPageState extends State<AccessPage> {
     SharedPreferences sharedPreferences = await SharedPreferences.getInstance();
     String? token = sharedPreferences.getString("token");
 
-    
     if (token != null && token.length != 0) {
-        Get.put(UserController());
+      Get.put(UserController());
       UserController userController = Get.find();
-      userController.updateUserInfo(
-          sharedPreferences.getString("email")!, token);
+      userController.updateUserInfo(sharedPreferences.getString("email")!, token);
       this.token = token;
+      print(token);
     }
   }
 
@@ -154,21 +153,16 @@ class _AccessPageState extends State<AccessPage> {
                               child: Column(
                                 children: [
                                   Container(
-                                    margin:
-                                        EdgeInsets.symmetric(vertical: 10.h),
+                                    margin: EdgeInsets.symmetric(vertical: 10.h),
                                     child: Row(
-                                      mainAxisAlignment:
-                                          MainAxisAlignment.spaceAround,
+                                      mainAxisAlignment: MainAxisAlignment.spaceAround,
                                       children: <Widget>[
                                         Flexible(
                                           flex: 1,
                                           fit: FlexFit.tight,
                                           child: Container(
                                             height: 59.h,
-                                            child: Image.asset(
-                                                "assets/access/ic_gps.png",
-                                                color: Colors.black54,
-                                                fit: BoxFit.scaleDown),
+                                            child: Image.asset("assets/access/ic_gps.png", color: Colors.black54, fit: BoxFit.scaleDown),
                                           ),
                                         ),
                                         Flexible(
@@ -189,11 +183,9 @@ class _AccessPageState extends State<AccessPage> {
                                     ),
                                   ),
                                   Container(
-                                    margin:
-                                        EdgeInsets.symmetric(vertical: 10.h),
+                                    margin: EdgeInsets.symmetric(vertical: 10.h),
                                     child: Row(
-                                      mainAxisAlignment:
-                                          MainAxisAlignment.spaceAround,
+                                      mainAxisAlignment: MainAxisAlignment.spaceAround,
                                       children: <Widget>[
                                         Flexible(
                                           flex: 1,

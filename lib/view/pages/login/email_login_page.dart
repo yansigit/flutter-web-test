@@ -55,14 +55,13 @@ class _EmailLoginPage extends State<EmailLoginPage> {
   }
 
   _asyncMethod() async {
-  
     sharedPreferences = await SharedPreferences.getInstance();
 
     //read 함수를 통하여 key값에 맞는 정보를 불러오게 됩니다. 이때 불러오는 결과의 타입은 String 타입임을 기억해야 합니다.
     //(데이터가 없을때는 null을 반환을 합니다.)
 
     String? token = await sharedPreferences!.getString("token");
-  
+
     //user의 정보가 있다면 바로 로그아웃 페이지로 넝어가게 합니다.
     if (token != null && token.length != 0) {
       // emailController!.text =
@@ -90,16 +89,13 @@ class _EmailLoginPage extends State<EmailLoginPage> {
         backgroundColor: Colors.white,
         elevation: 1.3,
         centerTitle: true,
-        title: Text("이메일로 로그인",
-            style: TextStyle(fontWeight: FontWeight.w700, color: Colors.black)),
+        title: Text("이메일로 로그인", style: TextStyle(fontWeight: FontWeight.w700, color: Colors.black)),
       ),
       body: Center(
         child: Container(
           width: 325.w,
           height: 300.h,
-          decoration: BoxDecoration(
-              border: Border.all(color: const Color(0xff00276b)),
-              borderRadius: BorderRadius.all(Radius.circular(15.w))),
+          decoration: BoxDecoration(border: Border.all(color: const Color(0xff00276b)), borderRadius: BorderRadius.all(Radius.circular(15.w))),
           child: Column(
             mainAxisAlignment: MainAxisAlignment.center,
             crossAxisAlignment: CrossAxisAlignment.center,
@@ -118,10 +114,7 @@ class _EmailLoginPage extends State<EmailLoginPage> {
                             fit: BoxFit.fitHeight,
                             child: Text(
                               "이메일: ",
-                              style: TextStyle(
-                                  color: const Color(0xff222222),
-                                  fontFamily: "NotoSans",
-                                  fontSize: 14.0),
+                              style: TextStyle(color: const Color(0xff222222), fontFamily: "NotoSans", fontSize: 14.0),
                             ),
                           )),
                       Container(
@@ -131,15 +124,8 @@ class _EmailLoginPage extends State<EmailLoginPage> {
                           alignment: Alignment.center,
                           decoration: BoxDecoration(
                             color: Colors.white,
-                            border: Border.all(
-                                color: const Color(0xffe8e8e8), width: 1.w),
-                            boxShadow: [
-                              BoxShadow(
-                                  color: const Color(0x0c000000),
-                                  offset: Offset(0, 2),
-                                  blurRadius: 4,
-                                  spreadRadius: 0)
-                            ],
+                            border: Border.all(color: const Color(0xffe8e8e8), width: 1.w),
+                            boxShadow: [BoxShadow(color: const Color(0x0c000000), offset: Offset(0, 2), blurRadius: 4, spreadRadius: 0)],
                           ),
                           child: Form(
                             key: this._emailFormKey,
@@ -147,12 +133,10 @@ class _EmailLoginPage extends State<EmailLoginPage> {
                               validator: emailValidate,
                               textAlignVertical: TextAlignVertical.center,
                               inputFormatters: [
-                                FilteringTextInputFormatter.deny(
-                                    KOREAN_WORD_REGEXP),
+                                FilteringTextInputFormatter.deny(KOREAN_WORD_REGEXP),
                                 LengthLimitingTextInputFormatter(36),
                               ],
-                              style: TextStyle(
-                                  fontFamily: "NotoSans", fontSize: 14.0),
+                              style: TextStyle(fontFamily: "NotoSans", fontSize: 14.0),
                               textAlign: TextAlign.center,
                               // textAlignVertical: TextAlignVertical.center,
                               controller: emailController,
@@ -178,10 +162,7 @@ class _EmailLoginPage extends State<EmailLoginPage> {
                               fit: BoxFit.fitHeight,
                               child: Text(
                                 "비밀번호: ",
-                                style: TextStyle(
-                                    color: const Color(0xff222222),
-                                    fontFamily: "NotoSans",
-                                    fontSize: 14.0),
+                                style: TextStyle(color: const Color(0xff222222), fontFamily: "NotoSans", fontSize: 14.0),
                               ))),
                       Container(
                           height: 60.h,
@@ -189,15 +170,8 @@ class _EmailLoginPage extends State<EmailLoginPage> {
                           alignment: Alignment.center,
                           decoration: BoxDecoration(
                             color: Colors.white,
-                            border: Border.all(
-                                color: const Color(0xffe8e8e8), width: 1.w),
-                            boxShadow: [
-                              BoxShadow(
-                                  color: const Color(0x0c000000),
-                                  offset: Offset(0, 2),
-                                  blurRadius: 4,
-                                  spreadRadius: 0)
-                            ],
+                            border: Border.all(color: const Color(0xffe8e8e8), width: 1.w),
+                            boxShadow: [BoxShadow(color: const Color(0x0c000000), offset: Offset(0, 2), blurRadius: 4, spreadRadius: 0)],
                           ),
                           child: Form(
                             key: this._passwordFormKey,
@@ -207,11 +181,9 @@ class _EmailLoginPage extends State<EmailLoginPage> {
                               textAlignVertical: TextAlignVertical.center,
                               inputFormatters: [
                                 LengthLimitingTextInputFormatter(20),
-                                FilteringTextInputFormatter.deny(
-                                    KOREAN_WORD_REGEXP),
+                                FilteringTextInputFormatter.deny(KOREAN_WORD_REGEXP),
                               ],
-                              style: TextStyle(
-                                  fontFamily: "NotoSans", fontSize: 14.0),
+                              style: TextStyle(fontFamily: "NotoSans", fontSize: 14.0),
                               textAlign: TextAlign.center,
                               // textAlignVertical: TextAlignVertical.center,
                               // 비밀번호 입력할 때 스페이스바 지우기
@@ -226,50 +198,32 @@ class _EmailLoginPage extends State<EmailLoginPage> {
                   )),
               ElevatedButton(
                   style: ButtonStyle(
-                    side: MaterialStateProperty.all<BorderSide>(
-                        BorderSide(color: const Color(0xff00276b), width: 1.w)),
-                    backgroundColor: MaterialStateProperty.all(
-                        isEmailValid && isPasswordValid
-                            ? Colors.grey
-                            : Colors.white),
+                    side: MaterialStateProperty.all<BorderSide>(BorderSide(color: const Color(0xff00276b), width: 1.w)),
+                    backgroundColor: MaterialStateProperty.all(isEmailValid && isPasswordValid ? Colors.grey : Colors.white),
                     shape: MaterialStateProperty.all<RoundedRectangleBorder>(
-                        RoundedRectangleBorder(
-                            borderRadius:
-                                BorderRadius.circular(loginRaiusSize))),
+                        RoundedRectangleBorder(borderRadius: BorderRadius.circular(loginRaiusSize))),
                   ),
                   onPressed: () async {
-                    if (!this._emailFormKey.currentState!.validate() ||
-                        !this._passwordFormKey.currentState!.validate()) {
+                    if (!this._emailFormKey.currentState!.validate() || !this._passwordFormKey.currentState!.validate()) {
                       return;
                     }
-                    Map data = {
-                      "email": emailController!.text.toString().trim(),
-                      "password": passwordController!.text.toString().trim()
-                    };
+                    Map data = {"email": emailController!.text.toString().trim(), "password": passwordController!.text.toString().trim()};
 
                     var body = json.encode(data);
-                    var response = await http.Client().post(
-                        Uri.parse(
-                            "https://${devMode()}.dalbodre.me/api/User/Login"),
-                        headers: <String, String>{
-                          'Content-Type': 'application/json'
-                        },
-                        body: body);
+                    var response = await http.Client().post(Uri.parse("https://${devMode()}.dalbodre.me/api/User/Login"),
+                        headers: <String, String>{'Content-Type': 'application/json'}, body: body);
 
                     if (response.statusCode != 200) {
-                      ScaffoldMessenger.of(context).showSnackBar(SnackBar(
-                          content: Text("이메일 혹은 비밀번호를 잘못 입력하셨습니다."),
-                          duration: const Duration(milliseconds: 1000)));
+                      ScaffoldMessenger.of(context)
+                          .showSnackBar(SnackBar(content: Text("이메일 혹은 비밀번호를 잘못 입력하셨습니다."), duration: const Duration(milliseconds: 1000)));
                       return;
                     }
                     final decodedToken = json.decode(response.body);
 
                     this.token = decodedToken["token"];
+                    print(token);
 
-                    bool isTempPassword = decodedToken["isTempPassword"]
-                            .toString()
-                            .toLowerCase() ==
-                        'true';
+                    bool isTempPassword = decodedToken["isTempPassword"].toString().toLowerCase() == 'true';
 
                     if (isTempPassword == true) {
                       Get.to(() => PasswordChangePage());
@@ -280,19 +234,16 @@ class _EmailLoginPage extends State<EmailLoginPage> {
                       sharedPreferences = await SharedPreferences.getInstance();
                     }
 
-                    await sharedPreferences!.setString("email",
-                        emailController!.text.toString().replaceAll(" ", ""));
+                    await sharedPreferences!.setString("email", emailController!.text.toString().replaceAll(" ", ""));
 
                     // await sharedPreferences!.setString(
                     //     "password", passwordController!.text.toString());
                     await sharedPreferences!.setString("token", this.token);
 
                     if (this.token.length != 0) {
-                      userController.updateUserInfo(
-                          emailController!.text.toString(), this.token);
+                      userController.updateUserInfo(emailController!.text.toString(), this.token);
                     }
-                    Get.off(() => NearStoresPage(),
-                        transition: Transition.rightToLeft);
+                    Get.off(() => NearStoresPage(), transition: Transition.rightToLeft);
                   },
                   child: Container(
                       width: 200.w,
