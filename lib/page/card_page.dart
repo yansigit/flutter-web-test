@@ -609,28 +609,28 @@ class _CardPageState extends State<CardPage> {
                                 requestOrder().then((status) {
                                   Get.offAll(() => NearStoresPage());
                                   Get.to(() => OrderStatusPage());
-                                  // Get.defaultDialog(
-                                  //   title: "설문조사 참여",
-                                  //   content: Column(
-                                  //     crossAxisAlignment: CrossAxisAlignment.center,
-                                  //     children: [
-                                  //       Text("설문조사에 참여하시면\n추첨으로 쿠폰을 드려요."),
-                                  //       InkWell(
-                                  //         onTap: () => _launchURL(),
-                                  //         child: Container(
-                                  //           margin: EdgeInsets.only(top: 5.h),
-                                  //           width: 30.w,
-                                  //           height: 20.h,
-                                  //           decoration: BoxDecoration(
-                                  //             borderRadius: BorderRadius.all(Radius.circular(5.w)),
-                                  //             color: Color(0xff00276b),
-                                  //           ),
-                                  //           child: Text("참여하기", style: TextStyle(color: Colors.white), textAlign: TextAlign.center),
-                                  //         ),
-                                  //       )
-                                  //     ],
-                                  //   ),
-                                  // );
+                                  Get.defaultDialog(
+                                    title: "설문조사 참여",
+                                    content: Column(
+                                      crossAxisAlignment: CrossAxisAlignment.center,
+                                      children: [
+                                        Text("설문조사에 참여하시면\n추첨으로 쿠폰을 드려요."),
+                                        InkWell(
+                                          onTap: () => _launchURL(),
+                                          child: Container(
+                                            margin: EdgeInsets.only(top: 5.h),
+                                            width: 30.w,
+                                            height: 20.h,
+                                            decoration: BoxDecoration(
+                                              borderRadius: BorderRadius.all(Radius.circular(5.w)),
+                                              color: Color(0xff00276b),
+                                            ),
+                                            child: Text("참여하기", style: TextStyle(color: Colors.white), textAlign: TextAlign.center),
+                                          ),
+                                        )
+                                      ],
+                                    ),
+                                  );
                                 });
                                 // Get.offAll(() => NearStoresPage());
                                 // Get.to(() => OrderStatusPage());
