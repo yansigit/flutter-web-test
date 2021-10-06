@@ -754,8 +754,7 @@ class _CardPageState extends State<CardPage> {
     */
     Map<String, dynamic> data = {};
     data["shopId"] = shopController.shop.value.id;
-    // data["totalPrice"] = shoppingCartController.totalPrice.value;
-    data["totalPrice"] = 100;
+    data["totalPrice"] = shoppingCartController.totalPrice.value;
     data["discountPrice"] = shoppingCartController.discountPrice.value;
     data["cardNumber"] = cardController.cardNum.value;
     data["cardExpire"] = cardController.cardValidation.value;
