@@ -438,7 +438,7 @@ class EtcWidget extends StatelessWidget {
                     child: FittedBox(
                       fit: BoxFit.fitHeight,
                       child: Text(
-                        "설탕 시럽",
+                        "헤이즐넛 시럽",
                         style: TextStyle(
                           color: _c.syrupCount.value > 0 ? Color(0xff00276b) : Color(0x59000000),
                           fontWeight: _c.syrupCount.value > 0 ? FontWeight.w700 : FontWeight.w500,
