@@ -1,4 +1,3 @@
-
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
@@ -9,6 +8,7 @@ import 'package:http/http.dart' as http;
 //import 'package:save_order/amplifyconfiguration.dart';
 import 'package:save_order/home.dart';
 import 'package:save_order/page/access_confirm.dart';
+import 'package:save_order/page/now_payment.dart';
 import 'package:save_order/view/pages/bottomNavConnectPages/FindNearStore.dart';
 import 'package:save_order/view/pages/login/SignUpPage.dart';
 import 'package:save_order/view/pages/login/email_login_page.dart';
@@ -32,8 +32,6 @@ class MyApp extends StatefulWidget {
 }
 
 class _MyAppState extends State<MyApp> {
-
-
   List<Shop> shopList = [];
 
   @override
@@ -62,11 +60,12 @@ class _MyAppState extends State<MyApp> {
                       //FavoriteStoresPage(token: "5857D43CE90E3B412D0A69D564764F0F4388B76A")
                       // LoginPage()
                       AccessPage()
-                      //SignUp()
-                      //PasswordChangePage()
-                      //PasswordFindPage()
-                      //SignUp()
-                      //PersonalInfoAgreePage()
+
+                  //SignUp()
+                  //PasswordChangePage()
+                  //PasswordFindPage()
+                  //SignUp()
+                  //PersonalInfoAgreePage()
                   //Home(shopList: shopList),
                   ));
         }

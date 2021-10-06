@@ -3,8 +3,8 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:get/get.dart';
 import 'package:save_order/state/controllers.dart';
 import 'package:save_order/view/pages/bottomNavConnectPages/FindNearStore.dart';
-import 'package:save_order/view/pages/login/login_page.dart';
-import 'package:shared_preferences/shared_preferences.dart';
+// import 'package:save_order/view/pages/login/login_page.dart';
+// import 'package:shared_preferences/shared_preferences.dart';
 
 //TODO this is for Web. Need to change for App.
 // import 'package:permission_handler/permission_handler.dart'
@@ -23,7 +23,7 @@ class _AccessPageState extends State<AccessPage> {
   //List<bool> statusPermissions = [true, true];
   List<bool> statusPermissions = [false, false];
   String token = "";
-  UserController userController = Get.put(UserController());
+  // UserController userController = Get.put(UserController());
 
   //TODO this is for Web. Need to change [statusPermissions] for App.
 
@@ -90,35 +90,35 @@ class _AccessPageState extends State<AccessPage> {
   //   }
   // }
 
-  void getTokenFromPrefeences() async {
-    SharedPreferences sharedPreferences = await SharedPreferences.getInstance();
-    String? token = sharedPreferences.getString("token");
+  // void getTokenFromPrefeences() async {
+  //   SharedPreferences sharedPreferences = await SharedPreferences.getInstance();
+  //   String? token = sharedPreferences.getString("token");
 
-    if (token != null && token.length != 0) {
-      Get.put(UserController());
-      UserController userController = Get.find();
-      userController.updateUserInfo(sharedPreferences.getString("email")!, token);
-      this.token = token;
-      print(token);
-    }
-  }
+  //   if (token != null && token.length != 0) {
+  //     Get.put(UserController());
+  //     UserController userController = Get.find();
+  //     userController.updateUserInfo(sharedPreferences.getString("email")!, token);
+  //     this.token = token;
+  //     print(token);
+  //   }
+  // }
 
-  @override
-  void initState() {
-    super.initState();
-    //TODO this is for Web. Need to change [statusPermissions] for App.
+  // @override
+  // void initState() {
+  //   super.initState();
+  //   //TODO this is for Web. Need to change [statusPermissions] for App.
 
-    // if (!GetPlatform.isWeb) {
-    //   getStatusPermissonList();
-    // } else {
-    //   statusPermissions[0] = true;
-    //   statusPermissions[1] = true;
-    // }
+  //   // if (!GetPlatform.isWeb) {
+  //   //   getStatusPermissonList();
+  //   // } else {
+  //   //   statusPermissions[0] = true;
+  //   //   statusPermissions[1] = true;
+  //   // }
 
-    WidgetsBinding.instance!.addPostFrameCallback((_) {
-      getTokenFromPrefeences();
-    });
-  }
+  //   WidgetsBinding.instance!.addPostFrameCallback((_) {
+  //     getTokenFromPrefeences();
+  //   });
+  // }
 
   @override
   Widget build(BuildContext context) {
@@ -126,7 +126,7 @@ class _AccessPageState extends State<AccessPage> {
     //TODO this is for Web. Need to change [statusPermissions] for App.
     //for Web
     return statusPermissions[0] == false && statusPermissions[1] == false
-        ? (this.token.length == 0 ? LoginPage() : NearStoresPage())
+        ? NearStoresPage()
         : Scaffold(
             body: Container(
               color: Colors.white,

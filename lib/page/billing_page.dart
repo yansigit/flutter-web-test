@@ -108,7 +108,7 @@ class _BillingPageState extends State<BillingPage> {
   Widget PaymentMethodWidget() {
     final TextEditingController tc1 = new TextEditingController();
     // Get.put(UserController());
-    final UserController u = Get.find();
+    // final UserController u = Get.find();
 
     String couponNo = "";
     // print(u.userToken.toString());
@@ -231,7 +231,7 @@ class _BillingPageState extends State<BillingPage> {
                           onPressed: () async {
                             print("validation");
                             final couponVal = tc1.text;
-                            print(u.userToken.value);
+                            print(userToken);
 
                             // 쿠폰 6자리 입력
                             if (this._formKey.currentState!.validate()) {
@@ -239,7 +239,7 @@ class _BillingPageState extends State<BillingPage> {
                                   Uri.parse(
                                       'https://${devMode()}.dalbodre.me/api/CouponCheck/${couponVal}'),
                                   headers: <String, String>{
-                                    'token': '${u.userToken.value}'
+                                    'token': '${userToken}'
                                   });
 
                               if (res.statusCode == 200) {

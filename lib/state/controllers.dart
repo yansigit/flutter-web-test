@@ -4,6 +4,8 @@ import 'package:save_order/model/model.dart';
 import 'package:get_storage/get_storage.dart';
 
 final box = GetStorage();
+final userToken = "193AF86B52A817197F381CF4125E00F042A7C349";
+final userId = "betatester4all@betatest.com";
 
 class TakeOutController extends GetxController {
   final isTakeOut = false.obs;

@@ -16,7 +16,7 @@ import 'package:save_order/consts/color.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:geolocator/geolocator.dart';
 import "package:http/http.dart" as http;
-import 'package:universal_html/html.dart' as html;
+// import 'package:universal_html/html.dart' as html;
 //TODO this is for Web. Need to change for App.
 //import "package:permission_handler/permission_handler.dart";
 
@@ -26,7 +26,7 @@ class NearStoresPageState extends State<NearStoresPage> {
   int nearStoreLength = 0;
   late Position curPosition;
   int N = 3;
-  UserController userController = Get.find();
+  // UserController userController = Get.find();
 
   Future<Position> loadCurLocation() async {
     print("location");

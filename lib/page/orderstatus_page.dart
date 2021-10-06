@@ -267,7 +267,7 @@ class CafeNameContainer extends StatelessWidget {
       child: Row(
         crossAxisAlignment: CrossAxisAlignment.center,
         children: [
-          Container(width: 29.w, height: 22.h, child: SvgPicture.asset("assets/icons/ic_nowShop.svg", fit:BoxFit.fitHeight)),
+          Container(width: 29.w, height: 22.h, child: SvgPicture.asset("assets/icons/ic_nowShop.svg", fit: BoxFit.fitHeight)),
           Container(
             margin: EdgeInsets.only(left: 6.w),
             height: 31.h,
@@ -452,6 +452,7 @@ class _ExpandableListState extends State<ExpandableList> {
 
     List<Widget> widgetList = [
       Container(
+        margin: EdgeInsets.only(left: 17.w),
         height: 21.h,
         child: FittedBox(
           fit: BoxFit.fitHeight,
@@ -486,8 +487,8 @@ class _ExpandableListState extends State<ExpandableList> {
       if (option.name! == "샷 추가") {
         optionString += option.quantity!.toString() + "샷 추가";
       }
-      if (option.name! == "설탕시럽") {
-        optionString += option.quantity!.toString() + " 설탕시럽";
+      if (option.name! == "헤이즐넛 시럽") {
+        optionString += option.quantity!.toString() + " 헤이즐넛 시럽";
       }
       if (option.name! == "휘핑크림") {
         optionString += "휘핑크림 O";

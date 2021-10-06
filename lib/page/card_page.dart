@@ -11,6 +11,7 @@ import 'package:get/get.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:get/utils.dart';
 import 'package:save_order/model/model.dart';
+import 'package:save_order/page/now_payment.dart';
 import 'package:save_order/page/orderstatus_page.dart';
 import 'package:save_order/state/controllers.dart';
 import 'package:http/http.dart' as http;
@@ -35,7 +36,7 @@ class _CardPageState extends State<CardPage> {
   final ShopController shopController = Get.find();
   final CouponController couponController = Get.find();
   final TakeOutController takeOutController = Get.find();
-  final UserController userController = Get.find();
+  // final UserController userController = Get.find();
   final OrderController orderController = Get.put(OrderController());
 
   String errorMsg = "";
@@ -606,32 +607,8 @@ class _CardPageState extends State<CardPage> {
                             // 카드번호 검증이 성공했을 때.
                             switch (status) {
                               case 1:
-                                requestOrder().then((status) {
-                                  Get.offAll(() => NearStoresPage());
-                                  Get.to(() => OrderStatusPage());
-                                  Get.defaultDialog(
-                                    title: "설문조사 참여",
-                                    content: Column(
-                                      crossAxisAlignment: CrossAxisAlignment.center,
-                                      children: [
-                                        Text("설문조사에 참여하시면\n추첨으로 쿠폰을 드려요."),
-                                        InkWell(
-                                          onTap: () => _launchURL(),
-                                          child: Container(
-                                            margin: EdgeInsets.only(top: 5.h),
-                                            width: 30.w,
-                                            height: 20.h,
-                                            decoration: BoxDecoration(
-                                              borderRadius: BorderRadius.all(Radius.circular(5.w)),
-                                              color: Color(0xff00276b),
-                                            ),
-                                            child: Text("참여하기", style: TextStyle(color: Colors.white), textAlign: TextAlign.center),
-                                          ),
-                                        )
-                                      ],
-                                    ),
-                                  );
-                                });
+                                requestOrder();
+                                Get.to(() => NowPayment());
                                 // Get.offAll(() => NearStoresPage());
                                 // Get.to(() => OrderStatusPage());
                                 break;
@@ -738,7 +715,7 @@ class _CardPageState extends State<CardPage> {
     }
   }
 
-  Future<int> requestOrder() async {
+  requestOrder() {
     /*
     {
       "shopId": 1,
@@ -777,7 +754,8 @@ class _CardPageState extends State<CardPage> {
     */
     Map<String, dynamic> data = {};
     data["shopId"] = shopController.shop.value.id;
-    data["totalPrice"] = shoppingCartController.totalPrice.value;
+    // data["totalPrice"] = shoppingCartController.totalPrice.value;
+    data["totalPrice"] = 100;
     data["discountPrice"] = shoppingCartController.discountPrice.value;
     data["cardNumber"] = cardController.cardNum.value;
     data["cardExpire"] = cardController.cardValidation.value;
@@ -809,7 +787,7 @@ class _CardPageState extends State<CardPage> {
           options["quantity"] = value.quantity;
         }
         if (key == "syrup") {
-          options["name"] = "설탕시럽";
+          options["name"] = "헤이즐넛 시럽";
           options["quantity"] = value.quantity;
         }
         if (key == "whipping") {
@@ -832,26 +810,7 @@ class _CardPageState extends State<CardPage> {
     print(data);
 
     var body = json.encode(data);
-    var res = await http.Client().post(Uri.parse("https://${devMode()}.dalbodre.me/api/Order"),
-        body: body, headers: <String, String>{'token': '${userController.userToken.value}', 'Content-Type': 'application/json'});
-    if (res.statusCode == 200) {
-      print(res.body);
-      print("WELL DONE");
-      final data = jsonDecode(res.body);
-      if (data["status"] == "succeed") {
-        print(data["orderId"]);
-        //final int orderId = data["orderId"] as int;
-        orderController.updateOrderNum(data["orderId"] as int);
-        return 1;
-      } else {
-        return 0;
-      }
-    } else {
-      print(body);
-      print("Order Failed");
-      print("statusCode: ${res.statusCode}");
-      return -1;
-    }
+    box.write("orderJson", body);
   }
 }
 
