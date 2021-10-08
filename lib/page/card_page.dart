@@ -12,10 +12,10 @@ import 'package:flutter/cupertino.dart';
 import 'package:get/utils.dart';
 import 'package:save_order/model/model.dart';
 import 'package:save_order/page/now_payment.dart';
-import 'package:save_order/page/orderstatus_page.dart';
+// import 'package:save_order/page/orderstatus_page.dart';
 import 'package:save_order/state/controllers.dart';
 import 'package:http/http.dart' as http;
-import 'package:save_order/view/pages/bottomNavConnectPages/FindNearStore.dart';
+// import 'package:save_order/view/pages/bottomNavConnectPages/FindNearStore.dart';
 import 'package:url_launcher/url_launcher.dart';
 
 class CardPage extends StatefulWidget {

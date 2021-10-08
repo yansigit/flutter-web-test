@@ -4,7 +4,6 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:save_order/model/model.dart';
 import 'package:http/http.dart' as http;
-import 'package:get_storage/get_storage.dart';
 import 'package:save_order/page/orderstatus_page.dart';
 import 'package:save_order/state/controllers.dart';
 import 'package:save_order/view/pages/bottomNavConnectPages/FindNearStore.dart';
