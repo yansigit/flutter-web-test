@@ -254,51 +254,52 @@ class NearStoresPageState extends State<NearStoresPage> {
             //     }
             //   },
             // )
+            // FutureBuilder(
+            //   future: loadCurLocation(),
+            //   builder: (context, AsyncSnapshot projectSnap) {
+            //     if (projectSnap.hasData) {
+            //       curPosition = projectSnap.data;
+            //       print(curPosition.latitude);
+            //       print(curPosition.longitude);
+            //       return
             FutureBuilder(
-              future: loadCurLocation(),
-              builder: (context, AsyncSnapshot projectSnap) {
-                if (projectSnap.hasData) {
-                  curPosition = projectSnap.data;
-                  print(curPosition.latitude);
-                  print(curPosition.longitude);
-                  return FutureBuilder(
-                      future: fetchNearStores(),
-                      builder: (ctx, AsyncSnapshot snap) {
-                        if (snap.hasData && snap.data.length > 0) {
-                          return Container(
-                              child: ListView.separated(
-                            shrinkWrap: true,
-                            scrollDirection: Axis.vertical,
-                            itemCount: snap.data.length,
-                            itemBuilder: (BuildContext context, index) {
-                              return buildStoreView(context, snap.data[index]);
-                            },
-                            separatorBuilder: (context, index) {
-                              return Container(
-                                height: 1.h,
-                                margin: EdgeInsets.only(
-                                  left: 20.5.w,
-                                  right: 20.5.w,
-                                ),
-                                decoration: BoxDecoration(
-                                  color: Color(0xffd1d1d1).withOpacity(0.30000001192092896),
-                                ),
-                              );
-                            },
-                          ));
-                        } else if (!snap.hasData) {
-                          return Center(child: CircularProgressIndicator());
-                        } else {
-                          return Center(child: Text("주변 매장이 없습니다."));
-                        }
-                      });
-                } else if (!projectSnap.hasData) {
-                  return Center(child: CircularProgressIndicator());
-                } else {
-                  return Text("현재 매장이 없다구");
-                }
-              },
-            )
+                future: fetchNearStores(),
+                builder: (ctx, AsyncSnapshot snap) {
+                  if (snap.hasData && snap.data.length > 0) {
+                    return Container(
+                        child: ListView.separated(
+                      shrinkWrap: true,
+                      scrollDirection: Axis.vertical,
+                      itemCount: snap.data.length,
+                      itemBuilder: (BuildContext context, index) {
+                        return buildStoreView(context, snap.data[index]);
+                      },
+                      separatorBuilder: (context, index) {
+                        return Container(
+                          height: 1.h,
+                          margin: EdgeInsets.only(
+                            left: 20.5.w,
+                            right: 20.5.w,
+                          ),
+                          decoration: BoxDecoration(
+                            color: Color(0xffd1d1d1).withOpacity(0.30000001192092896),
+                          ),
+                        );
+                      },
+                    ));
+                  } else if (!snap.hasData) {
+                    return Center(child: CircularProgressIndicator());
+                  } else {
+                    return Center(child: Text("주변 매장이 없습니다."));
+                  }
+                })
+            // } else if (!projectSnap.hasData) {
+            //   return Center(child: CircularProgressIndicator());
+            // } else {
+            //   return Text("현재 매장이 없다구");
+            // }
+            //   },
+            // )
           ])),
       bottomNavigationBar: BottomNav(),
     );
