@@ -69075,7 +69075,7 @@ var $async$p2=P.T(function(a,b){if(a===1)return P.U(b,r)
 while(true)switch(s){case 0:l=p.d
 k=t.N
 s=3
-return P.a8(new O.hu(P.aY(t.Gf)).nM("POST",P.f5("https://"+Z.nc()+".dalbodre.me/api/Order",0,null),P.aU(["token","193AF86B52A817197F381CF4125E00F042A7C349","Content-Type","application/json","test","1"],k,k),l,null),$async$p2)
+return P.a8(new O.hu(P.aY(t.Gf)).nM("POST",P.f5("https://"+Z.nc()+".dalbodre.me/api/Order",0,null),P.aU(["token","193AF86B52A817197F381CF4125E00F042A7C349","Content-Type","application/json"],k,k),l,null),$async$p2)
 case 3:j=b
 k=j.b
 if(k===200){l=j.e
